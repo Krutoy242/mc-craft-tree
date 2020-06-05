@@ -3,7 +3,7 @@ var height = 600;
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 
-function itemToString(obj){
+function itemToString(obj) {
   switch (obj.type) {
     case "itemStack":
       return `${obj.content.item.replace(":", "__")}__${obj.content.meta | 0}`;
@@ -18,7 +18,7 @@ function itemToString(obj){
     default:
       console.log("Unable to find item type", obj.type);
   }
-  
+
 }
 
 function makeGraphForceBasedLabelPlacement(unparsedGraph) {
@@ -49,29 +49,62 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
     }
   }
 
-  unparsedGraph.Default.forEach(function (d, i) {
-    if (d.output && d.input) {
+  // Try to remove placeholders that created only to extend ingredient count
+  var remIndexes = [];
+  unparsedGraph.Default.forEach((dd, ii) => {
+    var wasRemoved = false;
+    dd.output.forEach(ph_as_output => {
+      if (ph_as_output.type === "placeholder") {
+        console.log("found placeholder in", dd);
+        // Special case for placeholder:
+        // If its output, add its all inputs to item instead
+        unparsedGraph.Default.forEach(function (d, i) {
+          d.output.forEach(output => {
+            var pos = d.input.map(e => e.content?.name).indexOf(ph_as_output.content.name);
+            if (pos != -1 && d.input[pos].type === "placeholder") {
+              console.log("  --splice and replace in inputs of", d);
+              console.log("  --old array:", JSON.stringify(d.input.map(e => itemToString(e)), " "));
+              d.input.splice(pos, 1);
+              d.input = d.input.concat(dd.input);
+              console.log("  --new array:", JSON.stringify(d.input.map(e => itemToString(e)), " "));
+              wasRemoved = true;
+            }
+          });
+        });
+      }
+    });
+    if (wasRemoved) remIndexes.push(ii);
+  });
+  for (var i = remIndexes.length -1; i >= 0; i--)
+    unparsedGraph.Default.splice(remIndexes[i], 1);
+
+  function iterateAllLinks(fnc) {
+    unparsedGraph.Default.forEach(function (d, i) {
       d.output.forEach(output => {
         d.input.forEach(input => {
-          var idTarget = itemToString(output);
-          var idSource = itemToString(input);
-
-          if (idTarget && idSource){
-            var link = {
-              target: idTarget,
-              source: idSource
-            }
-            graph.links.push(link)
-          }
-
-          pushNodeFnc(output);
-          pushNodeFnc(input);
+          fnc(input, output);
         });
       });
-    } else {
-      console.log("No inputs or outputs in:", d.output , d.input);
+    });
+  }
+
+
+  // Create all links and nodes
+  iterateAllLinks((input, output) => {
+    var idTarget = itemToString(output);
+    var idSource = itemToString(input);
+
+    if (idTarget && idSource) {
+      graph.links.push({
+        target: idTarget,
+        source: idSource
+      });
     }
+
+    pushNodeFnc(output);
+    pushNodeFnc(input);
   });
+
 
   // ====================================================
   // 
@@ -123,16 +156,16 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
   container.append("defs").selectAll("marker")
     .data(types)
     .join("marker")
-      .attr("id", d => `arrow-${d}`)
-      .attr("viewBox", "0 -5 10 10")
-      .attr("refX", 15)
-      .attr("refY", -0.5)
-      .attr("markerWidth", 6)
-      .attr("markerHeight", 6)
-      .attr("orient", "auto")
+    .attr("id", d => `arrow-${d}`)
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 15)
+    .attr("refY", -0.5)
+    .attr("markerWidth", 6)
+    .attr("markerHeight", 6)
+    .attr("orient", "auto")
     .append("path")
-      .attr("fill", color)
-      .attr("d", "M0,-5L10,0L0,5");
+    .attr("fill", color)
+    .attr("d", "M0,-5L10,0L0,5");
 
   const link = container.append("g")
     .attr("fill", "none")
@@ -156,25 +189,34 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
     // .attr("stroke", "white")
     // .attr("stroke-width", 1.5)
     .append("g")
-  
+
 
   // var cube = node.append("g").attr("class", "cube").attr("transform", 'scale(0.25) translate(-40, -40)');
   // cube.append("path").attr("fill", "#aaa").attr("d", "M40,46.2 0,23.1 40,0 80,23.1 z");
   // cube.append("path").attr("fill", "#888").attr("d", "M0,23.1 40,46.2 40,92.4 0,69.3 z");
   // cube.append("path").attr("fill", "#444").attr("d", "M40,46.2 80,23.1 80,69.3 40,92.4 z");
 
+  // node.append("text")
+  // .attr("x", -40)
+  // .attr("y", "0.31em")
+  // .text(d => d.id)
+  // .clone(true).lower()
+  //   .attr("fill", "none")
+  //   .attr("stroke", "white")
+  //   .attr("stroke-width", 3);
+
 
   d3.json("sheet/Spritesheet.json").then(data => {
-  
-    var nodeSvg = node.append("svg")
-    .attr("height", 64)
-    .attr("width", 64)
-    .attr("x", -32)
-    .attr("y", -32);
+
+    var nodeSvg = node.append("svg").lower()
+      .attr("height", 64)
+      .attr("width", 64)
+      .attr("x", -32)
+      .attr("y", -32);
 
     nodeSvg.append("image")
-    .attr("xlink:href", "sheet/Spritesheet.png")
-    .attr("image-rendering", "pixelated");
+      .attr("xlink:href", "sheet/Spritesheet.png")
+      .attr("image-rendering", "pixelated");
 
     nodeSvg.attr("viewBox", d => {
       // var o_id = d.id.replace(":", "__") + "__" + d.meta;
@@ -183,7 +225,7 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
       Object.keys(data.frames).forEach(k => {
         if (k.match(reg)) { o = data.frames[k] }
       });
-      if (!o){
+      if (!o) {
         switch (d.obj.type) {
           case "placeholder":
             return "672 1344 32 32"
@@ -216,9 +258,7 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
     .style("font-family", "Arial")
     .style("font-size", 12)
     .style("pointer-events", "none") // to prevent mouseover/drag capture
-    // .attr("-webkit-text-stroke", "1px black");
-
-  node.on("mouseover", focus).on("mouseout", unfocus);
+  // .attr("-webkit-text-stroke", "1px black");
 
   function linkArc(d) {
     const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y);
@@ -271,9 +311,9 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
     labelNode.attr("display", function (o) {
       return neigh(index, o.node.index) ? "block" : "none";
     });
-    link.style("opacity", function (o) {
-      return o.source.index == index || o.target.index == index ? 1 : 0.1;
-    });
+    link
+      .style("opacity", o => o.source.index == index || o.target.index == index ? 1 : 0.1)
+      .style("stroke-width",  o => o.source.index == index ? 4 : 1.5);
   }
 
   function unfocus() {
