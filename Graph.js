@@ -2,11 +2,15 @@ var width = 800;
 var height = 600;
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
+function itemStackToString(item, meta){
+  return `${item.replace(":", "__")}__${meta | 0}`;
+}
 
 function itemToString(obj) {
   switch (obj.type) {
     case "itemStack":
-      return `${obj.content.item.replace(":", "__")}__${obj.content.meta | 0}`;
+      return itemStackToString(obj.content.item, obj.content.meta);
+      // return `${obj.content.item.replace(":", "__")}__${obj.content.meta | 0}`;
     case "fluidStack":
       return `fluid__${obj.content.fluid}`;
     case "placeholder":
@@ -49,34 +53,7 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
     }
   }
 
-  // Try to remove placeholders that created only to extend ingredient count
-  var remIndexes = [];
-  unparsedGraph.Default.forEach((dd, ii) => {
-    var wasRemoved = false;
-    dd.output.forEach(ph_as_output => {
-      if (ph_as_output.type === "placeholder") {
-        console.log("found placeholder in", dd);
-        // Special case for placeholder:
-        // If its output, add its all inputs to item instead
-        unparsedGraph.Default.forEach(function (d, i) {
-          d.output.forEach(output => {
-            var pos = d.input.map(e => e.content?.name).indexOf(ph_as_output.content.name);
-            if (pos != -1 && d.input[pos].type === "placeholder") {
-              console.log("  --splice and replace in inputs of", d);
-              console.log("  --old array:", JSON.stringify(d.input.map(e => itemToString(e)), " "));
-              d.input.splice(pos, 1);
-              d.input = d.input.concat(dd.input);
-              console.log("  --new array:", JSON.stringify(d.input.map(e => itemToString(e)), " "));
-              wasRemoved = true;
-            }
-          });
-        });
-      }
-    });
-    if (wasRemoved) remIndexes.push(ii);
-  });
-  for (var i = remIndexes.length -1; i >= 0; i--)
-    unparsedGraph.Default.splice(remIndexes[i], 1);
+
 
   function iterateAllLinks(fnc) {
     unparsedGraph.Default.forEach(function (d, i) {
@@ -121,6 +98,7 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
     .force("x", d3.forceX(width / 2).strength(1))
     .force("y", d3.forceY(height / 2).strength(1))
     .force("link", d3.forceLink(graph.links).id(d => d.id).distance(50).strength(1))
+    .force('collision', d3.forceCollide().radius(45))
     .on("tick", ticked);
 
   var adjlist = [];
@@ -206,37 +184,58 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
   //   .attr("stroke-width", 3);
 
 
-  d3.json("sheet/Spritesheet.json").then(data => {
+  // Promise.all([
+  //   d3.json("sheet/Spritesheet.json"),
+  //   fetch("crafttweaker.log")
+  // ]).then(files => {
+    // console.log("Files loaded", files[0], files[1].text());
+    
+    // var spritesheetJson = files[0];
+    // var ctlog = parseCTlog(files[1].text());
 
-    var nodeSvg = node.append("svg").lower()
-      .attr("height", 64)
-      .attr("width", 64)
-      .attr("x", -32)
-      .attr("y", -32);
+  d3.json("sheet/Spritesheet.json").then(spritesheetJson => {
 
-    nodeSvg.append("image")
-      .attr("xlink:href", "sheet/Spritesheet.png")
-      .attr("image-rendering", "pixelated");
+      // var ctlog = parseCTlog(
+      //   $.ajax({url: "crafttweaker.log", async: false}).responseText
+      // );
+      
 
-    nodeSvg.attr("viewBox", d => {
-      // var o_id = d.id.replace(":", "__") + "__" + d.meta;
-      var reg = new RegExp(d.id + ".*");
-      var o = null;
-      Object.keys(data.frames).forEach(k => {
-        if (k.match(reg)) { o = data.frames[k] }
-      });
-      if (!o) {
-        switch (d.obj.type) {
-          case "placeholder":
-            return "672 1344 32 32"
-          default:
-            console.log("cant find:", d.id);
-            return "576 3136 32 32";
+      var nodeSvg = node.append("svg").lower()
+        .attr("height", 64)
+        .attr("width", 64)
+        .attr("x", -32)
+        .attr("y", -32);
+
+      nodeSvg.append("image")
+        .attr("xlink:href", "sheet/Spritesheet.png")
+        .attr("image-rendering", "pixelated");
+
+      nodeSvg.attr("viewBox", d => {
+        // var o_id = d.id.replace(":", "__") + "__" + d.meta;
+        // var id = (d.obj.type === "oreDict") ? oreAliases[d.obj.content.name] : d.id ;
+        // if (!id) console.log("cant find oredict:", d.id);
+        
+        var reg = new RegExp(d.id + ".*");
+        var o = null;
+        Object.keys(spritesheetJson.frames).forEach(k => {
+          if (k.match(reg)) { o = spritesheetJson.frames[k] }
+        });
+        if (!o) {
+          switch (d.obj.type) {
+            case "placeholder":
+              return "672 1344 32 32"
+            default:
+              console.log("🖼💢:", d.id);
+              return "576 3136 32 32";
+          }
+        } else {
+          return o.frame.x + " " + o.frame.y + " 32 32";
         }
-      } else {
-        return o.frame.x + " " + o.frame.y + " 32 32";
-      }
-    });
+      });
+      // files[0] will contain file1.csv
+      // files[1] will contain file2.csv
+    // }).catch(err => {
+    //   // handle error here
   });
 
   node.on("mouseover", focus).on("mouseout", unfocus);
@@ -437,23 +436,86 @@ function makeGraph(graph) {
   });
 
   // invalidation.then(() => simulation.stop());
-
-
 }
 
+function preparseGroups(unparsedGraph, oreAliases) {
+  // Try to remove placeholders that created only to extend ingredient count
+  var remIndexes = [];
+  unparsedGraph.Default.forEach((dd, ii) => {
+    var wasRemoved = false;
+    dd.output.forEach(obj_output => {
+      // Special case for placeholder in output:
+      // Add its all inputs to recipe where it represent input
+      if (obj_output.type === "placeholder") {
+        unparsedGraph.Default.forEach(function (d, i) {
+          d.output.forEach(output => {
+            var pos = d.input.map(e => e.content?.name).indexOf(obj_output.content.name);
+            if (pos != -1 && d.input[pos].type === "placeholder") {
+              d.input.splice(pos, 1);
+              d.input = d.input.concat(dd.input);
+              wasRemoved = true;
+            }
+          });
+        });
+      }
+    });
+    dd.input.forEach((obj_input, jj) => {
+      // Replace oredict to itemstacks if needed
+      if (obj_input.type === "oreDict") {
+        var oreAlias = oreAliases[obj_input.content.name];
+        if (!oreAlias) console.log(oreAliases, obj_input, obj_input.content.name);
+        
+        dd.input[jj] = {
+          type: "itemStack",
+          content: {
+            amount: obj_input.content.amount,
+            item: oreAlias.item,
+            meta: oreAlias.meta
+          }
+        };
+      }
+    });
+    if (wasRemoved) remIndexes.push(ii);
+  });
+  for (var i = remIndexes.length -1; i >= 0; i--)
+    unparsedGraph.Default.splice(remIndexes[i], 1);
+}
+
+function parseCTlog(txt) {
+  // var oreNameCapture = `^Ore entries for <ore:([\w]+)> :\n`;
+  // var firstItemCapture = `-<([^:>]+:[^:>]+)`;
+  // var optionalMetaCapture = `:?([^:>]+)?`;
+  // var rgx = new RegExp(oreNameCapture + firstItemCapture + optionalMetaCapture, 'gm');
+  var rgx = /^Ore entries for <ore:([\w]+)> :\n-<([^:>]+:[^:>]+):?([^:>]+)?/gm;
+  var matches = txt.matchAll(rgx);
+  var aliasesObj = {};
+  for (const match of matches) {
+    // console.log("--", match[1], match[2], match[3]);
+    var id = itemStackToString(match[2], match[3]);
+    aliasesObj[match[1]] = {id:id, item: match[2], meta: match[3]};
+  }
+  return aliasesObj;
+}
 
 $(document).ready(function () {
   $.ajax({
     url: "__groups.json",
     dataType: "text",
     success: function (data) {
-      var text = data
-        .replace(/(\W\d+)[LBbs](\W)/gi, "$1$2")
-        .replace(/("SideCache".*)\[.*\]/gi, '$1"DataRemoved"');
+      $.get("crafttweaker.log", ctlogData => {
+        var ctlog = parseCTlog(ctlogData);
+        var oreAliases = ctlog;
 
-      var graphObject = JSON.parse(text)
-      // makeGraph(graphObject);
-      makeGraphForceBasedLabelPlacement(graphObject);
+        var text = data
+          .replace(/(\W\d+)[LBbs](\W)/gi, "$1$2")
+          .replace(/("SideCache".*)\[.*\]/gi, '$1"DataRemoved"');
+
+        var graphObject = JSON.parse(text)
+        // makeGraph(graphObject);
+        preparseGroups(graphObject, oreAliases);
+        makeGraphForceBasedLabelPlacement(graphObject);
+        
+      });
     }
   });
 });
