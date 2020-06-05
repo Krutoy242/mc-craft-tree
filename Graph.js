@@ -3,42 +3,9 @@ var height = 600;
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 
-
-function parseGraph(graph, linkFnc, nodeFnc) {
-  var tmpNodes = [];
-
-  function pushNodeFnc(id) {
-    if (!tmpNodes.some(e => e.id === id)) {
-      var node = {
-        id: id
-      };
-      tmpNodes.push(node);
-      nodeFnc(node);
-    }
-  }
-
-  graph.Default.forEach(function (d, i) {
-    if (d.output && d.input) {
-      d.output.forEach(output => {
-        d.input.forEach(inpt => {
-          var input = inpt.content;
-          if (input?.item && output?.content?.item) {
-            var sourceName = output.content.item;
-            var link = {
-              target: sourceName,
-              source: input.item
-            }
-            linkFnc(link);
-
-            pushNodeFnc(link.source);
-            pushNodeFnc(link.target);
-          }
-        });
-      });
-    }
-  });
+function itemToString(obj){
+  return `${obj.item.replace(":", "__")}__${obj.meta | 0}`;
 }
-
 
 function makeGraphForceBasedLabelPlacement(unparsedGraph) {
   // Force-based label placement (d3.v5.js)
@@ -49,24 +16,58 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
     links: []
   };
 
-  parseGraph(unparsedGraph,
-    link => graph.links.push(link),
-    node => graph.nodes.push(node)
-  );
-
   var label = {
-    'nodes': [],
-    'links': []
+    nodes: [],
+    links: []
   };
 
-  graph.nodes.forEach(function (d, i) {
-    label.nodes.push({ node: d });
-    label.nodes.push({ node: d });
-    label.links.push({
-      source: i * 2,
-      target: i * 2 + 1
-    });
+  // ====================================================
+  // Parse graph
+  // ====================================================
+  function pushNodeFnc(o) {
+    var id = itemToString(o);
+    if (!graph.nodes.some(e => e.id === id)) {
+      var node = {
+        id: id,
+        obj: o
+      };
+      graph.nodes.push(node);
+    }
+  }
+
+  unparsedGraph.Default.forEach(function (d, i) {
+    if (d.output && d.input) {
+      d.output.forEach(output => {
+        d.input.forEach(inpt => {
+          var input = inpt.content;
+          if (input?.item && output?.content?.item) {
+            var idTarget = itemToString(output.content);
+            var idSource = itemToString(input);
+            var link = {
+              target: idTarget,
+              source: idSource
+            }
+            graph.links.push(link)
+
+            pushNodeFnc(output.content);
+            pushNodeFnc(input);
+          }
+        });
+      });
+    }
   });
+
+  // ====================================================
+  // 
+  // ====================================================
+  // graph.nodes.forEach(function (d, i) {
+  //   label.nodes.push({ node: d });
+  //   label.nodes.push({ node: d });
+  //   label.links.push({
+  //     source: i * 2,
+  //     target: i * 2 + 1
+  //   });
+  // });
 
 
   var labelLayout = d3.forceSimulation(label.nodes)
@@ -132,7 +133,7 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
     .selectAll("path")
     .data(graph.links)
     .join("path")
-    .attr("stroke", d => color("licensing"))
+    .attr("stroke", "rgba(0.2, 0.8, 0.4, 0.2)")
     .attr("marker-end", d => `url(${new URL(`#arrow-licensing`, location)})`);
 
 
@@ -148,7 +149,6 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
     // .attr("stroke", "white")
     // .attr("stroke-width", 1.5)
     .append("g")
-    .attr("viewBox","0 0 100 32")
   
 
   // var cube = node.append("g").attr("class", "cube").attr("transform", 'scale(0.25) translate(-40, -40)');
@@ -156,12 +156,35 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
   // cube.append("path").attr("fill", "#888").attr("d", "M0,23.1 40,46.2 40,92.4 0,69.3 z");
   // cube.append("path").attr("fill", "#444").attr("d", "M40,46.2 80,23.1 80,69.3 40,92.4 z");
 
-  node.append("image")
+  
+  var nodeSvg = node.append("svg")
+  .attr("height", 64)
+  .attr("width", 64)
+  .attr("x", -32)
+  .attr("y", -32);
+
+  nodeSvg.append("image")
   .attr("xlink:href", "sheet/Spritesheet.png")
-  .attr("height", 30)
-  .attr("width", 30)
-  .attr("x", "-32")
-  .attr("y", "-32")
+  .attr("image-rendering", "pixelated");
+
+  d3.json("sheet/Spritesheet.json").then(data => {
+    nodeSvg.attr("viewBox", d => {
+      // var o_id = d.id.replace(":", "__") + "__" + d.meta;
+      var reg = new RegExp(d.id + ".*");
+      var o = null;
+      Object.keys(data.frames).forEach(k => {
+        if (k.match(reg)) { o = data.frames[k] }
+      });
+      if (!o){
+        console.log("cant find:", d.id);
+        return "0 0 32 32";
+      } else {
+        return o.frame.x + " " + o.frame.y + " 32 32";
+      }
+    });
+  });
+  // .attr("height", 30)
+  // .attr("width", 30)
     // .attr("xlink:href", "sheet/Spritesheet.png")
 
   node.on("mouseover", focus).on("mouseout", unfocus);
@@ -371,7 +394,7 @@ function makeGraph(graph) {
 
 $(document).ready(function () {
   $.ajax({
-    url: "groups.json",
+    url: "__groups.json",
     dataType: "text",
     success: function (data) {
       var text = data
