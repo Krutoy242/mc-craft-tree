@@ -4,7 +4,21 @@ var color = d3.scaleOrdinal(d3.schemeCategory10);
 
 
 function itemToString(obj){
-  return `${obj.item.replace(":", "__")}__${obj.meta | 0}`;
+  switch (obj.type) {
+    case "itemStack":
+      return `${obj.content.item.replace(":", "__")}__${obj.content.meta | 0}`;
+    case "fluidStack":
+      return `fluid__${obj.content.fluid}`;
+    case "placeholder":
+      return `placeholder__${obj.content.name}`;
+    case "oreDict":
+      return `ore__${obj.content.name}`;
+    case "empty":
+      return;
+    default:
+      console.log("Unable to find item type", obj.type);
+  }
+  
 }
 
 function makeGraphForceBasedLabelPlacement(unparsedGraph) {
@@ -26,7 +40,7 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
   // ====================================================
   function pushNodeFnc(o) {
     var id = itemToString(o);
-    if (!graph.nodes.some(e => e.id === id)) {
+    if (id && !graph.nodes.some(e => e.id === id)) {
       var node = {
         id: id,
         obj: o
@@ -38,36 +52,30 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
   unparsedGraph.Default.forEach(function (d, i) {
     if (d.output && d.input) {
       d.output.forEach(output => {
-        d.input.forEach(inpt => {
-          var input = inpt.content;
-          if (input?.item && output?.content?.item) {
-            var idTarget = itemToString(output.content);
-            var idSource = itemToString(input);
+        d.input.forEach(input => {
+          var idTarget = itemToString(output);
+          var idSource = itemToString(input);
+
+          if (idTarget && idSource){
             var link = {
               target: idTarget,
               source: idSource
             }
             graph.links.push(link)
-
-            pushNodeFnc(output.content);
-            pushNodeFnc(input);
           }
+
+          pushNodeFnc(output);
+          pushNodeFnc(input);
         });
       });
+    } else {
+      console.log("No inputs or outputs in:", d.output , d.input);
     }
   });
 
   // ====================================================
   // 
   // ====================================================
-  // graph.nodes.forEach(function (d, i) {
-  //   label.nodes.push({ node: d });
-  //   label.nodes.push({ node: d });
-  //   label.links.push({
-  //     source: i * 2,
-  //     target: i * 2 + 1
-  //   });
-  // });
 
 
   var labelLayout = d3.forceSimulation(label.nodes)
@@ -109,8 +117,7 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
 
   var types = [
     "licensing",
-    "suit",
-    "resolved"
+    "suit"
   ]
 
   container.append("defs").selectAll("marker")
@@ -156,18 +163,19 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
   // cube.append("path").attr("fill", "#888").attr("d", "M0,23.1 40,46.2 40,92.4 0,69.3 z");
   // cube.append("path").attr("fill", "#444").attr("d", "M40,46.2 80,23.1 80,69.3 40,92.4 z");
 
-  
-  var nodeSvg = node.append("svg")
-  .attr("height", 64)
-  .attr("width", 64)
-  .attr("x", -32)
-  .attr("y", -32);
-
-  nodeSvg.append("image")
-  .attr("xlink:href", "sheet/Spritesheet.png")
-  .attr("image-rendering", "pixelated");
 
   d3.json("sheet/Spritesheet.json").then(data => {
+  
+    var nodeSvg = node.append("svg")
+    .attr("height", 64)
+    .attr("width", 64)
+    .attr("x", -32)
+    .attr("y", -32);
+
+    nodeSvg.append("image")
+    .attr("xlink:href", "sheet/Spritesheet.png")
+    .attr("image-rendering", "pixelated");
+
     nodeSvg.attr("viewBox", d => {
       // var o_id = d.id.replace(":", "__") + "__" + d.meta;
       var reg = new RegExp(d.id + ".*");
@@ -176,16 +184,18 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
         if (k.match(reg)) { o = data.frames[k] }
       });
       if (!o){
-        console.log("cant find:", d.id);
-        return "0 0 32 32";
+        switch (d.obj.type) {
+          case "placeholder":
+            return "672 1344 32 32"
+          default:
+            console.log("cant find:", d.id);
+            return "576 3136 32 32";
+        }
       } else {
         return o.frame.x + " " + o.frame.y + " 32 32";
       }
     });
   });
-  // .attr("height", 30)
-  // .attr("width", 30)
-    // .attr("xlink:href", "sheet/Spritesheet.png")
 
   node.on("mouseover", focus).on("mouseout", unfocus);
 
