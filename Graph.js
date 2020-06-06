@@ -1,8 +1,11 @@
+// Program for making sprite: Texutre Packer
+// https://www.codeandweb.com/texturepacker
+
 var width = 800;
 var height = 600;
 var color = d3.scaleOrdinal(d3.schemeCategory10);
 
-function itemStackToString(item, meta){
+function itemStackToString(item, meta) {
   return `${item.replace(":", "__")}__${meta | 0}`;
 }
 
@@ -10,7 +13,7 @@ function itemToString(obj) {
   switch (obj.type) {
     case "itemStack":
       return itemStackToString(obj.content.item, obj.content.meta);
-      // return `${obj.content.item.replace(":", "__")}__${obj.content.meta | 0}`;
+    // return `${obj.content.item.replace(":", "__")}__${obj.content.meta | 0}`;
     case "fluidStack":
       return `fluid__${obj.content.fluid}`;
     case "placeholder":
@@ -44,49 +47,106 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
   // ====================================================
   function pushNodeFnc(o) {
     var id = itemToString(o);
-    if (id && !graph.nodes.some(e => e.id === id)) {
-      var node = {
-        id: id,
-        obj: o
-      };
-      graph.nodes.push(node);
+    if (id) {
+      var pos = graph.nodes.map(e => e.id).indexOf(id);
+      if (pos === -1) {
+        var node = {
+          id: id,
+          raw: o,
+          complicity: 1,
+          outputs: [],
+          inputs: []
+        };
+        graph.nodes.push(node);
+        return node;
+      } else {
+        return graph.nodes[pos]
+      }
     }
   }
 
+  // function deepComplicity(obj){
+  //   obj.complicity = (obj.complicity | 0) + 1;
+  //   console.log("updated complicity for ", obj, obj.outputs);
+  //   if(obj.outputs) obj.outputs.forEach(out => deepComplicity(out));
+  // }
 
+  // Create nodes and links
+  unparsedGraph.Default.forEach(function (d, i) {
+    d.output.forEach(output => {
+      var outNode = pushNodeFnc(output);
+      // var reducer = (a, v) => {
+      //   console.log("reduce a,v = ", a,v);
+      //   return a + (v?.inputs ? v.inputs.reduce(reducer, a) : 1);
+      // };
+      // // outNode.complicity = (outNode.complicity | 0) + d.input.length;
+      // outNode.complicity = (outNode.complicity | 0) + reducer(0, output);
 
-  function iterateAllLinks(fnc) {
-    unparsedGraph.Default.forEach(function (d, i) {
-      d.output.forEach(output => {
-        d.input.forEach(input => {
-          fnc(input, output);
-        });
+      d.input.forEach(input => {
+        var idTarget = itemToString(output);
+        var idSource = itemToString(input);
+
+        if (idTarget && idSource) {
+          graph.links.push({
+            target: idTarget,
+            source: idSource
+          });
+
+          // Increment complicity because we have link
+          // deepComplicity(output);
+        }
+        var inNode = pushNodeFnc(input);
+        if (inNode) {
+          outNode.inputs.push(inNode);
+        }
       });
     });
+  });
+
+  function deepComplicity(node, antiLoop = []) {
+    // console.log(node.id);
+
+    var a = 0;
+    antiLoop.push(node);
+    node.inputs.forEach(inp => {
+      var check = false;
+      antiLoop.forEach(o => check |= (o.id == inp.id));
+      return a += check ? 1 : deepComplicity(inp, antiLoop);
+    });
+    // console.log("new a=",a);
+    return a;
   }
 
+  graph.nodes.forEach(node => {
+    node.complicity = deepComplicity(node);
+  });
 
   // Create all links and nodes
-  iterateAllLinks((input, output) => {
-    var idTarget = itemToString(output);
-    var idSource = itemToString(input);
+  // iterateAllLinks((input, output) => {
+  //   var idTarget = itemToString(output);
+  //   var idSource = itemToString(input);
 
-    if (idTarget && idSource) {
-      graph.links.push({
-        target: idTarget,
-        source: idSource
-      });
-    }
+  //   if (idTarget && idSource) {
+  //     graph.links.push({
+  //       target: idTarget,
+  //       source: idSource
+  //     });
+  //   }
 
-    pushNodeFnc(output);
-    pushNodeFnc(input);
-  });
+  //   pushNodeFnc(output);
+  //   pushNodeFnc(input);
+  // });
 
 
   // ====================================================
   // 
   // ====================================================
 
+
+  function sizeFnc(d) {
+    return d.complicity / 1.5 + 32;
+    return Math.PI * Math.pow(d.complicity / 30, 2) + 32;
+  }
 
   var labelLayout = d3.forceSimulation(label.nodes)
     .force("charge", d3.forceManyBody().strength(-50))
@@ -97,8 +157,8 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
     .force("center", d3.forceCenter(width / 2, height / 2))
     .force("x", d3.forceX(width / 2).strength(1))
     .force("y", d3.forceY(height / 2).strength(1))
-    .force("link", d3.forceLink(graph.links).id(d => d.id).distance(50).strength(1))
-    .force('collision', d3.forceCollide().radius(45))
+    .force("link", d3.forceLink(graph.links).id(d => d.id).distance(60).strength(1))
+    .force('collision', d3.forceCollide().radius(sizeFnc).strength(0.5))
     .on("tick", ticked);
 
   var adjlist = [];
@@ -161,12 +221,13 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
     .selectAll("g")
     .data(graph.nodes)
     .enter()
-    // .append("circle")
-    // .attr("r", 5)
-    // .attr("fill", function (d) { return color(d.group); })
-    // .attr("stroke", "white")
-    // .attr("stroke-width", 1.5)
     .append("g")
+
+  node.append("circle").lower()
+    .attr("r", sizeFnc)
+    .attr("fill", "none")
+    .attr("stroke", "white")
+    .attr("stroke-width", 1.5)
 
 
   // var cube = node.append("g").attr("class", "cube").attr("transform", 'scale(0.25) translate(-40, -40)');
@@ -188,54 +249,47 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
   //   d3.json("sheet/Spritesheet.json"),
   //   fetch("crafttweaker.log")
   // ]).then(files => {
-    // console.log("Files loaded", files[0], files[1].text());
-    
-    // var spritesheetJson = files[0];
-    // var ctlog = parseCTlog(files[1].text());
+  // console.log("Files loaded", files[0], files[1].text());
+
+  // var spritesheetJson = files[0];
+  // var ctlog = parseCTlog(files[1].text());
 
   d3.json("sheet/Spritesheet.json").then(spritesheetJson => {
 
-      // var ctlog = parseCTlog(
-      //   $.ajax({url: "crafttweaker.log", async: false}).responseText
-      // );
-      
-
-      var nodeSvg = node.append("svg").lower()
-        .attr("height", 64)
-        .attr("width", 64)
-        .attr("x", -32)
-        .attr("y", -32);
-
-      nodeSvg.append("image")
-        .attr("xlink:href", "sheet/Spritesheet.png")
-        .attr("image-rendering", "pixelated");
-
-      nodeSvg.attr("viewBox", d => {
-        // var o_id = d.id.replace(":", "__") + "__" + d.meta;
-        // var id = (d.obj.type === "oreDict") ? oreAliases[d.obj.content.name] : d.id ;
-        // if (!id) console.log("cant find oredict:", d.id);
-        
-        var reg = new RegExp(d.id + ".*");
-        var o = null;
-        Object.keys(spritesheetJson.frames).forEach(k => {
-          if (k.match(reg)) { o = spritesheetJson.frames[k] }
-        });
-        if (!o) {
-          switch (d.obj.type) {
-            case "placeholder":
-              return "672 1344 32 32"
-            default:
-              console.log("🖼💢:", d.id);
-              return "576 3136 32 32";
-          }
-        } else {
-          return o.frame.x + " " + o.frame.y + " 32 32";
+    graph.nodes.forEach(node => {
+      var reg = new RegExp(node.id + ".*");
+      var o = null;
+      for (let k of Object.keys(spritesheetJson.frames)) {
+      // Object.keys(spritesheetJson.frames).forEach(k => {
+        if (k.match(reg)) {
+          o = spritesheetJson.frames[k];
+          break;
         }
-      });
-      // files[0] will contain file1.csv
-      // files[1] will contain file2.csv
-    // }).catch(err => {
-    //   // handle error here
+      }//);
+      if (!o) {
+        switch (node.raw.type) {
+          case "placeholder":
+            node.viewBox = "672 1344 32 32";
+          default:
+            console.log("🖼💢:", node.id);
+            node.viewBox = "576 3136 32 32";
+        }
+      } else {
+        node.viewBox = o.frame.x + " " + o.frame.y + " 32 32";
+      }
+    });
+
+    var nodeSvg = node.append("svg").lower()
+      .attr("height", d => sizeFnc(d) * 2)
+      .attr("width", d => sizeFnc(d) * 2)
+      .attr("x", d => - sizeFnc(d))
+      .attr("y", d => - sizeFnc(d));
+
+    nodeSvg.append("image")
+      .attr("xlink:href", "sheet/Spritesheet.png")
+      .attr("image-rendering", "pixelated");
+
+    nodeSvg.attr("viewBox", d => d.viewBox);
   });
 
   node.on("mouseover", focus).on("mouseout", unfocus);
@@ -312,7 +366,7 @@ function makeGraphForceBasedLabelPlacement(unparsedGraph) {
     });
     link
       .style("opacity", o => o.source.index == index || o.target.index == index ? 1 : 0.1)
-      .style("stroke-width",  o => o.source.index == index ? 4 : 1.5);
+      .style("stroke-width", o => o.source.index == index ? 4 : 1.5);
   }
 
   function unfocus() {
@@ -443,7 +497,7 @@ function preparseGroups(unparsedGraph, oreAliases) {
   var remIndexes = [];
   unparsedGraph.Default.forEach((dd, ii) => {
     var wasRemoved = false;
-    dd.output.forEach(obj_output => {
+    dd.output.forEach((obj_output, dd_out_i) => {
       // Special case for placeholder in output:
       // Add its all inputs to recipe where it represent input
       if (obj_output.type === "placeholder") {
@@ -458,26 +512,45 @@ function preparseGroups(unparsedGraph, oreAliases) {
           });
         });
       }
+      // obj_output.inputs = (obj_output.inputs | []).concat(dd.input);
+      // console.log("obj_output.inputs:", JSON.stringify(obj_output.inputs));
+      // obj_output.inputs = [].concat(dd.input, obj_output.inputs);
+      // console.log("obj_output.inputs:", JSON.stringify(obj_output.inputs));
     });
-    dd.input.forEach((obj_input, jj) => {
-      // Replace oredict to itemstacks if needed
-      if (obj_input.type === "oreDict") {
-        var oreAlias = oreAliases[obj_input.content.name];
-        if (!oreAlias) console.log(oreAliases, obj_input, obj_input.content.name);
-        
-        dd.input[jj] = {
-          type: "itemStack",
-          content: {
-            amount: obj_input.content.amount,
-            item: oreAlias.item,
-            meta: oreAlias.meta
-          }
-        };
-      }
-    });
-    if (wasRemoved) remIndexes.push(ii);
+    if (wasRemoved) {
+      remIndexes.push(ii);
+    } else {
+      dd.input.forEach((obj_input, jj) => {
+        // Replace oredict to itemstacks if needed
+        if (obj_input.type === "oreDict") {
+          var oreAlias = oreAliases[obj_input.content.name];
+          if (!oreAlias) console.log(oreAliases, obj_input, obj_input.content.name);
+
+          dd.input[jj] = {
+            type: "itemStack",
+            content: {
+              amount: obj_input.content.amount,
+              item: oreAlias.item,
+              meta: oreAlias.meta
+            }
+          };
+        }
+        // obj_input.outputs = ([]).concat(obj_input.outputs, dd.output);
+        // dd.input[jj].outputs = (dd.input[jj].outputs | []).concat(dd.output);
+      });
+    }
   });
-  for (var i = remIndexes.length -1; i >= 0; i--)
+
+  // Create references on parents and chinlds
+  // unparsedGraph.Default.forEach(dd => {
+  //   dd.output.forEach(obj => obj.inputs = [].concat(dd.input, obj.inputs));
+  //   dd.input.forEach(obj => obj.outputs = [].concat(dd.output, obj.outputs));
+  // });
+
+
+
+
+  for (var i = remIndexes.length - 1; i >= 0; i--)
     unparsedGraph.Default.splice(remIndexes[i], 1);
 }
 
@@ -492,7 +565,7 @@ function parseCTlog(txt) {
   for (const match of matches) {
     // console.log("--", match[1], match[2], match[3]);
     var id = itemStackToString(match[2], match[3]);
-    aliasesObj[match[1]] = {id:id, item: match[2], meta: match[3]};
+    aliasesObj[match[1]] = { id: id, item: match[2], meta: match[3] };
   }
   return aliasesObj;
 }
@@ -514,7 +587,7 @@ $(document).ready(function () {
         // makeGraph(graphObject);
         preparseGroups(graphObject, oreAliases);
         makeGraphForceBasedLabelPlacement(graphObject);
-        
+
       });
     }
   });
