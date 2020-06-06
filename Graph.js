@@ -109,22 +109,21 @@ export function makeGraph(graph) {
 
   d3.json("sheet/Spritesheet.json").then(spritesheetJson => {
 
+    function findSheet(id){
+      for (let k of Object.keys(spritesheetJson.frames))
+        if (k.match(new RegExp(id + ".*"))) return spritesheetJson.frames[k];
+    }
+
     graph.nodes.forEach(node => {
-      var reg = new RegExp(node.id + ".*");
-      var o = null;
-      for (let k of Object.keys(spritesheetJson.frames)) {
-        if (k.match(reg)) {
-          o = spritesheetJson.frames[k];
-          break;
-        }
-      }
+      var o = findSheet(node.id) || findSheet(node.definition);
       if (!o) {
-        switch (node.raw.type) {
-          case "placeholder":
-            node.viewBox = "672 1344 32 32";
-          default:
-            console.log("🖼💢:", node.id);
-            node.viewBox = "576 3136 32 32";
+        if (node.raw.type === "placeholder") {
+          node.viewBox = "672 1344 32 32";
+        } else if (node.raw.content?.item === "forge:bucketfilled") {
+          node.viewBox = "4000 2816 32 32";
+        } else {
+          console.log("🖼💢:", node.id);
+          node.viewBox = "576 3136 32 32";
         }
       } else {
         node.viewBox = o.frame.x + " " + o.frame.y + " 32 32";

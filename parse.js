@@ -1,12 +1,26 @@
 
-function itemStackToString(item, meta) {
-  return `${item.replace(":", "__")}__${meta | 0}`;
+
+
+function itemStackToString(item, meta = 0) {
+  return `${item.replace(":", "__")}__${meta}`;
+}
+
+function definition(raw){
+  if (raw.content.item)
+    return itemStackToString(raw.content.item, raw.content.meta);
+  else
+    return null;
 }
 
 function itemToString(obj) {
   switch (obj.type) {
     case "itemStack":
-      return itemStackToString(obj.content.item, obj.content.meta);
+      var nbtStr = "";
+      if (obj.content.nbt && !$.isEmptyObject(obj.content.nbt)) {
+        nbtStr = "__" + JSON.stringify(obj.content.nbt)
+          .replace(/\"([^:]+)\":([^{},]+)/g, "$1__$2.?");
+      }
+      return definition(obj) + nbtStr;
     // return `${obj.content.item.replace(":", "__")}__${obj.content.meta | 0}`;
     case "fluidStack":
       return `fluid__${obj.content.fluid}`;
@@ -85,15 +99,16 @@ export function parseRawRecipes(unparsedGraph, oreAliases) {
 
   // Add node that represents item
   // Return new node or old one if item already present
-  function pushNodeFnc(o) {
-    var id = itemToString(o);
+  function pushNodeFnc(raw) {
+    var id = itemToString(raw);
     if (id) {
       var pos = graph.nodes.map(e => e.id).indexOf(id);
       if (pos === -1) {
         // Create new item in nodes
         var node = {
           id: id,
-          raw: o,
+          definition: definition(raw),
+          raw: raw,
           complicity: 1,
           outputs: [],
           inputs: []
@@ -159,7 +174,6 @@ export function parseCTlog(txt) {
   var rgx = /^Ore entries for <ore:([\w]+)> :\n-<([^:>]+:[^:>]+):?([^:>]+)?/gm;
   var aliasesObj = {};
   for (const match of txt.matchAll(rgx)) {
-    // console.log("--", match[1], match[2], match[3]);
     var id = itemStackToString(match[2], match[3]);
     aliasesObj[match[1]] = { id: id, item: match[2], meta: match[3] };
   }
