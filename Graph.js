@@ -10,7 +10,7 @@ export function makeGraph(graph) {
 
 
   function sizeFnc(d) {
-    return d.complicity / 1.5 + 32;
+    return (d.complicity + d.usability) / 1.5 + 32;
     // return Math.PI * Math.pow(d.complicity / 30, 2) + 32;
   }
 
@@ -19,7 +19,7 @@ export function makeGraph(graph) {
     // .force("center", d3.forceCenter(width / 2, height / 2))
     .force("x", d3.forceX(width / 2).strength(1))
     // .force("y", d3.forceY(height / 2).strength(1))
-    .force("y", d3.forceY(d => height / 2 - Math.sqrt(d.complicity)*60).strength(1))
+    .force("y", d3.forceY(d => height/2 - Math.sqrt(d.complicity)*60 + Math.sqrt(d.usability)*60).strength(1))
     .force("link", d3.forceLink(graph.links).id(d => d.id).distance(60).strength(1))
     .force('collision', d3.forceCollide().radius(sizeFnc).strength(0.5))
     .on("tick", ticked);
@@ -86,11 +86,11 @@ export function makeGraph(graph) {
     .enter()
     .append("g")
 
-  node.append("circle").lower()
+  node.append("circle")
     .attr("r", sizeFnc)
     .attr("fill", "none")
     .attr("stroke", "white")
-    .attr("stroke-width", 1.5)
+    .attr("stroke-width", d => d.usability + 1)
 
 
   // var cube = node.append("g").attr("class", "cube").attr("transform", 'scale(0.25) translate(-40, -40)');
@@ -107,41 +107,18 @@ export function makeGraph(graph) {
   //   .attr("stroke", "white")
   //   .attr("stroke-width", 3);
 
-  d3.json("sheet/Spritesheet.json").then(spritesheetJson => {
+  var nodeSvg = node.append("svg").attr("class", "icon")
+    .attr("height", d => sizeFnc(d) * 2 * 0.9)
+    .attr("width", d => sizeFnc(d) * 2 * 0.9)
+    .attr("x", d => - sizeFnc(d) * 0.9)
+    .attr("y", d => - sizeFnc(d) * 0.9);
 
-    function findSheet(id){
-      for (let k of Object.keys(spritesheetJson.frames))
-        if (k.match(new RegExp(id + ".*"))) return spritesheetJson.frames[k];
-    }
+  nodeSvg.append("image")
+    .attr("xlink:href", "sheet/Spritesheet.png")
+    .attr("image-rendering", "pixelated");
 
-    graph.nodes.forEach(node => {
-      var o = findSheet(node.id) || findSheet(node.definition);
-      if (!o) {
-        if (node.raw.type === "placeholder") {
-          node.viewBox = "672 1344 32 32";
-        } else if (node.raw.content?.item === "forge:bucketfilled") {
-          node.viewBox = "4000 2816 32 32";
-        } else {
-          console.log("🖼💢:", node.id);
-          node.viewBox = "576 3136 32 32";
-        }
-      } else {
-        node.viewBox = o.frame.x + " " + o.frame.y + " 32 32";
-      }
-    });
+  // nodeSvg.attr("viewBox", d => d.viewBox);
 
-    var nodeSvg = node.append("svg").lower()
-      .attr("height", d => sizeFnc(d) * 2 * 0.9)
-      .attr("width", d => sizeFnc(d) * 2 * 0.9)
-      .attr("x", d => - sizeFnc(d) * 0.9)
-      .attr("y", d => - sizeFnc(d) * 0.9);
-
-    nodeSvg.append("image")
-      .attr("xlink:href", "sheet/Spritesheet.png")
-      .attr("image-rendering", "pixelated");
-
-    nodeSvg.attr("viewBox", d => d.viewBox);
-  });
 
   node.on("mouseover", focus).on("mouseout", unfocus);
 
@@ -198,4 +175,5 @@ export function makeGraph(graph) {
     d.fy = null;
   }
 
+  return node;
 }

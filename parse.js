@@ -110,6 +110,7 @@ export function parseRawRecipes(unparsedGraph, oreAliases) {
           definition: definition(raw),
           raw: raw,
           complicity: 1,
+          usability: 0,
           outputs: [],
           inputs: []
         };
@@ -140,27 +141,34 @@ export function parseRawRecipes(unparsedGraph, oreAliases) {
           });
         }
         var inNode = pushNodeFnc(input);
-        if (inNode) outNode.inputs.push(inNode);
+        if (inNode) {
+          outNode.inputs.push(inNode);
+          inNode.outputs.push(outNode);
+        }
       });
     });
   });
 
   // ----------------------------
-  // calculate complicity
+  // calculate complicity and usability
   // ----------------------------
-  function deepComplicity(node, antiLoop = []) {
+  function diveIn(node, member, antiLoop = []) {
     var a = 0;
     antiLoop.push(node);
-    node.inputs.forEach(inp => {
+    node[member].forEach(inp => {
       var check = false;
       antiLoop.forEach(o => check |= (o.id == inp.id));
-      return a += check ? 1 : deepComplicity(inp, antiLoop);
+      return a += check ? 1 : diveIn(inp, member, antiLoop);
     });
     return a;
   }
 
   graph.nodes.forEach(node => {
-    node.complicity = deepComplicity(node);
+    node.complicity = diveIn(node, "inputs");
+  });
+
+  graph.nodes.forEach(node => {
+    node.usability = diveIn(node, "outputs");
   });
 
 
@@ -178,4 +186,32 @@ export function parseCTlog(txt) {
     aliasesObj[match[1]] = { id: id, item: match[2], meta: match[3] };
   }
   return aliasesObj;
+}
+
+export function parseSpritesheet(graph, spritesheetJson) {
+
+  function findSheet(id){
+    for (let k of Object.keys(spritesheetJson.frames))
+      if (k.match(new RegExp(id + ".*"))) return spritesheetJson.frames[k];
+  }
+
+  // Apply View Boxes for all nodes
+  graph.nodes.forEach(node => {
+    var o = 
+      findSheet(node.id)             // Regular icon
+      || findSheet(node.definition); // Icon without nbt
+
+    if (!o) {
+      if (node.raw.type === "placeholder") {
+        node.viewBox = "672 1344 32 32";
+      } else if (node.raw.content?.item === "forge:bucketfilled") {
+        node.viewBox = "4000 2816 32 32";
+      } else {
+        console.log("🖼💢:", node.id);
+        node.viewBox = "576 3136 32 32";
+      }
+    } else {
+      node.viewBox = o.frame.x + " " + o.frame.y + " 32 32";
+    }
+  });
 }
