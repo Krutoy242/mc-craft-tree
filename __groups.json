@@ -7538,7 +7538,7 @@
         "output": [{
             "type": "itemStack",
             "content": {
-                "amount": 2L,
+                "amount": 1L,
                 "item": "storagedrawers:upgrade_creative",
                 "meta": 1
             }

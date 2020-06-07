@@ -11,7 +11,7 @@ $(document).ready(function () {
   $.when(
     $.when(
       // File with all recipes information
-      $.get("__groups.json", data => {
+      $.get("groups.json", data => {
         var text = data
           .replace(/(\W\d+)[LBbs](\W)/gi, "$1$2")
           .replace(/("SideCache".*)\[.*\]/gi, '$1"DataRemoved"');
@@ -36,6 +36,6 @@ $(document).ready(function () {
   ).then( () => {
     parseSpritesheet(graph, spritesheetJson);
 
-    d3.selectAll(".icon").attr("viewBox", d => d.viewBox);
+    d3.selectAll(".icon").attr("viewBox", d => d.viewBox || d.super.viewBox);
   });
 });

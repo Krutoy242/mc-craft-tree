@@ -12,26 +12,51 @@ function definition(raw){
     return null;
 }
 
-function itemToString(obj) {
-  switch (obj.type) {
+function amount(raw){
+  switch (raw.type) {
+    case "fluidStack":
+      return raw.content.amount * 1.0 / 1000.0;
+    default:
+      return raw.content.amount || 1;
+  }
+}
+
+function origName(raw) {
+  switch (raw.type) {
+    case "itemStack":
+      return raw.content.item + (raw.content.meta ? ":" + raw.content.meta : "");
+    case "fluidStack":
+      return `fluid:${raw.content.fluid}`;
+    case "placeholder":
+      return `placeholder:${raw.content.name}`;
+    case "oreDict":
+      return `ore:${raw.content.name}`;
+    case "empty":
+      return `<empty>`;
+    default:
+      return `TYPE_MISSED`;
+  }
+}
+
+function itemToString(raw) {
+  switch (raw.type) {
     case "itemStack":
       var nbtStr = "";
-      if (obj.content.nbt && !$.isEmptyObject(obj.content.nbt)) {
-        nbtStr = "__" + JSON.stringify(obj.content.nbt)
+      if (raw.content.nbt && !$.isEmptyObject(raw.content.nbt)) {
+        nbtStr = "__" + JSON.stringify(raw.content.nbt)
           .replace(/\"([^:]+)\":([^{},]+)/g, "$1__$2.?");
       }
-      return definition(obj) + nbtStr;
-    // return `${obj.content.item.replace(":", "__")}__${obj.content.meta | 0}`;
+      return definition(raw) + nbtStr;
     case "fluidStack":
-      return `fluid__${obj.content.fluid}`;
+      return `fluid__${raw.content.fluid}`;
     case "placeholder":
-      return `placeholder__${obj.content.name}`;
+      return `placeholder__${raw.content.name}`;
     case "oreDict":
-      return `ore__${obj.content.name}`;
+      return `ore__${raw.content.name}`;
     case "empty":
       return;
     default:
-      console.log("Unable to find item type", obj.type);
+      console.log("Unable to find item type", raw.type);
   }
 }
 
@@ -107,12 +132,14 @@ export function parseRawRecipes(unparsedGraph, oreAliases) {
         // Create new item in nodes
         var node = {
           id: id,
+          name: origName(raw),
           definition: definition(raw),
           raw: raw,
           complicity: 1,
           usability: 0,
           outputs: [],
-          inputs: []
+          inputs: [],
+          links: []
         };
         graph.nodes.push(node);
         return node;
@@ -133,17 +160,25 @@ export function parseRawRecipes(unparsedGraph, oreAliases) {
       d.input.forEach(input => {
         var idTarget = itemToString(output);
         var idSource = itemToString(input);
+        var link;
 
         if (idTarget && idSource) {
-          graph.links.push({
+          link = {
             target: idTarget,
-            source: idSource
-          });
+            source: idSource,
+            weight: 1.0
+          };
+          graph.links.push(link);
         }
         var inNode = pushNodeFnc(input);
         if (inNode) {
-          outNode.inputs.push(inNode);
-          inNode.outputs.push(outNode);
+          var weight = amount(input) / amount(output);
+
+          outNode.inputs.push({it: inNode,  weight: weight});
+          inNode.outputs.push({it: outNode, weight: weight});
+
+          link.weight = weight;
+          inNode.links.push(link);
         }
       });
     });
@@ -152,25 +187,45 @@ export function parseRawRecipes(unparsedGraph, oreAliases) {
   // ----------------------------
   // calculate complicity and usability
   // ----------------------------
-  function diveIn(node, member, antiLoop = []) {
-    var a = 0;
-    antiLoop.push(node);
-    node[member].forEach(inp => {
+  function diveIn(node, memberName, deflt, antiLoop = []) {
+    var a = (node[memberName].length === 0) ? deflt : (1 - deflt);
+    node[memberName].forEach(mem => {
       var check = false;
-      antiLoop.forEach(o => check |= (o.id == inp.id));
-      return a += check ? 1 : diveIn(inp, member, antiLoop);
+      antiLoop.forEach(o => check |= (o.id == mem.it.id));
+      if (check || mem.it.id == node.id){
+        console.log("recipe loop found!", node, memberName, antiLoop);
+      } else {
+        antiLoop.push(node);
+        a += (diveIn(mem.it, memberName, deflt, antiLoop)) * mem.weight;
+        antiLoop.pop();
+      }
     });
     return a;
   }
 
+  graph.minU = 999999999999;
+  graph.maxU = 0;
+  graph.minC = 999999999999;
+  graph.maxC = 0;
   graph.nodes.forEach(node => {
-    node.complicity = diveIn(node, "inputs");
+    node.complicity = diveIn(node, "inputs", 1.0);
+    graph.minC = Math.min(graph.minC, node.complicity);
+    graph.maxC = Math.max(graph.maxC, node.complicity);
+
+    node.usability = diveIn(node, "outputs", 0.0);
+    graph.minU = Math.min(graph.minU, node.usability);
+    graph.maxU = Math.max(graph.maxU, node.usability);
+
+    node.links.forEach(link => {
+      link.weight += node.complicity;
+    });
   });
 
-  graph.nodes.forEach(node => {
-    node.usability = diveIn(node, "outputs");
-  });
-
+  console.log("Min Max data:");
+  console.log(graph.minC,
+    graph.maxC,
+    graph.minU,
+    graph.maxU);
 
   // ----------------------------
   // return

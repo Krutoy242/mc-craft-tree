@@ -8,32 +8,44 @@ export function makeGraph(graph) {
   // Force-based label placement (d3.v5.js)
   // https://bl.ocks.org/mapio/53fed7d84cd1812d6a6639ed7aa83868#index.html
 
+  function nonLinear(v) {return Math.sqrt(v)}
+
+  function importancy(v, min, max) { return (v - min) / (max + 1) }
+  function compFnc(d) { return nonLinear(importancy(d.complicity, graph.minC, graph.maxC)) }
+  function usabFnc(d) { return nonLinear(importancy(d.usability,  graph.minU, graph.maxU)) }
+  function strokeWfnc(d) { return nonLinear(nonLinear(d.weight)); }
+  // function sinFnc(v, min, max) {return Math.max(0.0, Math.sin((v - min) / max * (Math.PI / 2))) }
+  // function sinFnc(v, min, max) {return Math.pow((v - min) / max, 3) }
+
+  // function compFnc(d) { return sinFnc(d.complicity, graph.minC, graph.maxC) * 10 }
+  // function usabFnc(d) { return sinFnc(d.usability, graph.minU, graph.maxU) * 10 }
+  
+  var minSize = 20;
+  var maxSize = 90;
+  var diffSize = maxSize - minSize;
 
   function sizeFnc(d) {
-    return (d.complicity + d.usability) / 1.5 + 32;
-    // return Math.PI * Math.pow(d.complicity / 30, 2) + 32;
+    var size = (compFnc(d) + usabFnc(d))/2 * maxSize + minSize;
+    if( size > maxSize) console.log("Too big size!:", size, d);
+    return Math.min(maxSize, size);
   }
 
   var graphLayout = d3.forceSimulation(graph.nodes)
-    .force("charge", d3.forceManyBody().strength(-3000))
+    .force("charge", d3.forceManyBody().strength(-2000))
     // .force("center", d3.forceCenter(width / 2, height / 2))
-    .force("x", d3.forceX(width / 2).strength(1))
-    // .force("y", d3.forceY(height / 2).strength(1))
-    .force("y", d3.forceY(d => height/2 - Math.sqrt(d.complicity)*60 + Math.sqrt(d.usability)*60).strength(1))
-    .force("link", d3.forceLink(graph.links).id(d => d.id).distance(60).strength(1))
-    .force('collision', d3.forceCollide().radius(sizeFnc).strength(0.5))
+    .force("x", d3.forceX(d => height/2 - usabFnc(d)*diffSize*3 + compFnc(d)*diffSize*3).strength(1))
+    .force("y", d3.forceY(width / 2).strength(d => usabFnc(d) + 1))
+    .force("link", d3.forceLink(graph.links).id(d => d.id).distance(diffSize/2).strength(1))
+    .force('collision', d3.forceCollide().radius(sizeFnc).strength(0.75))
     .on("tick", ticked);
 
   var adjlist = [];
+  
 
   graph.links.forEach(function (d) {
     adjlist[d.source.index + "-" + d.target.index] = true;
     adjlist[d.target.index + "-" + d.source.index] = true;
   });
-
-  function neigh(a, b) {
-    return a == b || adjlist[a + "-" + b];
-  }
 
 
   var svg = d3.select("#viz")
@@ -70,12 +82,12 @@ export function makeGraph(graph) {
 
   const link = container.append("g")
     .attr("fill", "none")
-    .attr("stroke-width", 1.5)
     .selectAll("path")
     .data(graph.links)
     .join("path")
-    .attr("stroke", "rgba(0.2, 0.8, 0.4, 0.2)")
-    .attr("marker-end", d => `url(${new URL(`#arrow-licensing`, location)})`);
+    .attr("stroke-width", d => strokeWfnc)
+    .attr("stroke", "#bbb")
+    // .attr("marker-end", d => `url(${new URL(`#arrow-licensing`, location)})`);
 
 
   var node = container.append("g").attr("class", "nodes")
@@ -86,11 +98,11 @@ export function makeGraph(graph) {
     .enter()
     .append("g")
 
-  node.append("circle")
+  node.append("circle").attr("class", "itemCircle")
     .attr("r", sizeFnc)
     .attr("fill", "none")
-    .attr("stroke", "white")
-    .attr("stroke-width", d => d.usability + 1)
+    .attr("stroke", "#fff")
+    .attr("stroke-width", d => usabFnc(d)*10 + 1);
 
 
   // var cube = node.append("g").attr("class", "cube").attr("transform", 'scale(0.25) translate(-40, -40)');
@@ -98,26 +110,69 @@ export function makeGraph(graph) {
   // cube.append("path").attr("fill", "#888").attr("d", "M0,23.1 40,46.2 40,92.4 0,69.3 z");
   // cube.append("path").attr("fill", "#444").attr("d", "M40,46.2 80,23.1 80,69.3 40,92.4 z");
 
-  // node.append("text")
-  // .attr("x", -40)
-  // .attr("y", "0.31em")
-  // .text(d => d.id)
-  // .clone(true).lower()
-  //   .attr("fill", "none")
-  //   .attr("stroke", "white")
-  //   .attr("stroke-width", 3);
 
-  var nodeSvg = node.append("svg").attr("class", "icon")
-    .attr("height", d => sizeFnc(d) * 2 * 0.9)
-    .attr("width", d => sizeFnc(d) * 2 * 0.9)
-    .attr("x", d => - sizeFnc(d) * 0.9)
-    .attr("y", d => - sizeFnc(d) * 0.9);
+  node.each(function(node_d, i) {
+    var iconContainer;
+    var sizeMetod;
+    
+    if(true) {
+    // if(node_d.usability <= 10) {
+      iconContainer = d3.select(this);
+      sizeMetod = sizeFnc;
+    } else {
+      var du = Math.round(node_d.usability);
+      var pileData = [];
 
-  nodeSvg.append("image")
-    .attr("xlink:href", "sheet/Spritesheet.png")
-    .attr("image-rendering", "pixelated");
+      while (du > 0) {
+        pileData.push({
+          v: (du % 10) + 1,
+          super: node_d
+        });
+        du = Math.round(du / 10);
+      }
 
-  // nodeSvg.attr("viewBox", d => d.viewBox);
+      sizeMetod = (d,i) => Math.pow(sizeFnc(d.super), 2) / 1200 + i*3 + minSize*.75;
+      
+      iconContainer = d3.select(this).append("g").attr("class", "pile")
+        .selectAll("g")
+        .data(pileData)
+        .enter()
+        .append("g")
+
+      // iconContainer.append("circle")
+      //   .attr("r", sizeMetod)
+      //   .attr("fill", "#aaa");
+      
+
+      var pileLayout = d3.forceSimulation(pileData)
+        .force("center", d3.forceCenter())
+        .force('collision', d3.forceCollide().radius((d,i) => sizeMetod(d,i) * 0.5).strength(0.1))
+        .on("tick", () => {
+          iconContainer.attr("transform", d => `translate(${d.x},${d.y})`);
+        });
+    }
+
+    // Image container (with size and centering)
+    var nodeSvg = iconContainer.append("svg").attr("class", "icon")
+    .attr("height", (d,i) => sizeMetod(d,i) * 2 * 0.9)
+    .attr("width", (d,i) => sizeMetod(d,i) * 2 * 0.9)
+    .attr("x", (d,i) => - sizeMetod(d,i) * 0.9)
+    .attr("y", (d,i) => - sizeMetod(d,i) * 0.9)
+    .append("image") // Actual item icon
+      .attr("xlink:href", "sheet/Spritesheet.png")
+      .attr("image-rendering", "pixelated")
+      .attr("viewBox", "0 0 32 32"); // Temporary view box on load
+  });
+
+  node.append("g").append("text").attr("class", "itemName")
+  .style("display", "none")
+  .attr("y", "2em")
+  .style("text-anchor", "middle")
+  .text(d => d.name)
+  .clone(true).lower()
+    .attr("fill", "none")
+    .attr("stroke", "#d1cec9")
+    .attr("stroke-width", 3);
 
 
   node.on("mouseover", focus).on("mouseout", unfocus);
@@ -142,22 +197,32 @@ export function makeGraph(graph) {
     node.attr("transform", d => `translate(${d.x},${d.y})`);
   }
 
+  function neigh(a, b) {
+    return a == b || adjlist[a + "-" + b];
+  }
+
   function focus(d) {
-    var index = d3.select(d3.event.target).datum().index;
+    var datum = d3.select(d3.event.target).datum();
+    var index = datum.super?.index || datum.index;
     node.style("opacity", function (o) {
       return neigh(index, o.index) ? 1 : 0.1;
     });
     link
       .style("opacity", o => o.source.index == index || o.target.index == index ? 1 : 0.1)
-      .style("stroke-width", o => o.source.index == index ? 4 : 1.5);
+      .style("stroke-width", o => strokeWfnc(o)*2 + 3)
+      .attr("stroke", d => d.source.index == index ? "#aaf" : (d.target.index == index ? "#7f7" : "#bbb"));
   }
 
   function unfocus() {
     node.style("opacity", 1);
-    link.style("opacity", 1);
+    link
+      .style("opacity", 1)
+      .style("stroke-width", strokeWfnc)
+      .attr("stroke", "#bbb");
   }
 
   function dragstarted(d) {
+    console.log(d);
     d3.event.sourceEvent.stopPropagation();
     if (!d3.event.active) graphLayout.alphaTarget(0.3).restart();
     d.fx = d.x;

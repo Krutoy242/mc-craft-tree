@@ -6,17 +6,47 @@
 
   <title>Force Layout with Labels </title>
   <style>
+    * {
+      font-family: "Lucida Console", Monaco, monospace;
+    }
     body,
     .stage {
-      background: #e6f0ee;
+      background: #d1cec9;
     }
   </style>
+
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script type="module" src="main.js"></script>
+
+  <script>
+    $(function () {
+      $("input").checkboxradio();
+      
+      $('#checkbox-1').bind('change', function () {
+        $(".itemCircle").toggle(this.checked);
+      });
+      
+      $('#checkbox-2').bind('change', function () {
+        $(".itemName").toggle(this.checked);
+      });
+    });
+  </script>
+
 </head>
 
-<body translate="no">
+<body>
+  <fieldset>
+    <legend>Options: </legend>
+    <label for="checkbox-1">Circles</label>
+    <input type="checkbox" name="checkbox-1" id="checkbox-1" checked=true>
+
+    <label for="checkbox-2">Labels</label>
+    <input type="checkbox" name="checkbox-2" id="checkbox-2">
+  </fieldset>
+
   <svg id="viz">
   </svg>
 </body>
