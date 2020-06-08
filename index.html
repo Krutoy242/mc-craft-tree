@@ -9,9 +9,22 @@
     * {
       font-family: "Lucida Console", Monaco, monospace;
     }
+
     body,
     .stage {
       background: #d1cec9;
+    }
+
+    .ui-progressbar {
+      position: relative;
+    }
+
+    .progress-label {
+      position: absolute;
+      left: 50%;
+      top: 4px;
+      font-weight: bold;
+      text-shadow: 1px 1px 0 #fff;
     }
   </style>
 
@@ -24,13 +37,17 @@
   <script>
     $(function () {
       $("input").checkboxradio();
-      
+
       $('#checkbox-1').bind('change', function () {
         $(".itemCircle").toggle(this.checked);
       });
-      
+
       $('#checkbox-2').bind('change', function () {
         $(".itemName").toggle(this.checked);
+      });
+
+      $("#progressbar").progressbar({
+        value: false
       });
     });
   </script>
@@ -38,14 +55,19 @@
 </head>
 
 <body>
-  <fieldset>
+  <fieldset name="field">
     <legend>Options: </legend>
     <label for="checkbox-1">Circles</label>
     <input type="checkbox" name="checkbox-1" id="checkbox-1" checked=true>
 
     <label for="checkbox-2">Labels</label>
     <input type="checkbox" name="checkbox-2" id="checkbox-2">
+
   </fieldset>
+
+    <div id="progressbar">
+      <div class="progress-label">Loading...</div>
+    </div>
 
   <svg id="viz">
   </svg>

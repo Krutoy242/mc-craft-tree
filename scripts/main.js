@@ -1,41 +1,36 @@
-import { parseRawRecipes, parseCTlog, parseSpritesheet } from "./parse.js";
+import { parseRawRecipes } from "./parse.js";
 import { makeGraph } from "./graph.js";
 
 $(document).ready(function () {
 
   // Preload spritesheet
-  (new Image()).src="./sheet/Spritesheet.png";
+  (new Image()).src = "./resources/Spritesheet.png";
 
-  var rawRecipes, oreAliases, graph, spritesheetJson;
+  var groups, parsedData;
 
   $.when(
-    $.when(
-      // File with all recipes information
-      $.get("__groups.json", data => {
-        var text = data
-          .replace(/(\W\d+)[LBbs](\W)/gi, "$1$2")
-          .replace(/("SideCache".*)\[.*\]/gi, '$1"DataRemoved"');
-
-        rawRecipes = JSON.parse(text)
-      }, "text"),
-
-      // OreDict information
-      $.get("crafttweaker.log", data => {
-        oreAliases = parseCTlog(data);
-      })
-    ).then( () => {
-      // Required files for making graph loaded
-      graph = parseRawRecipes(rawRecipes, oreAliases);
-      makeGraph(graph);
+    // File with all recipes information
+    $.getJSON("resources/groups.json", data => {
+      console.log('loaded 1 :>> ', data);
+      groups = data;
     }),
 
     // Image icons information
-    d3.json("sheet/Spritesheet.json").then(data => {
-      spritesheetJson = data;
+    $.getJSON("resources/parsedData.json").then(data => {
+      console.log('loaded 2 :>> ', data);
+      parsedData = data;
     })
-  ).then( () => {
-    parseSpritesheet(graph, spritesheetJson);
+  ).then(() => {
+    $.when(
+      (async () => {
+        console.log('loaded 1+2 :>> ');
+        const graph = parseRawRecipes(groups, parsedData);
 
-    d3.selectAll(".icon").attr("viewBox", d => d.viewBox || d.super.viewBox);
+        makeGraph(graph, parsedData);
+      })()
+    ).then(() => {
+      $("#progressbar").hide();
+      $("#field").show();
+    });
   });
 });

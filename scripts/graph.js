@@ -100,9 +100,13 @@ export function makeGraph(graph) {
 
   node.append("circle").attr("class", "itemCircle")
     .attr("r", sizeFnc)
-    .attr("fill", "none")
+    .attr("stroke-width", d => usabFnc(d)*10 + 1)
     .attr("stroke", "#fff")
-    .attr("stroke-width", d => usabFnc(d)*10 + 1);
+    .attr("fill", d => {
+      return d.inputs.length === 0 ? "rgba(67, 113, 165, 0.3)" :
+      (d.outputs.length === 0 ? "rgba(0, 145, 7, 0.4)" :
+      "none")
+    });
 
 
   // var cube = node.append("g").attr("class", "cube").attr("transform", 'scale(0.25) translate(-40, -40)');
@@ -158,10 +162,11 @@ export function makeGraph(graph) {
     .attr("width", (d,i) => sizeMetod(d,i) * 2 * 0.9)
     .attr("x", (d,i) => - sizeMetod(d,i) * 0.9)
     .attr("y", (d,i) => - sizeMetod(d,i) * 0.9)
+    .attr("viewBox", d => d.viewBox || d.super.viewBox)
     .append("image") // Actual item icon
-      .attr("xlink:href", "sheet/Spritesheet.png")
+      .attr("xlink:href", "./resources/Spritesheet.png")
       .attr("image-rendering", "pixelated")
-      .attr("viewBox", "0 0 32 32"); // Temporary view box on load
+      // .attr("viewBox", "0 0 32 32"); // Temporary view box on load
   });
 
   node.append("g").append("text").attr("class", "itemName")
