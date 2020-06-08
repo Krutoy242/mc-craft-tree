@@ -47,7 +47,7 @@ How to reacreate all needed files for this to work:
 5. Run `node_parser.js` with **Node.js**. This would update [parsedData.json](resources/parsedData.json) and [groups.json](resources/groups.json)
 
 **Hint:**  
-You dont need to do steps `3` and `4` if you play [Enigmatica 2: Expert](https://www.curseforge.com/minecraft/modpacks/enigmatica2expert), because icons and OreDict entries are basicly same as predefined in repo.
+You dont need to do steps `3` and `4` if you play [Enigmatica 2: Expert](https://www.curseforge.com/minecraft/modpacks/enigmatica2expert), because icons and OreDict entries are basicly same as predefined in repo. 
 
 <details>
 <summary>Recipe making recomendations</summary>
