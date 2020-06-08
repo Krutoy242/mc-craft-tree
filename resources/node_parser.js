@@ -1,23 +1,16 @@
 /* 
-
 Helper script to prepare several files for fast acces
 Lunch with NodeJS
-
 */
-
 
 /*=============================================
 =                Variables                    =
 =============================================*/
-// import { readFileSync, writeFileSync } from 'fs';
-// import path from "path";
-// import { itemStackToString } from '../scripts/parse';
-
 const fs = require('fs');
 const path = require("path");
-// const parse = require("../scripts/parse");
 
-
+// Path to generated recipes by Just Enough Calculation mod
+const GROUPS_PATH = "rawData/groups/groupsE2E-E.json";
 
 
 /*=============================================
@@ -86,9 +79,9 @@ saveObjAsJson(parsedData, "parsedData.json");
 
 
 
-/*=====  OreDict first items  ======*/
+/*=====  Remove type letters (like 2L or 0b)  ======*/
 
-const groupsJson = loadText("rawData/groups/groupsE2E-E.json")
+const groupsJson = loadText(GROUPS_PATH)
   .replace(/(\W\d+)[LBbs](\W)/gi, "$1$2")
   .replace(/("SideCache".*)\[.*\]/gi, '$1"DataRemoved"');
 

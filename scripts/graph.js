@@ -86,7 +86,7 @@ export function makeGraph(graph) {
     .data(graph.links)
     .join("path")
     .attr("stroke-width", d => strokeWfnc)
-    .attr("stroke", "#bbb")
+    .attr("stroke", "#999")
     // .attr("marker-end", d => `url(${new URL(`#arrow-licensing`, location)})`);
 
 
