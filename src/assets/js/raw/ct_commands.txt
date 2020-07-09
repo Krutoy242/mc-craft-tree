@@ -1,0 +1,4 @@
+/ct botania apothecary
+/ct botania trades
+/ct botania infusions
+/ct botania altar

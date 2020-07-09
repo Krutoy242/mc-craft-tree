@@ -10,7 +10,7 @@ function getBaseLog(x, y) {
   return Math.log(y) / Math.log(x);
 }
 const faces = ['🌍','🙂','😉','🤨','😐','😒','😢','😰','🥵','🤬','💀'];
-const faceMultipl = (faces.length - 2) / Math.log(5000)
+const faceMultipl = (faces.length - 2) / Math.log(600)
 
 
 export default {

@@ -2,8 +2,8 @@
   <div>
     <v-menu transition="slide-y-transition" bottom>
       <template v-slot:activator="{ on, attrs }">
-        <v-btn v-bind="attrs" v-on="on">
-          Download Extra
+        <v-btn v-bind="attrs" v-on="on" small>
+          Extra
         </v-btn>
       </template>
       <v-list>

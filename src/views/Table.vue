@@ -10,54 +10,71 @@
 
       <v-spacer/>
 
-      <v-sheet elevation="5" class="py-2 px-1">
+      <!-- Columns selector -->
+      <!-- <v-sheet elevation="1" class="pa-0 ma-2" rounded>
         <v-chip-group
-          mandatory
-          multiple
           active-class="primary--text"
+          v-model="selectedHeadersModel"
         >
-          <v-chip v-for="tag in trueHeaders" :key="tag.text">
+          <v-chip v-for="tag in trueHeaders" :key="tag.text" small>
             {{ tag.text }}
           </v-chip>
         </v-chip-group>
-      </v-sheet>
+      </v-sheet> -->
     </v-card-title>
 
     <v-data-table
-      :headers="headers"
+      :headers="selectedHeaders"
       :items="graph.nodes"
       class="elevation-1"
       :search="search"
-      :footer-props="{ 'items-per-page-options': [10, 20, 50, 100, -1] }"
       dense
       item-key="id"
       show-expand
       single-expand
+      :footer-props="{
+        showFirstLastPage: true,
+        'items-per-page-options': [10, 20, 50, 100, -1]
+      }"
     >
-      <template v-slot:item.display="{ item }">
+
+      <!-- HEADER -->
+      <!-- <template #header.complexity="{ header }">
+        {{ header.text.toUpperCase() }}
+      </template> -->
+
+      <template #item.display="{ item }">
         <tree-entry :node="item" class="pa-2" />
       </template>
 
-      <template v-slot:item.complexity="{ item }">
+      <template #item.complexity="{ item }">
         <v-edit-dialog
           :return-value.sync="item.complexity"
-          :is="item.steps === 0 ? 'v-edit-dialog' : 'span'"
+          :is="item.steps === 0 ? 'v-edit-dialog' : 'div'"
         >
-          <big-number :number="item.complexity"/>
-          <v-icon small class="ma-2" style="display: inline-block;" v-if="item.steps === 0">mdi-pencil</v-icon>
-          <template v-slot:input>
+          <div style="position: relative" class="d-flex justify-end">
+                <complexity :node="item" />
+                <v-btn absolute dark fab x-small text
+                  v-if="item.steps === 0"
+                  :style="{left: '90%', top: '-0.4em'}"
+                  :color="item.complexity===1 ? 'red' : 'gray'"
+                >
+                  <v-icon small>mdi-pencil</v-icon>
+                </v-btn>
+          </div>
+          <template #input>
             <v-text-field
               v-model="item.complexity"
               :rules="[isNumber]"
               label="Edit"
               single-line
               counter
-            ></v-text-field>
+            >
+            </v-text-field>
           </template>
         </v-edit-dialog>
       </template>
 
-      <!-- <template #item.usability="{ item }">{{ item.usability | numFormat("0,0.[000]") }}</template> -->
       <template #item.usability="{ item }"><big-number :number="item.usability"/></template>
       <template #item.cost="{ item }"><big-number :number="item.cost"/></template>
       <template #item.processing="{ item }"><big-number :number="item.processing"/></template>
@@ -83,39 +100,6 @@
         </v-container>
       </template>
       
-      <!-- <template #item.inputs.length="{ item }">
-        <v-container  style="position: relative;" class="pa-0 text-center">
-          <v-container
-            fill-height
-            class="pa-0"
-            style="position: absolute; z-index: 1; top: 3px; left: 0; bottom: 0; right: 0;"
-          >
-            <v-flex >
-              {{ item.inputs.length || "-" }}
-            </v-flex>
-          </v-container>
-          <curve-text
-            :width="55"
-            :height="50"
-            :r="35"
-            color="green"
-            style="transform: scale(0.60); position: absolute;"
-          >
-            {{ getArrows(item.inputs.length, 0) }}
-          </curve-text>
-          <curve-text
-            :width="55"
-            :height="50"
-            :r="35"
-            color="green"
-            offset="50%"
-            style="transform: scale(0.8);"
-          >
-            {{ getArrows(item.inputs.length, 10) }}
-          </curve-text>
-        </v-container>
-      </template> -->
-
       <template #item.inputs.length="{ item }"><hedgehog :number="item.inputs.length"/></template>
       
       <template #item.outputs.length="{ item }"><hedgehog :number="item.outputs.length" inverted="true"/></template>
@@ -144,6 +128,8 @@ export default {
   data() {
     return {
       search: "",
+      selectedHeadersModel: [],
+      selectedHeaders: [],
       headers: [
         {
           text: "Item Name",
@@ -151,15 +137,15 @@ export default {
           sortable: false,
           value: "display",
         },
-        { text: "", value: "data-table-expand" },
-        { text: "Complexity", value: "complexity" },
-        { text: "Cost", value: "cost" },
-        { text: "Processing Cost", value: "processing" },
-        { text: "Usability", value: "usability" },
-        { text: "Popularity", value: "popularity" },
-        { text: "Inputs", value: "inputs.length" },
-        { text: "Outputs", value: "outputs.length" },
-        { text: "Steps", value: "steps" },
+        { align: 'center' ,text: "", value: "data-table-expand" , divider: true},
+        { align: 'center' ,text: "Complexity", value: "complexity", divider: true},
+        { align: 'center' ,text: "Cost", value: "cost" },
+        { align: 'center' ,text: "Processing Cost", value: "processing" },
+        { align: 'center' ,text: "Usability", value: "usability" },
+        { align: 'center' ,text: "Popularity", value: "popularity" },
+        { align: 'center' ,text: "Inputs", value: "inputs.length" },
+        { align: 'center' ,text: "Outputs", value: "outputs.length" },
+        { align: 'center' ,text: "Steps", value: "steps" },
       ],
       isNumber: (v) => !isNaN(v) || "Input should be number!",
     };
@@ -188,6 +174,18 @@ export default {
       return this.headers.filter(head => head.text !== "" );
     }
   },
+
+  watch: {
+    selectedHeadersModel(val) {
+      console.log('val :>> ', val);
+      // this.selectedHeaders = val;
+    }
+  },
+
+  created() {
+    this.selectedHeaders = this.headers;
+  }
+
 };
 </script>
 

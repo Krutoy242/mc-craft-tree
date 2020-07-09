@@ -1,10 +1,11 @@
 <template>
+<div>
   <v-card 
     v-if="number > 0"
-    class="d-inline-block textarea text-right"
-    style="min-width: 150px; font-size: medium;"
+    class="neon d-inline-block textarea float-right"
+    style="font-size: medium;"
+    :is="bordered ? 'v-card' : 'div'"
   >
-  <div class="neon">
     <v-row no-gutters style="flex-wrap: nowrap;">
       <v-col 
         :class='"flex-grow-1 flex-shrink-0 pl-1" + compClass'
@@ -20,8 +21,9 @@
         {{ residue }}
       </v-col>
     </v-row>
-  </div>
   </v-card>
+  <span v-else>-</span>
+</div>
 </template>
 
 <script>
@@ -60,8 +62,11 @@ function getClass(num) {
 
 export default {
   props: {
-    number: {
-    },
+    number: {},
+    bordered: {
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
     compNumber() {
@@ -73,7 +78,7 @@ export default {
       // return abbreviateNumber(this.number);
     },
     compClass() {
-      const tier = Math.log10(this.number) / 3 | 0;
+      const tier = Math.log10(this.number + 1) / 3 | 0;
       const clss = tierClasses[tier];
       if (clss)
         return " " + clss;

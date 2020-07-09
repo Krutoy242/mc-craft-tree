@@ -174,17 +174,40 @@ export class TreeNode {
     antiloop[this.id] = undefined;
   }
 
-  forEachInput(fnc, antiloop){
-    antiloop = (antiloop || {});
-    antiloop[this.id] = true;
-    for (var i = 0; i < this.inputs.length; i++) {
-      if (!antiloop[this.inputs[i].it.id]) {
-        fnc(this.inputs[i].it);
-        this.inputs[i].it.forEachInput(fnc, antiloop);
+  // Recursively iterate through all items in list
+  // usually "inputs" or "outputs"
+  safeDive(fnc, listName, onLoop, deph = 999999999, antiloop) {
+    if (deph>0){
+      antiloop = (antiloop || {});
+      antiloop[this.id] = true;
+
+      const list = this[listName];
+
+      for (var i = 0; i < list.length; i++) {
+        const link = list[i];
+        if (!antiloop[link.it.id]) {
+          fnc(link, this, deph);
+          link.it.safeDive(fnc, listName, onLoop, deph - 1, antiloop);
+        } else if(onLoop) {
+          onLoop(this, listName, link);
+        }
       }
+
+      antiloop[this.id] = undefined;
     }
-    antiloop[this.id] = undefined;
   }
+
+  // forEachInput(fnc, antiloop){
+  //   antiloop = (antiloop || {});
+  //   antiloop[this.id] = true;
+  //   for (var i = 0; i < this.inputs.length; i++) {
+  //     if (!antiloop[this.inputs[i].it.id]) {
+  //       fnc(this.inputs[i].it);
+  //       this.inputs[i].it.forEachInput(fnc, antiloop);
+  //     }
+  //   }
+  //   antiloop[this.id] = undefined;
+  // }
 
   
   calculateEx(listName, field, defl = 0, fnc) {
@@ -205,13 +228,13 @@ export class TreeNode {
     this[listName].forEach(link => {
       obj[field] += (link.it.calculateEx(listName, field, defl, fnc) + defl) * link.weight;
       
-      if (fnc) fnc(link.it);
+      if (fnc) fnc(link);
     });
     return this[field];
   }
 
   // Calculate complexity and other values after all links are created
-  calculate() {
+  calculate(onLoop) {
 
     // This node already have all values
     if (this.calculated) return this;
@@ -227,8 +250,13 @@ export class TreeNode {
     // this.calculating = true;
 
     // Calculate steps
-    const self = this;
-    this.forEachInput(node => { if(node.steps > 0) self.steps += 1; });
+    const allStepIndexes = [];
+    this.safeDive(link => {
+      // if(link.it.steps > 0)
+      if (allStepIndexes.indexOf(link.index) === -1)
+        allStepIndexes.push(link.index)
+    }, "inputs", onLoop);
+    this.steps = allStepIndexes.length;
 
     // Cost
     this.calculateEx("inputs", "cost");
@@ -258,12 +286,17 @@ export class TreeNode {
     // for (var i = 0; i < this.inputs.length; i++) {
     //   pushCatalysts(this.inputs[i].it.calculate());
     // }
+    // const allPopularityIndexes = [];
     this.forEachCatalyst(link => {
       const catl = allCatalysts[link.it.id] || { node: link.it };
       catl.num = Math.max((catl.num || 0), link.weight);
-      link.it.popularity += link.weight;
+
+      // link.it.popularity += link.weight;
       allCatalysts[link.it.id] = catl;
+
+      // if (allPopularityIndexes.indexOf(link.index) === -1) allPopularityIndexes.push(link.index)
     });
+    // this.popularity = allPopularityIndexes.length;
 
     this.processing = TreeNode.processing;
 

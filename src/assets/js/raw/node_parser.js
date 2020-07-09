@@ -138,9 +138,9 @@ for (const match of ctLogNames.matchAll(nameAliasRgx)) {
 
 /*=====  Remove all items that have no viewBoxes ======*/
 // Significally reduce parsed file size
-for (let k of Object.keys(parsedData.sheet)) {
-  if (!parsedData.sheet[k].viewBox) parsedData.sheet[k] = undefined;
-}
+// for (let k of Object.keys(parsedData.sheet)) {
+//   if (!parsedData.sheet[k].viewBox) parsedData.sheet[k] = undefined;
+// }
 
 /*=====  Save parsed data ======*/
 saveObjAsJson(parsedData, "../../../../public/parsedData.json");

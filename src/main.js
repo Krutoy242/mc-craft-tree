@@ -13,6 +13,8 @@ import TreeEntryName from "./components/TreeEntryName.vue";
 import Hedgehog from "./components/Hedgehog.vue";
 import BigNumber from "./components/BigNumber.vue";
 import ProcessingSteps from "./components/ProcessingSteps.vue";
+import Complexity from "./components/Complexity.vue";
+import VueKonva from 'vue-konva';
 
 // Global components
 Vue.component('tree-entry', TreeEntry);
@@ -20,6 +22,7 @@ Vue.component('tree-entry-name', TreeEntryName);
 Vue.component('hedgehog', Hedgehog);
 Vue.component('big-number', BigNumber);
 Vue.component('processing-steps', ProcessingSteps);
+Vue.component('complexity', Complexity);
 Vue.component('curve-text', vueCurveText);
 
 
@@ -32,6 +35,7 @@ Vue.use(require('vue-cookies'));
 Vue.$cookies.config('7d')
 
 Vue.use(WrappedComponent);
+Vue.use(VueKonva);
 
 Vue.config.productionTip = false;
 

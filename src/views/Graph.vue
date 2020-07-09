@@ -1,6 +1,15 @@
 <template>
-  <div>
-    <svg id="viz"></svg>
+  <div style="position: relative">
+    <div style="position: absolute;" class="ma-4 elevation-5">
+      <tree-entry v-if="selectedNode" :node="selectedNode"/>
+    </div>
+    <svg id="viz" >
+    </svg>
+    <!-- <v-stage :config="configKonva">
+      <v-layer>
+        <v-circle :config="configCircle"></v-circle>
+      </v-layer>
+    </v-stage> -->
   </div>
 </template>
 
@@ -10,68 +19,91 @@
 var width = 800;
 var height = 600;
 
+function forceUpdate() {
+  var next = 1;
+  return function (i, nodes) {
+    var curr = Math.floor(20 * Math.log(i));
+    if (curr !== next) {
+      next = curr;
+      return true;
+    }
+    return false;
+  };
+}
+
 function makeGraph(graph) {
 
+  if (typeof graph !== "object") return;
+  const self = this;
+
+  // ====================================================
+  // Prepare nodes
+  // ====================================================
+
+  // Filter all graphNodes
+  // Remove elements that dont have inputs or outputs
+  const graphNodes = graph.nodes.filter(n => n.inputs.length > 0 || n.outputs.length > 0);
+
+  const graphLinks = [];
+  for (let j = 0; j < graphNodes.length; j++) {
+    const n = graphNodes[j];
+
+    for (let i = 0; i < n.inputs.length; i++) {
+      const link = n.inputs[i];
+      const source = graphNodes.findIndex(o => o.id === link.it.id);
+
+      if (source > -1) {
+        graphLinks.push({
+          source: source,
+          target: j,
+          weight: link.weight,
+          index: graphLinks.length,
+        });
+      }
+    }
+  }
+
+  // ====================================================
+  // Math functions
+  // ====================================================
   function nonLinear(v) {return Math.sqrt(v)}
 
   function importancy(v, min, max) { return (v - min) / (max + 1) }
   function compFnc(d) { return nonLinear(importancy(d.complexity, graph.minC, graph.maxC)) }
   function usabFnc(d) { return nonLinear(importancy(d.usability,  graph.minU, graph.maxU)) }
   function strokeWfnc(d) { return nonLinear(nonLinear(d.weight)); }
-  // function sinFnc(v, min, max) {return Math.max(0.0, Math.sin((v - min) / max * (Math.PI / 2))) }
-  // function sinFnc(v, min, max) {return Math.pow((v - min) / max, 3) }
-
-  // function compFnc(d) { return sinFnc(d.complexity, graph.minC, graph.maxC) * 10 }
-  // function usabFnc(d) { return sinFnc(d.usability, graph.minU, graph.maxU) * 10 }
 
   var minSize = 20;
-  var maxSize = parseInt(graph.nodes.length / 9);
+  var maxSize = parseInt(graphNodes.length / 9);
   var diffSize = maxSize - minSize;
 
   function sizeFnc(d) {
     var size = (compFnc(d) + usabFnc(d))/2 * maxSize + minSize;
-    if( size > maxSize) console.log("Too big size!:", size, d);
+    // if( size > maxSize) console.log("Too big size!:", size, d);
     return Math.min(maxSize, size);
   }
 
-  function xFnc(d) { return height/2 - usabFnc(d)*diffSize*20 + compFnc(d)*diffSize*20 };
+  function xFnc(d) { return width/2 + compFnc(d)*diffSize*20 - usabFnc(d)*diffSize*20 };
   
+
   // Adjust starting positions
-  graph.nodes.forEach(function (node) {
-    node.x = xFnc(node) / 1000;
-    node.y = width / 2;
+  graphNodes.forEach(function (node) {
+    node.x = xFnc(node);
+    node.y = height / 4 + node.popularity*10;
   });
 
-  var graphLayout = d3.forceSimulation(graph.nodes)
-    .force("charge", d3.forceManyBodyReuse().strength(-2000).update(
-      function () {
-        var next = 1;
-        return function (i, nodes) {
-          var curr = Math.floor(20 * Math.log(i));
-          if (curr !== next) {
-            next = curr;
-            return true;
-          }
-          return false;
-        };
-      }
-    ))
+
+  // ====================================================
+  // Layout
+  // ====================================================
+  var graphLayout = d3.forceSimulation(graphNodes)
+    .force("charge", d3.forceManyBodyReuse().update(forceUpdate).strength(-2000))
     // .force("center", d3.forceCenter(width / 2, height / 2))
     .force("x", d3.forceX(xFnc).strength(1))
     .force("y", d3.forceY(width / 2).strength(d => usabFnc(d) + 1))
-    .force("link", d3.forceLink(graph.links).id(d => d.id).distance(diffSize/2).strength(1))
+    .force("link", d3.forceLink(graphLinks)/* .id(d => d.id) */.distance(diffSize/2).strength(1))
     .force('collision', d3.forceCollide().radius(sizeFnc).strength(0.75))
     .on("tick", ticked);
-
-  var adjlist = [];
-  
-  
-
-  graph.links.forEach(function (d) {
-    adjlist[d.source.index + "-" + d.target.index] = true;
-    adjlist[d.target.index + "-" + d.source.index] = true;
-  });
-
 
   var svg = d3.select("#viz")
     // .attr("width", width)
@@ -88,40 +120,45 @@ function makeGraph(graph) {
   svg.call(zoom)
     .call(zoom.transform, d3.zoomIdentity.translate(500,130).scale(0.28));
 
-  // var types = [
-  //   "licensing",
-  //   "suit"
-  // ]
+  // ====================================================
+  // Links
+  // ====================================================
+  const link = container.append("g")
+    // .attr("fill", "none")
+    // .selectAll("path")
+    // .data(graphLinks)
+    // .join("path")
+    // .attr("stroke-width", d => strokeWfnc(d)*3 + 3)
+    // .attr("stroke", "#999")
+    // .attr("marker-end", d => `url(${new URL(`#arrow-licensing`, location)})`)
+    // .style("display", "none");
+    .attr("stroke", "#999")
+    .selectAll("line")
+    .data(graphLinks)
+    .join("line")
+    .attr("stroke-width", 1);
 
-  // container.append("defs").selectAll("marker")
-  //   .data(types)
-  //   .join("marker")
-  //   .attr("id", d => `arrow-${d}`)
-  //   .attr("viewBox", "0 -5 10 10")
-  //   .attr("refX", 15)
-  //   .attr("refY", -0.5)
-  //   .attr("markerWidth", 6)
-  //   .attr("markerHeight", 6)
-  //   .attr("orient", "auto")
-  //   .append("path")
-  //   .attr("fill", "#abf")
-  //   .attr("d", "M0,-5L10,0L0,5");
+  var adjlist = [];
 
-  // const link = container.append("g")
-  //   .attr("fill", "none")
-  //   .selectAll("path")
-  //   .data(graph.links)
-  //   .join("path")
-  //   .attr("stroke-width", d => strokeWfnc)
-  //   .attr("stroke", "#999")
-    // .attr("marker-end", d => `url(${new URL(`#arrow-licensing`, location)})`);
+  graphLinks.forEach(function (d) {
+    adjlist[d.source.index + "-" + d.target.index] = true;
+    adjlist[d.target.index + "-" + d.source.index] = true;
+  });
 
+  function linkArc(d) {
+    const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y);
+    return `
+      M${d.source.x},${d.source.y}
+      A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
+      `;
+  }
 
+  // ====================================================
+  // Nodes
+  // ====================================================
   var node = container.append("g").attr("class", "nodes")
-    // .attr("stroke-linecap", "round")
-    // .attr("stroke-linejoin", "round")
     .selectAll("g")
-    .data(graph.nodes)
+    .data(graphNodes)
     .enter()
     .append("g")
 
@@ -135,142 +172,162 @@ function makeGraph(graph) {
       "none")
     })
 
-
-  // var cube = node.append("g").attr("class", "cube").attr("transform", 'scale(0.25) translate(-40, -40)');
-  // cube.append("path").attr("fill", "#aaa").attr("d", "M40,46.2 0,23.1 40,0 80,23.1 z");
-  // cube.append("path").attr("fill", "#888").attr("d", "M0,23.1 40,46.2 40,92.4 0,69.3 z");
-  // cube.append("path").attr("fill", "#444").attr("d", "M40,46.2 80,23.1 80,69.3 40,92.4 z");
-
-
-  node.each(function(node_d, i) {
-    var iconContainer;
-    var sizeMetod;
-    
-    if(true) {
-    // if(node_d.usability <= 10) {
-      iconContainer = d3.select(this);
-      sizeMetod = sizeFnc;
-    } else {
-      var du = Math.round(node_d.usability);
-      var pileData = [];
-
-      while (du > 0) {
-        pileData.push({
-          v: (du % 10) + 1,
-          super: node_d
-        });
-        du = Math.round(du / 10);
-      }
-
-      sizeMetod = (d,i) => Math.pow(sizeFnc(d.super), 2) / 1200 + i*3 + minSize*.75;
-      
-      iconContainer = d3.select(this).append("g").attr("class", "pile")
-        .selectAll("g")
-        .data(pileData)
-        .enter()
-        .append("g")
-
-      // iconContainer.append("circle")
-      //   .attr("r", sizeMetod)
-      //   .attr("fill", "#aaa");
-      
-
-      var pileLayout = d3.forceSimulation(pileData)
-        .force("center", d3.forceCenter())
-        .force('collision', d3.forceCollide().radius((d,i) => sizeMetod(d,i) * 0.5).strength(0.1))
-        .on("tick", () => {
-          iconContainer.attr("transform", d => `translate(${d.x},${d.y})`);
-        });
-    }
-
-    // Image container (with size and centering)
-    var nodeSvg = iconContainer.append("svg").attr("class", "icon")
-    .attr("height", (d,i) => sizeMetod(d,i) * 2 * 0.9)
-    .attr("width", (d,i) => sizeMetod(d,i) * 2 * 0.9)
-    .attr("x", (d,i) => - sizeMetod(d,i) * 0.9)
-    .attr("y", (d,i) => - sizeMetod(d,i) * 0.9)
-    .attr("viewBox", d => d.viewBox || d.super.viewBox)
+  node.append("svg").attr("class", "icon")
+    .attr("height", (d,i) => sizeFnc(d,i) * 2 * 0.9)
+    .attr("width",  (d,i) => sizeFnc(d,i) * 2 * 0.9)
+    .attr("x",      (d,i) => - sizeFnc(d,i) * 0.9)
+    .attr("y",      (d,i) => - sizeFnc(d,i) * 0.9)
+    .attr("viewBox", d => d.viewBox)
     .append("image") // Actual item icon
       .attr("xlink:href", require("@/assets/Spritesheet.png"))
-      .attr("image-rendering", "pixelated")
-      // .attr("viewBox", "0 0 32 32"); // Temporary view box on load
+      .attr("image-rendering", "pixelated");
+
+
+  node.each(function(d, i) {
+    d.d3node = d3.select(this) // Current ONE node
   });
 
-/* 
-  node.append("g").append("text").attr("class", "itemName")
-  .style("display", "none")
-  .attr("y", "2em")
-  .style("text-anchor", "middle")
-  .text(d => d.name)
-  .clone(true).lower()
-    .attr("fill", "none")
-    .attr("stroke", "#d1cec9")
-    .attr("stroke-width", 3);
- */
+  link.each(function(d, i) {
+    d.d3node = d3.select(this) // Current ONE node
+  });
 
-  node.on("mouseover", focus).on("mouseout", unfocus);
+  // ====================================================
+  // Events
+  // ====================================================
 
-  node.call(
-    d3.drag()
-      .on("start", dragstarted)
-      .on("drag", dragged)
-      .on("end", dragended)
-  );
-
-  function linkArc(d) {
-    const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y);
-    return `
-      M${d.source.x},${d.source.y}
-      A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
-      `;
-  }
+  
 
   function ticked() {
+    link
+      .attr("x1", d => d.source.x)
+      .attr("y1", d => d.source.y)
+      .attr("x2", d => d.target.x)
+      .attr("y2", d => d.target.y);
+      
     // link.attr("d", linkArc);
     node.attr("transform", d => `translate(${d.x},${d.y})`);
+  }
+
+  
+  function diveToList(targetNode, targetDeph, listName, style) {   
+    targetDeph = targetDeph || 999999999;
+    const isInput = listName === 'inputs';
+    var maxDeph = 0;
+    
+    targetNode.safeDive((link, source, deph) => {
+      const currDeph = 1 + targetDeph - deph;
+      maxDeph = Math.max(maxDeph, currDeph);
+
+      if (currDeph === targetDeph || targetDeph === 999999999){
+        const d3node = graphLinks.find(l =>
+          l[isInput?'source':'target'].id === link.it.id &&
+          l[isInput?'target':'source'].id === source.id
+        )?.d3node;
+        
+        if (d3node) {
+          if (style)
+            style(d3node)
+          else
+            d3node
+              // .style("display", undefined)
+              .attr("stroke-width", strokeWfnc(link) * 3 / (deph) + 1)
+              .attr("stroke", isInput ? "#7f7" : "#38f");
+        }
+      }
+    }, listName, null, targetDeph);
+    
+    return maxDeph;
+  }
+
+  function unhighliteLine(linkNode) {
+    linkNode
+      // .style("display", undefined)
+      .attr("stroke-width", 1)
+      .attr("stroke", "#999");
+  }
+
+  function resetLines(node){
+    if (self.selectedNode) {
+      diveToList(node, null, 'inputs' , unhighliteLine);
+      diveToList(node, null, 'outputs', unhighliteLine);
+    }
+  }
+
+  var currIntervalID = null;
+
+  function drawDive() {
+
+    const inDeph = diveToList(self.selectedNode, self.selectedDeph, 'inputs');
+
+    if (self.selectedDeph > inDeph) {
+      const targetDeph = self.selectedDeph - inDeph;
+      if (targetDeph > diveToList(self.selectedNode, targetDeph, 'outputs')) {
+        clearInterval(currIntervalID);
+      }
+    }
+    
+    self.selectedDeph += 1;
+  }
+
+  function highlite(d) {
+    resetLines(self.selectedNode);
+
+    self.selectedNode = d;
+    
+    self.selectedDeph = 1;
+    clearInterval(currIntervalID);
+    currIntervalID = setInterval(drawDive, 100);
+  }
+
+  function unhighlite(d) {
+    resetLines(self.selectedNode);
+    
+    self.selectedDeph = 0;
+    clearInterval(currIntervalID);
   }
 
   function neigh(a, b) {
     return a == b || adjlist[a + "-" + b];
   }
 
-  function focus(d) {
-    var datum = d3.select(d3.event.target).datum();
-    var index = datum.super?.index || datum.index;
-    node.style("opacity", function (o) {
-      return neigh(index, o.index) ? 1 : 0.1;
-    });
-    // link
-    //   .style("opacity", o => o.source.index == index || o.target.index == index ? 1 : 0.1)
-    //   .style("stroke-width", o => strokeWfnc(o)*2 + 3)
-    //   .attr("stroke", d => d.source.index == index ? "#aaf" : (d.target.index == index ? "#7f7" : "#bbb"));
-  }
+  node.on("mouseover", d => {
+    highlite(d);
+  });
 
-  function unfocus() {
-    node.style("opacity", 1);
+  node.on("mouseout", d => {
+    unhighlite(d);
     // link
-    //   .style("opacity", 1)
-    //   .style("stroke-width", strokeWfnc)
+    //   .style("display", "none")
+    //   // .style("stroke-width", strokeWfnc)
     //   .attr("stroke", "#bbb");
-  }
+  });
 
-  function dragstarted(d) {
-    console.log(d);
-    d3.event.sourceEvent.stopPropagation();
-    if (!d3.event.active) graphLayout.alphaTarget(0.3).restart();
-    d.fx = d.x;
-    d.fy = d.y;
-  }
+  // Dragging nodes
+  {
+    node.call(
+      d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended)
+    );
+    
+    function dragstarted(d) {
+      d3.event.sourceEvent.stopPropagation();
+      if (!d3.event.active) graphLayout.alphaTarget(0.3).restart();
+      d.fx = d.x;
+      d.fy = d.y;
+    }
 
-  function dragged(d) {
-    d.fx = d3.event.x;
-    d.fy = d3.event.y;
-  }
+    function dragged(d) {
+      d.fx = d3.event.x;
+      d.fy = d3.event.y;
+    }
 
-  function dragended(d) {
-    if (!d3.event.active) graphLayout.alphaTarget(0);
-    d.fx = null;
-    d.fy = null;
+    function dragended(d) {
+      if (!d3.event.active) graphLayout.alphaTarget(0);
+      d.fx = null;
+      d.fy = null;
+    }
   }
 
   return node;
@@ -278,6 +335,26 @@ function makeGraph(graph) {
 
 export default {
   name: "Graph",
+  data() {
+    return {
+      selectedNode: undefined,
+      selectedDeph: 0,
+
+      configKonva: {
+        width: 200,
+        height: 200
+      },
+
+      configCircle: {
+        x: 100,
+        y: 100,
+        radius: 70,
+        fill: "red",
+        stroke: "black",
+        strokeWidth: 4
+      }
+    }
+  },
   props: {
     graph: {
       type: Object,
@@ -294,3 +371,8 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+
+
+</style>

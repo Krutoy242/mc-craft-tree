@@ -10,6 +10,8 @@ function amount(raw) {
     mult = 0.01;
   if (raw.type == "placeholder" && (name == "Mana"))
     mult = 0.001;
+  if (raw.type == "placeholder" && (name == "RF"))
+    mult = 0.001;
   if ((raw.type == "fluidStack") ||
       (raw.content.item == "thermalfoundation:fluid_redstone") ||
       (raw.content.item == "plustic:plustic.molten_osmium"))
@@ -99,7 +101,7 @@ export function parseRawRecipes(groups, parsedData) {
 
   var graph = {
     nodes: [],
-    links: []
+    // links: []
   };
 
   // Add node that represents item
@@ -126,11 +128,14 @@ export function parseRawRecipes(groups, parsedData) {
   // ====================================================
   // Create nodes
   // ====================================================
-  groups.Default.forEach(function (d, i) {
+  var DEBUG_NODES_LIMIT = 999999999;
+  groups.Default.forEach(function (d, index) {
+    if (DEBUG_NODES_LIMIT <= 0) return; DEBUG_NODES_LIMIT -= 1;
+
     d.output.forEach(output => {
       if(output.type === "empty") return;
 
-      var outNode = pushNodeFnc(output);
+      const outNode = pushNodeFnc(output);
 
       // If we already have recipe for this item, remove previous
       if (outNode.inputs.length !== 0 && d.input.length > 0) {
@@ -143,31 +148,29 @@ export function parseRawRecipes(groups, parsedData) {
 
         const idTarget = TreeNode.serializeIEntry(output);
         const idSource = TreeNode.serializeIEntry(input);
-        var link;
-
-        if (idTarget && idSource) {
-          link = {
-            target: idTarget,
-            source: idSource,
-            weight: 1.0
-          };
-          graph.links.push(link);
-        }
+        
         const inNode = pushNodeFnc(input);
         const weight = amount(input) / amount(output);
         // if(outNode.name === "thermalfoundation:material:16"){
         //   console.log('inNode :>> ', inNode);}
 
-        outNode.inputs.push({ it: inNode, weight: weight });
-        inNode.outputs.push({ it: outNode, weight: weight });
+        outNode.inputs.push({ it: inNode,  weight: weight, index: index});
+        inNode.outputs.push({ it: outNode, weight: weight, index: index});
 
-        link.weight = weight;
-        link.nonlinearWeight = Math.min(3, Math.max(0.1, 3 - 3 / Math.sqrt(Math.sqrt(weight))));
+        
+        // const link = {
+        //   target: idTarget,
+        //   source: idSource,
+        //   weight: weight
+        // };
+        // graph.links.push(link);
+
       });
 
       // Add catalysts
       d.catalyst.forEach(catl => {
         const node = pushNodeFnc(catl);
+        node.popularity += 1;
 
         outNode.catalysts.push({ it: node, weight: amount(catl) });
       });
@@ -198,21 +201,22 @@ export function parseRawRecipes(groups, parsedData) {
   // ----------------------------
   graph.listLoops = [];
 
-  function diveIn(node, memberName, field, defl, antiLoop = []) {
-    var a = (node[memberName].length === 0) ? node[field] : 0;
-    node[memberName].forEach(mem => {
-      var check = false;
-      antiLoop.forEach(o => check |= (o.id === mem.it.id));
-      if (check || mem.it.id === node.id) {
-        graph.listLoops.push(node.id);
-      } else {
-        antiLoop.push(node);
-        a += (diveIn(mem.it, memberName, field, defl, antiLoop) + defl) * mem.weight;
-        antiLoop.pop();
-      }
-    });
-    return a;
-  }
+  // function diveIn(node, memberName, field, defl, antiLoop = []) {
+  //   var a = (node[memberName].length === 0) ? node[field] : 0;
+  //   node[memberName].forEach(mem => {
+  //     var check = false;
+  //     antiLoop.forEach(o => check |= (o.id === mem.it.id));
+  //     if (check || mem.it.id === node.id) {
+  //       if (graph.listLoops.indexOf(node) === -1)
+  //         graph.listLoops.push(node);
+  //     } else {
+  //       antiLoop.push(node);
+  //       a += (diveIn(mem.it, memberName, field, defl, antiLoop) + defl) * mem.weight;
+  //       antiLoop.pop();
+  //     }
+  //   });
+  //   return a;
+  // }
 
   graph.minU = 999999999999;
   graph.maxU = 0;
@@ -225,21 +229,27 @@ export function parseRawRecipes(groups, parsedData) {
   });
 
   graph.nodes.forEach(node => {
-    node.calculate();
-    // node.complexity = diveIn(node, "inputs", "complexity", 0);
-
-    // node.usability = diveIn(node, "outputs", "usability", 1);
+    node.calculate((loopNode, listName, link) => {
+      if (graph.listLoops.indexOf(loopNode) === -1)
+        graph.listLoops.push(loopNode);
+    });
 
     graph.minC = Math.min(graph.minC, node.complexity);
     graph.maxC = Math.max(graph.maxC, node.complexity);
     graph.minU = Math.min(graph.minU, node.usability);
     graph.maxU = Math.max(graph.maxU, node.usability);
+
   });
+
+  // console.log('graph.minC :>> ', graph.minC);
+  // console.log('graph.maxC :>> ', graph.maxC);
+  // console.log('graph.minU :>> ', graph.minU);
+  // console.log('graph.maxU :>> ', graph.maxU);
 
   // List of items without icons
   graph.noIcon = [];
   graph.nodes.forEach(node => {
-    if (node.isNoIcon) graph.noIcon.push(node.id);
+    if (node.isNoIcon) graph.noIcon.push(node);
   });
 
   // ----------------------------
