@@ -8,14 +8,15 @@
   >
     <v-row no-gutters style="flex-wrap: nowrap;">
       <v-col 
-        :class='"flex-grow-1 flex-shrink-0 pl-1" + compClass'
+        :class='"px-1" + compClass'
         :data-text="whole"
       >
-        {{ whole }}
+        {{ short ? compNumber : whole }}
       </v-col>
       <!-- <span class="gradient"></span> -->
       <!-- <span class="spotlight"></span>  -->
       <v-col 
+        v-if="!short"
         class="flex-grow-0 flex-shrink-0 brown--text text--darken-2 pr-1"
       >
         {{ residue }}
@@ -31,22 +32,25 @@ import numeral from 'numeral';
 
 var SI_SYMBOL = ["", "k", "M", "G", "T", "P", "E"];
 
-function abbreviateNumber(number){
+function abbreviateNumber(num){
+  num = Math.round(num * 1000) / 1000.0;
+  
+  if(num <= 1) return num
 
   // what tier? (determines SI symbol)
-  var tier = Math.log10(number) / 3 | 0;
+  var tier = Math.log10(num) / 3 | 0;
 
   // if zero, we don't need a suffix
-  if(tier == 0) return number;
+  if(tier == 0) return num;
 
   // get suffix and determine scale
   var suffix = SI_SYMBOL[tier];
   var scale = Math.pow(10, tier * 3);
 
-  // scale the number
-  var scaled = number / scale;
+  // scale the num
+  var scaled = num / scale;
 
-  // format number and add suffix
+  // format num and add suffix
   return scaled.toFixed(1) + suffix;
 }
 
@@ -66,16 +70,24 @@ export default {
     bordered: {
       type: Boolean,
       default: false
-    }
+    },
+    short: {
+      type: Boolean,
+      default: false
+    },
   },
   computed: {
     compNumber() {
       var num = this.number;
-      if (num >= 1000) num = Math.round(num);
 
-      return numeral(num).format('0,0.[000]');
+      if (!this.short) {
+        if (num >= 1000) num = Math.round(num);
+
+        return numeral(num).format('0,0.[000]');
+      } else {
+        return abbreviateNumber(num);
+      }
       // return num | numeral("0,0.[000]");
-      // return abbreviateNumber(this.number);
     },
     compClass() {
       const tier = Math.log10(this.number + 1) / 3 | 0;

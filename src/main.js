@@ -14,6 +14,7 @@ import Hedgehog from "./components/Hedgehog.vue";
 import BigNumber from "./components/BigNumber.vue";
 import ProcessingSteps from "./components/ProcessingSteps.vue";
 import Complexity from "./components/Complexity.vue";
+import Popularity from "./components/Popularity.vue";
 import VueKonva from 'vue-konva';
 
 // Global components
@@ -22,6 +23,7 @@ Vue.component('tree-entry-name', TreeEntryName);
 Vue.component('hedgehog', Hedgehog);
 Vue.component('big-number', BigNumber);
 Vue.component('processing-steps', ProcessingSteps);
+Vue.component('popularity', Popularity);
 Vue.component('complexity', Complexity);
 Vue.component('curve-text', vueCurveText);
 

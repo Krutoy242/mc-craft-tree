@@ -1,5 +1,2 @@
 - [ ] Fix left aligment in complexity table (when edit is active)
-- [x] Steps account not catalysts but recipe IDs
-- [x] Popularity should account recipes indexes
 - [ ] Parse table recipes from crafttweaker.log
-- [ ] Save file for IC2.ini

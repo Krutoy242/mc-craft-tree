@@ -129,7 +129,7 @@ export function parseRawRecipes(groups, parsedData) {
   // Create nodes
   // ====================================================
   var DEBUG_NODES_LIMIT = 999999999;
-  groups.Default.forEach(function (d, index) {
+  groups.Default.forEach(function (d, recipeIndex) {
     if (DEBUG_NODES_LIMIT <= 0) return; DEBUG_NODES_LIMIT -= 1;
 
     d.output.forEach(output => {
@@ -154,8 +154,8 @@ export function parseRawRecipes(groups, parsedData) {
         // if(outNode.name === "thermalfoundation:material:16"){
         //   console.log('inNode :>> ', inNode);}
 
-        outNode.inputs.push({ it: inNode,  weight: weight, index: index});
-        inNode.outputs.push({ it: outNode, weight: weight, index: index});
+        outNode.inputs.push({ it: inNode,  weight: weight, index: recipeIndex});
+        inNode.outputs.push({ it: outNode, weight: weight, index: recipeIndex});
 
         
         // const link = {

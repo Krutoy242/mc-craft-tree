@@ -26,7 +26,8 @@ const routes = [
 
 const router = new VueRouter({
   mode: "history",
-  routes
+  routes,
+  base: "/CraftTreeVisualizer/",
 });
 
 export default router;
