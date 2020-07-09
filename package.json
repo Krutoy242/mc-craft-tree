@@ -8,9 +8,16 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@inotom/vue-curve-text": "^2.0.0",
     "core-js": "^3.6.5",
+    "d3": "^5.16.0",
+    "d3-force-reuse": "^1.0.1",
+    "numeral": "^2.0.6",
     "vue": "^2.6.11",
+    "vue-cookies": "^1.7.0",
+    "vue-filter-number-format": "^3.0.1",
     "vue-router": "^3.2.0",
+    "vue-wrapped-component": "^1.0.0",
     "vuetify": "^2.2.11"
   },
   "devDependencies": {

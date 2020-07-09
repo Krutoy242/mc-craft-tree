@@ -3,21 +3,29 @@ import VueRouter from "vue-router";
 
 Vue.use(VueRouter);
 
-const User = {
-  template: '<div>User {{ $route.params.id }}</div>'
-}
-
 const routes = [
-  { path: '/user/:id', component: User },
   {
     path: "/table",
     name: "table",
+    props: true,
     component: () =>
-      import(/* webpackChunkName: "table" */ "../components/Table.vue")
+      import(/* webpackChunkName: "table" */ "../views/Table.vue")
+  },
+  {
+    path: "/graph",
+    name: "graph",
+    props: true,
+    component: () =>
+      import(/* webpackChunkName: "graph" */ "../views/Graph.vue")
+  },
+  {
+    path: '*',
+    redirect: '/graph'
   }
 ];
 
 const router = new VueRouter({
+  mode: "history",
   routes
 });
 
