@@ -1,19 +1,18 @@
 <template>
-  <v-container fill-height style="position: relative;" class="pa-0 text-center">
+  <v-container class="pa-0 text-center outer">
     <v-container
       fill-height
       class="pa-0"
-      :style="`position: absolute; z-index: 1; left: 0; bottom: 0; right: 0; top: 3px;`"
+      :style="`position: relative; z-index: 1; left: 0; bottom: 0; right: 0; top: 0px;`"
     >
       <v-flex >
         {{ number || "-" }}
       </v-flex>
     </v-container>
 
-    <v-container
-      class="pa-0"
-      :style="'position: absolute; transform: scale(0.50); ' + (inverted ? 'transform: rotate(180deg); bottom: 6px; ' : '')">
+    <v-container :class="'pa-0 inner ' + (inverted ? 'flipped' : '')">
       <curve-text
+        :class="(inverted ? 'shifted-flipped smaller' : 'shifted smaller')"
         :width="inverted?45:55"
         :height="inverted?40:50"
         :r="inverted?30:35"
@@ -23,10 +22,9 @@
       </curve-text>
     </v-container>
 
-    <v-container
-      class="pa-0"
-      :style="'position: absolute; transform: scale(0.8); ' + (inverted ? 'transform: rotate(180deg); bottom: -3px; ' : '')">
+    <v-container :class="'pa-0 inner ' + (inverted ? 'flipped' : '')">
       <curve-text
+        :class="(inverted ? 'shifted-flipped mediumer' : 'shifted mediumer')"
         v-if="number > 10"
         :width="inverted?55:55"
         :height="inverted?40:50"
@@ -77,5 +75,37 @@ export default {
 </script>
 
 <style scoped>
+.outer {
+    position: relative; /* or absolute */
+    width: 60px;
+    height: 40px;
+}
 
+.flipped {
+  transform: rotate(180deg) /* scale(0.6) */;
+}
+
+.smaller {
+  transform: scale(0.7);
+}
+
+.mediumer {
+  transform: scale(0.9);
+}
+
+.shifted {
+  position: relative; left: -50%; top: -70%;
+}
+
+.shifted-flipped {
+  position: relative; left: 50%; top: 50%;
+}
+
+.inner {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 100%;
+  height: 100%;
+}
 </style>

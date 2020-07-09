@@ -30,7 +30,6 @@
       :search="search"
       dense
       item-key="id"
-      show-expand
       single-expand
       :footer-props="{
         showFirstLastPage: true,
@@ -79,26 +78,7 @@
       <template #item.cost="{ item }"><big-number :number="item.cost"/></template>
       <template #item.processing="{ item }"><big-number :number="item.processing"/></template>
       
-      <template #item.popularity="{ item }">
-        <v-container  style="position: relative;" class="pa-0 text-center">
-          <v-container
-            fill-height
-            class="pa-0"
-            style="position: absolute; z-index: 1; top: 0; left: 0; bottom: 0; right: 0;"
-          >
-            <v-flex class="border-2px">
-              {{ item.popularity || "-" }}
-            </v-flex>
-          </v-container>
-          <v-icon v-if="item.popularity > 0"
-            large
-            color="#BF360C"
-            style="position: relative;"
-          >
-            mdi-cog
-          </v-icon>
-        </v-container>
-      </template>
+      <template #item.popularity="{ item }"><popularity :number="item.popularity"/></template>
       
       <template #item.inputs.length="{ item }"><hedgehog :number="item.inputs.length"/></template>
       
@@ -106,11 +86,11 @@
 
       <template #item.steps="{ item }"><processing-steps :number="item.steps"/></template>
 
-      <template #expanded-item="{ headers, item }">
+      <!-- <template #expanded-item="{ headers, item }">
         <td :colspan="headers.length">
           <kbd>More info about {{ item.name }}</kbd>
         </td>
-      </template>
+      </template> -->
     </v-data-table>
   </v-card>
 </template>
@@ -136,8 +116,9 @@ export default {
           align: "start",
           sortable: false,
           value: "display",
+          divider: true
         },
-        { align: 'center' ,text: "", value: "data-table-expand" , divider: true},
+        // { align: 'center' ,text: "", value: "data-table-expand" , divider: true},
         { align: 'center' ,text: "Complexity", value: "complexity", divider: true},
         { align: 'center' ,text: "Cost", value: "cost" },
         { align: 'center' ,text: "Processing Cost", value: "processing" },
@@ -177,7 +158,7 @@ export default {
 
   watch: {
     selectedHeadersModel(val) {
-      console.log('val :>> ', val);
+      // console.log('val :>> ', val);
       // this.selectedHeaders = val;
     }
   },
@@ -188,34 +169,3 @@ export default {
 
 };
 </script>
-
-<style scoped>
-
-.border-2px {
-  text-shadow: 1px 1px 0 #1E1E1E,
-    -1px 1px 0 #1E1E1E,
-    1px -1px 0 #1E1E1E,
-    -1px -1px 0 #1E1E1E,
-    0px 1px 0 #1E1E1E,
-    0px -1px 0 #1E1E1E,
-    -1px 0px 0 #1E1E1E,
-    1px 0px 0 #1E1E1E,
-    2px 2px 0 #1E1E1E,
-    -2px 2px 0 #1E1E1E,
-    2px -2px 0 #1E1E1E,
-    -2px -2px 0 #1E1E1E,
-    0px 2px 0 #1E1E1E,
-    0px -2px 0 #1E1E1E,
-    -2px 0px 0 #1E1E1E,
-    2px 0px 0 #1E1E1E,
-    1px 2px 0 #1E1E1E,
-    -1px 2px 0 #1E1E1E,
-    1px -2px 0 #1E1E1E,
-    -1px -2px 0 #1E1E1E,
-    2px 1px 0 #1E1E1E,
-    -2px 1px 0 #1E1E1E,
-    2px -1px 0 #1E1E1E,
-    -2px -1px 0 #1E1E1E;
-}
-
-</style>

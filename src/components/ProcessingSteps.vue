@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <span v-if="number>0">{{ number }}</span>
+  <div style="flex-wrap: nowrap;">
+    <span v-if="number > 0 && !smile">{{ number }}</span>
     <span class="text-h6">{{ smily }}</span>
   </div>
 </template>
@@ -18,6 +18,10 @@ export default {
   props: {
     number: {
       type: Number
+    },
+    smile : {
+      type: Boolean,
+      default: false
     }
   },
 

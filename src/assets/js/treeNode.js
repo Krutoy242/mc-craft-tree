@@ -178,7 +178,7 @@ export class TreeNode {
   // usually "inputs" or "outputs"
   safeDive(fnc, listName, onLoop, deph = 999999999, antiloop) {
     if (deph>0){
-      antiloop = (antiloop || {});
+      antiloop = antiloop || {};
       antiloop[this.id] = true;
 
       const list = this[listName];
@@ -253,8 +253,8 @@ export class TreeNode {
     const allStepIndexes = [];
     this.safeDive(link => {
       // if(link.it.steps > 0)
-      if (allStepIndexes.indexOf(link.index) === -1)
-        allStepIndexes.push(link.index)
+      if (allStepIndexes.indexOf(link.recipeIndex) === -1)
+        allStepIndexes.push(link.recipeIndex)
     }, "inputs", onLoop);
     this.steps = allStepIndexes.length;
 
