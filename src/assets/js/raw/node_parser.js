@@ -89,7 +89,7 @@ function addMeta(ctName) {
 /*=====  OreDict first items  ======*/
 
 const crLog = loadText("./crafttweaker.log");
-const rgx = /^Ore entries for <ore:([\w]+)> :\n-<([^:>]+:[^:>]+):?([^:>]+)?/gm;
+const rgx = /^Ore entries for <ore:([\w]+)> :[\n\r]+-<([^:>]+:[^:>]+):?([^:>]+)?/gm;
 for (const match of crLog.matchAll(rgx)) {
   const oreDictName = match[1];
   const definition = match[2];
@@ -106,7 +106,8 @@ for (const match of crLog.matchAll(rgx)) {
 }
 
 /*=====  Item names  ======*/
-const ctLogNames = crLog.match(/"REGISTRY_NAME","DISPLAY_NAME"\n([\s\S]*?)\nA total of/gm)[0]; 
+// console.log('object :>> ', crLog.match(/"REGISTRY_NAME","DISPLAY_NAME"[\s\S]/gm));
+const ctLogNames = crLog.match(/"REGISTRY_NAME","DISPLAY_NAME"[\n\r]*([\r\s\S]*?)\nA total of/gm)[0]; 
 const nameAliasRgx = /^"<([^>]*?)>(?:.withTag\((.*)\))?","([^\"]*)"/gm
 for (const match of ctLogNames.matchAll(nameAliasRgx)) {
   const itemName = addMeta(match[1]).replace(/:/g, "__");
@@ -143,7 +144,7 @@ for (const match of ctLogNames.matchAll(nameAliasRgx)) {
 // }
 
 /*=====  Save parsed data ======*/
-saveObjAsJson(parsedData, "../../../../public/parsedData.json");
+saveObjAsJson(parsedData, "../../parsedData.json");
 
 
 
@@ -153,4 +154,4 @@ const groupsJson = loadText(GROUPS_PATH)
   .replace(/(\W\d+)[LBbsf](\W)/gi, "$1$2")
   .replace(/("SideCache".*)\[.*\]/gi, '$1"DataRemoved"');
 
-saveText(groupsJson, "../../../../public/groups.json");
+saveText(groupsJson, "../../groups.json");

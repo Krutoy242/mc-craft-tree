@@ -6,7 +6,6 @@ var vizWidth = window.innerWidth;
 var vizHeight = window.innerHeight;
 
 var svg = null;
-var zoom = null;
 var container = null;
 var linkContainer = null;
 var nodeContainer = null;
@@ -16,13 +15,7 @@ var simulation = null;
 export function init() {
   
   svg = d3.select("#viz");
-  container = svg.append("g")
-
-  zoom = d3.zoom()
-    .scaleExtent([.1, 4])
-    .on("zoom", function () { container.attr("transform", d3.event.transform);});
-  
-  svg.call(zoom)
+  container = svg.append("g");
 
   linkContainer = container.append("g").attr("class", "linksLayer");
   nodeContainer = container.append("g");
@@ -38,7 +31,7 @@ function linkArc(d) {
 }
 
 
-export function makeGraph(graph, vue, query) {
+export function makeGraph(graph, vue, query, isScatter) {
 
   if (!container) init();
 
@@ -48,6 +41,7 @@ export function makeGraph(graph, vue, query) {
   if (simulation) {
     simulation.on("tick", null);
     simulation.stop();
+    simulation = undefined;
   }
 
   // ====================================================
@@ -58,6 +52,8 @@ export function makeGraph(graph, vue, query) {
   // Remove elements that dont have inputs or outputs
   var graphNodes = null;
 
+  
+  // Find selected node to show only it
   if (query.q) {
     const lookupNode = graph.nodes.find(n => n.id === query.q);
 
@@ -71,33 +67,18 @@ export function makeGraph(graph, vue, query) {
     }
   } 
   
-  if (!graphNodes) 
-    graphNodes = graph.nodes.filter(n => n.inputs.length > 0 || n.outputs.length > 0);
-
-
-  const graphLinks = [];
-  for (let j = 0; j < graphNodes.length; j++) {
-    const n = graphNodes[j];
-
-    for (let i = 0; i < n.inputs.length; i++) {
-      const link = n.inputs[i];
-      const source = graphNodes.findIndex(o => o.id === link.it.id);
-
-      if (source > -1) {
-        graphLinks.push({
-          source: source,
-          target: j,
-          weight: link.weight,
-          index: graphLinks.length,
-        });
-      }
-    }
+  // If no selection provided, select everything, except items without inputs and outputs
+  // If scattered, select only nodes without crafts
+  if (!graphNodes) {
+    if (!isScatter)
+      graphNodes = graph.nodes.filter(n => n.inputs.length > 0 || n.outputs.length > 0);
+    else
+      graphNodes = graph.nodes.filter(n => n.inputs.length === 0);
   }
 
-
   const options = {
-    showLinks:       graphNodes.length < 500,
-    showCurvedLinks: graphNodes.length < 100,
+    showLinks:       graphNodes.length < 500 && !isScatter,
+    showCurvedLinks: graphNodes.length < 100 && !isScatter,
     useReuse:        graphNodes.length > 500,
   };
 
@@ -121,74 +102,114 @@ export function makeGraph(graph, vue, query) {
   }
 
   function xFnc(d) { return vizWidth/2 + compFnc(d)*diffSize*20 - usabFnc(d)*diffSize*20 };
+
+  // Scatter functions
+  function getSX(v) { return Math.log(v + 1) * 200; }
+  function setSX(v) { return Math.pow(Math.E, v / 200) - 1; }
   
 
   // Adjust starting positions
-  // graphNodes.forEach(function (node) {
-  //   node.x = xFnc(node);
-  //   node.y = vizHeight / 4 + node.popularity*10;
-  // });
-
+  if (isScatter) {
+    const xObjs = {};
+    graphNodes.forEach((node, i) => {
+      node.x = getSX(node.complexity);
+      xObjs[node.x] = (xObjs[node.x] || 0) + 1;
+      node.y = xObjs[node.x] * 20;
+    });
+  }
 
   // ====================================================
   // Layout
   // ====================================================
-  simulation = d3.forceSimulation(graphNodes)
-    .force("charge", (options.useReuse ? forceManyBodyReuse : d3.forceManyBody()).strength(-2000))
-    .force("x", d3.forceX(xFnc).strength(1))
-    .force("y", d3.forceY(vizHeight / 2).strength(d => usabFnc(d) + 1))
-    .force("link", d3.forceLink(graphLinks)/* .id(d => d.id) */.distance(diffSize/2).strength(1))
-    .force('collision', d3.forceCollide().radius(sizeFnc).strength(0.75))
-    .on("tick", ticked);
+  if (!isScatter) {
+    simulation = d3.forceSimulation(graphNodes)
+      .force("charge", (options.useReuse ? forceManyBodyReuse : d3.forceManyBody()).strength(-2000))
+      .force("x", d3.forceX(xFnc).strength(1))
+      .force("y", d3.forceY(vizHeight / 2).strength(d => usabFnc(d) + 1))
+      .force('collision', d3.forceCollide().radius(sizeFnc).strength(0.75))
+      .on("tick", ticked);
 
-  // .call(zoom.transform, 
-  //   d3.zoomIdentity.scale(10 / Math.sqrt(graphNodes.length)));
+    // ====================================================
+    // Links
+    // ====================================================
+    var handleHover;
+    var linkSelection;
 
-  // ====================================================
-  // Links
-  // ====================================================
-  var link = undefined;
-    linkContainer.selectAll("*").remove();
-  
+    // Connect graph nodes
+    const graphLinks = [];
+    for (let j = 0; j < graphNodes.length; j++) {
+      const n = graphNodes[j];
 
-  if (options.showLinks) {
+      for (let i = 0; i < n.inputs.length; i++) {
+        const link = n.inputs[i];
+        const source = graphNodes.findIndex(o => o.id === link.it.id);
 
-    if (options.showCurvedLinks) {
-      link = 
-        linkContainer
-          .attr("fill", "none")
-          .selectAll("path")
-          .data(graphLinks)
-          .join("path")
-          .attr("stroke-width", 1)
-          .attr("stroke", "#555")
-    } else {
-      link = 
-        linkContainer
-          .attr("stroke", "#555")
-          .attr("stroke-width", 1)
-          .selectAll("line")
-          .data(graphLinks)
-          .join("line")
+        if (source > -1) {
+          graphLinks.push({
+            source: source,
+            target: j,
+            weight: link.weight,
+            index: graphLinks.length,
+          });
+        }
+      }
     }
 
-    link.each(function(link, i) {
-      const d3node = d3.select(this) // Current ONE node
+    simulation
+      .force("link", d3.forceLink(graphLinks).distance(diffSize/2).strength(1));
 
-      link.source.outputs .find(l => {
-        return l.it.id === link.target.id
-      }).d3node = d3node;
-      link.target.inputs.find(l => l.it.id === link.source.id).d3node = d3node;
-    });
+    linkContainer.selectAll("*").remove();
+    
+
+    if (options.showLinks) {
+
+      if (options.showCurvedLinks) {
+        linkSelection = 
+          linkContainer
+            .attr("fill", "none")
+            .selectAll("path")
+            .data(graphLinks)
+            .join("path")
+            .attr("stroke-width", 1)
+            .attr("stroke", "#555")
+      } else {
+        linkSelection = 
+          linkContainer
+            .attr("stroke", "#555")
+            .attr("stroke-width", 1)
+            .selectAll("line")
+            .data(graphLinks)
+            .join("line")
+      }
+
+      linkSelection.each(function(link, i) {
+        const d3node = d3.select(this) // Current ONE node
+
+        link.source.outputs .find(l => {
+          return l.it.id === link.target.id
+        }).d3node = d3node;
+        link.target.inputs.find(l => l.it.id === link.source.id).d3node = d3node;
+      });
+    }
+
+    handleHover = overNode => {
+      const filteredGraph = graphLinks.filter(l => l.target === overNode || l.source === overNode);
+
+      linkSelection = linkContainer
+        .attr("stroke-width", 3)
+        .selectAll("line")
+        .data(filteredGraph)
+        .join("line")
+        .attr("stroke", d => d.target === overNode ? "#7f7" : "#38f")
+    }
   }
 
   // ====================================================
   // Nodes
   // ====================================================
-  var node = nodeContainer
+  var nodeSelection = nodeContainer
     .selectAll("g")
     .data(graphNodes)
-    // .enter()
     .join(appendNode, updateNode)
 
   function appendNode(enter) {
@@ -236,7 +257,7 @@ export function makeGraph(graph, vue, query) {
     return update
   };
 
-  node.each(function(d, i) {
+  nodeSelection.each(function(d, i) {
     d.d3node = d3.select(this) // Current ONE node
   });
 
@@ -244,21 +265,46 @@ export function makeGraph(graph, vue, query) {
   // Events
   // ====================================================
 
+  var globalScale = 1;
+  function nodeT(d) {
+    if (isScatter)
+      return `translate(${d.x},${d.y})scale(${globalScale})`;
+    else
+      return `translate(${d.x},${d.y})`;
+  }
+
   function ticked() {
-    if (link) {
+    if (linkSelection) {
       if (options.showCurvedLinks) {
-        link.attr("d", linkArc);
+        linkSelection.attr("d", linkArc);
       } else {
-        link
+        linkSelection
           .attr("x1", d => d.source.x)
           .attr("y1", d => d.source.y)
           .attr("x2", d => d.target.x)
           .attr("y2", d => d.target.y);
       }
     }
-      
-    node.attr("transform", d => `translate(${d.x},${d.y})`);
+    
+    nodeSelection.attr("transform", nodeT);
   }
+  ticked();
+
+  // Zoom
+  const zoom = d3.zoom()
+    .scaleExtent([.01, 10])
+    .on("zoom", function () {
+      container.attr("transform", d3.event.transform);
+
+      if (isScatter) {
+        const newScale = 1 / d3.event.transform.k;
+        if (globalScale !== newScale) {
+          globalScale = newScale
+          ticked();
+        }
+      }
+    });
+  svg.call(zoom)
 
   
   // ====================================================
@@ -331,16 +377,8 @@ export function makeGraph(graph, vue, query) {
       clearInterval(currIntervalID);
       currIntervalID = setInterval(drawDive, 100);
     } else {
-      const filteredGraph = graphLinks.filter(l => l.target === node || l.source === node);
-
-      link = linkContainer
-        .attr("stroke-width", 3)
-        .selectAll("line")
-        .data(filteredGraph)
-        .join("line")
-        .attr("stroke", d => d.target === node ? "#7f7" : "#38f")
-      
-        // if (!d3.event.active) simulation.alphaTarget(0.3);
+      // If we have too many nodes, show only links over hovered node
+      if (handleHover) handleHover(node);
     }
   }
 
@@ -353,14 +391,14 @@ export function makeGraph(graph, vue, query) {
     }
   }
 
-  node.on("mouseover", highlite);
-  node.on("mouseout", unhighlite);
+  nodeSelection.on("mouseover", highlite);
+  nodeSelection.on("mouseout", unhighlite);
 
   // ====================================================
   // Node dragging
   // ====================================================
   {
-    node.call(
+    nodeSelection.call(
       d3.drag()
         .on("start", dragstarted)
         .on("drag", dragged)
@@ -369,7 +407,7 @@ export function makeGraph(graph, vue, query) {
     
     function dragstarted(d) {
       d3.event.sourceEvent.stopPropagation();
-      if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+      if (!d3.event.active && simulation) simulation.alphaTarget(0.3).restart();
       d.fx = d.x;
       d.fy = d.y;
     }
@@ -377,14 +415,20 @@ export function makeGraph(graph, vue, query) {
     function dragged(d) {
       d.fx = d3.event.x;
       d.fy = d3.event.y;
+      if (isScatter) {
+        d.x = d3.event.x;
+        d.y = d3.event.y;
+        d.complexity = setSX(d.x);
+        d3.select(this).attr("transform", nodeT);
+      }
     }
 
     function dragended(d) {
-      if (!d3.event.active) simulation.alphaTarget(0);
+      if (!d3.event.active && simulation) simulation.alphaTarget(0);
       d.fx = null;
       d.fy = null;
     }
   }
 
-  return node;
+  return nodeSelection;
 }

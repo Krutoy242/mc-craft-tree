@@ -3,6 +3,9 @@
     <div style="position: absolute;" class="ma-4">
       <tree-entry v-if="selectedNode" :node="selectedNode" size="64"/>
     </div>
+    <div style="position: absolute; right: 0;" class="ma-4">
+      <v-switch v-model="isScatter" :label="`View as Scatter`"></v-switch>
+    </div>
     <svg id="viz" style="width: 100%; height: 100%"></svg>
     <!-- <v-stage :config="configKonva">
       <v-layer>
@@ -22,6 +25,7 @@ export default {
     return {
       selectedNode: undefined,
       selectedDeph: 0,
+      isScatter: false,
     }
   },
   props: {
@@ -31,15 +35,28 @@ export default {
     }
   },
 
+  methods: {
+    updateGraph(toQuery) {
+      if (typeof this.graph == 'object')
+        makeGraph(this.graph, this, toQuery || this.$route.query, this.isScatter);
+      
+    }
+  },
+
   beforeRouteUpdate (to, from, next) {
-    makeGraph(this.graph, this, to.query);
+    this.updateGraph(to.query);
     
     next();
   },
 
   mounted() {
-    if (typeof this.graph == 'object')
-      makeGraph(this.graph, this, this.$route.query);
+    this.updateGraph();
+  },
+
+  watch: {
+    isScatter(newValue, oldValue) {
+      this.updateGraph();
+    }
   },
 };
 </script>

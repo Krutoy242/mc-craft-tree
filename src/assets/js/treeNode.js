@@ -1,13 +1,40 @@
 
+
+  
+Array.prototype.remove = function() {
+  var what, a = arguments, L = a.length, ax;
+  while (L && this.length) {
+      what = a[--L];
+      while ((ax = this.indexOf(what)) !== -1) {
+          this.splice(ax, 1);
+      }
+  }
+  return this;
+};
+
 function itemStackToString(item, meta = 0) {
   return item ? `${item.replace(":", "__")}__${meta}` : undefined;
 }
 
+function getMeta(raw) {
+  if (raw.content.fMeta === 1)
+    return undefined;
+  else
+    return raw.content.meta;
+}
+
 function definition(raw) {
   if (raw.content.item)
-    return itemStackToString(raw.content.item, raw.content.meta);
+    return itemStackToString(raw.content.item, getMeta(raw));
   else
-    return null;
+    return undefined;
+}
+
+function trueNbt(raw){
+  if (raw.content.nbt && Object.keys(raw.content.nbt).length !== 0 && !raw.content.fNbt)
+    return raw.content.nbt
+  else
+    return undefined
 }
 
 var STACK_CALLS = 0;
@@ -18,10 +45,9 @@ export class TreeNode {
     switch (raw.type) {
       case "itemStack":
         var nbtStr = "";
-        if (raw.content.nbt && Object.keys(raw.content.nbt).length !== 0) {
-          nbtStr = "__" + JSON.stringify(raw.content.nbt)
-            .replace(/\"([^:]+)\":([^{},]+)/g, "$1__$2.?");
-        }
+        const tNbt = trueNbt(raw);
+        if (tNbt)
+          nbtStr = "__" + JSON.stringify(tNbt).replace(/\"([^:]+)\":([^{},]+)/g, "$1__$2.?");
         return definition(raw) + nbtStr;
       case "fluidStack":
         return `fluid__${raw.content.fluid}`;
@@ -40,7 +66,7 @@ export class TreeNode {
   // Find item field entry in parsed data
   descent(parsedData, field) {
     // Regular icon
-    var o = parsedData.sheet[this.id];
+    var o = parsedData.sheet[this.idPure];
 
     // Icon without nbt
     if (!o || !o[field]) o = parsedData.sheet[this.definitionId];
@@ -59,12 +85,7 @@ export class TreeNode {
   static processing     = 0.0;
   static CRAFTING_TABLE_COST = 50.0;
 
-  constructor(id, raw, parsedData) {
-
-    // Identificator (serialized)
-    // "actuallyadditions__battery_bauble__1__{Energy__0}"
-    this.id             = id;
-
+  constructor(raw, parsedData) {
     // Identificator without NBT (serialized)
     // "actuallyadditions__battery_bauble__1"
     this.definitionId   = definition(raw);
@@ -91,7 +112,7 @@ export class TreeNode {
         this.entryName = parts[1];
 
         // Meta. Only for itemStacks
-        this.entryMeta = raw.content.meta;
+        this.entryMeta = getMeta(raw);
         break;
       case "fluidStack":
         this.entrySource = "fluid";
@@ -114,14 +135,25 @@ export class TreeNode {
         this.entryName = "NO_NAME";
     }
 
+
+    this.definition = `${this.entrySource}:${this.entryName}`;
+
     // Item full name
     // "minecraft:stone:2", "ore:stone"
-    this.name           = 
-      this.entrySource +
-      ":" + this.entryName   + 
+    this.name           = this.definition + 
       (this.entryMeta ?  ":" + this.entryMeta : "")
     
-    this.nbt = raw.content.nbt;
+    this.nbt = trueNbt(raw);
+    this.nbtStr = this.nbt ? (JSON.stringify(raw.content.nbt)) : undefined;
+
+    // Identificator (serialized)
+    // "actuallyadditions__battery_bauble__1__{Energy__0.?}"
+    this.id             = TreeNode.serializeIEntry(raw);
+
+    // Identificator (serialized, pretty)
+    // "actuallyadditions__battery_bauble__1__{Energy__0}"
+    this.idPure         = this.id.replace("\.\?", "");
+
 
     this.volume         = (this.type == "fluidStack") ? 1000.0 : 1.0;
     this.popularity     = TreeNode.popularity;
@@ -156,8 +188,22 @@ export class TreeNode {
     this.viewBox = viewBox + " 32 32";
   }
 
+  match(o) {
+    if (this.definition != o.definition) return false;
+
+    if(this.entryMeta != o.entryMeta) return false;
+    
+    if(this.nbtStr != o.nbtStr) return false;
+
+    return true;
+  }
+
   getComplexity(count) {
     return (this.cost * count) + this.processing;
+  }
+
+  getUUCost(factor) {
+    return this.cost + this.processing / (factor + Math.sqrt(this.usability || 1));
   }
 
   forEachCatalyst(fnc, antiloop){
@@ -331,4 +377,6 @@ export class TreeNode {
 
     return this;
   }
+
+
 }

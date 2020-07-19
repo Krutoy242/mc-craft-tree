@@ -5,10 +5,8 @@
       <v-tabs>
 
         <v-tab link to="graph">
-        <!-- <v-badge color="cyan" :value="this.$route.query !== undefined"> -->
-            <v-icon>mdi-graph</v-icon>
-            <span class="ma-3">Graph</span>
-        <!-- </v-badge> -->
+          <v-icon>mdi-graph</v-icon>
+          <span class="ma-3">Graph</span>
         </v-tab>
         
         <v-tab link to="table">

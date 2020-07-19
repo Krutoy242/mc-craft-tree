@@ -18,7 +18,7 @@
 </template>
 
 <script>
-const ic2Mult = 0.25;
+const ic2Factor = 100;
 
 // ----------------------------
 // Temporary save UU values to file
@@ -75,10 +75,10 @@ function saveListUU(graph) {
   
   const listUU_string = [];
   prepareRawListUU(graph).forEach((l) => {
-    listUU_string.push(`{uu: ${l.uu.toString().padEnd(9)}, name: "${(l.name + "\"}").padEnd(45)}  // ${l.display}`);
+    listUU_string.push(`{uu: ${l.uu.toString().padEnd(9)}, name: "${(l.name + "\"").padEnd(43)}},// ${l.display}`);
   });
 
-  naturalSort(listUU_string)
+  naturalSort(listUU_string);
 
   download(
     `export const listUU = [\n${listUU_string.join("\n")}\n];`,
@@ -87,13 +87,19 @@ function saveListUU(graph) {
   );
 }
 
+// ----------------------------
+// Parse and save UU values for ic2.ini
+// ----------------------------
 function saveIC2ini(graph) {
 
+  // ------------
+  // Predefined values
+  // ------------
   const listUU_string = [];
   const prepared = prepareRawListUU(graph);
   prepared.sort((a, b) => a.uu - b.uu);
   
-  prepared.forEach((l) => {
+  prepared.forEach(l => {
     const match = l.name.match(/^(([^:]+):[^:]+)(:([^:]+))?/);
     const definition = match[1];
     const source = match[2];
@@ -105,15 +111,49 @@ function saveIC2ini(graph) {
 
     const icName = definition + (meta ? "@"+meta : "");
     const display = (l.display && l.display !== "") ? "; "+l.display : "";
-    const cost = Math.max(1, (l.uu * ic2Mult) | 0);
+    const cost = Math.max(1, l.uu | 0);
 
-    listUU_string.push(`${icName} = ${cost}${display}`);
+    listUU_string.push(`${icName.padEnd(49)} = ${cost}${display}`);
   });
 
-  // naturalSort(listUU_string);
+  // ------------
+  // Computed list
+  // ------------
+  const listComputed_string = [];
+  graph.nodes.forEach(n => {
+    // Work only with Itemstacks
+    // Items without NBT
+    // Items that didnt added to defined list yet
+    if (n.type !== "itemStack" || n.nbt || prepared.find(x => x.name === n.name)) return;
+
+    const icName = `${n.definition}` + (n.entryMeta ? "@"+n.entryMeta : "");
+    const display = (n.display && n.display !== "") ? "; "+n.display : "";
+    const cost = Math.max(1, (n.getUUCost(ic2Factor)) | 0);
+
+    if (cost === 1) return;
+
+    const addString = `${icName.padEnd(49)} = ${cost}${display}`;
+
+    listComputed_string.push(addString);
+  });
+
+  listUU_string.sort((a, b) => a.match(/= (.*).*$/)[1] - b.match(/= (.*).*$/)[1]);
+
+  listComputed_string.sort(function (a, b) {
+    return a.match(/= (.*);.*/)[1] - b.match(/= (.*);.*/)[1];
+    // const aa = a.match(/^.* =/)[0];
+    // const bb = b.match(/^.* =/)[0];
+    // return aa.length - bb.length
+    //     || a.match(/= (.*);.*/)[1] - b.match(/= (.*);.*/)[1];
+  });
+
+  // ------------
+  // Save
+  // ------------
+  // const listUU_string = predefList;
 
   download(
-    listUU_string.join("\n"),
+    listUU_string.concat(listComputed_string).join("\n"),
     "ic2.ini",
     "text/plain"
   );
@@ -132,7 +172,7 @@ export default {
         action: saveListUU
       },
       {
-        title: `IC2.ini [x${ic2Mult}]`,
+        title: `IC2.ini`,
         action: saveIC2ini
       },
     ],

@@ -60,11 +60,11 @@ export function parseRawRecipes(groups, parsedData) {
 
 
     var wasRemoved = false;
-    dd.output.forEach((obj_output, dd_out_i) => {
+    dd.output.forEach(obj_output => {
       // Special case for placeholder in output:
       // Add its all inputs to recipe where it represent input
       if (obj_output.type === "placeholder") {
-        groups.Default.forEach(function (d, i) {
+        groups.Default.forEach(d => {
           d.output.forEach(output => {
             var pos = d.input.map(e => e.content?.name).indexOf(obj_output.content.name);
             if (pos != -1 && d.input[pos].type === "placeholder") {
@@ -107,21 +107,14 @@ export function parseRawRecipes(groups, parsedData) {
   // Add node that represents item
   // Return new node or old one if item already present
   function pushNodeFnc(raw) {
-    var id = TreeNode.serializeIEntry(raw);
-    if (id) {
-      var pos = graph.nodes.map(e => e.id).indexOf(id);
-      if (pos === -1) {
-        // Create new item in nodes
-        const node = new TreeNode(id, raw, parsedData);
-
-        graph.nodes.push(node);
-        return node;
-      } else {
-        // Already have item, return it
-        return graph.nodes[pos]
-      }
+    const node = new TreeNode(raw, parsedData);
+    const found = graph.nodes.find(n => n.match(node));
+    
+    if (found){
+      return found;
     } else {
-      // Item have weird .type, "empty" for example
+      graph.nodes.push(node);
+      return node;
     }
   }
 
@@ -145,26 +138,12 @@ export function parseRawRecipes(groups, parsedData) {
       // Add inputs
       d.input.forEach(input => {
         if(input.type === "empty") return;
-
-        const idTarget = TreeNode.serializeIEntry(output);
-        const idSource = TreeNode.serializeIEntry(input);
         
         const inNode = pushNodeFnc(input);
         const weight = amount(input) / amount(output);
-        // if(outNode.name === "thermalfoundation:material:16"){
-        //   console.log('inNode :>> ', inNode);}
 
-        outNode.inputs.push({ it: inNode,  weight: weight, index: recipeIndex});
-        inNode.outputs.push({ it: outNode, weight: weight, index: recipeIndex});
-
-        
-        // const link = {
-        //   target: idTarget,
-        //   source: idSource,
-        //   weight: weight
-        // };
-        // graph.links.push(link);
-
+        outNode.inputs.push({ it: inNode,  weight: weight, recipeIndex: recipeIndex});
+        inNode.outputs.push({ it: outNode, weight: weight, recipeIndex: recipeIndex});
       });
 
       // Add catalysts
