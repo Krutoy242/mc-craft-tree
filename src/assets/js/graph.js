@@ -10,12 +10,17 @@ var container = null;
 var linkContainer = null;
 var nodeContainer = null;
 var simulation = null;
+var axisContainer = null;
 
 
 export function init() {
   
   svg = d3.select("#viz");
   container = svg.append("g");
+
+  axisContainer = container.append("g")
+  .attr("class", "x axis")
+  .attr("transform", "translate(0,-20)");
 
   linkContainer = container.append("g").attr("class", "linksLayer");
   nodeContainer = container.append("g");
@@ -59,21 +64,142 @@ export function makeGraph(graph, vue, query, isScatter) {
 
     if (lookupNode) {
       graphNodes = [lookupNode];
-      lookupNode.safeDive((link) => {
+      lookupNode.safeDive(query.outputs ? 'outputs' : 'inputs', 
+      (link) => {
         if (!graphNodes.find(n => n.id === link.it.id)) {
           graphNodes.push(link.it);
         }
-      }, query.outputs ? 'outputs' : 'inputs');
+      });
     }
   } 
   
   // If no selection provided, select everything, except items without inputs and outputs
   // If scattered, select only nodes without crafts
   if (!graphNodes) {
-    if (!isScatter)
+    if (!isScatter) {
       graphNodes = graph.nodes.filter(n => n.inputs.length > 0 || n.outputs.length > 0);
-    else
-      graphNodes = graph.nodes.filter(n => n.inputs.length === 0);
+    } else {
+      const whitelist = [
+        "actuallyadditions:block_display_stand",
+        "actuallyadditions:block_empowerer",
+        "actuallyadditions:item_crystal_empowered:5",
+        "actuallyadditions:item_crystal:5",
+        "appliedenergistics2:material:38",
+        "appliedenergistics2:material:46",
+        "astralsorcery:itemcraftingcomponent:2",
+        "astralsorcery:itemcraftingcomponent:4",
+        "avaritia:resource:5",
+        "avaritia:resource:6",
+        "bloodmagic:altar",
+        "botania:livingrock",
+        "botania:manaresource:7",
+        "draconicevolution:draconic_ingot",
+        "environmentaltech:aethium_crystal",
+        "environmentaltech:aethium",
+        "environmentaltech:erodium_crystal",
+        "environmentaltech:erodium",
+        "environmentaltech:ionite_crystal",
+        "environmentaltech:ionite",
+        "environmentaltech:kyronite_crystal",
+        "environmentaltech:kyronite",
+        "environmentaltech:laser_lens",
+        "environmentaltech:litherite_crystal",
+        "environmentaltech:litherite",
+        "environmentaltech:pladium_crystal",
+        "environmentaltech:pladium",
+        "environmentaltech:solar_cont_6",
+        "environmentaltech:void_ore_miner_cont_1",
+        "environmentaltech:void_ore_miner_cont_2",
+        "environmentaltech:void_ore_miner_cont_3",
+        "environmentaltech:void_ore_miner_cont_4",
+        "environmentaltech:void_ore_miner_cont_5",
+        "environmentaltech:void_ore_miner_cont_6",
+        "extendedcrafting:crafting_core",
+        "extendedcrafting:material:2",
+        "extendedcrafting:material:7",
+        "extendedcrafting:material:12",
+        "extendedcrafting:material:13",
+        "extendedcrafting:pedestal",
+        "extendedcrafting:singularity_ultimate",
+        "extendedcrafting:storage",
+        "extendedcrafting:table_advanced",
+        "extendedcrafting:table_basic",
+        "extendedcrafting:table_elite",
+        "extrautils2:decorativesolid:3",
+        "forestry:carpenter",
+        "forestry:centrifuge",
+        "ic2:te:43",
+        "ic2:te:86",
+        "immersiveengineering:metal_decoration0:5",
+        "integrateddynamics:drying_basin",
+        "integrateddynamics:squeezer",
+        "matc:inferiumcrystal",
+        "matc:intermediumcrystal",
+        "matc:prudentiumcrystal",
+        "matc:superiumcrystal",
+        "mekanism:compresseddiamond",
+        "mekanism:compressedredstone",
+        "mekanism:machineblock",
+        "mekanism:machineblock2:11",
+        "minecraft:beacon",
+        "minecraft:blaze_powder",
+        "minecraft:brick",
+        "minecraft:coal_block",
+        "minecraft:coal:1",
+        "minecraft:crafting_table",
+        "minecraft:diamond_block",
+        "minecraft:ender_eye",
+        "minecraft:furnace",
+        "minecraft:glass_pane",
+        "minecraft:glass",
+        "minecraft:gold_block",
+        "minecraft:gold_nugget",
+        "minecraft:gunpowder",
+        "minecraft:iron_bars",
+        "minecraft:iron_block",
+        "minecraft:iron_nugget",
+        "minecraft:lapis_block",
+        "minecraft:nether_brick",
+        "minecraft:netherbrick",
+        "minecraft:planks",
+        "minecraft:quartz_block",
+        "minecraft:redstone_block",
+        "minecraft:stick",
+        "minecraft:sugar",
+        "minecraft:tnt",
+        "mysticalagriculture:crafting:1",
+        "mysticalagriculture:crafting:2",
+        "mysticalagriculture:crafting:3",
+        "mysticalagriculture:crafting:4",
+        "nuclearcraft:chemical_reactor_idle",
+        "nuclearcraft:fusion_core",
+        "nuclearcraft:ingot:8",
+        "opencomputers:material:4",
+        "psi:material:1",
+        "rftools:powercell_creative",
+        "rftoolsdim:dimension_builder",
+        "storagedrawers:upgrade_creative:1",
+        "tconstruct:casting",
+        "tconstruct:materials",
+        "tconstruct:smeltery_controller",
+        "thermalexpansion:machine:7",
+        "thermalfoundation:material:32",
+        "thermalfoundation:material:165",
+        "thermalfoundation:material:256",
+        "thermalfoundation:material:320",
+        "thermalfoundation:material:352",
+        "thermalfoundation:material:768",
+        "thermalfoundation:material:770",
+      ];
+      graphNodes = graph.nodes.filter(n => {
+        if (n.inputs.length === 0) return true;
+        if (whitelist.includes(n.name)) {
+          n.isGhost = true;
+          return true;
+        }
+        return false;
+      });
+    }
   }
 
   const options = {
@@ -104,15 +230,30 @@ export function makeGraph(graph, vue, query, isScatter) {
   function xFnc(d) { return vizWidth/2 + compFnc(d)*diffSize*20 - usabFnc(d)*diffSize*20 };
 
   // Scatter functions
-  function getSX(v) { return Math.log(v + 1) * 200; }
-  function setSX(v) { return Math.pow(Math.E, v / 200) - 1; }
+  const scaleLog = d3.scaleLog()
+    .domain([0.1, 1e12])
+    .range([0, 10000])
+    .base(10)
+    .nice();
+
+  // function getSX(v) { return Math.log(v + 1) * 200; }
+  // function setSX(v) { return Math.pow(Math.E, v / 200) - 1; }
+
+  function getSX(v) { return scaleLog(v); }
+  function setSX(v) { return scaleLog.invert((v)); }
   
+  // 3. Call the x axis in a group tag
+  axisContainer.call(d3.axisTop(scaleLog).ticks(20, ".2s")); // Create an axis component with d3.axisBottom
+
+  function updateNodeX(node) {
+    node.x = getSX(node.complexity);
+  }
 
   // Adjust starting positions
   if (isScatter) {
     const xObjs = {};
     graphNodes.forEach((node, i) => {
-      node.x = getSX(node.complexity);
+      updateNodeX(node);
       xObjs[node.x] = (xObjs[node.x] || 0) + 1;
       node.y = xObjs[node.x] * 20;
     });
@@ -185,7 +326,7 @@ export function makeGraph(graph, vue, query, isScatter) {
       linkSelection.each(function(link, i) {
         const d3node = d3.select(this) // Current ONE node
 
-        link.source.outputs .find(l => {
+        link.source.outputs.find(l => {
           return l.it.id === link.target.id
         }).d3node = d3node;
         link.target.inputs.find(l => l.it.id === link.source.id).d3node = d3node;
@@ -210,11 +351,12 @@ export function makeGraph(graph, vue, query, isScatter) {
   var nodeSelection = nodeContainer
     .selectAll("g")
     .data(graphNodes)
-    .join(appendNode, updateNode)
+    .join(appendNode, updateNode);
 
   function appendNode(enter) {
     const ec = enter.append("g")
-      .style('cursor', 'pointer');
+      .style('cursor', d => d.isGhost ? undefined : 'pointer')
+      .attr("opacity", d => d.isGhost ? 0.1 : 1);
 
     ec.append("circle");
     ec.append("svg").append("image");
@@ -316,7 +458,7 @@ export function makeGraph(graph, vue, query, isScatter) {
     const isInput = listName === 'inputs';
     var maxDeph = 0;
     
-    targetNode.safeDive((link, source, deph) => {
+    targetNode.safeDive(listName, (link, source, deph) => {
       const currDeph = 1 + targetDeph - deph;
       maxDeph = Math.max(maxDeph, currDeph);
 
@@ -330,7 +472,7 @@ export function makeGraph(graph, vue, query, isScatter) {
               .attr("stroke", isInput ? "#7f7" : "#38f");
         }
       }
-    }, listName, null, targetDeph);
+    }, null, targetDeph);
     
     return maxDeph;
   }
@@ -413,12 +555,14 @@ export function makeGraph(graph, vue, query, isScatter) {
     }
 
     function dragged(d) {
+      if (d.isGhost) return;
+
       d.fx = d3.event.x;
       d.fy = d3.event.y;
       if (isScatter) {
         d.x = d3.event.x;
         d.y = d3.event.y;
-        d.complexity = setSX(d.x);
+        d.complexity = d.cost = setSX(d.x);
         d3.select(this).attr("transform", nodeT);
       }
     }
@@ -427,6 +571,16 @@ export function makeGraph(graph, vue, query, isScatter) {
       if (!d3.event.active && simulation) simulation.alphaTarget(0);
       d.fx = null;
       d.fy = null;
+
+      if (isScatter) {
+        d.safeDive('outputs', link => {
+          const node = link.it;
+          node.recalculateField('cost');
+          updateNodeX(node);
+        });
+        
+        ticked();
+      }
     }
   }
 

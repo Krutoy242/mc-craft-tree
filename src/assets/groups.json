@@ -3,6 +3,1460 @@
         "output": [{
             "type": "itemStack",
             "content": {
+                "amount": 2,
+                "item": "thermalexpansion:frame"
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "actuallyadditions:item_crystal",
+                    "meta": 5
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "rftools:machine_frame"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:metal_decoration0",
+                    "meta": 5
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "thermalexpansion:frame",
+                    "meta": 64
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "actuallyadditions:block_misc",
+                    "meta": 9
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "teslacorelib:machine_case"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "forestry:fabricator"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "actuallyadditions:item_crystal",
+                "meta": 5
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:iron_ingot"
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "actuallyadditions:block_atomic_reconstructor"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 2,
+                "item": "rftools:machine_frame"
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "ic2:heat_vent"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "thermalfoundation:material",
+                    "meta": 25
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "industrialforegoing:dryrubber"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "teslacorelib:machine_case"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "industrialforegoing:pink_slime"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "industrialforegoing:range_addon",
+                    "cap": {"astralsorcery:cap_item_amulet_holder": {}},
+                    "fMeta": 1
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "industrialforegoing:range_addon",
+                "cap": {"astralsorcery:cap_item_amulet_holder": {}},
+                "fMeta": 1
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 6,
+                    "item": "minecraft:cobblestone"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "industrialforegoing:plastic"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "minecraft:glass_pane"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 4,
+                "item": "immersiveengineering:metal_decoration0",
+                "meta": 5
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "immersiveengineering:metal",
+                    "meta": 35
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "mekanism:reinforcedalloy"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "immersiveengineering:material",
+                    "meta": 8
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:metal_decoration1",
+                    "meta": 1
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "thermalexpansion:frame",
+                "meta": 64
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "thermalfoundation:material",
+                    "meta": 129
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "minecraft:glass"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "thermalfoundation:material",
+                    "meta": 256
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 2,
+                "item": "actuallyadditions:block_misc",
+                "meta": 9
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "immersiveengineering:sheetmetal",
+                    "meta": 9
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "forestry:thermionic_tubes",
+                    "meta": 1
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "forestry:hardened_machine"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "teslacorelib:machine_case"
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "ic2:resource",
+                    "meta": 11
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "industrialforegoing:plastic"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "ic2:resource",
+                    "meta": 13
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "ic2:heat_vent"
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "minecraft:iron_bars"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "thermalfoundation:material",
+                    "meta": 32
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "ic2:crafting",
+                    "meta": 6
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "thermalfoundation:material",
+                "meta": 25
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 4,
+                "item": "minecraft:gold_ingot"
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "thermalexpansion:augment",
+                "meta": 337
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "immersiveengineering:metal",
+                "meta": 35
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "immersiveengineering:metal",
+                "meta": 5
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "immersiveengineering:metal_multiblock"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 6,
+                "item": "immersiveengineering:metal_decoration1",
+                "meta": 1
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 3,
+                    "item": "thermalfoundation:material",
+                    "meta": 160
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 3,
+                    "item": "immersiveengineering:material",
+                    "meta": 2
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "immersiveengineering:material",
+                "meta": 8
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "thermalfoundation:material",
+                    "meta": 32
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "thermalfoundation:material",
+                    "meta": 128
+                }
+            }
+        ],
+        "catalyst": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:wooden_device0",
+                    "meta": 2
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "nbt": {"blueprint": "components"},
+                    "amount": 1,
+                    "item": "immersiveengineering:blueprint",
+                    "cap": {"astralsorcery:cap_item_amulet_holder": {}}
+                }
+            }
+        ]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 4,
+                "item": "immersiveengineering:sheetmetal",
+                "meta": 9
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 4,
+                "item": "thermalfoundation:material",
+                "meta": 32
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "thermalfoundation:material",
+                "meta": 32
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:iron_ingot"
+            }
+        }],
+        "catalyst": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:metal_multiblock"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:mold"
+                }
+            }
+        ]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 16,
+                "item": "ic2:resource",
+                "meta": 11
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "minecraft:stone"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "tconstruct:soil"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "ic2:dust",
+                    "meta": 1
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 8,
+                "item": "tconstruct:soil"
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "minecraft:gravel"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "minecraft:sand"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "minecraft:clay"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "ic2:resource",
+                "meta": 13
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "thermalfoundation:material",
+                    "meta": 352
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "ic2:crafting",
+                    "meta": 15
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "ic2:crafting",
+                    "meta": 3
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "ic2:resource",
+                    "meta": 12
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "forestry:hardened_machine"
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "forestry:sturdy_machine"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "minecraft:diamond"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "forestry:carpenter"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 2,
+                "item": "forestry:sturdy_machine"
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "thermalfoundation:material",
+                    "meta": 256
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "thermalfoundation:material",
+                    "meta": 163
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "thermalfoundation:material",
+                    "meta": 291
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "thermalfoundation:material",
+                "meta": 291
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 4,
+                "item": "thermalfoundation:material",
+                "meta": 163
+            }
+        }],
+        "catalyst": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:metal_multiblock"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:mold",
+                    "meta": 1
+                }
+            }
+        ]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "thermalfoundation:material",
+                "meta": 256
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 4,
+                "item": "thermalfoundation:material",
+                "meta": 128
+            }
+        }],
+        "catalyst": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:metal_multiblock"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:mold",
+                    "meta": 1
+                }
+            }
+        ]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "ic2:crafting",
+                "meta": 6
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "ic2:casing",
+                    "meta": 6
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "ic2:crafting",
+                    "meta": 5
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "minecraft:iron_ingot"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 4,
+                "item": "ic2:resource",
+                "meta": 12
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "thermalfoundation:material",
+                    "meta": 324
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "nbt": {"Material": "iron"},
+                    "amount": 4,
+                    "item": "tconstruct:large_plate"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "nbt": {"Material": "iron"},
+                "amount": 1,
+                "item": "tconstruct:large_plate"
+            }
+        }],
+        "input": [{
+            "type": "fluidStack",
+            "content": {
+                "amount": 1152,
+                "fluid": "iron"
+            }
+        }],
+        "catalyst": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "tconstruct:casting"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "nbt": {"PartType": "tconstruct:large_plate"},
+                    "amount": 1,
+                    "item": "tconstruct:cast"
+                }
+            }
+        ]
+    },
+    {
+        "output": [{
+            "type": "fluidStack",
+            "content": {
+                "amount": 144,
+                "fluid": "iron"
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:iron_ingot"
+            }
+        }],
+        "catalyst": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "tconstruct:smeltery_controller"
+                }
+            },
+            {
+                "type": "fluidStack",
+                "content": {
+                    "amount": 1000,
+                    "fluid": "lava"
+                }
+            }
+        ]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 4,
+                "item": "forestry:thermionic_tubes",
+                "meta": 1
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 5,
+                    "item": "thermalfoundation:material",
+                    "meta": 129
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "minecraft:redstone"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "forestry:fabricator"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "mekanism:reinforcedalloy"
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "mekanism:enrichedalloy"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "mekanism:compresseddiamond"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "mekanism:machineblock",
+                "cap": {"astralsorcery:cap_item_amulet_holder": {}},
+                "fNbt": 1,
+                "fMeta": 1
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "mekanism:compresseddiamond"
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:diamond"
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "mekanism:machineblock",
+                "cap": {"astralsorcery:cap_item_amulet_holder": {}},
+                "fNbt": 1,
+                "fMeta": 1
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "mekanism:enrichedalloy"
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "minecraft:iron_ingot"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "mekanism:compressedredstone"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "mekanism:machineblock",
+                "cap": {"astralsorcery:cap_item_amulet_holder": {}},
+                "fNbt": 1,
+                "fMeta": 1
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "mekanism:compressedredstone"
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:redstone"
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "mekanism:machineblock",
+                "cap": {"astralsorcery:cap_item_amulet_holder": {}},
+                "fNbt": 1,
+                "fMeta": 1
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 16,
+                "item": "minecraft:iron_bars"
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 6,
+                "item": "minecraft:iron_ingot"
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 16,
+                "item": "minecraft:glass_pane"
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 6,
+                "item": "minecraft:glass"
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "ic2:crafting",
+                "meta": 5
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "nbt": {
+                        "type": 0,
+                        "insulation": 0
+                    },
+                    "amount": 8,
+                    "item": "ic2:cable"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "minecraft:iron_ingot"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "nbt": {
+                    "type": 0,
+                    "insulation": 0
+                },
+                "amount": 3,
+                "item": "ic2:cable"
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "thermalfoundation:material",
+                "meta": 128
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "ic2:te",
+                "meta": 55
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 2,
+                "item": "ic2:casing",
+                "meta": 6
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "thermalfoundation:material",
+                "meta": 321
+            }
+        }],
+        "catalyst": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:metal_multiblock"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:mold"
+                }
+            }
+        ]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "ic2:crafting",
+                "meta": 15
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "ic2:crafting",
+                "meta": 14
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "ic2:te",
+                "meta": 43
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "ic2:crafting",
+                "meta": 14
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 2,
+                "item": "ic2:crafting",
+                "meta": 13
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "ic2:crafting",
+                "meta": 13
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 4,
+                "item": "thermalfoundation:material",
+                "meta": 768
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "thermalfoundation:material",
+                "meta": 768
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:coal"
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "ic2:te",
+                "meta": 47
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 2,
+                "item": "immersiveengineering:material",
+                "meta": 2
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "thermalfoundation:material",
+                "meta": 160
+            }
+        }],
+        "catalyst": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:metal_multiblock"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:mold",
+                    "meta": 2
+                }
+            }
+        ]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
                 "amount": 1,
                 "item": "mysticalagriculture:gear",
                 "meta": 3
@@ -2522,69 +3976,6 @@
         "output": [{
             "type": "itemStack",
             "content": {
-                "amount": 2,
-                "item": "rftools:machine_frame"
-            }
-        }],
-        "input": [
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 2,
-                    "item": "ic2:heat_vent"
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 1,
-                    "item": "thermalfoundation:material",
-                    "meta": 25
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 2,
-                    "item": "industrialforegoing:dryrubber"
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 1,
-                    "item": "teslacorelib:machine_case"
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 2,
-                    "item": "industrialforegoing:pink_slime"
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 1,
-                    "item": "industrialforegoing:range_addon",
-                    "cap": {"astralsorcery:cap_item_amulet_holder": {}},
-                    "fMeta": 1
-                }
-            }
-        ],
-        "catalyst": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "minecraft:crafting_table"
-            }
-        }]
-    },
-    {
-        "output": [{
-            "type": "itemStack",
-            "content": {
                 "amount": 1,
                 "item": "ic2:heat_vent"
             }
@@ -2651,85 +4042,6 @@
                     "amount": 1,
                     "item": "thermalfoundation:material",
                     "meta": 256
-                }
-            }
-        ],
-        "catalyst": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "minecraft:crafting_table"
-            }
-        }]
-    },
-    {
-        "output": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "ic2:crafting",
-                "meta": 6
-            }
-        }],
-        "input": [
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 2,
-                    "item": "ic2:casing",
-                    "meta": 6
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 2,
-                    "item": "ic2:crafting",
-                    "meta": 5
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 1,
-                    "item": "minecraft:iron_ingot"
-                }
-            }
-        ],
-        "catalyst": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "minecraft:crafting_table"
-            }
-        }]
-    },
-    {
-        "output": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "ic2:crafting",
-                "meta": 5
-            }
-        }],
-        "input": [
-            {
-                "type": "itemStack",
-                "content": {
-                    "nbt": {
-                        "type": 0,
-                        "insulation": 0
-                    },
-                    "amount": 8,
-                    "item": "ic2:cable"
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 1,
-                    "item": "minecraft:iron_ingot"
                 }
             }
         ],
@@ -2975,7 +4287,6 @@
             "content": {
                 "amount": 1,
                 "item": "forestry:chipsets",
-                "fNbt": 1,
                 "meta": 1
             }
         }],
@@ -3584,57 +4895,6 @@
         "output": [{
             "type": "itemStack",
             "content": {
-                "amount": 1,
-                "item": "ic2:resource",
-                "meta": 13
-            }
-        }],
-        "input": [
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 4,
-                    "item": "thermalfoundation:material",
-                    "meta": 352
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 2,
-                    "item": "ic2:crafting",
-                    "meta": 15
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 2,
-                    "item": "ic2:crafting",
-                    "meta": 3
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 1,
-                    "item": "ic2:resource",
-                    "meta": 12
-                }
-            }
-        ],
-        "catalyst": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "minecraft:crafting_table"
-            }
-        }]
-    },
-    {
-        "output": [{
-            "type": "itemStack",
-            "content": {
                 "amount": 4,
                 "item": "ic2:resource",
                 "meta": 12
@@ -4205,48 +5465,6 @@
         "output": [{
             "type": "itemStack",
             "content": {
-                "amount": 2,
-                "item": "actuallyadditions:block_misc",
-                "meta": 9
-            }
-        }],
-        "input": [
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 4,
-                    "item": "immersiveengineering:sheetmetal",
-                    "meta": 9
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 4,
-                    "item": "forestry:thermionic_tubes",
-                    "meta": 1
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 1,
-                    "item": "forestry:hardened_machine"
-                }
-            }
-        ],
-        "catalyst": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "minecraft:crafting_table"
-            }
-        }]
-    },
-    {
-        "output": [{
-            "type": "itemStack",
-            "content": {
                 "amount": 1,
                 "item": "forestry:hardened_machine"
             }
@@ -4647,57 +5865,6 @@
             "content": {
                 "amount": 1,
                 "item": "ic2:crafting",
-                "meta": 15
-            }
-        }],
-        "input": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "ic2:crafting",
-                "meta": 14
-            }
-        }],
-        "catalyst": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "ic2:te",
-                "meta": 43
-            }
-        }]
-    },
-    {
-        "output": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "ic2:crafting",
-                "meta": 14
-            }
-        }],
-        "input": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 2,
-                "item": "ic2:crafting",
-                "meta": 13
-            }
-        }],
-        "catalyst": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "minecraft:crafting_table"
-            }
-        }]
-    },
-    {
-        "output": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "ic2:crafting",
                 "meta": 13
             }
         }],
@@ -4769,29 +5936,6 @@
         "output": [{
             "type": "itemStack",
             "content": {
-                "amount": 16,
-                "item": "minecraft:iron_bars"
-            }
-        }],
-        "input": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 6,
-                "item": "minecraft:iron_ingot"
-            }
-        }],
-        "catalyst": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "minecraft:crafting_table"
-            }
-        }]
-    },
-    {
-        "output": [{
-            "type": "itemStack",
-            "content": {
                 "amount": 1,
                 "item": "thermalfoundation:material",
                 "meta": 160
@@ -4844,35 +5988,6 @@
                 "amount": 1,
                 "item": "ic2:te",
                 "meta": 43
-            }
-        }]
-    },
-    {
-        "output": [{
-            "type": "itemStack",
-            "content": {
-                "nbt": {
-                    "type": 0,
-                    "insulation": 0
-                },
-                "amount": 3,
-                "item": "ic2:cable"
-            }
-        }],
-        "input": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "thermalfoundation:material",
-                "meta": 128
-            }
-        }],
-        "catalyst": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "ic2:te",
-                "meta": 55
             }
         }]
     },
@@ -5515,8 +6630,7 @@
             "content": {
                 "amount": 1,
                 "item": "actuallyadditions:item_battery_quintuple",
-                "fCap": 1,
-                "fNbt": 1
+                "fCap": 1
             }
         }],
         "input": [
@@ -5684,7 +6798,6 @@
                 "amount": 1,
                 "item": "actuallyadditions:item_battery_double",
                 "fCap": 1,
-                "fNbt": 1,
                 "fMeta": 1
             }
         }],
@@ -9571,56 +10684,6 @@
         "output": [{
             "type": "itemStack",
             "content": {
-                "amount": 4,
-                "item": "immersiveengineering:metal_decoration0",
-                "meta": 5
-            }
-        }],
-        "input": [
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 4,
-                    "item": "immersiveengineering:metal",
-                    "meta": 35
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 2,
-                    "item": "mekanism:reinforcedalloy"
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 2,
-                    "item": "immersiveengineering:material",
-                    "meta": 8
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 1,
-                    "item": "immersiveengineering:metal_decoration1",
-                    "meta": 1
-                }
-            }
-        ],
-        "catalyst": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "minecraft:crafting_table"
-            }
-        }]
-    },
-    {
-        "output": [{
-            "type": "itemStack",
-            "content": {
                 "amount": 1,
                 "item": "environmentaltech:solar_cell_ionite"
             }
@@ -9778,8 +10841,7 @@
                 "type": "itemStack",
                 "content": {
                     "amount": 4,
-                    "item": "draconicevolution:draconium_capacitor",
-                    "meta": 1
+                    "item": "enderio:item_capacitor_stellar"
                 }
             },
             {
@@ -10727,76 +11789,6 @@
             "type": "itemStack",
             "content": {
                 "amount": 1,
-                "item": "mekanism:reinforcedalloy"
-            }
-        }],
-        "input": [
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 1,
-                    "item": "mekanism:enrichedalloy"
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 1,
-                    "item": "mekanism:compresseddiamond"
-                }
-            }
-        ],
-        "catalyst": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "mekanism:machineblock",
-                "cap": {"astralsorcery:cap_item_amulet_holder": {}},
-                "fNbt": 1,
-                "fMeta": 1
-            }
-        }]
-    },
-    {
-        "output": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "mekanism:enrichedalloy"
-            }
-        }],
-        "input": [
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 1,
-                    "item": "minecraft:iron_ingot"
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 1,
-                    "item": "mekanism:compressedredstone"
-                }
-            }
-        ],
-        "catalyst": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "mekanism:machineblock",
-                "cap": {"astralsorcery:cap_item_amulet_holder": {}},
-                "fNbt": 1,
-                "fMeta": 1
-            }
-        }]
-    },
-    {
-        "output": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
                 "item": "ic2:plate",
                 "meta": 11
             }
@@ -11390,58 +12382,6 @@
             "content": {
                 "amount": 1,
                 "item": "minecraft:crafting_table"
-            }
-        }]
-    },
-    {
-        "output": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "mekanism:compressedredstone"
-            }
-        }],
-        "input": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "minecraft:redstone"
-            }
-        }],
-        "catalyst": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "mekanism:machineblock",
-                "cap": {"astralsorcery:cap_item_amulet_holder": {}},
-                "fNbt": 1,
-                "fMeta": 1
-            }
-        }]
-    },
-    {
-        "output": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "mekanism:compresseddiamond"
-            }
-        }],
-        "input": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "minecraft:diamond"
-            }
-        }],
-        "catalyst": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "mekanism:machineblock",
-                "cap": {"astralsorcery:cap_item_amulet_holder": {}},
-                "fNbt": 1,
-                "fMeta": 1
             }
         }]
     },
@@ -12548,7 +13488,6 @@
                 "amount": 1,
                 "item": "ic2:lapotron_crystal",
                 "fCap": 1,
-                "fNbt": 1,
                 "fMeta": 1
             }
         }],
@@ -12594,7 +13533,6 @@
                 "amount": 1,
                 "item": "ic2:energy_crystal",
                 "fCap": 1,
-                "fNbt": 1,
                 "fMeta": 1
             }
         }],
@@ -13421,8 +14359,7 @@
             "type": "itemStack",
             "content": {
                 "amount": 1,
-                "item": "opencomputers:print",
-                "fNbt": 1
+                "item": "opencomputers:print"
             }
         }],
         "input": [
@@ -19835,40 +20772,6 @@
         "output": [{
             "type": "itemStack",
             "content": {
-                "nbt": {"Material": "iron"},
-                "amount": 1,
-                "item": "tconstruct:large_plate"
-            }
-        }],
-        "input": [{
-            "type": "fluidStack",
-            "content": {
-                "amount": 1152,
-                "fluid": "iron"
-            }
-        }],
-        "catalyst": [
-            {
-                "type": "itemStack",
-                "content": {
-                    "amount": 1,
-                    "item": "tconstruct:casting"
-                }
-            },
-            {
-                "type": "itemStack",
-                "content": {
-                    "nbt": {"PartType": "tconstruct:large_plate"},
-                    "amount": 1,
-                    "item": "tconstruct:cast"
-                }
-            }
-        ]
-    },
-    {
-        "output": [{
-            "type": "itemStack",
-            "content": {
                 "amount": 1,
                 "item": "mekanism:dust",
                 "meta": 2
@@ -19890,31 +20793,6 @@
                 "cap": {"astralsorcery:cap_item_amulet_holder": {}},
                 "fNbt": 1,
                 "fMeta": 1
-            }
-        }]
-    },
-    {
-        "output": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "thermalfoundation:material",
-                "meta": 768
-            }
-        }],
-        "input": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "minecraft:coal"
-            }
-        }],
-        "catalyst": [{
-            "type": "itemStack",
-            "content": {
-                "amount": 1,
-                "item": "ic2:te",
-                "meta": 47
             }
         }]
     },
@@ -28565,7 +29443,6 @@
                 "amount": 1,
                 "item": "ic2:frequency_transmitter",
                 "fCap": 1,
-                "fNbt": 1,
                 "fMeta": 1
             }
         }],
@@ -28653,7 +29530,6 @@
                 "amount": 1,
                 "item": "ic2:te",
                 "fCap": 1,
-                "fNbt": 1,
                 "meta": 74
             }
         }],
@@ -29570,7 +30446,6 @@
                 "amount": 1,
                 "item": "industrialforegoing:range_addon",
                 "fCap": 1,
-                "fNbt": 1,
                 "fMeta": 1
             }
         }],
@@ -32002,7 +32877,6 @@
             "content": {
                 "amount": 1,
                 "item": "ic2:te",
-                "fNbt": 1,
                 "meta": 75
             }
         }],
@@ -37209,7 +38083,6 @@
             "content": {
                 "amount": 1,
                 "item": "forestry:chipsets",
-                "fNbt": 1,
                 "meta": 3
             }
         }],
@@ -37278,7 +38151,6 @@
             "content": {
                 "amount": 1,
                 "item": "forestry:chipsets",
-                "fNbt": 1,
                 "meta": 2
             }
         }],
@@ -37318,8 +38190,7 @@
             "type": "itemStack",
             "content": {
                 "amount": 1,
-                "item": "forestry:chipsets",
-                "fNbt": 1
+                "item": "forestry:chipsets"
             }
         }],
         "input": [
@@ -43362,7 +44233,6 @@
                 "amount": 1,
                 "item": "mekanism:machineblock",
                 "fCap": 1,
-                "fNbt": 1,
                 "meta": 7
             }
         }],
@@ -43404,7 +44274,6 @@
                 "amount": 1,
                 "item": "mekanism:machineblock",
                 "fCap": 1,
-                "fNbt": 1,
                 "meta": 6
             }
         }],
@@ -43534,7 +44403,6 @@
                 "amount": 1,
                 "item": "mekanism:machineblock",
                 "fCap": 1,
-                "fNbt": 1,
                 "meta": 5
             }
         }],
@@ -43571,7 +44439,6 @@
                 "amount": 1,
                 "item": "mekanism:machineblock",
                 "fCap": 1,
-                "fNbt": 1,
                 "meta": 1
             }
         }],
@@ -44242,7 +45109,6 @@
                 "amount": 1,
                 "item": "mekanism:machineblock2",
                 "fCap": 1,
-                "fNbt": 1,
                 "meta": 1
             }
         }],
@@ -44306,7 +45172,6 @@
                 "amount": 1,
                 "item": "mekanism:machineblock2",
                 "fCap": 1,
-                "fNbt": 1,
                 "meta": 11
             }
         }],
@@ -44341,7 +45206,6 @@
                 "amount": 1,
                 "item": "mekanism:machineblock",
                 "fCap": 1,
-                "fNbt": 1,
                 "meta": 13
             }
         }],
@@ -44621,7 +45485,6 @@
                 "amount": 1,
                 "item": "extrautils2:suncrystal",
                 "fCap": 1,
-                "fNbt": 1,
                 "fMeta": 1
             }
         }],
@@ -45039,7 +45902,6 @@
                 "amount": 1,
                 "item": "astralsorcery:itemcelestialcrystal",
                 "fCap": 1,
-                "fNbt": 1,
                 "fMeta": 1
             }
         }],
@@ -45463,7 +46325,7 @@
         "output": [{
             "type": "itemStack",
             "content": {
-                "amount": 2,
+                "amount": 1,
                 "item": "enderio:item_material",
                 "meta": 5
             }
@@ -50971,6 +51833,1188 @@
                     "amount": 1,
                     "item": "mysticalagriculture:master_infusion_crystal",
                     "cap": {"astralsorcery:cap_item_amulet_holder": {}}
+                }
+            }
+        ]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "enderio:item_capacitor_stellar"
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "enderio:item_alloy_endergy_ingot",
+                    "meta": 3
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "enderio:item_capacitor_melodic"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "minecraft:shulker_shell"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "enderio:item_capacitor_melodic"
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "enderio:item_alloy_endergy_ingot",
+                    "meta": 2
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "enderio:item_capacitor_crystalline"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "enderio:item_alloy_ingot",
+                    "meta": 8
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "enderio:item_capacitor_crystalline"
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "enderio:item_alloy_endergy_ingot",
+                    "meta": 1
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "enderio:item_basic_capacitor",
+                    "meta": 2
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "minecraft:prismarine_crystals"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "enderio:item_alloy_endergy_ingot",
+                "meta": 3
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "enderio:item_material",
+                    "meta": 34
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "enderio:item_alloy_endergy_ingot",
+                    "meta": 2
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "tconevo:metal"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "immersiveengineering:metal_multiblock",
+                "meta": 13
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "enderio:item_alloy_endergy_ingot",
+                "meta": 1
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "enderio:item_material",
+                    "meta": 36
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "enderio:item_alloy_ingot",
+                    "meta": 2
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "tconevo:metal",
+                    "meta": 30
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "immersiveengineering:metal_multiblock",
+                "meta": 13
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "enderio:item_material",
+                "meta": 36
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "enderio:item_material",
+                "meta": 14
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "nuclearcraft:manufactory_idle"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "tconevo:metal",
+                "meta": 30
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "nbt": {},
+                    "amount": 1,
+                    "item": "bloodmagic:soul_gem",
+                    "cap": {"astralsorcery:cap_item_amulet_holder": {}}
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "tconevo:material"
+                }
+            }
+        ],
+        "catalyst": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "bloodmagic:soul_forge"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "bloodmagic:monster_soul",
+                    "cap": {"astralsorcery:cap_item_amulet_holder": {}}
+                }
+            }
+        ]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "bloodmagic:soul_gem",
+                "cap": {"astralsorcery:cap_item_amulet_holder": {}},
+                "fNbt": 1
+            }
+        }],
+        "input": [
+            {
+                "type": "empty",
+                "content": {}
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "minecraft:redstone"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "minecraft:gold_ingot"
+                }
+            },
+            {
+                "type": "oreDict",
+                "content": {
+                    "amount": 1,
+                    "name": "blockGlass"
+                }
+            },
+            {
+                "type": "oreDict",
+                "content": {
+                    "amount": 1,
+                    "name": "dyeBlue"
+                }
+            }
+        ],
+        "catalyst": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "bloodmagic:soul_forge"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "bloodmagic:monster_soul",
+                    "cap": {"astralsorcery:cap_item_amulet_holder": {}}
+                }
+            }
+        ]
+    },
+    {
+        "output": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "enderio:item_alloy_endergy_ingot",
+                    "meta": 2
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:material",
+                    "meta": 7
+                }
+            }
+        ],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "enderio:item_material",
+                    "meta": 35
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "enderio:item_alloy_endergy_ingot",
+                    "meta": 4
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "tconevo:metal",
+                    "meta": 40
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "immersiveengineering:metal_multiblock",
+                "meta": 13
+            }
+        }]
+    },
+    {
+        "output": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "enderio:item_alloy_endergy_ingot",
+                    "meta": 4
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:material",
+                    "meta": 7
+                }
+            }
+        ],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "enderio:item_material",
+                    "meta": 37
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "enderio:item_alloy_endergy_ingot",
+                    "meta": 1
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "industrialforegoing:pink_slime_ingot"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "immersiveengineering:metal_multiblock",
+                "meta": 13
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "industrialforegoing:pink_slime_ingot"
+            }
+        }],
+        "input": [
+            {
+                "type": "fluidStack",
+                "content": {
+                    "amount": 2000,
+                    "fluid": "if.pink_slime"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "minecraft:iron_ingot"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "industrialforegoing:ore_sieve"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "tconevo:metal",
+                "meta": 40
+            }
+        }],
+        "input": [{
+            "type": "fluidStack",
+            "content": {
+                "amount": 144,
+                "fluid": "universal_metal"
+            }
+        }],
+        "catalyst": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "tcomplement:scorched_casting"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "tconstruct:cast_custom"
+                }
+            }
+        ]
+    },
+    {
+        "output": [{
+            "type": "fluidStack",
+            "content": {
+                "amount": 144,
+                "fluid": "universal_metal"
+            }
+        }],
+        "input": [
+            {
+                "type": "fluidStack",
+                "content": {
+                    "amount": 72,
+                    "fluid": "ic2uu_matter"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "tconevo:material"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "ic2:te",
+                "meta": 42
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "tconevo:metal"
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "tconevo:material"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "draconicevolution:wyvern_core"
+                }
+            },
+            {
+                "type": "oreDict",
+                "content": {
+                    "amount": 1,
+                    "name": "blockRedstone"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "minecraft:diamond"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "draconicevolution:fusion_crafting_core"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "enderio:item_material",
+                "meta": 35
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "enderio:item_material",
+                "meta": 15
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "nuclearcraft:manufactory_idle"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "enderio:item_material",
+                "meta": 34
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "enderio:item_material",
+                "meta": 19
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "nuclearcraft:manufactory_idle"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "nbt": {
+                    "tier": 4,
+                    "mekData": {}
+                },
+                "amount": 1,
+                "item": "mekanism:gastank"
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 20,
+                    "item": "extendedcrafting:material",
+                    "meta": 32
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 8,
+                    "item": "bigreactors:blockludicrite"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "nbt": {
+                        "FluidName": "rocket_fuel",
+                        "Amount": 1000
+                    },
+                    "amount": 8,
+                    "item": "forge:bucketfilled"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "industrialforegoing:black_hole_tank"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "plustic:osgloglasblock"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "bigreactors:mineralanglesite"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "plustic:mirionblock"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "nbt": {
+                        "Fluid": {
+                            "FluidName": "neutron",
+                            "Amount": 512000
+                        },
+                        "Level": 3
+                    },
+                    "amount": 1,
+                    "item": "thermalexpansion:tank"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "avaritia:resource",
+                    "meta": 4
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "extendedcrafting:material",
+                    "meta": 13
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "nbt": {
+                        "Fluid": {
+                            "FluidName": "mana",
+                            "Amount": 512000
+                        },
+                        "Level": 3
+                    },
+                    "amount": 1,
+                    "item": "thermalexpansion:tank"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "bigreactors:mineralbenitoite"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "advancedrocketry:oxygencharger"
+                }
+            },
+            {
+                "type": "placeholder",
+                "content": {
+                    "amount": 1,
+                    "name": "CreativeGas"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "extendedcrafting:table_ultimate"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "placeholder",
+            "content": {
+                "amount": 1,
+                "name": "CreativeGas"
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "draconicevolution:awakened_core"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "advancedrocketry:liquidtank"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "nbt": {"tier": 4},
+                    "amount": 1,
+                    "item": "mekanism:machineblock2",
+                    "fCap": 1,
+                    "meta": 11
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "avaritia:resource",
+                    "meta": 4
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "nbt": {
+                        "Fluid": {
+                            "FluidName": "ic2uu_matter",
+                            "Amount": 512000
+                        },
+                        "Level": 3
+                    },
+                    "amount": 1,
+                    "item": "thermalexpansion:tank",
+                    "cap": {"astralsorcery:cap_item_amulet_holder": {}}
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "nbt": {
+                        "Fluid": {
+                            "FluidName": "liquiddna",
+                            "Amount": 512000
+                        },
+                        "Level": 3
+                    },
+                    "amount": 1,
+                    "item": "thermalexpansion:tank",
+                    "cap": {"astralsorcery:cap_item_amulet_holder": {}}
+                }
+            }
+        ],
+        "catalyst": []
+    },
+    {
+        "output": [{
+            "type": "fluidStack",
+            "content": {
+                "amount": 1000,
+                "fluid": "heavywater"
+            }
+        }],
+        "input": [{
+            "type": "placeholder",
+            "content": {
+                "amount": 600,
+                "name": "Ticks"
+            }
+        }],
+        "catalyst": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "mekanism:machineblock",
+                    "cap": {"astralsorcery:cap_item_amulet_holder": {}},
+                    "meta": 12
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "mekanism:filterupgrade"
+                }
+            }
+        ]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:enchanting_table"
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "minecraft:book"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "minecraft:diamond"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 4,
+                    "item": "minecraft:obsidian"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "actuallyadditions:item_battery_double",
+                "cap": {"astralsorcery:cap_item_amulet_holder": {}}
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "actuallyadditions:item_battery",
+                    "fCap": 1,
+                    "fNbt": 1,
+                    "fMeta": 1
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 5,
+                    "item": "actuallyadditions:item_crystal",
+                    "meta": 5
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "actuallyadditions:item_misc",
+                    "meta": 8
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "tconstruct:seared"
+            }
+        }],
+        "input": [{
+            "type": "fluidStack",
+            "content": {
+                "amount": 288,
+                "fluid": "stone"
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "tconstruct:casting",
+                "meta": 1
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 6,
+                "item": "enderio:item_material",
+                "meta": 52
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "enderio:item_material",
+                    "meta": 74
+                }
+            },
+            {
+                "type": "oreDict",
+                "content": {
+                    "amount": 4,
+                    "name": "dustNetherQuartz"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "enderio:item_material",
+                    "meta": 49
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "enderio:item_material",
+                    "meta": 50
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "minecraft:crafting_table"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "enderio:item_material",
+                "meta": 74
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "enderio:item_alloy_ingot",
+                "meta": 7
+            }
+        }],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "nuclearcraft:manufactory_idle"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 2,
+                "item": "enderio:item_material",
+                "meta": 50
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 6,
+                    "item": "thermalfoundation:material",
+                    "meta": 768
+                }
+            },
+            {
+                "type": "oreDict",
+                "content": {
+                    "amount": 1,
+                    "name": "slimeball"
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "enderio:block_simple_alloy_smelter"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 2,
+                "item": "enderio:item_material",
+                "meta": 49
+            }
+        }],
+        "input": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "minecraft:dye",
+                    "meta": 3
+                }
+            },
+            {
+                "type": "oreDict",
+                "content": {
+                    "amount": 1,
+                    "name": "slimeball"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 2,
+                    "item": "thermalfoundation:material",
+                    "meta": 768
+                }
+            }
+        ],
+        "catalyst": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "enderio:block_simple_alloy_smelter"
+            }
+        }]
+    },
+    {
+        "output": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "advancedrocketry:productplate"
+            }
+        }],
+        "input": [{
+            "type": "itemStack",
+            "content": {
+                "amount": 1,
+                "item": "advancedrocketry:productingot"
+            }
+        }],
+        "catalyst": [
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:metal_multiblock"
+                }
+            },
+            {
+                "type": "itemStack",
+                "content": {
+                    "amount": 1,
+                    "item": "immersiveengineering:mold"
                 }
             }
         ]

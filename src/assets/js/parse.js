@@ -35,6 +35,22 @@ function mutateOreToItemstack(raw, parsedData){
   }
 }
 
+function clearEmpties(o) {
+  if (!o) return;
+  
+  for (var k in o) {
+    if (!o[k] || typeof o[k] !== "object") {
+      continue // If null or not an object, skip to the next iteration
+    }
+
+    // The property is an object
+    clearEmpties(o[k]); // <-- Make a recursive call on the nested object
+    if (Object.keys(o[k]).length === 0) {
+      delete o[k]; // The object had no properties, so delete that property
+    }
+  }
+}
+
 
 export function parseRawRecipes(groups, parsedData) {
 
@@ -42,47 +58,67 @@ export function parseRawRecipes(groups, parsedData) {
   // Organize raw Just Enough Calculation json input
   // ====================================================
 
+  function prepareEntry(raw, isMutate) {
+    clearEmpties(raw.content.nbt);
+
+    if (isMutate) {
+      const nbt = raw.content?.nbt;
+
+      // Replace bucket with liquid to actual liquid
+      if (raw.content?.item === "forge:bucketfilled") {
+        raw.type = "fluidStack";
+        raw.content = {
+            amount: 1000,
+            fluid: nbt?.FluidName || "<<Undefined Fluid>>"
+          };
+      }
+    }
+  }
+
   // Try to remove placeholders that created only to extend ingredient count
   var remIndexes = [];
   groups.Default.forEach((dd, ii) => {
-    dd.input.forEach((obj_input, jj) => {
-      // Replace bucket with liquid to actual liquid
-      if (obj_input.content?.item === "forge:bucketfilled") {
-        dd.input[jj] = {
-          type: "fluidStack",
-          content: {
-            amount: 1000,
-            fluid: obj_input.content?.nbt?.FluidName || "<<Undefined Fluid>>"
-          }
-        }
-      }
+    dd.input.forEach((raw, jj) => {
+
+      prepareEntry(raw, true);
+
     });
 
 
     var wasRemoved = false;
-    dd.output.forEach(obj_output => {
-      // Special case for placeholder in output:
-      // Add its all inputs to recipe where it represent input
-      if (obj_output.type === "placeholder") {
-        groups.Default.forEach(d => {
-          d.output.forEach(output => {
-            var pos = d.input.map(e => e.content?.name).indexOf(obj_output.content.name);
-            if (pos != -1 && d.input[pos].type === "placeholder") {
-              d.input.splice(pos, 1);
-              d.input = d.input.concat(dd.input);
-              wasRemoved = true;
-            }
-          });
+    function replaceInList(craft, listName, phRaw) {
+      var pos = craft[listName].map(e => e.content?.name).indexOf(phRaw.content.name);
+      if (pos != -1 && craft[listName][pos].type === "placeholder") {
+        craft[listName].splice(pos, 1);
+        craft[listName] = craft[listName].concat(dd.input);
+        wasRemoved = true;
+      }
+    }
+
+    // Special case for placeholder in output:
+    // Add its all inputs to recipe where it represent input
+    dd.output.forEach(raw => {
+
+      prepareEntry(raw);
+
+      if (raw.type === "placeholder") {
+        groups.Default.forEach(craft => {
+          replaceInList(craft, 'input',    raw);
+          // replaceInList(craft, 'catalyst', raw);
         });
       } else {
         // Replace oredict to itemstacks if needed
-        mutateOreToItemstack(obj_output, parsedData);
+        mutateOreToItemstack(raw, parsedData);
       }
+    });
+
+    dd.catalyst.forEach(raw => {
+      prepareEntry(raw, true);
     });
 
     if (wasRemoved) {
       remIndexes.push(ii);
-    } else {
+    } else {      
       dd.input.forEach((obj_input, jj) => {
         // Replace oredict to itemstacks if needed
         mutateOreToItemstack(obj_input, parsedData);
@@ -106,14 +142,23 @@ export function parseRawRecipes(groups, parsedData) {
 
   // Add node that represents item
   // Return new node or old one if item already present
-  function pushNodeFnc(raw) {
+  function pushNodeFnc(raw, isForced) {
     const node = new TreeNode(raw, parsedData);
-    const found = graph.nodes.find(n => n.match(node));
-    
+    const found = graph.nodes.find(n => isForced ? node.match(n) : n.match(node));
+
     if (found){
       return found;
     } else {
       graph.nodes.push(node);
+
+      // // Add automatic crafts for reserviours with liquids
+      // const nbt = raw.content?.nbt;
+      // const fluidName = nbt?.Fluid?.FluidName;
+      // const fluidAmount = nbt?.Fluid?.Amount;
+      // if (raw.type = "itemStack" && fluidName && fluidAmount) {
+      //   groups.Default.find(o => o.output.find());
+      // }
+
       return node;
     }
   }
@@ -128,7 +173,7 @@ export function parseRawRecipes(groups, parsedData) {
     d.output.forEach(output => {
       if(output.type === "empty") return;
 
-      const outNode = pushNodeFnc(output);
+      const outNode = pushNodeFnc(output, true);
 
       // If we already have recipe for this item, remove previous
       if (outNode.inputs.length !== 0 && d.input.length > 0) {

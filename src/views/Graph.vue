@@ -25,7 +25,7 @@ export default {
     return {
       selectedNode: undefined,
       selectedDeph: 0,
-      isScatter: false,
+      isScatter: $cookies.get('isScatter'),
     }
   },
   props: {
@@ -48,13 +48,14 @@ export default {
     
     next();
   },
-
+  
   mounted() {
     this.updateGraph();
   },
 
   watch: {
     isScatter(newValue, oldValue) {
+      $cookies.set('isScatter',newValue);
       this.updateGraph();
     }
   },

@@ -1,4 +1,5 @@
 
+const CRAFTING_TABLE_COST = 50.0;
 
   
 Array.prototype.remove = function() {
@@ -83,7 +84,6 @@ export class TreeNode {
   static usability      = 0.0;
   static popularity     = 0.0;
   static processing     = 0.0;
-  static CRAFTING_TABLE_COST = 50.0;
 
   constructor(raw, parsedData) {
     // Identificator without NBT (serialized)
@@ -157,7 +157,6 @@ export class TreeNode {
 
     this.volume         = (this.type == "fluidStack") ? 1000.0 : 1.0;
     this.popularity     = TreeNode.popularity;
-    // this.steps          = 0; // Count of processing cteps
 
     this.outputs        = [];
     this.inputs         = [];
@@ -189,11 +188,12 @@ export class TreeNode {
   }
 
   match(o) {
-    if (this.definition != o.definition) return false;
 
-    if(this.entryMeta != o.entryMeta) return false;
+    if(this.definition != o.definition) return false;
+
+    if(!(this.raw.content.fMeta || o.raw.content.fMeta) && this.entryMeta != o.entryMeta) return false;
     
-    if(this.nbtStr != o.nbtStr) return false;
+    if(!(this.raw.content.fNbt || o.raw.content.fNbt) && this.nbtStr != o.nbtStr) return false;
 
     return true;
   }
@@ -222,7 +222,7 @@ export class TreeNode {
 
   // Recursively iterate through all items in list
   // usually "inputs" or "outputs"
-  safeDive(fnc, listName, onLoop, deph = 999999999, antiloop) {
+  safeDive(listName, fnc, onLoop, deph = 999999999, antiloop) {
     if (deph>0){
       antiloop = antiloop || {};
       antiloop[this.id] = true;
@@ -233,7 +233,7 @@ export class TreeNode {
         const link = list[i];
         if (!antiloop[link.it.id]) {
           fnc(link, this, deph);
-          link.it.safeDive(fnc, listName, onLoop, deph - 1, antiloop);
+          link.it.safeDive(listName, fnc, onLoop, deph - 1, antiloop);
         } else if(onLoop) {
           onLoop(this, listName, link);
         }
@@ -243,31 +243,21 @@ export class TreeNode {
     }
   }
 
-  // forEachInput(fnc, antiloop){
-  //   antiloop = (antiloop || {});
-  //   antiloop[this.id] = true;
-  //   for (var i = 0; i < this.inputs.length; i++) {
-  //     if (!antiloop[this.inputs[i].it.id]) {
-  //       fnc(this.inputs[i].it);
-  //       this.inputs[i].it.forEachInput(fnc, antiloop);
-  //     }
-  //   }
-  //   antiloop[this.id] = undefined;
-  // }
-
   
   calculateEx(listName, field, defl = 0, fnc) {
     if (this[field] !== undefined) {
-      // if (this[field] === TreeNode[field])
-      //   console.log('trying to calculate already calculating node :>> ', field, this.id);
       return this[field];
     }
-    // if(this.name === "thermalfoundation:material:16"){
-    //   console.log('this :>> ', this);
-    // }
     
     // Default value if no lists
-    this[field] = this[listName].length === 0 ? TreeNode[field] : 0;
+    if (this[listName].length === 0) {
+      if (this.popularity > 0 && field === 'cost')
+        this[field] = CRAFTING_TABLE_COST;
+      else
+        this[field] = TreeNode[field];
+    } else {
+      this[field] = 0;
+    }
     const obj = this; // Oh my what a hack!
 
     // Summ vs of all [listName]
@@ -279,30 +269,29 @@ export class TreeNode {
     return this[field];
   }
 
+  recalculateField(field) {
+    this[field] = undefined;
+    this.calculated = undefined;
+    this.calculate();
+  }
+
   // Calculate complexity and other values after all links are created
   calculate(onLoop) {
 
     // This node already have all values
     if (this.calculated) return this;
     this.calculated = true;
-    
-    // // This node already in process, return default values
-    // if (this.calculating) {
-    //   console.log('trying to calculate already calculating node :>> ', this);
-    //   return this;
-    // }
-
-    // // Mark that this to prevent loops
-    // this.calculating = true;
 
     // Calculate steps
-    const allStepIndexes = [];
-    this.safeDive(link => {
-      // if(link.it.steps > 0)
-      if (allStepIndexes.indexOf(link.recipeIndex) === -1)
-        allStepIndexes.push(link.recipeIndex)
-    }, "inputs", onLoop);
-    this.steps = allStepIndexes.length;
+    if (!this.steps) {
+      const allStepIndexes = [];
+      this.safeDive("inputs", link => {
+        // if(link.it.steps > 0)
+        if (allStepIndexes.indexOf(link.recipeIndex) === -1)
+          allStepIndexes.push(link.recipeIndex)
+      }, onLoop);
+      this.steps = allStepIndexes.length;
+    }
 
     // Cost
     this.calculateEx("inputs", "cost");
@@ -310,70 +299,32 @@ export class TreeNode {
     // Usability
     this.calculateEx("outputs", "usability", 1.0);
 
-    // Processing cost
-    // this.calculateEx("inputs", "processing", link => {
-    //   link.it.popularity += link.weight;
-    //   return (link.it.calculate().complexity || TreeNode.CRAFTING_TABLE_COST) * link.weight
-    // });
+    // Find processing cost
+    if (!this.processing) {
+      // Collect all catalyst machines in array
+      const allCatalysts = {};
+      this.forEachCatalyst(link => {
+        const catl = allCatalysts[link.it.id] || { node: link.it };
+        catl.num = Math.max((catl.num || 0), link.weight);
 
-    // Collect all catalyst machines in array
-    // if (this.name === "rftools:powercell_creative"){
-    //   console.log('this :>> ', this);
-    // }
-    const allCatalysts = {};
-    // const pushCatalysts = node => node.catalysts.forEach(link => {
-    //   const catl = allCatalysts[link.it.id] || { node: link.it };
-    //   catl.num = Math.max((catl.num || 0), link.weight);
-    //   link.it.popularity += link.weight;
-    //   allCatalysts[link.it.id] = catl;
-    // });
+        allCatalysts[link.it.id] = catl;
+      });
 
-    // pushCatalysts(this);
-    // for (var i = 0; i < this.inputs.length; i++) {
-    //   pushCatalysts(this.inputs[i].it.calculate());
-    // }
-    // const allPopularityIndexes = [];
-    this.forEachCatalyst(link => {
-      const catl = allCatalysts[link.it.id] || { node: link.it };
-      catl.num = Math.max((catl.num || 0), link.weight);
 
-      // link.it.popularity += link.weight;
-      allCatalysts[link.it.id] = catl;
-
-      // if (allPopularityIndexes.indexOf(link.index) === -1) allPopularityIndexes.push(link.index)
-    });
-    // this.popularity = allPopularityIndexes.length;
-
-    this.processing = TreeNode.processing;
-
-    // Summ costs of all catalysts machines
-    for (const catl of Object.values(allCatalysts)) {
-      if (catl.node.name === "minecraft:crafting_table") {
-        this.processing += TreeNode.CRAFTING_TABLE_COST;
-      } else {
-        catl.node.calculate();
-        this.processing += catl.node.getComplexity(catl.num);
+      // Summ costs of all catalysts machines
+      this.processing = TreeNode.processing;
+      for (const catl of Object.values(allCatalysts)) {
+        if (catl.node.name === "minecraft:crafting_table") {
+          this.processing += CRAFTING_TABLE_COST;
+        } else {
+          catl.node.calculate();
+          this.processing += catl.node.getComplexity(catl.num);
+        }
       }
     }
 
-    // const link0 = this.catalysts[0];
-    // if (this.catalysts.length === 1 && link0.it.name === "minecraft:crafting_table" && link0.weight === 1) {
-    //   // Special case for crafting table
-    //   link0.it.popularity += 1;
-    //   this.processing += TreeNode.CRAFTING_TABLE_COST;
-    // } else {
-    //   for (var i = 0; i < this.catalysts.length; i++) {
-    //     const link = this.catalysts[i];
-    //     link.it.popularity += link.weight;
-    //     this.processing += (link.it.calculate().complexity || TreeNode.CRAFTING_TABLE_COST) * link.weight;
-    //   }
-    // }
-
     // Resulting value
     this.complexity = this.cost + this.processing;
-
-    // this.calculating = undefined;
-    // this.calculated.done = true;
 
     return this;
   }
