@@ -17,15 +17,15 @@
 
 <script>
 
-import {init, makeGraph} from "../assets/js/graph.js"
+import {makeGraph} from '../assets/js/graph.js'
 
 export default {
-  name: "Graph",
+  name: 'Graph',
   data() {
     return {
       selectedNode: undefined,
       selectedDeph: 0,
-      isScatter: $cookies.get('isScatter'),
+      isScatter: this.$cookies.get('isScatter'),
     }
   },
   props: {
@@ -38,26 +38,26 @@ export default {
   methods: {
     updateGraph(toQuery) {
       if (typeof this.graph == 'object')
-        makeGraph(this.graph, this, toQuery || this.$route.query, this.isScatter);
+        makeGraph(this.graph, this, toQuery || this.$route.query, this.isScatter)
       
     }
   },
 
   beforeRouteUpdate (to, from, next) {
-    this.updateGraph(to.query);
+    this.updateGraph(to.query)
     
-    next();
+    next()
   },
   
   mounted() {
-    this.updateGraph();
+    this.updateGraph()
   },
 
   watch: {
     isScatter(newValue, oldValue) {
-      $cookies.set('isScatter',newValue);
-      this.updateGraph();
+      this.$cookies.set('isScatter',newValue)
+      this.updateGraph()
     }
   },
-};
+}
 </script>

@@ -28,41 +28,38 @@
 </template>
 
 <script>
-import numeral from 'numeral';
+import numeral from 'numeral'
 
-var SI_SYMBOL = ["", "k", "M", "G", "T", "P", "E"];
+var SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E']
 
 function abbreviateNumber(num){
-  num = Math.round(num * 1000) / 1000.0;
+  num = Math.round(num * 1000) / 1000.0
   
   if(num <= 1) return num
 
   // what tier? (determines SI symbol)
-  var tier = Math.log10(num) / 3 | 0;
+  var tier = Math.log10(num) / 3 | 0
 
   // if zero, we don't need a suffix
-  if(tier == 0) return num;
+  if(tier == 0) return num
 
   // get suffix and determine scale
-  var suffix = SI_SYMBOL[tier];
-  var scale = Math.pow(10, tier * 3);
+  var suffix = SI_SYMBOL[tier]
+  var scale = Math.pow(10, tier * 3)
 
   // scale the num
-  var scaled = num / scale;
+  var scaled = num / scale
 
   // format num and add suffix
-  return scaled.toFixed(1) + suffix;
+  return scaled.toFixed(1) + suffix
 }
 
 const tierClasses = [
-  "grey--text text--lighten-1",
-  "grey--text text--lighten-2",
-  "enchanted",
-  "glow"
-];
-
-function getClass(num) {
-}
+  'grey--text text--lighten-1',
+  'grey--text text--lighten-2',
+  'enchanted',
+  'glow'
+]
 
 export default {
   props: {
@@ -78,35 +75,35 @@ export default {
   },
   computed: {
     compNumber() {
-      var num = this.number;
+      var num = this.number
 
       if (!this.short) {
-        if (num >= 1000) num = Math.round(num);
+        if (num >= 1000) num = Math.round(num)
 
-        return numeral(num).format('0,0.[000]');
+        return numeral(num).format('0,0.[000]')
       } else {
-        return abbreviateNumber(num);
+        return abbreviateNumber(num)
       }
       // return num | numeral("0,0.[000]");
     },
     compClass() {
-      const tier = Math.log10(this.number + 1) / 3 | 0;
-      const clss = tierClasses[tier];
+      const tier = Math.log10(this.number + 1) / 3 | 0
+      const clss = tierClasses[tier]
       if (clss)
-        return " " + clss;
+        return ' ' + clss
       else
-        return " " + tierClasses[tierClasses.length - 1];
+        return ' ' + tierClasses[tierClasses.length - 1]
     },
     whole(){
-      const num = Math.floor(this.number);
-      return numeral(num).format('0,0');
+      const num = Math.floor(this.number)
+      return numeral(num).format('0,0')
     },
     residue(){
-      const num = this.number - Math.floor(this.number);
-      return numeral(num).format('.000');
+      const num = this.number - Math.floor(this.number)
+      return numeral(num).format('.000')
     }
   },
-};
+}
 </script>
 
 <style scoped>

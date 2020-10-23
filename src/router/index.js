@@ -1,33 +1,33 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 const routes = [
   {
-    path: "/table",
-    name: "table",
+    path: '/table',
+    name: 'table',
     props: true,
     component: () =>
-      import(/* webpackChunkName: "table" */ "../views/Table.vue")
+      import(/* webpackChunkName: "table" */ '../views/Table.vue')
   },
   {
-    path: "/graph",
-    name: "graph",
+    path: '/graph',
+    name: 'graph',
     props: true,
     component: () =>
-      import(/* webpackChunkName: "graph" */ "../views/Graph.vue")
+      import(/* webpackChunkName: "graph" */ '../views/Graph.vue')
   },
   {
     path: '*',
     redirect: '/graph'
   }
-];
+]
 
 const router = new VueRouter({
   // mode: "history",
   routes,
-  base: "/CraftTreeVisualizer/",
-});
+  base: '/CraftTreeVisualizer/',
+})
 
-export default router;
+export default router

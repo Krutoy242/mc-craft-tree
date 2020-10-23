@@ -96,7 +96,7 @@
 </template>
 
 <script>
-const arrows = ["🠇","🠯","🠳","🡇","🡻"];
+const arrows = ['🠇','🠯','🠳','🡇','🡻']
 
 export default {
   props: {
@@ -107,52 +107,52 @@ export default {
 
   data() {
     return {
-      search: "",
+      search: '',
       selectedHeadersModel: [],
       selectedHeaders: [],
       headers: [
         {
-          text: "Item Name",
-          align: "start",
+          text: 'Item Name',
+          align: 'start',
           sortable: false,
-          value: "display",
+          value: 'display',
           divider: true
         },
         // { align: 'center' ,text: "", value: "data-table-expand" , divider: true},
-        { align: 'center' ,text: "Complexity", value: "complexity", divider: true},
-        { align: 'center' ,text: "Cost", value: "cost" },
-        { align: 'center' ,text: "Processing Cost", value: "processing" },
-        { align: 'center' ,text: "Usability", value: "usability" },
-        { align: 'center' ,text: "Popularity", value: "popularity" },
-        { align: 'center' ,text: "Inputs", value: "inputs.length" },
-        { align: 'center' ,text: "Outputs", value: "outputs.length" },
-        { align: 'center' ,text: "Steps", value: "steps" },
+        { align: 'center' ,text: 'Complexity', value: 'complexity', divider: true},
+        { align: 'center' ,text: 'Cost', value: 'cost' },
+        { align: 'center' ,text: 'Processing Cost', value: 'processing' },
+        { align: 'center' ,text: 'Usability', value: 'usability' },
+        { align: 'center' ,text: 'Popularity', value: 'popularity' },
+        { align: 'center' ,text: 'Inputs', value: 'inputs.length' },
+        { align: 'center' ,text: 'Outputs', value: 'outputs.length' },
+        { align: 'center' ,text: 'Steps', value: 'steps' },
       ],
-      isNumber: (v) => !isNaN(v) || "Input should be number!",
-    };
+      isNumber: (v) => !isNaN(v) || 'Input should be number!',
+    }
   },
   methods: {
     getArrows(n, offset){
-      var arr = [];
+      var arr = []
 
 
-      if ((n > 9 + offset) && (offset===0))arr.unshift(arrows[4]);
-      if ( n > 8 + offset) arr.push   (arrows[4]);
-      if ( n > 7 + offset) arr.unshift(arrows[3]);
-      if ( n > 6 + offset) arr.push   (arrows[3]);
-      if ( n > 5 + offset) arr.unshift(arrows[2]);
-      if ( n > 4 + offset) arr.push   (arrows[2]);
-      if ( n > 3 + offset) arr.unshift(arrows[1]);
-      if ( n > 2 + offset) arr.push   (arrows[1]);
-      if ( n > 1 + offset) arr.unshift(arrows[0]);
-      if ( n > 0 + offset) arr.push   (arrows[0]);
+      if ((n > 9 + offset) && (offset===0))arr.unshift(arrows[4])
+      if ( n > 8 + offset) arr.push   (arrows[4])
+      if ( n > 7 + offset) arr.unshift(arrows[3])
+      if ( n > 6 + offset) arr.push   (arrows[3])
+      if ( n > 5 + offset) arr.unshift(arrows[2])
+      if ( n > 4 + offset) arr.push   (arrows[2])
+      if ( n > 3 + offset) arr.unshift(arrows[1])
+      if ( n > 2 + offset) arr.push   (arrows[1])
+      if ( n > 1 + offset) arr.unshift(arrows[0])
+      if ( n > 0 + offset) arr.push   (arrows[0])
         
-      return arr.join('');
+      return arr.join('')
     }
   },
   computed: {
     trueHeaders(){
-      return this.headers.filter(head => head.text !== "" );
+      return this.headers.filter(head => head.text !== '' )
     }
   },
 
@@ -164,8 +164,8 @@ export default {
   },
 
   created() {
-    this.selectedHeaders = this.headers;
+    this.selectedHeaders = this.headers
   }
 
-};
+}
 </script>

@@ -98,10 +98,10 @@
 </template>
 
 <script>
-import { parseRawRecipes } from "./assets/js/parse.js";
-import DownloadLists from "./components/DownloadLists.vue";
-import groups from "./assets/groups.json";
-import parsedData from "./assets/parsedData.json";
+import { parseRawRecipes } from './assets/js/parse.js'
+import DownloadLists from './components/DownloadLists.vue'
+import groups from './assets/groups.json'
+import parsedData from './assets/parsedData.json'
 
 export default {
   components: {
@@ -113,23 +113,24 @@ export default {
   }),
 
   created() {
-    this.$vuetify.theme.dark = true;
+    this.$vuetify.theme.dark = true
   },
 
   mounted() {
     // Promise.all([d3.json("./groups.json"), d3.json("./parsedData.json")]).then(
     //   ([groups, parsedData]) => {
-        this.graph = parseRawRecipes(groups, parsedData);
+    this.graph = parseRawRecipes(groups, parsedData)
     //   }
     // );
   },
   computed: {
     sortedNoIcon(){
       if (this.graph && this.graph.noIcon)
-        return this.graph.noIcon.sort(function (a, b) {   
-          return ('' + a.name).localeCompare(b.name);
-        });
+        return this.graph.noIcon.slice(0).sort(function (a, b) {   
+          return ('' + a.name).localeCompare(b.name)
+        })
+      return undefined
     }
   },
-};
+}
 </script>

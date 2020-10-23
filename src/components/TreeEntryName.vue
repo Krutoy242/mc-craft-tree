@@ -15,15 +15,15 @@
 
 Object.defineProperty(String.prototype, 'hashCode', {
   value: function() {
-    var hash = 0, i, chr;
+    var hash = 0, i, chr
     for (i = 0; i < this.length; i++) {
-      chr   = this.charCodeAt(i);
-      hash  = ((hash << 5) - hash) + chr;
-      hash |= 0; // Convert to 32bit integer
+      chr   = this.charCodeAt(i)
+      hash  = ((hash << 5) - hash) + chr
+      hash |= 0 // Convert to 32bit integer
     }
-    return hash;
+    return hash
   }
-});
+})
 
 export default {
   props: {
@@ -33,8 +33,8 @@ export default {
   },
   computed: {
     h(str) {
-      return Math.abs(this.node.entrySource.hashCode()) % 256;
+      return Math.abs(this.node.entrySource.hashCode()) % 256
     },
   },
-};
+}
 </script>

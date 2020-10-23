@@ -38,8 +38,8 @@
 </template>
 
 <script>
-const arrows         = ["⭣","🠯","🠳","🡇","🢃"];
-const arrowsInverted = ["🠥","🠭","🠱","🡅","🢁"];
+const arrows         = ['⭣','🠯','🠳','🡇','🢃']
+const arrowsInverted = ['🠥','🠭','🠱','🡅','🢁']
 
 export default {
 
@@ -54,21 +54,21 @@ export default {
   
   methods: {
     getArrows(n, offset){
-      var arr = [];
-      const r = this.inverted ? arrowsInverted : arrows;
+      var arr = []
+      const r = this.inverted ? arrowsInverted : arrows
 
-      if ((n > 9 + offset) && (offset===0))arr.unshift(r[4]);
-      if ( n > 8 + offset) arr.push   (r[4]);
-      if ( n > 7 + offset) arr.unshift(r[2]);
-      if ( n > 6 + offset) arr.push   (r[2]);
-      if ( n > 5 + offset) arr.unshift(r[1]);
-      if ( n > 4 + offset) arr.push   (r[1]);
-      if ( n > 3 + offset) arr.unshift(r[0]);
-      if ( n > 2 + offset) arr.push   (r[0]);
-      if ( n > 1 + offset) arr.unshift(r[0]);
-      if ( n > 0 + offset) arr.push   (r[0]);
+      if ((n > 9 + offset) && (offset===0))arr.unshift(r[4])
+      if ( n > 8 + offset) arr.push   (r[4])
+      if ( n > 7 + offset) arr.unshift(r[2])
+      if ( n > 6 + offset) arr.push   (r[2])
+      if ( n > 5 + offset) arr.unshift(r[1])
+      if ( n > 4 + offset) arr.push   (r[1])
+      if ( n > 3 + offset) arr.unshift(r[0])
+      if ( n > 2 + offset) arr.push   (r[0])
+      if ( n > 1 + offset) arr.unshift(r[0])
+      if ( n > 0 + offset) arr.push   (r[0])
         
-      return arr.join('');
+      return arr.join('')
     }
   },
 }

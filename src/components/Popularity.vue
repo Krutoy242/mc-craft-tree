@@ -20,13 +20,13 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      number: {
-        type: Number
-      },
+export default {
+  props: {
+    number: {
+      type: Number
     },
-  }
+  },
+}
 </script>
 
 

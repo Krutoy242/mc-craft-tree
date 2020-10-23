@@ -86,22 +86,22 @@ export default {
   data() {
     return {
       typeIcons: {
-        itemStack: "",
-        fluidStack: "💧",
-        placeholder: "⍰",
+        itemStack: '',
+        fluidStack: '💧',
+        placeholder: '⍰',
       },
-    };
+    }
   },
   computed: {
     display() {
-      return this.node.display;
+      return this.node.display
     },
     entryIcon() {
-      return this.typeIcons[this.node.raw.type];
+      return this.typeIcons[this.node.raw.type]
     },
     bgPosition() {
-      const s = this.node.viewBox.split(" ");
-      return `${s[0]}px ${s[1]}px`;
+      const s = this.node.viewBox.split(' ')
+      return `${s[0]}px ${s[1]}px`
     }
   },
   methods: {
@@ -112,7 +112,7 @@ export default {
         return b
     }
   },
-};
+}
 </script>
 
 <style scoped>
