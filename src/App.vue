@@ -98,10 +98,17 @@
 </template>
 
 <script>
-import { parseRawRecipes } from './assets/js/parse.js'
+import { parseJECgroups } from './assets/js/jec_parse.js'
 import DownloadLists from './components/DownloadLists.vue'
-import groups from './assets/groups.json'
-import parsedData from './assets/parsedData.json'
+import constituents from './assets/js/constituents.js'
+import recipes from './assets/js/recipes.js'
+
+import default_additionals from './assets/default_additionals.json'
+import default_aliases from './assets/default_aliases.json'
+
+// import groups from './assets/groups.json'
+// import parsedData from './assets/parsedData.json'
+// import recipes from './assets/recipes.json'
 
 export default {
   components: {
@@ -117,12 +124,15 @@ export default {
   },
 
   mounted() {
-    // Promise.all([d3.json("./groups.json"), d3.json("./parsedData.json")]).then(
-    //   ([groups, parsedData]) => {
-    this.graph = parseRawRecipes(groups, parsedData)
-    //   }
-    // );
+    // this.graph = parseJECgroups(groups, parsedData)
+    // constituents.mergeWith('./assets/constituents.json')
+    constituents.setAdditionals(default_additionals)
+    var jec_groups = parseJECgroups('./assets/js/raw/groups.js', default_aliases)
+    recipes.mergeJECGroups(jec_groups)
+
+    constituents.calculate()
   },
+  
   computed: {
     sortedNoIcon(){
       if (this.graph && this.graph.noIcon)
