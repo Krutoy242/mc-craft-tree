@@ -20,18 +20,21 @@ function amount(raw) {
   return (raw.content.amount || 1.0) * mult * percent
 }
 
+export const allRecipes = {}
+
 export function mergeJECGroups(jec_groups) {
   // ====================================================
   // Create nodes
   // ====================================================
   jec_groups.Default.forEach(jec_recipe => {
     var recipeArrs = ['output','input','catalyst']
-    new Recipe(
+    const recipe = new Recipe(
       ...recipeArrs.map(arrName =>
         jec_recipe[arrName].map(
           raw => new ConstituentStack(constituents.pushJECRaw(raw), amount(raw))
         )
       )
     )
+    allRecipes[recipe.recipeId] = recipe
   })
 }

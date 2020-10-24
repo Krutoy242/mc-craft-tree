@@ -56,19 +56,20 @@ export function makeGraph(graph, vue, query, isScatter) {
   // Remove elements that dont have inputs or outputs
   var graphNodes = null
 
-  
+
   // Find selected node to show only it
   if (query.q) {
     const lookupNode = graph.nodes.find(n => n.id === query.q)
 
     if (lookupNode) {
       graphNodes = [lookupNode]
-      lookupNode.safeDive(query.outputs ? 'outputs' : 'inputs', 
-        (link) => {
-          if (!graphNodes.find(n => n.id === link.it.id)) {
-            graphNodes.push(link.it)
+      lookupNode.safeDive(query.outputs ? 'outputs' : 'inputs', {
+        afterDive: link => {
+          if (!graphNodes.find(n => n.id === link.from.id)) {
+            graphNodes.push(link.from)
           }
-        })
+        }
+      })
     }
   } 
   
@@ -457,18 +458,20 @@ export function makeGraph(graph, vue, query, isScatter) {
     const isInput = listName === 'inputs'
     var maxDeph = 0
     
-    targetNode.safeDive(listName, (link, source, deph) => {
-      const currDeph = 1 + targetDeph - deph
-      maxDeph = Math.max(maxDeph, currDeph)
+    targetNode.safeDive(listName, {
+      afterDive: (link, deph) => {
+        const currDeph = 1 + targetDeph - deph
+        maxDeph = Math.max(maxDeph, currDeph)
 
-      if (currDeph === targetDeph || targetDeph === 999999999){
-        if (link.d3node) {
-          if (style)
-            style(link.d3node)
-          else
-            link.d3node
-              .attr('stroke-width', strokeWfnc(link) * 3 / (deph) + 1)
-              .attr('stroke', isInput ? '#7f7' : '#38f')
+        if (currDeph === targetDeph || targetDeph === 999999999){
+          if (link.d3node) {
+            if (style)
+              style(link.d3node)
+            else
+              link.d3node
+                .attr('stroke-width', strokeWfnc(link) * 3 / (deph) + 1)
+                .attr('stroke', isInput ? '#7f7' : '#38f')
+          }
         }
       }
     }, null, targetDeph)
@@ -571,10 +574,12 @@ export function makeGraph(graph, vue, query, isScatter) {
     d.fy = null
 
     if (isScatter) {
-      d.safeDive('outputs', link => {
-        const node = link.it
-        node.recalculateField('cost')
-        updateNodeX(node)
+      d.safeDive('outputs', {
+        afterDive: link => {
+          const node = link.from
+          node.recalculateField('cost')
+          updateNodeX(node)
+        }
       })
       
       ticked()

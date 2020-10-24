@@ -6,25 +6,28 @@ export class Recipe {
     Object.assign(this, {outputs, inputs, catalysts})
 
     recipesCount++
+    const recipeId = String(recipesCount)
+    this.recipeId = recipeId
 
-    this.links = outputs.map(output => {
-      output.cuent.recipes.push(this)
+    this.links = outputs.map(outputStack => {
+      outputStack.cuent.recipes.push(this)
       
       return {
-        inputs: inputs.map(input =>
+        outputStack,
+        inputs: inputs.map(inputStack =>
           new RecipeLink(
-            input.cuent, 
-            output.cuent, 
-            input.amount / output.amount, 
-            String(recipesCount)
+            inputStack.cuent, 
+            outputStack.cuent, 
+            inputStack.amount / outputStack.amount, 
+            recipeId
           )
         ),
-        catalysts: catalysts.map(catal =>
+        catalysts: catalysts.map(catalStack =>
           new RecipeLink(
-            catal.cuent, 
-            output.cuent, 
-            catal.amount, 
-            String(recipesCount)
+            catalStack.cuent, 
+            outputStack.cuent, 
+            catalStack.amount, 
+            recipeId
           )
         )
       }
