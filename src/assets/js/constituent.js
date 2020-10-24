@@ -278,8 +278,9 @@ export class Constituent {
       onLoop: options.onLoop,
       result: function() {
         this.steps = Object.keys(this.allStepsRecipes).length
-        this.calculated = true
         this.complexity = this.cost + this.processing
+        if(!this.calculated) options.onCalculated?.()
+        this.calculated = true
         return this.cost
       },
     })
@@ -314,7 +315,7 @@ export class Constituent {
   }
 
 
-  calculateEx(listName, field, defl = 0, fnc) {
+  /* calculateEx(listName, field, defl = 0, fnc) {
     if (this[field] !== undefined) {
       return this[field]
     }
@@ -334,7 +335,7 @@ export class Constituent {
       if (fnc) fnc(link)
     })
     return this[field]
-  }
+  } */
 
   // Recursively iterate through all items in list
   // usually "inputs" or "outputs"

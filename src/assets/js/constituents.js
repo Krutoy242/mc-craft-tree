@@ -6,6 +6,8 @@ import { Constituent } from './constituent.js'
 const constituents = {}
 exports.constituents = constituents
 
+const pile = {}
+
 const options = {
   additionals: {}
 }
@@ -67,9 +69,9 @@ export function calculate(topCuentID) {
   // ----------------------------
   // Convert Map into Array
   // ----------------------------
-  const graph = {
-    nodes: []
-  }
+  // const graph = {
+  //   nodes: []
+  // }
 
   // ----------------------------
   // calculate complexity and usability
@@ -86,41 +88,43 @@ export function calculate(topCuentID) {
       onLoop: loopNode => {
         if (info.listLoops.indexOf(loopNode) === -1)
           info.listLoops.push(loopNode)
+      },
+      onCalculated: function() {
+        info.cLimits.update(this.complexity)
+        info.uLimits.update(this.usability)
+        // List of items without icons
+        if (this.isNoIcon) info.noIcon.push(this)
       }
     })
-
-    info.cLimits.update(cuent.complexity)
-    info.uLimits.update(cuent.usability)
-
-    // List of items without icons
-    if (cuent.isNoIcon) info.noIcon.push(cuent)
-
-    graph.nodes.push(cuent)
   }
 
   if(topCuentID) computeSingle(constituents[topCuentID])
 
+  pile.list = []
+  pile.info = info
   for (const cuent of Object.values(constituents)) {
-    computeSingle(cuent)
+    // computeSingle(cuent)
+    pile.list.push(cuent)
   }
 
   // ----------------------------
   // Sort to most unique items on top
   // Also keep it pretty
   // ----------------------------
-  const importancyOfKeys = {}
-  function sort_n(o) {
-    var diff = 0
-    for (const [key, value] of Object.entries(o))
-      if (value !== (Constituent[key] || 0)) diff += importancyOfKeys[key] || 1
-    return diff - (o.isNoIcon ? 100 : 0)
-  }
-  graph.nodes.sort(function(a, b) {
-    return sort_n(b) - sort_n(a)
-  })
+  // const importancyOfKeys = {}
+  // function sort_n(o) {
+  //   var diff = 0
+  //   for (const [key, value] of Object.entries(o))
+  //     if (value !== (Constituent[key] || 0)) diff += importancyOfKeys[key] || 1
+  //   return diff - (o.isNoIcon ? 100 : 0)
+  // }
+  // graph.nodes.sort(function(a, b) {
+  //   return sort_n(b) - sort_n(a)
+  // })
 
   // ----------------------------
   // return
   // ----------------------------
-  return graph
+  // return graph
+  return pile
 }

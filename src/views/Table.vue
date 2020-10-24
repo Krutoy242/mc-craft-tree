@@ -25,7 +25,7 @@
 
     <v-data-table
       :headers="selectedHeaders"
-      :items="graph.nodes"
+      :items="pile.list"
       class="elevation-1"
       :search="search"
       dense
@@ -100,7 +100,7 @@ const arrows = ['🠇','🠯','🠳','🡇','🡻']
 
 export default {
   props: {
-    graph: {
+    pile: {
       required: true,
     },
   },

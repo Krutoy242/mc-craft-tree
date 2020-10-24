@@ -55,12 +55,12 @@
 
           <v-tab-item>
             <v-card>
-              <v-card-title v-if="graph.listLoops && graph.listLoops.length === 0">
+              <v-card-title v-if="pile.info.listLoops && pile.info.listLoops.length === 0">
                 No loops found 👍
               </v-card-title>
               <v-card-text>
                 <tree-entry
-                  v-for="node in graph.listLoops"
+                  v-for="node in pile.info.listLoops"
                   :key="node.id"
                   :node="node"
                 />
@@ -74,13 +74,13 @@
 
 
       <!-- Download button -->
-      <download-lists :graph="graph"/>
+      <download-lists :pile="pile"/>
     </v-app-bar>
 
     <!-- Sizes your content based upon application components -->
     <v-main>
         <!-- If using vue-router -->
-        <router-view :graph="graph" :key="$route.path"></router-view>
+        <router-view :pile="pile" :key="$route.path"></router-view>
     </v-main>
 
     <!-- <v-footer app> -->
@@ -116,7 +116,7 @@ export default {
   },
   data: () => ({
     drawer: null,
-    graph: Object,
+    pile: Object,
   }),
 
   created() {
@@ -124,19 +124,19 @@ export default {
   },
 
   mounted() {
-    // this.graph = parseJECgroups(groups, parsedData)
+    // this.pile = parseJECgroups(groups, parsedData)
     // constituents.mergeWith('./assets/constituents.json')
     constituents.setAdditionals(default_additionals)
     var jec_groups = parseJECgroups('./assets/js/raw/groups.js', default_aliases)
     recipes.mergeJECGroups(jec_groups)
 
-    constituents.calculate()
+    constituents.calculate('storagedrawers__upgrade_creative__1')
   },
   
   computed: {
     sortedNoIcon(){
-      if (this.graph && this.graph.noIcon)
-        return this.graph.noIcon.slice(0).sort(function (a, b) {   
+      if (this.pile && this.pile.info.noIcon)
+        return this.pile.info.noIcon.slice(0).sort(function (a, b) {   
           return ('' + a.name).localeCompare(b.name)
         })
       return undefined

@@ -29,7 +29,7 @@ export default {
     }
   },
   props: {
-    graph: {
+    pile: {
       type: Object,
       required: true
     }
@@ -37,8 +37,8 @@ export default {
 
   methods: {
     updateGraph(toQuery) {
-      if (typeof this.graph == 'object')
-        makeGraph(this.graph, this, toQuery || this.$route.query, this.isScatter)
+      if (typeof this.pile == 'object')
+        makeGraph(this.pile, this, toQuery || this.$route.query, this.isScatter)
       
     }
   },

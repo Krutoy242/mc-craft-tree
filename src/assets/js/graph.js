@@ -35,7 +35,7 @@ function linkArc(d) {
 }
 
 
-export function makeGraph(graph, vue, query, isScatter) {
+export function makeGraph(pile, vue, query, isScatter) {
 
   if (!container) init()
 
@@ -59,7 +59,7 @@ export function makeGraph(graph, vue, query, isScatter) {
 
   // Find selected node to show only it
   if (query.q) {
-    const lookupNode = graph.nodes.find(n => n.id === query.q)
+    const lookupNode = pile.list.find(n => n.id === query.q)
 
     if (lookupNode) {
       graphNodes = [lookupNode]
@@ -77,7 +77,7 @@ export function makeGraph(graph, vue, query, isScatter) {
   // If scattered, select only nodes without crafts
   if (!graphNodes) {
     if (!isScatter) {
-      graphNodes = graph.nodes.filter(n => n.inputs.length > 0 || n.outputs.length > 0)
+      graphNodes = pile.list.filter(n => n.inputs.length > 0 || n.outputs.length > 0)
     } else {
       const whitelist = [
         'actuallyadditions:block_display_stand',
@@ -191,7 +191,7 @@ export function makeGraph(graph, vue, query, isScatter) {
         'thermalfoundation:material:768',
         'thermalfoundation:material:770',
       ]
-      graphNodes = graph.nodes.filter(n => {
+      graphNodes = pile.list.filter(n => {
         if (n.inputs.length === 0) return true
         if (whitelist.includes(n.name)) {
           n.isGhost = true
@@ -214,8 +214,8 @@ export function makeGraph(graph, vue, query, isScatter) {
   function nonLinear(v) {return Math.sqrt(v)}
 
   function importancy(v, min, max) { return (v - min) / (max + 1) }
-  function compFnc(d) { return nonLinear(importancy(d.complexity, graph.minC, graph.maxC)) }
-  function usabFnc(d) { return nonLinear(importancy(d.usability,  graph.minU, graph.maxU)) }
+  function compFnc(d) { return nonLinear(importancy(d.complexity, pile.info.cLimits, pile.info.cLimits)) }
+  function usabFnc(d) { return nonLinear(importancy(d.usability,  pile.info.uLimits, pile.info.uLimits)) }
   function strokeWfnc(d) { return nonLinear(nonLinear(d.weight)) }
 
   var minSize = 20
