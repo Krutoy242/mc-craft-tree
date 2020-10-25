@@ -82,9 +82,9 @@ export function calculate(topCuentID) {
 
   function computeSingle(cuent) {
     cuent.calculate({
-      onLoop: loopNode => {
-        if (info.listLoops.indexOf(loopNode) === -1)
-          info.listLoops.push(loopNode)
+      onLoop: function () {
+        if (info.listLoops.indexOf(this) === -1)
+          info.listLoops.push(this)
       },
       onCalculated: function() {
         info.cLimits.update(this.complexity)

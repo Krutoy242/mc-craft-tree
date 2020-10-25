@@ -11,7 +11,7 @@
         <v-list class="pa-0 transparent">
           <v-list-item class="pa-0">
             <v-list-item-icon class="ma-2">
-              <v-badge dot color="green" :value="node.inputs.length == 0">
+              <v-badge dot color="green" :value="node.inputsAmount == 0">
                 <svg
                   :viewBox="node.viewBox"
                   :width="size + 'px'"
@@ -39,13 +39,13 @@
             <v-row no-gutters>
               <v-col>
                 <v-card outlined>
-                  <hedgehog :number="node.inputs.length"/>
+                  <hedgehog :number="node.inputsAmount"/>
                 </v-card>
               </v-col>
 
               <v-col>
                 <v-card outlined>
-                  <hedgehog :number="node.outputs.length" inverted="true"/>
+                  <hedgehog :number="node.outputsAmount" inverted="true"/>
                 </v-card>
               </v-col>
                 

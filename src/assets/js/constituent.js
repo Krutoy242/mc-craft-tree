@@ -87,6 +87,17 @@ export class Constituent {
   static additionals;
 
   constructor(raw) {
+
+    this.display = undefined
+    this.name = undefined
+    this.complexity = undefined
+    this.cost = undefined
+    this.processing = undefined
+    this.usability = undefined
+    this.popularity = undefined
+    this.type = undefined
+
+
     // Identificator without NBT (serialized)
     // "actuallyadditions__battery_bauble__1"
     this.definitionId   = definition(raw)
@@ -216,6 +227,7 @@ export class Constituent {
     if (this.calculated) return true
 
     this.processing = this.processing || Constituent.processing
+    this.steps = 0
 
     // Special rule for crafting table
     if (this.name === 'minecraft:crafting_table')
@@ -227,7 +239,6 @@ export class Constituent {
         UNCRAFTABLE
         ❔❔❔ =❌> 📦
       */
-      this.steps = 0
 
       // lookup for hand-written value
       // Objects with NBT cant have values temporary
@@ -251,123 +262,120 @@ export class Constituent {
         🔳🔳🔳 =✅> 📦
       */
 
-      this.allStepsRecipes = this.allStepsRecipes || {}
+      this.cost = 0.0
+
+      // this.allStepsRecipes = this.allStepsRecipes || {}
+      this.craftingChain = new CraftingChain()
     }
   }
 
   // Calculate complexity and other values after all links are created
   calculate(options={}) {
 
-    this.safeDive('inputs', {
+    this.safeDive(['inputs', 'catalysts'], {
+
       onSelf: function(linkBack) {
         return this.selfCalculate(linkBack, options.isCatalyst)
       },
-      onRecipe: function(recipe) {
-        if(this.allStepsRecipes[recipe.recipeId] === undefined)
-          this.allStepsRecipes[recipe.recipeId] = 0
-        this.allStepsRecipes[recipe.recipeId]++
-        recipe.catalysts.foreach(catal => {
-          catal.cuent.popularity++
-          catal.cuent.calculate({...options, isCatalyst: true})
-          this.processing += catal.cuent.getComplexity(catal.weight)
-        })
+
+      onPickRecipe: function() {
+        // TODO: Intelectual chosing right recipe index
+        // if(this.recipes.length > 1) console.log(`recipes for: ${this.display}`, this.recipes)
+        const recipe = this.recipes[0]
+        if(!recipe) return
+
+        const self = this
+        this.recipe = recipe
+        this.inputsAmount  = recipe.inputs.length
+        this.outputsAmount = recipe.outputs.length
+        const links = recipe.links.find(l=>l.outputStack.cuent === self)
+        this.inputLinks = links.inputs
+
+        // if(this.allStepsRecipes[recipe.id] === undefined)
+        //   this.allStepsRecipes[recipe.id] = 0
+        // this.allStepsRecipes[recipe.id]++
+
+        // for (let i = 0; i < recipe.catalysts.length; i++) {
+        // const catal = recipe.catalysts[i]
+        // catal.cuent.calculate({...options, isCatalyst: true})
+        // }
+        return recipe
       },
-      afterDive: function(link, deph, diveResult) {
-        this.cost += diveResult * link.weight // Calculate cost
-        Object.assign(this.allStepsRecipes, link.from.allStepsRecipes)
+
+      afterDive: function(link, deph, diveResult, listName) {
+        if(listName == 'catalysts') {
+          link.from.popularity++
+        } else {
+          this.cost += diveResult * link.weight // Calculate cost
+          // Object.assign(this.allStepsRecipes, link.from.allStepsRecipes)
+        }
+
+        // Add recipe in chain to compute processing cost
+        if(link.from.recipe)
+          this.processing += this.craftingChain.mergeRecipe(link.from.recipe)
+
       },
+
       onLoop: options.onLoop,
+
       result: function() {
-        this.steps = Object.keys(this.allStepsRecipes).length
-        this.complexity = this.cost + this.processing
-        if(!this.calculated) options.onCalculated?.()
-        this.calculated = true
+        if(!this.calculated) {
+          // this.steps = this.allStepsRecipes ? Object.keys(this.allStepsRecipes).length : 0
+          this.craftingChain?.mergeRecipe(this.recipe)
+          this.steps = this.craftingChain?.recipeIds.count ?? this.steps
+          this.complexity = this.cost + this.processing
+          this.calculated = true
+          options.onCalculated?.call(this)
+        }
+        // console.log(this.prettyString())
+        // console.log(this)
+        if(this.name === 'storagedrawers:upgrade_creative:1' ||
+           this.name === 'avaritia:resource:6') console.log(':>> ', this)
         return this.cost
       },
+
     })
-
-    // Find processing cost
-    /* if (!this.processing) {
-      // Collect all catalyst machines in array
-      const allCatalysts = {}
-      this.forEachCatalyst(link => {
-        const catl = allCatalysts[link.it.id] || { node: link.it }
-        catl.num = Math.max((catl.num || 0), link.weight)
-
-        allCatalysts[link.it.id] = catl
-      })
-
-
-      // Summ costs of all catalysts machines
-      for (const catl of Object.values(allCatalysts)) {
-        if (catl.node.name === 'minecraft:crafting_table') {
-          this.processing += CRAFTING_TABLE_COST
-        } else {
-          catl.node.calculate()
-          this.processing += catl.node.getComplexity(catl.num)
-        }
-      }
-    } */
-
-    // Resulting value
-    // this.complexity = this.cost + this.processing
 
     return this
   }
 
-
-  /* calculateEx(listName, field, defl = 0, fnc) {
-    if (this[field] !== undefined) {
-      return this[field]
-    }
-
-    // Default value if no lists
-    if (this[listName].length === 0) {
-      return this[field] = Constituent[field]
-    } else {
-      this[field] = 0
-    }
-    const obj = this // Oh my what a hack!
-
-    // Summ vs of all [listName]
-    this[listName].forEach(link => {
-      obj[field] += (link.it.calculateEx(listName, field, defl, fnc) + defl) * link.weight
-
-      if (fnc) fnc(link)
-    })
-    return this[field]
-  } */
-
   // Recursively iterate through all items in list
   // usually "inputs" or "outputs"
-  safeDive(listName, callbacks, deph = 999999999, antiloop={}, linkBack) {
-    if (! callbacks.onSelf?.(linkBack) ) {
+  safeDive(listNameArg, callbacks, deph = 999999999, antiloop={}, linkBack) {
+    if (! callbacks.onSelf?.call(this, linkBack) ) {
 
       if (deph>0){
         antiloop[this.id] = true
 
-        // TODO: Intelectual chosing right recipe index
-        const chosenRecipe = this.recipes[0]
-        if(chosenRecipe) callbacks.onRecipe?.(chosenRecipe)
+        const chosenRecipe = callbacks.onPickRecipe?.call(this) ?? this.recipes[0]
         
-        const linksList = chosenRecipe?.links
+        const recipeLinksList = chosenRecipe?.links
           ?.find(l=>l.outputStack.cuent===this)
-          ?.[listName]
+        
+        const listNamesArr = Array.isArray(listNameArg)
+          ? listNameArg
+          : [listNameArg]
+        
+        for (let l = 0; l < listNamesArr.length; l++) {
+          const listName = listNamesArr[l]
+          const linksList = recipeLinksList?.[listName]
 
-        for (var i = 0; i < linksList.length; i++) {
-          const link = linksList[i]
           
-          if (!antiloop[link.it.id]) {
-            const diveResult = link.it.safeDive(
-              listName, 
-              callbacks, 
-              deph - 1, 
-              antiloop,
-              link
-            )
-            callbacks.afterDive?.(link, deph, diveResult)
-          } else {
-            callbacks.onLoop?.(this, listName, link)
+          for (var i = 0; i < (linksList?.length ?? 0); i++) {
+            const link = linksList[i]
+            
+            if (!antiloop[link.from.id]) {
+              const diveResult = link.from.safeDive(
+                listNameArg, 
+                callbacks, 
+                deph - 1, 
+                antiloop,
+                link
+              )
+              callbacks.afterDive?.call(this, link, deph, diveResult, listName)
+            } else {
+              callbacks.onLoop?.call(this, listNameArg, link)
+            }
           }
         }
 
@@ -375,7 +383,7 @@ export class Constituent {
       }
     }
 
-    return callbacks.result?.(this, listName)
+    return callbacks.result?.call(this)
   }
 
 
@@ -398,11 +406,55 @@ export class Constituent {
     this.calculate()
   }
 
+  prettyString() {
+    return `${this.id} [💱:${this.complexity}] [💲:${this.cost}] ` +
+    `[♻:${this.usability}/${this.uses}] [🖩:${this.calculated ? '☑' : '☐'}] [⚙:${this.steps}]`
+  }
 }
 
 export class ConstituentStack {
   constructor(cuent, amount) {
     this.cuent = cuent
     this.amount = amount
+  }
+}
+
+class UniqueKeys {
+  constructor() {
+    this.ids = {}
+    this.count = 0
+  }
+
+  mergeWith(id){      
+    if(this.ids[id] === undefined) {
+      this.ids[id] = 1
+      this.count++
+      return true
+    } else {
+      this.ids[id]++
+      return false
+    }
+  }
+}
+
+export class CraftingChain {
+  constructor() {
+    this.catalIds = new UniqueKeys()
+    this.recipeIds = new UniqueKeys()
+  }
+
+  mergeRecipe(recipe) {
+    this.recipeIds.mergeWith(recipe.id)
+
+    var addComplexity = 0
+    for (let i = 0; i < recipe.catalysts.length; i++) {
+      const catalStack = recipe.catalysts[i]
+
+      if(this.catalIds.mergeWith(catalStack.cuent.id)) {
+        addComplexity += catalStack.cuent.getComplexity(catalStack.amount)
+      }
+
+    }
+    return addComplexity
   }
 }

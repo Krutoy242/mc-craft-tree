@@ -77,7 +77,7 @@ export function makeGraph(pile, vue, query, isScatter) {
   // If scattered, select only nodes without crafts
   if (!graphNodes) {
     if (!isScatter) {
-      graphNodes = pile.list.filter(n => n.inputs.length > 0 || n.outputs.length > 0)
+      graphNodes = pile.list.filter(n => n.inputsAmount > 0 || n.outputsAmount > 0)
     } else {
       const whitelist = [
         'actuallyadditions:block_display_stand',
@@ -192,7 +192,7 @@ export function makeGraph(pile, vue, query, isScatter) {
         'thermalfoundation:material:770',
       ]
       graphNodes = pile.list.filter(n => {
-        if (n.inputs.length === 0) return true
+        if (n.inputsAmount === 0) return true
         if (whitelist.includes(n.name)) {
           n.isGhost = true
           return true
@@ -281,9 +281,9 @@ export function makeGraph(pile, vue, query, isScatter) {
     for (let j = 0; j < graphNodes.length; j++) {
       const n = graphNodes[j]
 
-      for (let i = 0; i < n.inputs.length; i++) {
-        const link = n.inputs[i]
-        const source = graphNodes.findIndex(o => o.id === link.it.id)
+      for (let i = 0; i < n.inputsAmount; i++) {
+        const link = n.inputLinks[i]
+        const source = graphNodes.findIndex(o => o.id === link.from.cuent.id)
 
         if (source > -1) {
           graphLinks.push({
@@ -381,8 +381,8 @@ export function makeGraph(pile, vue, query, isScatter) {
       .attr('stroke-width', d => usabFnc(d)*10 + 1)
       .attr('stroke', '#fff')
       .attr('fill', d => {
-        return d.inputs.length === 0 ? 'rgba(67, 113, 165, 0.3)' :
-          (d.outputs.length === 0 ? 'rgba(0, 145, 7, 0.4)' :
+        return d.inputsAmount === 0 ? 'rgba(67, 113, 165, 0.3)' :
+          (d.outputsAmount === 0 ? 'rgba(0, 145, 7, 0.4)' :
             '#111')
       })
 

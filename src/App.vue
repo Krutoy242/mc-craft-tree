@@ -131,7 +131,7 @@ export default {
     var jec_groups = parseJECgroups(default_jecGroups, default_aliases)
     mergeJECGroups(jec_groups)
 
-    calculate('storagedrawers__upgrade_creative__1')
+    this.pile = calculate('storagedrawers__upgrade_creative__1')
   },
   
   computed: {

@@ -80,9 +80,9 @@
       
       <template #item.popularity="{ item }"><popularity :number="item.popularity"/></template>
       
-      <template #item.inputs.length="{ item }"><hedgehog :number="item.inputs.length"/></template>
+      <template #item.inputsAmount="{ item }"><hedgehog :number="item.inputsAmount"/></template>
       
-      <template #item.outputs.length="{ item }"><hedgehog :number="item.outputs.length" inverted="true"/></template>
+      <template #item.outputsAmount="{ item }"><hedgehog :number="item.outputsAmount" inverted="true"/></template>
 
       <template #item.steps="{ item }"><processing-steps :number="item.steps"/></template>
 
@@ -124,8 +124,8 @@ export default {
         { align: 'center' ,text: 'Processing Cost', value: 'processing' },
         { align: 'center' ,text: 'Usability', value: 'usability' },
         { align: 'center' ,text: 'Popularity', value: 'popularity' },
-        { align: 'center' ,text: 'Inputs', value: 'inputs.length' },
-        { align: 'center' ,text: 'Outputs', value: 'outputs.length' },
+        { align: 'center' ,text: 'Inputs', value: 'inputsAmount' },
+        { align: 'center' ,text: 'Outputs', value: 'outputsAmount' },
         { align: 'center' ,text: 'Steps', value: 'steps' },
       ],
       isNumber: (v) => !isNaN(v) || 'Input should be number!',

@@ -1,2 +1,3 @@
 - [ ] Fix left aligment in complexity table (when edit is active)
 - [ ] Parse table recipes from crafttweaker.log
+- [ ] If recipe have many amount of one item as output, usability of inputs should be at least 1 (not less then 1.0)

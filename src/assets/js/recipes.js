@@ -35,6 +35,6 @@ export function mergeJECGroups(jec_groups) {
         )
       )
     )
-    allRecipes[recipe.recipeId] = recipe
+    allRecipes[recipe.id] = recipe
   })
 }
