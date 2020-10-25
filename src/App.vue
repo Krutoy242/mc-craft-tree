@@ -53,9 +53,9 @@
             </v-card>
           </v-tab-item>
 
-          <v-tab-item>
+          <v-tab-item v-if="pile.info && pile.info.listLoops">
             <v-card>
-              <v-card-title v-if="pile.info.listLoops && pile.info.listLoops.length === 0">
+              <v-card-title v-if="pile.info.listLoops.length === 0">
                 No loops found 👍
               </v-card-title>
               <v-card-text>
@@ -100,11 +100,12 @@
 <script>
 import { parseJECgroups } from './assets/js/jec_parse.js'
 import DownloadLists from './components/DownloadLists.vue'
-import constituents from './assets/js/constituents.js'
-import recipes from './assets/js/recipes.js'
+import { setAdditionals, calculate } from './assets/js/constituents.js'
+import { mergeJECGroups } from './assets/js/recipes.js'
 
 import default_additionals from './assets/default_additionals.json'
 import default_aliases from './assets/default_aliases.json'
+import default_jecGroups from './assets/jec_groups.json'
 
 // import groups from './assets/groups.json'
 // import parsedData from './assets/parsedData.json'
@@ -126,16 +127,16 @@ export default {
   mounted() {
     // this.pile = parseJECgroups(groups, parsedData)
     // constituents.mergeWith('./assets/constituents.json')
-    constituents.setAdditionals(default_additionals)
-    var jec_groups = parseJECgroups('./assets/js/raw/groups.js', default_aliases)
-    recipes.mergeJECGroups(jec_groups)
+    setAdditionals(default_additionals)
+    var jec_groups = parseJECgroups(default_jecGroups, default_aliases)
+    mergeJECGroups(jec_groups)
 
-    constituents.calculate('storagedrawers__upgrade_creative__1')
+    calculate('storagedrawers__upgrade_creative__1')
   },
   
   computed: {
     sortedNoIcon(){
-      if (this.pile && this.pile.info.noIcon)
+      if (this.pile?.info?.noIcon)
         return this.pile.info.noIcon.slice(0).sort(function (a, b) {   
           return ('' + a.name).localeCompare(b.name)
         })

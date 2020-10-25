@@ -1,5 +1,5 @@
 module.exports = {
-  transpileDependencies: ["vuetify"],
+  transpileDependencies: ['vuetify'],
   lintOnSave: false,
   configureWebpack: {
     devtool: 'source-map'
@@ -7,4 +7,4 @@ module.exports = {
   publicPath: process.env.NODE_ENV === 'production'
     ? '/CraftTreeVisualizer/'
     : '/'
-};
+}

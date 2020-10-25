@@ -1,17 +1,14 @@
-
-const fs = require('fs')
+import {readFileSync} from 'fs'
 import { Constituent } from './constituent.js'
 
 
-const constituents = {}
-exports.constituents = constituents
+export const constituents = {}
 
 const pile = {}
 
-const options = {
+export const options = {
   additionals: {}
 }
-exports.options = options
 
 export function setAdditionals(new_additionals) { 
   options.additionals = new_additionals
@@ -28,7 +25,7 @@ export function setField(id, field, value) {
 }
 
 export function mergeWith(filePath) {
-  const loadedCuons = JSON.parse(fs.readFileSync(filePath, 'utf8'))
+  const loadedCuons = JSON.parse(readFileSync(filePath, 'utf8'))
   for (const [key, value] of Object.entries(loadedCuons)) {
     constituents[key] = value
   }
@@ -46,7 +43,7 @@ export function pushJECRaw(raw, isForced) {
   if (found) {
     return found
   } else {
-    constituents.push(cuent)
+    constituents[cuent.id] = cuent
     return cuent
   }
 }

@@ -1,22 +1,23 @@
 
-import './recipes.js'
-const fs = require('fs')
-const path = require('path')
+// import './recipes.js'
+// const fs = require('fs')
+// const path = require('path')
 
 
 export function parseJECgroups(jecGroupsRawPath, aliases) {
 
-  /*=====  Remove type letters (like 2L or 0b)  ======*/
-  const groupsJsonText = fs.readFileSync(path.resolve(__dirname, jecGroupsRawPath), 'utf8')
-    .replace(/(\W\d+)[LBbsf](\W)/gi, '$1$2')
-    .replace(/("SideCache".*)\[.*\]/gi, '$1"DataRemoved"')
+  /*=====  Remove type letters (like 2L or 0b)  ======*/ 
+  // const groupsJsonText = jecGroupsRawPath
+  //   .replace(/(\W\d+)[LBbsf](\W)/gi, '$1$2')
+  //   .replace(/("SideCache".*)\[.*\]/gi, '$1"DataRemoved"')
 
 
   // ====================================================
   // Organize raw Just Enough Calculation json input
   // ====================================================
 
-  const jec_groups = JSON.parse(groupsJsonText)
+  // const jec_groups = JSON.parse(groupsJsonText)
+  const jec_groups = jecGroupsRawPath
 
   // Replace oredict to itemstacks if needed
   function mutateOreToItemstack(raw) {

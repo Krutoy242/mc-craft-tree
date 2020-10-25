@@ -1,5 +1,6 @@
 
-const fs = require('fs')
+// const fs = require('fs')
+import { readFileSync } from 'fs'
 
 const {setField} = require('./constituents.js')
 
@@ -15,7 +16,7 @@ exports.parseCrafttweakerLog = function(crafttweakerLogPath) {
 
   const aliases = {}
 
-  const crLog = fs.readFileSync(crafttweakerLogPath, 'utf8')
+  const crLog = readFileSync(crafttweakerLogPath, 'utf8')
   const rgx = /^Ore entries for <ore:([\w]+)> :[\n\r]+-<([^:>]+:[^:>]+):?([^:>]+)?/gm
   for (const match of crLog.matchAll(rgx)) {
     const oreDictName = match[1]

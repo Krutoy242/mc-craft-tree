@@ -206,7 +206,7 @@ export class Constituent {
   // Calculate only fields avaliable for itself
   selfCalculate(linkBack, isCatalyst) {
     
-    this.usability ??= Constituent.usability
+    this.usability = this.usability || Constituent.usability
     if(linkBack && !isCatalyst) {
       this.usability += (linkBack.to.usability + 1.0) * linkBack.weight
       this.uses++
@@ -215,7 +215,7 @@ export class Constituent {
     // This node already have all values
     if (this.calculated) return true
 
-    this.processing ??= Constituent.processing
+    this.processing = this.processing || Constituent.processing
 
     // Special rule for crafting table
     if (this.name === 'minecraft:crafting_table')
@@ -251,7 +251,7 @@ export class Constituent {
         🔳🔳🔳 =✅> 📦
       */
 
-      this.allStepsRecipes ??= {}
+      this.allStepsRecipes = this.allStepsRecipes || {}
     }
   }
 
@@ -263,7 +263,8 @@ export class Constituent {
         return this.selfCalculate(linkBack, options.isCatalyst)
       },
       onRecipe: function(recipe) {
-        this.allStepsRecipes[recipe.recipeId] ??= 0
+        if(this.allStepsRecipes[recipe.recipeId] === undefined)
+          this.allStepsRecipes[recipe.recipeId] = 0
         this.allStepsRecipes[recipe.recipeId]++
         recipe.catalysts.foreach(catal => {
           catal.cuent.popularity++

@@ -1,6 +1,6 @@
 import {Recipe} from './recipe.js'
 import { ConstituentStack } from './constituent.js'
-import constituents from './constituents.js'
+import { pushJECRaw } from './constituents.js'
 
 
 function amount(raw) {
@@ -31,7 +31,7 @@ export function mergeJECGroups(jec_groups) {
     const recipe = new Recipe(
       ...recipeArrs.map(arrName =>
         jec_recipe[arrName].map(
-          raw => new ConstituentStack(constituents.pushJECRaw(raw), amount(raw))
+          raw => new ConstituentStack(pushJECRaw(raw), amount(raw))
         )
       )
     )
