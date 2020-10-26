@@ -77,7 +77,10 @@ export function makeGraph(pile, vue, query, isScatter) {
   // If scattered, select only nodes without crafts
   if (!graphNodes) {
     if (!isScatter) {
-      graphNodes = pile.list.filter(n => n.inputsAmount > 0 || n.outputsAmount > 0)
+      graphNodes = pile.list.filter(n => {
+        if(!n.complexity) console.log('noComplexity :>> ', n)
+        return n.inputsAmount > 0 || n.outputsAmount > 0
+      })
     } else {
       const whitelist = [
         'actuallyadditions:block_display_stand',
@@ -214,8 +217,8 @@ export function makeGraph(pile, vue, query, isScatter) {
   function nonLinear(v) {return Math.sqrt(v)}
 
   function importancy(v, min, max) { return (v - min) / (max + 1) }
-  function compFnc(d) { return nonLinear(importancy(d.complexity, pile.info.cLimits, pile.info.cLimits)) }
-  function usabFnc(d) { return nonLinear(importancy(d.usability,  pile.info.uLimits, pile.info.uLimits)) }
+  function compFnc(d) { return nonLinear(importancy(d.complexity, pile.info.cLimits.min, pile.info.cLimits.max)) }
+  function usabFnc(d) { return nonLinear(importancy(d.usability,  pile.info.uLimits.min, pile.info.uLimits.max)) }
   function strokeWfnc(d) { return nonLinear(nonLinear(d.weight)) }
 
   var minSize = 20
@@ -224,7 +227,9 @@ export function makeGraph(pile, vue, query, isScatter) {
 
   function sizeFnc(d) {
     var size = (compFnc(d) + usabFnc(d))/2 * maxSize + minSize
-    return Math.max(minSize, Math.min(maxSize, size))
+    var result = Math.max(minSize, Math.min(maxSize, size))
+    // if(isNaN(result)) console.log('SizeFnc ERROR! :>> ', d)
+    return isNaN(result) ? 10 : result
   }
 
   function xFnc(d) { return vizWidth/2 + compFnc(d)*diffSize*20 - usabFnc(d)*diffSize*20 }
@@ -283,7 +288,7 @@ export function makeGraph(pile, vue, query, isScatter) {
 
       for (let i = 0; i < n.inputsAmount; i++) {
         const link = n.inputLinks[i]
-        const source = graphNodes.findIndex(o => o.id === link.from.cuent.id)
+        const source = graphNodes.findIndex(o => o.id === link.from.id)
 
         if (source > -1) {
           graphLinks.push({
@@ -323,13 +328,14 @@ export function makeGraph(pile, vue, query, isScatter) {
             .join('line')
       }
 
-      linkSelection.each(function(link, i) {
+      linkSelection.each(function(d3link, i) {
         const d3node = d3.select(this) // Current ONE node
 
-        link.source.outputs.find(l => {
-          return l.it.id === link.target.id
-        }).d3node = d3node
-        link.target.inputs.find(l => l.it.id === link.source.id).d3node = d3node
+        // d3link.source.outputs.find(l => l.from.id === d3link.target.id).d3node = d3node
+        // d3link.target.inputs.find(l => l.from.id === d3link.source.id).d3node = d3node
+        var foundLink = d3link.source.inputLinks.find(l => l.from === d3link.target)
+        foundLink.d3node = d3node
+        foundLink.flipped.d3node = d3node
       })
     }
 

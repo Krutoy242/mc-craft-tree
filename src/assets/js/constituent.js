@@ -278,8 +278,8 @@ export class Constituent {
         this.recipe = recipe
         this.inputsAmount  += recipe.inputs.length
         this.outputsAmount += recipe.outputs.length
-        const links = recipe.links.find(l=>l.outputStack.cuent === self)
-        this.inputLinks = links.inputs
+        this.recipeLinks = recipe.links.find(l=>l.outputStack.cuent === self)
+        this.inputLinks = this.recipeLinks.inputs
 
         if (this.recipesKeys.mergeKey(recipe.id, recipe)) {
           this.steps++

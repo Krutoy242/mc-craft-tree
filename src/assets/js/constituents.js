@@ -80,6 +80,9 @@ export function calculate(topCuentID) {
     noIcon: []
   }
 
+  pile.list = []
+  pile.info = info
+
   function computeSingle(cuent) {
     cuent.calculate({
       onLoop: function () {
@@ -91,17 +94,16 @@ export function calculate(topCuentID) {
         info.uLimits.update(this.usability)
         // List of items without icons
         if (this.isNoIcon) info.noIcon.push(this)
+        pile.list.push(this)
       }
     })
   }
 
   if(topCuentID) computeSingle(constituents[topCuentID])
 
-  pile.list = []
-  pile.info = info
   for (const cuent of Object.values(constituents)) {
     // computeSingle(cuent)
-    pile.list.push(cuent)
+    // pile.list.push(cuent)
   }
 
   // ----------------------------
