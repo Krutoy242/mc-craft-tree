@@ -2,41 +2,32 @@ import { listUU } from './listUU.js'
 
 const CRAFTING_TABLE_COST = 50.0
 
-
-Array.prototype.remove = function() {
-  var what, a = arguments, L = a.length, ax
-  while (L && this.length) {
-    what = a[--L]
-    while ((ax = this.indexOf(what)) !== -1) {
-      this.splice(ax, 1)
-    }
-  }
-  return this
+function processingCostFromInputAmount(x) {
+  x--
+  return Math.floor(Math.max(0, Math.pow(1.055, x+100) - Math.pow(1.055, 101) + x*25 + CRAFTING_TABLE_COST/2))
 }
+
 
 function itemStackToString(item, meta = 0) {
   return item ? `${item.replace(':', '__')}__${meta}` : undefined
 }
 
 function getMeta(raw) {
-  if (raw.content.fMeta === 1)
-    return undefined
-  else
-    return raw.content.meta
+  return (raw.content.fMeta === 1)
+    ? undefined
+    : raw.content.meta
 }
 
 function definition(raw) {
-  if (raw.content.item)
-    return itemStackToString(raw.content.item, getMeta(raw))
-  else
-    return undefined
+  return (raw.content.item)
+    ? itemStackToString(raw.content.item, getMeta(raw))
+    : undefined
 }
 
 function trueNbt(raw){
-  if (raw.content.nbt && Object.keys(raw.content.nbt).length !== 0 && !raw.content.fNbt)
-    return raw.content.nbt
-  else
-    return undefined
+  return (raw.content.nbt && Object.keys(raw.content.nbt).length !== 0 && !raw.content.fNbt)
+    ? raw.content.nbt
+    : undefined
 }
 
 export class Constituent {
@@ -165,11 +156,10 @@ export class Constituent {
     this.volume         = (this.type == 'fluidStack') ? 1000.0 : 1.0
     this.popularity     = Constituent.popularity
 
-    // this.outputs        = []
-    // this.inputs         = []
-    // this.catalysts      = []
     this.recipes        = []
     this.uses = 0.0
+    this.inputsAmount  = 0
+    this.outputsAmount = 0
 
 
     // Display localized name
@@ -230,8 +220,8 @@ export class Constituent {
     this.steps = 0
 
     // Special rule for crafting table
-    if (this.name === 'minecraft:crafting_table')
-      this.processing += CRAFTING_TABLE_COST
+    // if (this.name === 'minecraft:crafting_table')
+    //   this.processing += CRAFTING_TABLE_COST
 
     // Mark node a source if it isnt craftable
     if (this.recipes.length === 0) {
@@ -265,7 +255,8 @@ export class Constituent {
       this.cost = 0.0
 
       // this.allStepsRecipes = this.allStepsRecipes || {}
-      this.craftingChain = new CraftingChain()
+      this.catalystsKeys = new UniqueKeys()
+      this.recipesKeys = new UniqueKeys()
     }
   }
 
@@ -280,55 +271,51 @@ export class Constituent {
 
       onPickRecipe: function() {
         // TODO: Intelectual chosing right recipe index
-        // if(this.recipes.length > 1) console.log(`recipes for: ${this.display}`, this.recipes)
         const recipe = this.recipes[0]
         if(!recipe) return
 
         const self = this
         this.recipe = recipe
-        this.inputsAmount  = recipe.inputs.length
-        this.outputsAmount = recipe.outputs.length
+        this.inputsAmount  += recipe.inputs.length
+        this.outputsAmount += recipe.outputs.length
         const links = recipe.links.find(l=>l.outputStack.cuent === self)
         this.inputLinks = links.inputs
 
-        // if(this.allStepsRecipes[recipe.id] === undefined)
-        //   this.allStepsRecipes[recipe.id] = 0
-        // this.allStepsRecipes[recipe.id]++
+        if (this.recipesKeys.mergeKey(recipe.id, recipe)) {
+          this.steps++
+          this.processing += processingCostFromInputAmount(recipe.inputs.length)
+        }
 
-        // for (let i = 0; i < recipe.catalysts.length; i++) {
-        // const catal = recipe.catalysts[i]
-        // catal.cuent.calculate({...options, isCatalyst: true})
-        // }
         return recipe
       },
 
       afterDive: function(link, deph, diveResult, listName) {
         if(listName == 'catalysts') {
           link.from.popularity++
+          if (this.catalystsKeys.mergeKey(link.from.id, link.from))
+            this.processing += link.from.complexity
         } else {
+          link.from.outputsAmount++
           this.cost += diveResult * link.weight // Calculate cost
-          // Object.assign(this.allStepsRecipes, link.from.allStepsRecipes)
+          this.catalystsKeys.mergeChain(link.from.catalystsKeys, unique => 
+            this.processing += unique.complexity
+          )
+          
+          this.recipesKeys.mergeChain(link.from.recipesKeys, (recipe)=> {
+            this.steps++
+            this.processing += processingCostFromInputAmount(recipe.inputs.length)
+          })
         }
-
-        // Add recipe in chain to compute processing cost
-        if(link.from.recipe)
-          this.processing += this.craftingChain.mergeRecipe(link.from.recipe)
-
       },
 
       onLoop: options.onLoop,
 
       result: function() {
         if(!this.calculated) {
-          // this.steps = this.allStepsRecipes ? Object.keys(this.allStepsRecipes).length : 0
-          this.craftingChain?.mergeRecipe(this.recipe)
-          this.steps = this.craftingChain?.recipeIds.count ?? this.steps
           this.complexity = this.cost + this.processing
           this.calculated = true
           options.onCalculated?.call(this)
         }
-        // console.log(this.prettyString())
-        // console.log(this)
         if(this.name === 'storagedrawers:upgrade_creative:1' ||
            this.name === 'avaritia:resource:6') console.log(':>> ', this)
         return this.cost
@@ -386,20 +373,6 @@ export class Constituent {
     return callbacks.result?.call(this)
   }
 
-
-  /* forEachCatalyst(fnc, antiloop={}){
-    for (var i = 0; i < this.catalysts.length; i++) {
-      fnc(this.catalysts[i])
-    }
-    antiloop[this.id] = true
-    for (i = 0; i < this.inputs.length; i++) {
-      if (!antiloop[this.inputs[i].it.id]) {
-        this.inputs[i].it.forEachCatalyst(fnc, antiloop)
-      }
-    }
-    antiloop[this.id] = undefined
-  } */
-
   recalculateField(field) {
     this[field] = undefined
     this.calculated = undefined
@@ -425,36 +398,23 @@ class UniqueKeys {
     this.count = 0
   }
 
-  mergeWith(id){      
-    if(this.ids[id] === undefined) {
-      this.ids[id] = 1
+  mergeKey(key, val) {  
+    if(!key || !val) return    
+    if(this.ids[key] === undefined) {
+      this.ids[key] = val
       this.count++
       return true
     } else {
-      this.ids[id]++
+      // this.ids[key]++
       return false
     }
   }
-}
 
-export class CraftingChain {
-  constructor() {
-    this.catalIds = new UniqueKeys()
-    this.recipeIds = new UniqueKeys()
-  }
-
-  mergeRecipe(recipe) {
-    this.recipeIds.mergeWith(recipe.id)
-
-    var addComplexity = 0
-    for (let i = 0; i < recipe.catalysts.length; i++) {
-      const catalStack = recipe.catalysts[i]
-
-      if(this.catalIds.mergeWith(catalStack.cuent.id)) {
-        addComplexity += catalStack.cuent.getComplexity(catalStack.amount)
-      }
-
+  mergeChain(chain, onUnique) {
+    if(!chain) return
+    for (const [key, value] of Object.entries(chain.ids)) {
+      if (this.mergeKey(key, value))
+        onUnique?.(value)
     }
-    return addComplexity
   }
 }

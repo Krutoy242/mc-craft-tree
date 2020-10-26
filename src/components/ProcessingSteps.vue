@@ -6,9 +6,24 @@
 </template>
 
 <script>
-const faces = ['🌍','🙂','😉','🤨','😐','😒','😢','😰','🥵','🤬','💀']
-const faceMultipl = (faces.length - 2) / Math.log(600)
 
+const faces = [...'🌍🙂😃😄😁😀😉😏😊😙😗😶😐😑🤨😒😬😤😮😯😕🙁😟🤒🤕😓😥😢😰😭🤧😵😣😖😠🤮😱🥵😡🤬💀']
+
+// Approximate value evaluated from solving atan(600/x)*x = faces.length - 2
+const x = 25.5187041348092
+function fnc(n) {
+  return Math.ceil(Math.atan(n/x)*x)
+}
+
+function getFace(number) {
+  return faces[Math.min(faces.length - 1, fnc(number))]
+}
+
+
+
+/* Unused smiles:
+🥴😆😅🤣😂🙃😇😚😋🤐🙄🤥😷🤢🥶🤯😲😳🥺😦😧😨😞😩😫😈👿
+*/
 
 export default {
 
@@ -24,8 +39,7 @@ export default {
 
   computed: {
     smily() {
-      const n = Math.ceil((Math.log(this.number + 1)) * faceMultipl)
-      return faces[Math.min(faces.length - 1, n)]
+      return getFace(this.number)
     }
   },
 }
