@@ -4,6 +4,7 @@ var grammar, semantics
 
 function toStr(_) { return this.sourceString}
 function toStr2(_,__) { return this.sourceString}
+function toStr3(_,__,___) { return this.sourceString}
 function inParens(a,b,c) { return a.sourceString + b.eval() + c.sourceString }
 function delimiter(a,b,c) { return a.eval() + b.sourceString + c.eval() }
 
@@ -29,10 +30,11 @@ exports.initZenscriptGrammar = function(grammarString) {
     ArrayLiteral:                  inParens,
     Arguments:                     inParens,
     BracketHandler:                (_,b,__)=>`BH('${b.sourceString}')`,
+    ObjectLiteral_empty:           (a,b) => a.sourceString + b.sourceString,
     ObjectLiteral_noTrailingComma: inParens,
     ObjectLiteral_trailingComma:   (a,b,c,d) => a.sourceString + b.eval() + c.sourceString + d.sourceString,
     PropertyAssignment:            delimiter,
-    stringLiteral:                 (_,b,__) =>  `'${b.eval()}'`,
+    stringLiteral:                 toStr3,
     identifier:                    toStr2,
     number:                        function(_) {return parseFloat(this.sourceString)},
     NonemptyListOf:                (a,b,c) => { var arr=c.eval(); return `${a.eval()}${arr.length?',':''}${arr}`},

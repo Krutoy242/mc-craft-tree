@@ -4,7 +4,7 @@
 // const path = require('path')
 
 
-export function parseJECgroups(jecGroupsRawPath, aliases) {
+export function parseJECgroups(jecGroupsRawPath, additionals) {
 
   /*=====  Remove type letters (like 2L or 0b)  ======*/ 
   // const groupsJsonText = jecGroupsRawPath
@@ -22,7 +22,7 @@ export function parseJECgroups(jecGroupsRawPath, aliases) {
   // Replace oredict to itemstacks if needed
   function mutateOreToItemstack(raw) {
     if (raw.type === 'oreDict') {
-      var oreAlias = aliases[raw.content.name]
+      var oreAlias = additionals[raw.content.name]
       if (!oreAlias) {
         console.log('Cant find OreDict name for:', raw.content.name)
       } else {

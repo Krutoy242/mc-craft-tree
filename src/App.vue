@@ -101,10 +101,9 @@
 import { parseJECgroups } from './assets/js/jec_parse.js'
 import DownloadLists from './components/DownloadLists.vue'
 import { setAdditionals, calculate } from './assets/js/constituents.js'
-import { mergeJECGroups } from './assets/js/recipes.js'
+import { mergeJECGroups, mergeDefaultAdditionals } from './assets/js/recipes.js'
 
 import default_additionals from './assets/default_additionals.json'
-import default_aliases from './assets/default_aliases.json'
 import default_jecGroups from './assets/jec_groups.json'
 
 // import groups from './assets/groups.json'
@@ -126,7 +125,8 @@ export default {
 
   mounted() {
     setAdditionals(default_additionals)
-    var jec_groups = parseJECgroups(default_jecGroups, default_aliases)
+    var jec_groups = parseJECgroups(default_jecGroups, default_additionals)
+    mergeDefaultAdditionals(default_additionals)
     mergeJECGroups(jec_groups)
 
     this.pile = calculate('storagedrawers__upgrade_creative__1')

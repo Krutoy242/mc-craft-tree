@@ -34,7 +34,7 @@ export function mergeWith(filePath) {
 
 // Add cuent that represents item
 // Return new cuent or old one if item already present
-export function pushJECRaw(raw, isForced) {
+export function pushConstituent(raw, isForced) {
   const cuent = new Constituent(raw)
   const found = Object.values(constituents).find(n =>
     isForced ? cuent.match(n) : n.match(cuent)

@@ -48,8 +48,10 @@ ZenScript {
 
   anyBrHLetter = ~(">") any
 
-  ObjectLiteral = "{" ListOf<PropertyAssignment, ","> "}"              -- noTrailingComma
-                | "{" NonemptyListOf<PropertyAssignment, ","> "," "}"  -- trailingComma
+  ObjectLiteral 
+    = "{" "}" -- empty
+    |"{" ListOf<PropertyAssignment, ","> "}"              -- noTrailingComma
+    | "{" NonemptyListOf<PropertyAssignment, ","> "," "}"  -- trailingComma
 
   PropertyAssignment = PropertyName ":" Expression
 

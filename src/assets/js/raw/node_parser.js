@@ -37,11 +37,26 @@ function saveObjAsJson(obj, filename) {
 =           Parsing
 =============================================*/
 
-/*=============================================
-=            crafttweaker.log
-=============================================*/
-initZenscriptGrammar(loadText('../../zenscript.ohm'))
-const crLog_result = parseCrafttweakerLog(loadText('./crafttweaker.log'), parseZenscriptLine)
+const additionals = {}
+var additionalsLength = 0
+
+function setField(id, field, value) { 
+  const found = isNaN(id)
+    ? additionals[id]
+    : Object.values(additionals)[id]
+
+  var picked = found
+  if(!found) {
+    picked = {
+      index: additionalsLength++
+    }
+    additionals[id] = picked
+  }
+
+  if(field) picked[field] = picked[field] || value
+
+  return picked
+}
 
 
 /*=============================================
@@ -49,26 +64,40 @@ const crLog_result = parseCrafttweakerLog(loadText('./crafttweaker.log'), parseZ
 =============================================*/
 const spritesheetRaw = loadJson('./Spritesheet.json')
 
-function setField(id, field, value) { 
-  crLog_result.additionals[id] = crLog_result.additionals[id] || {}
-  crLog_result.additionals[id][field] = crLog_result.additionals[id][field] || value
-}
 function pushViewBox(name, viewBox) { setField(name, 'viewBox', viewBox) }
 
 for (let k of Object.keys(spritesheetRaw.frames)) {
   const part = spritesheetRaw.frames[k]
-  const nameNnbt = k.replace(/(^.*)\.png$/, '$1')
+  const nameNnbt = k
+    .replace(/(^.*)\.png$/, '$1')
+    .replace(/(__\d+)[LBbsf](\W)/gi, '$1$2')
+    .replace(/^(.+?)(?=__)__(.+?)(?=__)__(\d+)(?:__\{(.*)\})?$/, (match, p1, p2, p3, p4) => {
+      return `${p1}:${p2}:${p3}` + ((p4) ? `{${p4.replace(/(\w+)__(?=\w)/, '$1:')}}` : '')
+    }) // Unserialize underscores+
   const viewBox = `${part.frame.x} ${part.frame.y}`
   pushViewBox(nameNnbt, viewBox)
 
   // If name have NBT tags create another entry
   // without tags
   if (nameNnbt.match(/.*\{.*/)) {
-    const noNbtName = nameNnbt.replace(/(.*)__\{.*/, '$1')
+    const noNbtName = nameNnbt.replace(/^(.*?)\{.*$/, '$1')
     pushViewBox(noNbtName, viewBox)
   }
 }
 
+/*=============================================
+=            crafttweaker.log
+=============================================*/
+initZenscriptGrammar(loadText('../../zenscript.ohm'))
+parseCrafttweakerLog(
+  loadText('./crafttweaker.log'), 
+  parseZenscriptLine,
+  setField
+)
+
 /*=====  Save parsed data ======*/
-saveObjAsJson(crLog_result.additionals, '../../default_additionals.json')
-saveObjAsJson(crLog_result.aliases, '../../default_aliases.json')
+// Remove technical data
+for (const key in additionals) {
+  additionals[key].index = undefined
+}
+saveObjAsJson(additionals, '../../default_additionals.json')

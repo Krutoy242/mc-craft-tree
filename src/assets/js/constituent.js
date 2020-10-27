@@ -53,6 +53,11 @@ export class Constituent {
     }
   }
 
+  static unserialize(str) {
+
+    return raw
+  }
+
 
   // Find item field entry in parsed data
   descent(field) {
@@ -89,32 +94,17 @@ export class Constituent {
     this.type = undefined
 
 
-    // Identificator without NBT (serialized)
-    // "actuallyadditions__battery_bauble__1"
-    this.definitionId   = definition(raw)
-
-    // Identificator without NBT and meta = 0 (serialized)
-    // "actuallyadditions__battery_bauble__0"
-    this.definitionIdNoMeta = itemStackToString(raw.content.item, 0)
-
-    // Reference of JEC groups.js
-    this.raw            = raw
+    this.definitionId   = definition(raw)// Identificator without NBT (serialized)
+    this.definitionIdNoMeta = itemStackToString(raw.content.item, 0)// Identificator without NBT and meta = 0 (serialized)
+    this.raw            = raw // Reference of JEC groups.js
     this.type           = raw.type
 
     switch (this.type) {
     case 'itemStack':
-      var parts = raw.content.item.split(':')
-
-      // Mod or type
-      // "minecraft", "fluid"
-      this.entrySource = parts[0]
-
-      // Name of entry
-      // "cobblestone", "water"
-      this.entryName = parts[1]
-
-      // Meta. Only for itemStacks
-      this.entryMeta = getMeta(raw)
+      var parts        = raw.content.item.split(':')
+      this.entrySource = parts[0]                   // Mod or type: "minecraft", "fluid"
+      this.entryName   = parts[1]                   // Name of entry: "cobblestone", "water"
+      this.entryMeta   = getMeta(raw)               // Meta. Only for itemStacks
       break
     case 'fluidStack':
       this.entrySource = 'fluid'
@@ -145,11 +135,9 @@ export class Constituent {
     this.nbtStr = this.nbt ? (JSON.stringify(raw.content.nbt)) : undefined
 
     // Identificator (serialized)
-    // "actuallyadditions__battery_bauble__1__{Energy__0.?}"
     this.id             = Constituent.serializeIEntry(raw)
 
     // Identificator (serialized, pretty)
-    // "actuallyadditions__battery_bauble__1__{Energy__0}"
     this.idPure         = this.id.replace('.?', '')
 
 
@@ -389,7 +377,7 @@ export class Constituent {
 export class ConstituentStack {
   constructor(cuent, amount) {
     this.cuent = cuent
-    this.amount = amount
+    this.amount = parseFloat(amount)
   }
 }
 
