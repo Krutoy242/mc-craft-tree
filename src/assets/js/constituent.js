@@ -334,24 +334,25 @@ export class Constituent {
       if (deph>0){
         antiloop[this.id] = true
 
+        // Recipe
         const chosenRecipe = callbacks.onPickRecipe?.call(this) ?? this.recipes[0]
-        
         const recipeLinksList = chosenRecipe?.links
           ?.find(l=>l.outputStack.cuent===this)
         
+        // Links lists
         const listNamesArr = Array.isArray(listNameArg)
           ? listNameArg
           : [listNameArg]
-        
         for (let l = 0; l < listNamesArr.length; l++) {
           const listName = listNamesArr[l]
-          const linksList = recipeLinksList?.[listName]
 
+          const linksList = recipeLinksList?.[listName]
           
           for (var i = 0; i < (linksList?.length ?? 0); i++) {
             const link = linksList[i]
             
             if (!antiloop[link.from.id]) {
+              // Recursion 💫
               const diveResult = link.from.safeDive(
                 listNameArg, 
                 callbacks, 

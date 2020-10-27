@@ -8,8 +8,10 @@ Lunch with NodeJS
 =============================================*/
 const fs = require('fs')
 const path = require('path')
-const { constituents, setField } = require('../constituents.js')
+// const { constituents, setField } = require('../constituents.js')
 const { parseCrafttweakerLog } = require('../crafttweakerLog_parse.js')
+
+const {initZenscriptGrammar, parseZenscriptLine} = require('../zenscript_parser.js')
 
 /*=============================================
 =                   Helpers                   =
@@ -35,10 +37,22 @@ function saveObjAsJson(obj, filename) {
 =           Parsing
 =============================================*/
 
-/*=====  Spritesheet  ======*/
+/*=============================================
+=            crafttweaker.log
+=============================================*/
+initZenscriptGrammar(loadText('../../zenscript.ohm'))
+const crLog_result = parseCrafttweakerLog(loadText('./crafttweaker.log'), parseZenscriptLine)
 
+
+/*=============================================
+=            Spritesheet
+=============================================*/
 const spritesheetRaw = loadJson('./Spritesheet.json')
 
+function setField(id, field, value) { 
+  crLog_result.additionals[id] = crLog_result.additionals[id] || {}
+  crLog_result.additionals[id][field] = crLog_result.additionals[id][field] || value
+}
 function pushViewBox(name, viewBox) { setField(name, 'viewBox', viewBox) }
 
 for (let k of Object.keys(spritesheetRaw.frames)) {
@@ -55,11 +69,6 @@ for (let k of Object.keys(spritesheetRaw.frames)) {
   }
 }
 
-/*=============================================
-=
-=============================================*/
-const aliases = parseCrafttweakerLog(path.resolve(__dirname, './crafttweaker.log'))
-saveObjAsJson(aliases, '../../default_aliases.json')
-
 /*=====  Save parsed data ======*/
-saveObjAsJson(constituents, '../../default_additionals.json')
+saveObjAsJson(crLog_result.additionals, '../../default_additionals.json')
+saveObjAsJson(crLog_result.aliases, '../../default_aliases.json')

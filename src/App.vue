@@ -125,8 +125,6 @@ export default {
   },
 
   mounted() {
-    // this.pile = parseJECgroups(groups, parsedData)
-    // constituents.mergeWith('./assets/constituents.json')
     setAdditionals(default_additionals)
     var jec_groups = parseJECgroups(default_jecGroups, default_aliases)
     mergeJECGroups(jec_groups)
