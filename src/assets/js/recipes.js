@@ -20,10 +20,6 @@ function amount(raw) {
   return (raw.content.amount || 1.0) * mult * percent
 }
 
-const craftingTableCatal = [new ConstituentStack(pushConstituent({
-  type: 'itemStack', content: {item: 'minecraft:crafting_table'}
-}), 1)]
-
 export const allRecipes = {}
 
 export function mergeJECGroups(jec_groups) {
@@ -43,31 +39,34 @@ export function mergeJECGroups(jec_groups) {
   })
 }
 
+var maxPrints = 100; function printLimited() {if(--maxPrints <= 0) return console.log(...arguments)}
+
 export function mergeDefaultAdditionals(additionals) {
+
+  const craftingTableCatal = [new ConstituentStack(pushConstituent('minecraft:crafting_table'), 1)]
+
   const keys = Object.keys(additionals)
   for (let i = 0; i < keys.length; i++) {
-    const idKey = keys[i]
-    const ads = additionals[idKey]
+    const keyOut = keys[i]
+    const ads = additionals[keyOut]
+    
     if(ads.recipes) {
+      const outCuent = pushConstituent(keyOut)
+
       for (let j = 0; j < ads.recipes.length; j++) {
         const adsRecipe = ads.recipes[j]
 
-        const outCuent = pushConstituent(rawOut)
-        const outStack = new ConstituentStack(outCuent, rawOut.amount)
+        const outStack = new ConstituentStack(outCuent, adsRecipe.out || 1)
 
         const inputs = []
         for (const [index, count] of Object.entries(adsRecipe.ins)) {
-          const inAds = additionals[keys[index]]
-          inputs.push(
-            new ConstituentStack(pushConstituent({
-              type: 'itemStack',
-              content: inAds.raw
-            }), count)
-          )
+          const keyInp = keys[index]
+          inputs.push(new ConstituentStack(pushConstituent(keyInp), count))
         }
 
         const recipe = new Recipe([outStack], inputs, craftingTableCatal)
         allRecipes[recipe.id] = recipe
+        if(outCuent.id === 'storagedrawers:upgrade_creative:1') console.log('addingRecipe :>> ', recipe)
       }
     }
   }

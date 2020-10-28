@@ -1,5 +1,6 @@
 import {readFileSync} from 'fs'
 import { Constituent } from './constituent.js'
+var _ = require('lodash')
 
 
 export const constituents = {}
@@ -31,19 +32,58 @@ export function mergeWith(filePath) {
   }
 }
 
+const cuentsTree = {}
+// const exist_ids = []
+// const exist_cuents = []
+var constituentsCount = 0
+// var constituentsChecks = 0
+
+function pushTree(cuent) {
+
+  var cursor = (cuentsTree[cuent.entrySource] = cuentsTree[cuent.entrySource] || {})
+  if(cursor) {
+    cursor = (cursor[cuent.entryName] = cursor[cuent.entryName] || {})
+    if(cursor) {
+      const meta = cuent.entryMeta
+      cursor = (cursor[meta] = cursor[meta] || [])
+      cursor.push(cuent)
+    }
+  }
+}
 
 // Add cuent that represents item
 // Return new cuent or old one if item already present
-export function pushConstituent(raw, isForced) {
-  const cuent = new Constituent(raw)
-  const found = Object.values(constituents).find(n =>
-    isForced ? cuent.match(n) : n.match(cuent)
-  )
+export function pushConstituent(rawOrId, isForced) {
+  const cuent = new Constituent(rawOrId)
+  // const found = Object.values(constituents).find(n =>
+  //   isForced ? cuent.match(n) : n.match(cuent)
+  // )
+  var found
+  var cursor = cuentsTree[cuent.entrySource]
+  if(cursor) {
+    cursor = cursor[cuent.entryName]
+    if(cursor) {
+      cursor = cursor[cuent.entryMeta]
+      if(cursor) {
+        found = cursor.find(n =>
+          isForced ? cuent.match(n) : n.match(cuent)
+        )
+      }
+    }
+  }
+
+  // constituentsChecks++
+  // if(constituentsChecks%1000==0) console.log('constituentsChecks=', constituentsChecks)
 
   if (found) {
     return found
   } else {
+    pushTree(cuent)
+    
     constituents[cuent.id] = cuent
+    constituentsCount++
+    if(constituentsCount % 5000 === 0)
+      console.log('constituentsCount=', constituentsCount)
     return cuent
   }
 }
@@ -105,6 +145,8 @@ export function calculate(topCuentID) {
     // computeSingle(cuent)
     // pile.list.push(cuent)
   }
+
+  console.log('cuentsTree :>> ', cuentsTree);
 
   // ----------------------------
   // Sort to most unique items on top

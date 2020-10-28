@@ -8,7 +8,7 @@ export function parseJECgroups(jecGroupsRawPath, additionals) {
 
   /*=====  Remove type letters (like 2L or 0b)  ======*/ 
   // const groupsJsonText = jecGroupsRawPath
-  //   .replace(/(\W\d+)[LBbsf](\W)/gi, '$1$2')
+  //   .replace(/(\W\d+)[LBbsfd](\W)/gi, '$1$2')
   //   .replace(/("SideCache".*)\[.*\]/gi, '$1"DataRemoved"')
 
 

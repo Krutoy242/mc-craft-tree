@@ -1,3 +1,5 @@
+var deepEqual = require('deep-equal')
+var objToString = require('./objToString.js')
 import { listUU } from './listUU.js'
 
 const CRAFTING_TABLE_COST = 50.0
@@ -7,21 +9,10 @@ function processingCostFromInputAmount(x) {
   return Math.floor(Math.max(0, Math.pow(1.055, x+100) - Math.pow(1.055, 101) + x*25 + CRAFTING_TABLE_COST/2))
 }
 
-
-function itemStackToString(item, meta = 0) {
-  return item ? `${item.replace(':', '__')}__${meta}` : undefined
-}
-
 function getMeta(raw) {
   return (raw.content.fMeta === 1)
     ? undefined
     : raw.content.meta
-}
-
-function definition(raw) {
-  return (raw.content.item)
-    ? itemStackToString(raw.content.item, getMeta(raw))
-    : undefined
 }
 
 function trueNbt(raw){
@@ -30,48 +21,15 @@ function trueNbt(raw){
     : undefined
 }
 
+var maxPrints = 100
+function printLimited() {
+  if(--maxPrints <= 0) return
+  console.log(...arguments)
+}
+
+
 export class Constituent {
 
-  static serializeIEntry(raw) {
-    switch (raw.type) {
-    case 'itemStack':
-      var nbtStr = ''
-      var tNbt = trueNbt(raw)
-      if (tNbt)
-        nbtStr = '__' + JSON.stringify(tNbt).replace(/"([^:]+)":([^{},]+)/g, '$1__$2.?')
-      return definition(raw) + nbtStr
-    case 'fluidStack':
-      return `fluid__${raw.content.fluid}`
-    case 'placeholder':
-      return `placeholder__${raw.content.name}`
-    case 'oreDict':
-      return `ore__${raw.content.name}`
-    case 'empty':
-      return
-    default:
-      console.log('Unable to find item type', raw.type)
-    }
-  }
-
-  static unserialize(str) {
-
-    return raw
-  }
-
-
-  // Find item field entry in parsed data
-  descent(field) {
-    // Regular icon
-    var o = Constituent.additionals[this.idPure]
-
-    // Icon without nbt
-    if (!o || !o[field]) o = Constituent.additionals[this.definitionId]
-
-    // And without meta
-    if (!o || !o[field]) o = Constituent.additionals[this.definitionIdNoMeta]
-
-    return o ? o[field] : undefined
-  }
 
   // Default values for nodes
   static cost           = 1.0;
@@ -81,9 +39,11 @@ export class Constituent {
   static processing     = 0.0;
 
   static additionals;
+  static noOreDictsKeys={};
 
-  constructor(raw) {
+  constructor(rawOrId) {
 
+    // Predefine fields for pretty console log
     this.display = undefined
     this.name = undefined
     this.complexity = undefined
@@ -93,79 +53,114 @@ export class Constituent {
     this.popularity = undefined
     this.type = undefined
 
+    const isJEC = typeof rawOrId == 'object'
 
-    this.definitionId   = definition(raw)// Identificator without NBT (serialized)
-    this.definitionIdNoMeta = itemStackToString(raw.content.item, 0)// Identificator without NBT and meta = 0 (serialized)
-    this.raw            = raw // Reference of JEC groups.js
-    this.type           = raw.type
+    if(isJEC) {
+      const raw = rawOrId
+      this.fMeta = raw.content.fMeta
+      this.fNbt  = raw.content.fNbt
+      this.type  = raw.type
+      this.nbt   = trueNbt(raw)
+      if(this.nbt) this.nbtStr = objToString(this.nbt)
 
-    switch (this.type) {
-    case 'itemStack':
-      var parts        = raw.content.item.split(':')
-      this.entrySource = parts[0]                   // Mod or type: "minecraft", "fluid"
-      this.entryName   = parts[1]                   // Name of entry: "cobblestone", "water"
-      this.entryMeta   = getMeta(raw)               // Meta. Only for itemStacks
-      break
-    case 'fluidStack':
-      this.entrySource = 'fluid'
-      this.entryName = raw.content.fluid
-      break
-    case 'oreDict':
-      this.entrySource = 'ore'
-      this.entryName = raw.content.name
-      break
-    case 'placeholder':
-      this.entrySource = 'placeholder'
-      this.entryName = raw.content.name
-      break
-    default:
-      this.entrySource = 'NO_SOURCE'
-      this.entryName = 'NO_NAME'
+      switch (this.type) {
+      case 'itemStack':
+        [this.entrySource, this.entryName] = raw.content.item.split(':')
+        this.entryMeta   = getMeta(raw)               // Meta. Only for itemStacks
+        break
+      case 'fluidStack':
+        this.entrySource = 'fluid'
+        this.entryName = raw.content.fluid
+        break
+      case 'oreDict':
+        this.entrySource = 'ore'
+        this.entryName = raw.content.name
+        break
+      case 'placeholder':
+        this.entrySource = 'placeholder'
+        this.entryName = raw.content.name
+        break
+      default:
+        this.entrySource = 'NO_SOURCE'
+        this.entryName = 'NO_NAME'
+      }
+    } else {
+      const groups = rawOrId.match(/^(?<source>[^:]+)(?::(?<name>[^:]+))?(?::(?<meta>[^:]+))?(?<tag>\{.*\})?$/).groups
+
+      
+      if(groups.name) {
+        this.id          = rawOrId
+        this.entrySource = groups.source
+        this.entryName   = groups.name
+        this.entryMeta   = groups.meta
+        if(this.entrySource === 'fluid') {
+          this.type = 'fluidStack'
+        } else {
+          this.type = 'itemStack'
+        }
+      } else {
+        var oreAlias = Constituent.additionals[groups.source]
+        if (!oreAlias?.item) {
+          Constituent.noOreDictsKeys[groups.source] = true
+          this.type = 'oreDict'
+          this.entrySource = groups.source
+          this.entryName = 'ore:'+groups.source
+        } else {
+          this.type = 'itemStack'
+          ;[this.entrySource, this.entryName] = oreAlias.item.split(':')
+          this.entryMeta   = oreAlias.meta
+        }
+      }
+
+      if(groups.tag) {
+        try {
+          this.nbt   = eval(`(${groups.tag})`)
+          this.nbtStr= groups.tag
+        } catch (error) {
+          console.error('nbtEvaluationError :>> ', groups.tag, 'Error: ', error.message)
+        }
+      }
     }
 
-
-    this.definition = `${this.entrySource}:${this.entryName}`
-
-    // Item full name
-    // "minecraft:stone:2", "ore:stone"
-    this.name           = this.definition +
-      (this.entryMeta ?  ':' + this.entryMeta : '')
-
-    this.nbt = trueNbt(raw)
-    this.nbtStr = this.nbt ? (JSON.stringify(raw.content.nbt)) : undefined
-
-    // Identificator (serialized)
-    this.id             = Constituent.serializeIEntry(raw)
-
-    // Identificator (serialized, pretty)
-    this.idPure         = this.id.replace('.?', '')
-
-
-    this.volume         = (this.type == 'fluidStack') ? 1000.0 : 1.0
-    this.popularity     = Constituent.popularity
-
-    this.recipes        = []
-    this.uses = 0.0
+    this.entryMeta = this.entryMeta||0
+    this.definition    = `${this.entrySource}:${this.entryName}`
+    this.name          = this.definition + (this.entryMeta ? ':'+this.entryMeta : '') // "minecraft:stone:2", "ore:stone"
+    this.nameMandatory = this.definition + ':' + this.entryMeta
+    this.volume        = (this.type == 'fluidStack') ? 1000.0 : 1.0
+    this.popularity    = Constituent.popularity
+    this.recipes       = []
+    this.uses          = 0.0
     this.inputsAmount  = 0
     this.outputsAmount = 0
 
+    const definitionIdNoMeta = this.definition+':0'
+    if(isJEC) {
+      this.id = this.nameMandatory + (this.nbt ? objToString(this.nbt) : '')
+    } else if(!this.id) {
+      this.id = this.nameMandatory
+    }
 
-    // Display localized name
-    // "Andesite"
-    this.display = this.descent('display') || `[${this.name}]`
 
+    // Find item field entry in parsed data
+    const self = this
+    function descent(field) {
+      var o = Constituent.additionals[self.id]// Regular icon
+      if (!o?.[field]) o = Constituent.additionals[self.nameMandatory]// Icon without nbt
+      if (!o?.[field]) o = Constituent.additionals[definitionIdNoMeta] // And without meta (meta = 0)
+      if (!o?.[field]) o = Constituent.additionals[self.definition] // meta not showing
+      return o?.[field]
+    }
 
-    // View Box on texture sheet
-    // "672 1344 32 32"
-    var viewBox = this.descent('viewBox')
+    this.display = descent('display') || `[${this.name}]` // Display localized name
+    var viewBox = descent('viewBox') // View Box on texture sheet
 
     if (!viewBox) {
       if (this.type === 'placeholder') {
-        viewBox = Constituent.additionals['fluid__betterquesting.placeholder']?.viewBox || '672 1344'
+        viewBox = Constituent.additionals['fluid:betterquesting.placeholder:0']?.viewBox || '672 1344'
       } else if (this.name === 'forge:bucketfilled') {
-        viewBox = Constituent.additionals['minecraft__bucket__0']?.viewBox || '4000 2816'
+        viewBox = Constituent.additionals['minecraft:bucket:0']?.viewBox || '4000 2816'
       } else {
-        viewBox = Constituent.additionals['openblocks__dev_null__0']?.viewBox || '576 3136'
+        viewBox = Constituent.additionals['openblocks:dev_null:0']?.viewBox || '576 3136'
         this.isNoIcon = true
       }
     }
@@ -174,13 +169,9 @@ export class Constituent {
   }
 
   match(o) {
-
     if(this.definition != o.definition) return false
-
-    if(!(this.raw.content.fMeta || o.raw.content.fMeta) && this.entryMeta != o.entryMeta) return false
-
-    if(!(this.raw.content.fNbt || o.raw.content.fNbt) && this.nbtStr != o.nbtStr) return false
-
+    if(!(this.fMeta || o.fMeta) && this.entryMeta != o.entryMeta) return false
+    if(!(this.fNbt || o.fNbt) && this.nbtStr != o.nbtStr) return false
     return true
   }
 
@@ -259,7 +250,7 @@ export class Constituent {
 
       onPickRecipe: function() {
         // TODO: Intelectual chosing right recipe index
-        const recipe = this.recipes[0]
+        const recipe = this.recipes.sort((a,b)=>b.inputs.length - a.inputs.length)[0]
         if(!recipe) return
 
         const self = this

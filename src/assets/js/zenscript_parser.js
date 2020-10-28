@@ -21,7 +21,7 @@ exports.initZenscriptGrammar = function(grammarString) {
     LeftHandSideExpression_typed:  (a,_,__) => a.eval(),
     LeftHandSideExpression_mult:   (a,b,c) => `${a.eval()}.amount(${c.eval()})`,
     LeftHandSideExpression_or:     (a,b,c) => `${a.eval()}.or(${c.eval()})`,
-    anyType:                       toStr,
+    // anyType:                       toStr2,
     CallExpression:                (a,b) => a.eval() + b.eval(),
     MemberExpression_arrayRefExp:  (a,b,c,d) => a.eval() + b.sourceString + c.eval() + d.sourceString,
     MemberExpression_propRefExp:   delimiter,

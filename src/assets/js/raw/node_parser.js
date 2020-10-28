@@ -69,11 +69,18 @@ function pushViewBox(name, viewBox) { setField(name, 'viewBox', viewBox) }
 for (let k of Object.keys(spritesheetRaw.frames)) {
   const part = spritesheetRaw.frames[k]
   const nameNnbt = k
-    .replace(/(^.*)\.png$/, '$1')
-    .replace(/(__\d+)[LBbsf](\W)/gi, '$1$2')
-    .replace(/^(.+?)(?=__)__(.+?)(?=__)__(\d+)(?:__\{(.*)\})?$/, (match, p1, p2, p3, p4) => {
-      return `${p1}:${p2}:${p3}` + ((p4) ? `{${p4.replace(/(\w+)__(?=\w)/, '$1:')}}` : '')
-    }) // Unserialize underscores+
+    .replace(/(^.*)\.png$/, '$1') // Remove file extension
+    .replace(/\[\w;/g, '[') // Remove list types
+    .replace(/((?:__|\[|,)-?\d+(?:\.\d+)?)[ILBbsfd](?=\W)/gi, '$1') // Remove value types
+    .replace(/^fluid__(.*)$/, 'fluid:$1') // Remove fluid namespace
+    .replace(/^(.+?)__(.+?)__(\d+)(?:__\{(.*)\})?$/, (match, p1, p2, p3, p4) => {
+      const unserializedNbt = p4 ? `{${p4
+        .replace(/__/g, ':') // Remove underscores in NBT
+        .replace(/\b((\w*\.\w*)+?):/g, '"$1":') // Quote compound keys
+      }}` : ''
+      // if(p4) console.log('unserializedNbt :>> ', unserializedNbt, p4);
+      return `${p1}:${p2}:${p3}` + unserializedNbt
+    })
   const viewBox = `${part.frame.x} ${part.frame.y}`
   pushViewBox(nameNnbt, viewBox)
 
@@ -89,11 +96,13 @@ for (let k of Object.keys(spritesheetRaw.frames)) {
 =            crafttweaker.log
 =============================================*/
 initZenscriptGrammar(loadText('../../zenscript.ohm'))
+
 parseCrafttweakerLog(
   loadText('./crafttweaker.log'), 
   parseZenscriptLine,
   setField
 )
+
 
 /*=====  Save parsed data ======*/
 // Remove technical data

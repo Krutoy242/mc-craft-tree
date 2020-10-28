@@ -1,29 +1,7 @@
 // var sortobject = require('deep-sort-object')
-
+var objToString = require('./objToString.js')
 /*=====  OreDict first items  ======*/
 
-function objToString(obj, ndeep) {
-  switch (typeof obj) {
-  case 'string':
-    return '"' + obj + '"'
-  case 'function':
-    return obj.name || obj.toString()
-  case 'object':
-    var indent = Array(ndeep || 1).join('\t'),
-      isArray = Array.isArray(obj)
-    return (
-      '{['[+isArray] + Object.keys(obj)
-        .map(function (key) {
-          const quoted = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(key) ? key : `"${key}"`
-          return '\n\t' + indent + (isArray ? '' : quoted + ': ') + objToString(obj[key], (ndeep || 1) + 1)
-        })
-        .join(',') + '\n' + indent + '}]'[+isArray]
-    )
-      .replace(/[\s\t\n]+(?=(?:[^'"]*['"][^'"]*['"])*[^'"]*$)/g, '')
-  default:
-    return obj!=null ? obj.toString() : ''
-  }
-}
 
 
 function serializeNameMeta(ctName) {
@@ -74,14 +52,19 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
 
   /*=====  Item names  ======*/
   const ctLogNames = crLog.match(/"REGISTRY_NAME","DISPLAY_NAME"[\n\r]*([\r\s\S]*?)\nA total of/gm)[0]
-  const nameAliasRgx = /^"<([^>]*?)>(?:.withTag\((.*)\))?","([^"]*)"/gm
+  const nameAliasRgx = /^"<(?<name>[^>]*?)>(?:.withTag\((?<tag>.*)\))?","(?<display>[^"]*)"/gm
   for (const match of ctLogNames.matchAll(nameAliasRgx)) {
     // Item Display blacklist
-    if(/^conarm:(helmet|chestplate|leggins|boots)$/.test(match[1])) continue
+    if(/^conarm:(helmet|chestplate|leggins|boots)$/.test(match.groups.name)) continue
 
-    const itemName = serializeNameMeta(match[1])
-    const nbt = match[2] ? match[2].replace(/""/g, '"') : undefined
-    const display = match[3]
+    const itemName = serializeNameMeta(match.groups.name)
+    var nbt=null
+    if(match.groups.tag!=null) {
+      nbt = match.groups.tag
+        .replace(/""/g, '"')
+        .replace(/ as (bool|short|lond|float|double|byte)(\[\])?/g, '')
+    }
+    const display = match.groups.display
     var fullName = itemName + serializeNbt(nbt)
 
     setField(itemName, 'display', display)
@@ -89,7 +72,7 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
 
     // If its openblocks:tank, we can also get fluid name
     // Just lazy to deal with fluid logs
-    if (match[1] === 'openblocks:tank' && nbt) {
+    if (match.groups.name === 'openblocks:tank' && nbt!=null) {
       const fluidName = nbt.match(/FluidName: "(.+)"/)[1]
       const fluidDisplay = display.match(/(.+) Tank/)[1]
       // setField('fluid__' + fluidName, 'display', fluidDisplay)
@@ -204,7 +187,7 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
   const recipesRgx = /^(recipes\.addShap.*)/gm
   var k = 0
   for (const match of crLog.matchAll(recipesRgx)) {
-    // if(k >= 1000) break
+    // if(k >= 2000) break
     const parseResult = zs_parseFnc(match[0].trim())
     eval(parseResult)
     if(++k % 100 == 0) console.log(`processed ${k} lines`)

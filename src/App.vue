@@ -129,7 +129,7 @@ export default {
     mergeDefaultAdditionals(default_additionals)
     mergeJECGroups(jec_groups)
 
-    this.pile = calculate('storagedrawers__upgrade_creative__1')
+    this.pile = calculate('storagedrawers:upgrade_creative:1')
   },
   
   computed: {

@@ -97,7 +97,7 @@ export default {
       return this.node.display
     },
     entryIcon() {
-      return this.typeIcons[this.node.raw.type]
+      return this.typeIcons[this.node.type]
     },
     bgPosition() {
       const s = this.node.viewBox.split(' ')
