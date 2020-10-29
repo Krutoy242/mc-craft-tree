@@ -191,6 +191,10 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
     addShaped: addRecipe,
     addShapeless: (recipName, output, input1d) => addRecipe(recipName, output, [input1d])
   }
+  // eslint-disable-next-line no-unused-vars
+  const furnace = {
+    addRecipe: (output, input, experience) => addRecipe(null, output, [input], [BH('minecraft:furnace')])
+  }
   const catalysts = {
     ElvenTrade:               [BH('botania:livingwood:5').amount(8), BH('botania:livingwood').amount(8), BH('botania:pylon:1').amount(2), BH('botania:pool')],
     Apothecary:               [BH('botania:altar')],
@@ -234,7 +238,7 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
   }
   
   /*=====   ======*/
-  const recipesRgx = /^((?:recipes\.addShap|mods\.botania\.).*)/gm
+  const recipesRgx = /^((?:recipes\.addShap|mods\.botania\.|furnace\.addRecipe).*)/gm
   var k = 0
   for (const match of crLog.matchAll(recipesRgx)) {
     // if(k >= 300) break

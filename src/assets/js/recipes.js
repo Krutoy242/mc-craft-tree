@@ -68,7 +68,6 @@ export function mergeDefaultAdditionals(additionals) {
 
         const recipe = new Recipe([outStack], inputs, catals || craftingTableCatal)
         allRecipes[recipe.id] = recipe
-        if(outCuent.id === 'storagedrawers:upgrade_creative:1') console.log('addingRecipe :>> ', recipe)
       }
     }
   }

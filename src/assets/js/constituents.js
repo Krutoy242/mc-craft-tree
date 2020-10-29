@@ -1,6 +1,6 @@
 import {readFileSync} from 'fs'
 import { Constituent } from './constituent.js'
-var _ = require('lodash')
+const _ = require('lodash')
 
 
 export const constituents = {}
@@ -134,16 +134,16 @@ export function calculate(topCuentID) {
         info.uLimits.update(this.usability)
         // List of items without icons
         if (this.isNoIcon) info.noIcon.push(this)
-        pile.list.push(this)
+        // pile.list.push(this)
       }
     })
   }
 
-  if(topCuentID) computeSingle(constituents[topCuentID])
+  // if(topCuentID) computeSingle(constituents[topCuentID])
 
   for (const cuent of Object.values(constituents)) {
-    // computeSingle(cuent)
-    // pile.list.push(cuent)
+    computeSingle(cuent)
+    pile.list.push(cuent)
   }
 
   console.log('cuentsTree :>> ', cuentsTree);
