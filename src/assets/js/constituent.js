@@ -129,7 +129,6 @@ export class Constituent {
     this.volume        = (this.type == 'fluidStack') ? 1000.0 : 1.0
     this.popularity    = Constituent.popularity
     this.recipes       = []
-    this.uses          = 0.0
     this.inputsAmount  = 0
     this.outputsAmount = 0
 
@@ -186,15 +185,10 @@ export class Constituent {
   // Calculate only fields avaliable for itself
   selfCalculate(linkBack, isCatalyst) {
     
-    this.usability = this.usability || Constituent.usability
-    if(linkBack && !isCatalyst) {
-      this.usability += (linkBack.to.usability + 1.0) * linkBack.weight
-      this.uses++
-    }
-
     // This node already have all values
     if (this.calculated) return true
 
+    this.usability = this.usability || Constituent.usability
     this.processing = this.processing || Constituent.processing
     this.steps = 0
 
@@ -284,6 +278,8 @@ export class Constituent {
             this.steps++
             this.processing += processingCostFromInputAmount(recipe.inputs.length)
           })
+
+          // link.from.usability += (this.usability + 1.0) * link.weight
         }
       },
 
@@ -361,7 +357,7 @@ export class Constituent {
 
   prettyString() {
     return `${this.id} [💱:${this.complexity}] [💲:${this.cost}] ` +
-    `[♻:${this.usability}/${this.uses}] [🖩:${this.calculated ? '☑' : '☐'}] [⚙:${this.steps}]`
+    `♻:${this.usability} [🖩:${this.calculated ? '☑' : '☐'}] [⚙:${this.steps}]`
   }
 }
 

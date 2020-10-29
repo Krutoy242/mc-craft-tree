@@ -13,13 +13,13 @@ ZenScript {
     | CallExpression
     | MemberExpression
 
-  anyType = ("bool"|"short"|"lond"|"float"|"double"|"byte") "[]"?
+  anyType = ("bool"|"short"|"lond"|"float"|"double"|"byte"|"int") "[]"?
 
   CallExpression = MemberExpression Arguments
 
   MemberExpression 
     = MemberExpression "[" Expression "]"  -- arrayRefExp
-    | PrimaryExpression "." identifier  -- propRefExp
+    | MemberExpression "." identifier  -- propRefExp
     | PrimaryExpression
 
   PrimaryExpression 
@@ -34,7 +34,31 @@ ZenScript {
           | stringLiteral
   nullLiteral = "null" ~identifierPart
   booleanLiteral = ("true" | "false") ~identifierPart
-  numericLiteral = number
+
+  
+  // Note that the ordering of hexIntegerLiteral and decimalLiteral is reversed w.r.t. the spec
+  // This is intentional: the order decimalLiteral | hexIntegerLiteral will parse
+  // "0x..." as a decimal literal "0" followed by "x..."
+  numericLiteral = hexIntegerLiteral | decimalLiteral
+
+  decimalLiteral = decimalIntegerLiteral "." decimalDigit* exponentPart -- bothParts
+                 |                       "." decimalDigit+ exponentPart -- decimalsOnly
+                 | decimalIntegerLiteral                   exponentPart -- integerOnly
+
+  decimalIntegerLiteral = nonZeroDigit decimalDigit*  -- nonZero
+                        | "0"                         -- zero
+  decimalDigit = "0".."9"
+  nonZeroDigit = "1".."9"
+
+  exponentPart = exponentIndicator signedInteger -- present
+               |                                 -- absent
+  exponentIndicator = "e" | "E"
+  signedInteger = "+" decimalDigit* -- positive
+                | "-" decimalDigit* -- negative
+                |     decimalDigit+ -- noSign
+
+  hexIntegerLiteral = "0x" hexDigit+
+                    | "0X" hexDigit+
 
   ArrayLiteral = "[" ListOf<Expression, ","> "]"
 
@@ -57,7 +81,7 @@ ZenScript {
 
   PropertyName = identifier
                | stringLiteral
-               | number
+               | numericLiteral
 
   stringLiteral
     = "\"" doubleStringCharacter* "\""
@@ -69,8 +93,4 @@ ZenScript {
   identifierStart = letter | "$" | "_"
   identifierPart = identifierStart
                  | "\u200C" | "\u200D" | digit
-
-  number  (a number)
-    = digit* "." digit+  -- fract
-    | digit+             -- whole
 }

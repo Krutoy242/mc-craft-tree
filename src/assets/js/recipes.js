@@ -46,6 +46,11 @@ export function mergeDefaultAdditionals(additionals) {
   const craftingTableCatal = [new ConstituentStack(pushConstituent('minecraft:crafting_table'), 1)]
 
   const keys = Object.keys(additionals)
+  function keysToArr(collection) {
+    return Object.entries(collection).map(
+      kv => new ConstituentStack(pushConstituent(keys[kv[0]]), kv[1])
+    )
+  }
   for (let i = 0; i < keys.length; i++) {
     const keyOut = keys[i]
     const ads = additionals[keyOut]
@@ -58,13 +63,10 @@ export function mergeDefaultAdditionals(additionals) {
 
         const outStack = new ConstituentStack(outCuent, adsRecipe.out || 1)
 
-        const inputs = []
-        for (const [index, count] of Object.entries(adsRecipe.ins)) {
-          const keyInp = keys[index]
-          inputs.push(new ConstituentStack(pushConstituent(keyInp), count))
-        }
+        const inputs = keysToArr(adsRecipe.ins)
+        const catals = adsRecipe.ctl ? keysToArr(adsRecipe.ctl) : undefined
 
-        const recipe = new Recipe([outStack], inputs, craftingTableCatal)
+        const recipe = new Recipe([outStack], inputs, catals || craftingTableCatal)
         allRecipes[recipe.id] = recipe
         if(outCuent.id === 'storagedrawers:upgrade_creative:1') console.log('addingRecipe :>> ', recipe)
       }
