@@ -2,6 +2,7 @@ const _ = require('lodash')
 var objToString = require('./objToString.js')
 import { listUU } from './listUU.js'
 const listUUIndexes = listUU.reduce((a,b,i)=> (a[b.name]=i,a),{})
+import { clearEmpties } from './utils'
 
 const CRAFTING_TABLE_COST = 50.0
 
@@ -17,9 +18,9 @@ function getMeta(raw) {
     : raw.content.meta
 }
 
-function trueNbt(raw){
-  return (raw.content.nbt && Object.keys(raw.content.nbt).length !== 0 && !raw.content.fNbt)
-    ? raw.content.nbt
+function trueNbt(nbt, fNbt){
+  return (nbt && Object.keys(nbt).length !== 0 && !fNbt)
+    ? nbt
     : undefined
 }
 
@@ -55,8 +56,7 @@ export class Constituent {
       this.fMeta = raw.content.fMeta
       this.fNbt  = raw.content.fNbt
       this.type  = raw.type
-      this.nbt   = trueNbt(raw)
-      if(this.nbt) this.nbtStr = objToString(this.nbt)
+      this.nbt   = raw.content.nbt
 
       switch (this.type) {
       case 'itemStack':
@@ -82,9 +82,8 @@ export class Constituent {
     } else {
       const groups = rawOrId.match(/^(?<source>[^:]+)(?::(?<name>[^:]+))?(?::(?<meta>[^:]+))?(?<tag>\{.*\})?$/).groups
 
-      
+
       if(groups.name) {
-        this.id          = rawOrId
         this.entrySource = groups.source
         this.entryName   = groups.name
         this.entryMeta   = groups.meta
@@ -98,8 +97,8 @@ export class Constituent {
         if (!oreAlias?.item) {
           Constituent.noOreDictsKeys[groups.source] = true
           this.type = 'oreDict'
-          this.entrySource = groups.source
-          this.entryName = 'ore:'+groups.source
+          this.entrySource = 'ore'
+          this.entryName = groups.source
         } else {
           this.type = 'itemStack'
           ;[this.entrySource, this.entryName] = oreAlias.item.split(':')
@@ -110,11 +109,16 @@ export class Constituent {
       if(groups.tag) {
         try {
           this.nbt   = eval(`(${groups.tag})`)
-          this.nbtStr= groups.tag
         } catch (error) {
           console.error('nbtEvaluationError :>> ', groups.tag, 'Error: ', error.message)
         }
       }
+    }
+
+    if(this.nbt) {
+      clearEmpties(this.nbt)
+      this.nbt = trueNbt(this.nbt, this.fNbt)
+      this.nbtStr = objToString(this.nbt)
     }
 
     this.entryMeta     = this.entryMeta||0
@@ -133,11 +137,7 @@ export class Constituent {
 
 
     const definitionIdNoMeta = this.definition+':0'
-    if(isJEC) {
-      this.id = this.nameMandatory + (this.nbt ? objToString(this.nbt) : '')
-    } else if(!this.id) {
-      this.id = this.nameMandatory
-    }
+    this.id = this.nameMandatory + (this.nbtStr??'')
 
 
     // Find item field entry in parsed data
@@ -220,16 +220,10 @@ export class Constituent {
       },
 
       afterDive: function(link, deph, recipe, listName) {
-        const recipeId = recipe.id 
+        const recipeId = recipe.id
         if(listName == 'catalysts') {
-          // _.update(this, ['processing_byRecipe', recipeId], v => 
-          //   (v??0) + link.from.complexity
-          // )
           this.processing_byRecipe[recipeId] += link.from.complexity
         } else {
-          // _.update(this, ['cost_byRecipe', recipeId], v => 
-          //   (v??0) + link.from.cost
-          // )
           this.cost_byRecipe[recipeId] += link.from.cost
         }
       },
@@ -240,7 +234,7 @@ export class Constituent {
         if(!this.calculated) {
           // Intelectual chosing right recipe
           const recipes = this.recipes
-            .filter(r => 
+            .filter(r =>
               this.cost_byRecipe[r.id] > 0
             )
           const recLen = recipes.length
@@ -251,14 +245,14 @@ export class Constituent {
               recipe = recipes[0]
             } else {
               recipes
-                .sort((a,b) => 
-                  (this.processing_byRecipe[b.id] + this.cost_byRecipe[b.id]) -
-                  (this.processing_byRecipe[a.id] + this.cost_byRecipe[a.id])
+                .sort((a,b) =>
+                  (this.cost_byRecipe[b.id] + this.processing_byRecipe[b.id] / 100) -
+                  (this.cost_byRecipe[a.id] + this.processing_byRecipe[a.id] / 100)
                 )
-              if(recLen==2) recipe = recipes[0]
-              else          recipe = recipes[1]
+              /* if(recLen==2) */ recipe = recipes[0]
+              /* else          recipe = recipes[1] */
             }
-            
+
             this.recipe = recipe
             this.inputsAmount  += recipe.inputs.length
             this.outputsAmount += recipe.outputs.length
@@ -274,14 +268,14 @@ export class Constituent {
             for (const link of this.recipeLinks.inputs) {
               link.from.outputsAmount++
               this.cost += link.from.cost * link.weight // Calculate cost
-              this.catalystsKeys.mergeChain(link.from.catalystsKeys, catal => 
+              this.catalystsKeys.mergeChain(link.from.catalystsKeys, catal => {
                 this.processing += catal.complexity??0
-              )
-              this.recipesKeys.mergeChain(link.from.recipesKeys, chainRecipe=> {
+              })
+              this.recipesKeys.mergeChain(link.from.recipesKeys, chainRecipe => {
                 this.steps++
                 this.processing += processingCostFromInputAmount(chainRecipe.inputs.length)
               })
-    
+
               // link.from.usability += (this.usability + 1.0) * link.weight
             }
 
@@ -291,7 +285,7 @@ export class Constituent {
                 this.processing += link.from.complexity??0
             }
           }
-          
+
           onCalculated(this)
         }
       },
@@ -316,17 +310,17 @@ export class Constituent {
       const recipesToIterate = this.recipe ? [this.recipe] : this.recipes
       for (const recipe of recipesToIterate) {
         const recipeLinksLists = recipe.links.find(l=>l.outputStack.cuent===this)
-        
+
         for (const listName of listNamesArr) {
           const linksList = recipeLinksLists[listName]
-          
+
           for (const link of linksList) {
             if (!antiloop[link.from.id]) {
               // Recursion 💫
               link.from.safeDive(
-                listNameArg, 
-                callbacks, 
-                deph - 1, 
+                listNameArg,
+                callbacks,
+                deph - 1,
                 antiloop
               )
             } else {
@@ -337,7 +331,7 @@ export class Constituent {
         }
       }
 
-      antiloop[this.id] = undefined
+      delete antiloop[this.id]
     }
 
     return callbacks.result?.call(this)
@@ -368,7 +362,7 @@ class UniqueKeys {
     this.count = 0
   }
 
-  mergeKey(key, val) {  
+  mergeKey(key, val) {
     if(!key || !val) return
     if(this.ids[key] === undefined) {
       this.ids[key] = val

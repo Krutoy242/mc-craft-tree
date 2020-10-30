@@ -6,7 +6,7 @@
       }}</span
       >:<span class="blue--text text--lighten-3">{{ node.entryName
       }}</span
-      ><span v-if="node.entryMeta">:{{ node.entryMeta }}</span></kbd
+      ><span v-if="node.entryMeta&&node.entryMeta!=0">:{{ node.entryMeta }}</span></kbd
     >
   </div>
 </template>
