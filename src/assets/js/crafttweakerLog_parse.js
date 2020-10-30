@@ -2,7 +2,7 @@
 const objToString = require('./objToString.js')
 const _ = require('lodash')
 /*=====  OreDict first items  ======*/
-
+const {sqrt, max, ceil} = Math
 
 
 function serializeNameMeta(ctName) {
@@ -51,7 +51,7 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
     if(meta) adds.meta = meta
   }
 
-  /*=====  Item names  ======*/
+  /*=====  Item names  ======*/ // {componentASSEMBLY: {ForgeCaps: {"astralsorcery:cap_item_amulet_holder": {}}, id: "psi:cad_assembly", Count: 1, Damage: 0}}
   const ctLogNames = crLog.match(/"REGISTRY_NAME","DISPLAY_NAME"[\n\r]*([\r\s\S]*?)\nA total of/gm)[0]
   const nameAliasRgx = /^"<(?<name>[^>]*?)>(?:.withTag\((?<tag>.*)\))?","(?<display>[^"]*)"/gm
   for (const match of ctLogNames.matchAll(nameAliasRgx)) {
@@ -62,8 +62,13 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
     var nbt=null
     if(match.groups.tag!=null) {
       nbt = match.groups.tag
-        .replace(/""/g, '"')
-        .replace(/ as (bool|short|lond|float|double|byte)(\[\])?/g, '')
+        .replace(/""/g, '"') // Remove double quotes
+        .replace(/ as (bool|short|lond|float|double|byte)(\[\])?/g, '') // remove types
+        .replace(/, \w+: \{\}|\w+: \{\}, |(, )?"[^"]+": \{\}|"[^"]+": \{\}, /g, '') // remove empty tags mekData: {}
+        .replace(/, \w+: \{\}|\w+: \{\}, |(, )?"[^"]+": \{\}|"[^"]+": \{\}, /g, '')
+        .replace(/, \w+: \{\}|\w+: \{\}, |(, )?"[^"]+": \{\}|"[^"]+": \{\}, /g, '')
+      if(nbt.match(/^ *\{ *\} */)) nbt = null
+      if(nbt?.match(/^.*\{ *\}.*$/)) console.log('nbt :>> ', nbt)
     }
     const display = match.groups.display
     var fullName = itemName + serializeNbt(nbt)
@@ -204,6 +209,7 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
     ManaInfusion_Alchemy:     [BH('botania:pool'), BH('botania:alchemycatalyst')],
     ManaInfusion_Conjuration: [BH('botania:pool'), BH('botania:conjurationcatalyst')],
     ManaInfusion_Infusion:    [BH('botania:pool')],
+    extendedTable: [[BH('extendedcrafting:table_basic')],[BH('extendedcrafting:table_advanced')],[BH('extendedcrafting:table_elite')],[BH('extendedcrafting:table_ultimate')]]
   }
   // eslint-disable-next-line no-unused-vars
   const mods = {
@@ -234,11 +240,35 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
         addConjuration: (output, input, mana) => addRecipe(null, output, [[input, BH('placeholder:Mana').amount(mana)]], catalysts.ManaInfusion_Conjuration),
         addInfusion:    (output, input, mana) => addRecipe(null, output, [[input, BH('placeholder:Mana').amount(mana)]], catalysts.ManaInfusion_Infusion),
       },
+    },
+    extendedcrafting: {
+      CombinationCrafting: { addRecipe:       (output, rf, rf_t, central, ingrs)    => addRecipe(null, output, [[central, BH('placeholder:RF').amount(rf)], ingrs], [BH('extendedcrafting:crafting_core'), BH('extendedcrafting:pedestal').amount(ingrs.length)])},
+      CompressionCrafting: { 
+        addRecipe:                                  (catalyst, inp, count, out, rf, rf_t) => addRecipe(null, out, [[inp.amount(count), BH('placeholder:RF').amount(rf)]], [BH('extendedcrafting:compressor'), catalyst]) ,
+        remove:                                     (out)                                 => null },
+      EnderCrafting: { addShaped:             (out, input2d)                    => addRecipe(null, out, input2d, [BH('extendedcrafting:ender_crafter'), BH('extendedcrafting:ender_alternator').amount(input2d.flat().length)]) },
+      TableCrafting: { 
+        addShaped:                                  (level, out, inputs)              => addRecipe(null, out, inputs,   catalysts.extendedTable[level ?? max(inputs.length, inputs.reduce((x,y)=>max(x,y.length), 0))]),
+        addShapeless:                               (level, out, inputs)              => addRecipe(null, out, [inputs], catalysts.extendedTable[level ?? ceil(sqrt(inputs.length))])
+      }
+    },
+    astralsorcery: {
+      Altar: { 
+        addDiscoveryAltarRecipe:                    (name, out, n1, n2, ingr1d)         => addRecipe(name, out, [ingr1d], [BH('astralsorcery:blockaltar'), BH('placeholder:Starlight').amount(n1)]),
+        addAttunementAltarRecipe:                   (name, out, n1, n2, ingr1d)         => addRecipe(name, out, [ingr1d], [BH('astralsorcery:blockaltar:1'), BH('placeholder:Starlight').amount(n1)]),
+        addConstellationAltarRecipe:                (name, out, n1, n2, ingr1d)         => addRecipe(name, out, [ingr1d], [BH('astralsorcery:blockaltar:2'), BH('placeholder:Starlight').amount(n1)]),
+        addTraitAltarRecipe:                        (name, out, n1, n2, ingr1d, name2)  => addRecipe(name, out, [ingr1d], [BH('astralsorcery:blockaltar:3'), BH('placeholder:Starlight').amount(n1)]),
+        removeAltarRecipe:                          (name)                                => null },
+      Grindstone: { addRecipe:                (input, out, f1)                      => addRecipe(null, out, [[input]], [BH('astralsorcery:blockmachine:1')]) },
+      LightTransmutation: { addTransmutation: (inp, out, cost)                      => addRecipe(null, out, [[inp]], [BH('placeholder:Starlight').amount(cost)]) },
+      // LiquidInteraction: { addInteraction:    (in1, cost1, in2, cost2, weight, out) => addRecipe(null, out, [[in1.amount(cost1), in2.amount(cost2)]], [BH('astralsorcery:blockchalice')]) },
+      StarlightInfusion: { addInfusion:       (input, out, mult, chance, time)      => addRecipe(null, out, [[input, BH('fluid:astralsorcery.liquidstarlight').amount(chance*1000)]], [BH('astralsorcery:blockstarlightinfuser')]) },
     }
   }
-  
+
   /*=====   ======*/
-  const recipesRgx = /^((?:recipes\.addShap|mods\.botania\.|furnace\.addRecipe).*)/gm
+  // const recipesRgx = /^((?:recipes\.addShap|mods\.botania\.|furnace\.addRecipe).*)/gm
+  const recipesRgx = /^(\w+\.\w+(?:.\w+)*\(.*)/gm
   var k = 0
   for (const match of crLog.matchAll(recipesRgx)) {
     // if(k >= 300) break

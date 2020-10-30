@@ -13,7 +13,7 @@ ZenScript {
     | CallExpression
     | MemberExpression
 
-  anyType = ("bool"|"short"|"lond"|"float"|"double"|"byte"|"int") "[]"?
+  anyType = ("bool"|"short"|"long"|"float"|"double"|"byte"|"int") "[]"?
 
   CallExpression = MemberExpression Arguments
 
