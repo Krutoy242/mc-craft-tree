@@ -11,7 +11,7 @@ const path = require('path')
 // const { constituents, setField } = require('../constituents.js')
 const { parseCrafttweakerLog } = require('../crafttweakerLog_parse.js')
 
-const {initZenscriptGrammar, parseZenscriptLine} = require('../zenscript_parser.js')
+const {initZenscriptGrammar, parseZenscriptLine} = require('./zenscript_parser.js')
 
 /*=============================================
 =                   Helpers                   =

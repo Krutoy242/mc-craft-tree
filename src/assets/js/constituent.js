@@ -1,8 +1,7 @@
 const _ = require('lodash')
-var objToString = require('./objToString.js')
 import { listUU } from './listUU.js'
 const listUUIndexes = listUU.reduce((a,b,i)=> (a[b.name]=i,a),{})
-import { clearEmpties } from './utils'
+import { clearEmpties, objToString } from './utils'
 
 const CRAFTING_TABLE_COST = 50.0
 

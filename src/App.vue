@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { parseJECgroups } from './assets/js/jec_parse.js'
+import { parseJECgroups } from './assets/js/parsers/jec_parse.js'
 import { setAdditionals, calculate } from './assets/js/constituents.js'
 import { recipesStore, mergeJECGroups, mergeDefaultAdditionals } from './assets/js/recipes.js'
 

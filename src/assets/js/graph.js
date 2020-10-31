@@ -1,4 +1,4 @@
-import forceManyBodyReuse from './d3ForcManyBodyReuse.js'
+import forceManyBodyReuse from './lib/d3ForcManyBodyReuse.js'
 
 
 var vizWidth = window.innerWidth
