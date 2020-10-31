@@ -12,6 +12,16 @@
         <v-circle :config="configCircle"></v-circle>
       </v-layer>
     </v-stage> -->
+    
+    <!-- <v-footer app> -->
+    <v-system-bar
+      color="indigo darken-2"
+    >
+      Navigation: 
+      <v-icon class="ml-4" small>mdi-mouse</v-icon> LCM Show Inputs
+      <v-icon class="ml-4" small>mdi-mouse</v-icon> RCM Show outputs
+      <v-icon class="ml-4" small>mdi-graph</v-icon> Return to whole tree
+    </v-system-bar>
   </div>
 </template>
 

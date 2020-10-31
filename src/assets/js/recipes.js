@@ -1,6 +1,6 @@
-import {Recipe} from './recipe.js'
 import { ConstituentStack } from './constituent.js'
 import { pushConstituent } from './constituents.js'
+import { NumLimits } from './utils.js'
 
 
 function amount(raw) {
@@ -20,7 +20,23 @@ function amount(raw) {
   return (raw.content.amount || 1.0) * mult * percent
 }
 
-export const allRecipes = {}
+export const recipesStore = {
+  map: {},
+  count: 0,
+  info: {
+    outputsAmount: new NumLimits(),
+    inputsAmount: new NumLimits(),
+    catalystsAmount: new NumLimits()
+  }
+}
+
+function appendRecipe(recipe) {
+  recipesStore.map[recipe.id] = recipe
+  recipesStore.count++
+  recipesStore.info.outputsAmount.update(recipe.outputs.length)
+  recipesStore.info.inputsAmount.update(recipe.inputs.length)
+  recipesStore.info.catalystsAmount.update(recipe.catalysts.length)
+}
 
 export function mergeJECGroups(jec_groups) {
   // ====================================================
@@ -35,11 +51,9 @@ export function mergeJECGroups(jec_groups) {
         )
       )
     )
-    allRecipes[recipe.id] = recipe
+    appendRecipe(recipe)
   })
 }
-
-var maxPrints = 100; function printLimited() {if(--maxPrints <= 0) return console.log(...arguments)}
 
 export function mergeDefaultAdditionals(additionals) {
 
@@ -67,8 +81,65 @@ export function mergeDefaultAdditionals(additionals) {
         const catals = adsRecipe.ctl ? keysToArr(adsRecipe.ctl) : undefined
 
         const recipe = new Recipe([outStack], inputs, catals || craftingTableCatal)
-        allRecipes[recipe.id] = recipe
+        appendRecipe(recipe)
       }
     }
+  }
+}
+
+
+var recipesCount = 0
+
+function nextId() {
+  recipesCount++
+  return String(recipesCount)
+}
+
+export class Recipe {
+
+  constructor(outputs, inputs, catalysts) {
+    Object.assign(this, {outputs, inputs, catalysts})
+
+    this.id = nextId()
+
+    this.links = outputs.map(outputStack => {
+      outputStack.cuent.recipes.push(this)
+
+      const inputLinks = inputs.map(inputStack =>
+        new RecipeLink(
+          inputStack.cuent, 
+          outputStack.cuent, 
+          inputStack.amount / outputStack.amount, 
+          this.id
+        )
+      )
+      
+      return {
+        outputStack,
+        outputs: inputLinks.map(inp => inp.flip()),
+        inputs: inputLinks,
+        catalysts: catalysts.map(catalStack =>
+          new RecipeLink(
+            catalStack.cuent, 
+            outputStack.cuent, 
+            catalStack.amount, 
+            this.id
+          )
+        )
+      }
+    })
+  }
+}
+
+export class RecipeLink {
+  constructor(from, to, weight, id) {
+    Object.assign(this, {from, to, weight, id})
+  }
+
+  flip(){
+    const newLink = new RecipeLink(this.to,this. from, 1/this.weight, this.id)
+    newLink.flipped = this
+    this.flipped = newLink
+    return newLink
   }
 }

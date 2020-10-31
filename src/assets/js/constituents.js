@@ -1,11 +1,11 @@
 import {readFileSync} from 'fs'
 import { Constituent } from './constituent.js'
+import { NumLimits } from './utils.js'
 const _ = require('lodash')
 
 
 export const constituents = {}
 
-const pile = {}
 
 export const options = {
   additionals: {}
@@ -33,10 +33,8 @@ export function mergeWith(filePath) {
 }
 
 const cuentsTree = {}
-// const exist_ids = []
-// const exist_cuents = []
 var constituentsCount = 0
-// var constituentsChecks = 0
+
 
 function pushTree(cuent) {
 
@@ -88,40 +86,21 @@ export function pushConstituent(rawOrId, isForced) {
   }
 }
 
-class NumLimits {
-  constructor() {
-    this.min = 999999999999
-    this.max = 0
-  }
-
-  update(num) {
-    this.min = Math.min(this.min, num)
-    this.max = Math.max(this.max, num)
-  }
-}
-
-
 export function calculate(topCuentID) {
-
-  // ----------------------------
-  // Convert Map into Array
-  // ----------------------------
-  // const graph = {
-  //   nodes: []
-  // }
-
   // ----------------------------
   // calculate complexity and usability
   // ----------------------------
-  const info = {
-    listLoops: [],
-    cLimits: new NumLimits(),
-    uLimits: new NumLimits(),
-    noIcon: []
-  }
 
-  pile.list = []
-  pile.info = info
+  const pile = {
+    list: [],
+    info: {
+      listLoops: [],
+      cLimits: new NumLimits(),
+      uLimits: new NumLimits(),
+      noIcon: []
+    }
+  }
+  const info = pile.info
 
   function computeSingle(cuent) {
     cuent.calculate({
@@ -134,17 +113,17 @@ export function calculate(topCuentID) {
         info.uLimits.update(this.usability)
         // List of items without icons
         if (this.isNoIcon) info.noIcon.push(this)
-        // pile.list.push(this)
+        pile.list.push(this)
       }
     })
   }
 
-  // if(topCuentID) computeSingle(constituents[topCuentID])
+  if(topCuentID) computeSingle(constituents[topCuentID])
 
-  for (const cuent of Object.values(constituents)) {
-    computeSingle(cuent)
-    pile.list.push(cuent)
-  }
+  // for (const cuent of Object.values(constituents)) {
+  //   computeSingle(cuent)
+  //   pile.list.push(cuent)
+  // }
 
   console.log('cuentsTree :>> ', cuentsTree);
 
@@ -152,16 +131,16 @@ export function calculate(topCuentID) {
   // Sort to most unique items on top
   // Also keep it pretty
   // ----------------------------
-  // const importancyOfKeys = {}
-  // function sort_n(o) {
-  //   var diff = 0
-  //   for (const [key, value] of Object.entries(o))
-  //     if (value !== (Constituent[key] || 0)) diff += importancyOfKeys[key] || 1
-  //   return diff - (o.isNoIcon ? 100 : 0)
-  // }
-  // graph.nodes.sort(function(a, b) {
-  //   return sort_n(b) - sort_n(a)
-  // })
+  const importancyOfKeys = {}
+  function sort_n(o) {
+    var diff = 0
+    for (const [key, value] of Object.entries(o))
+      if (value !== (Constituent[key] || 0)) diff += importancyOfKeys[key] || 1
+    return diff - (o.isNoIcon ? 100 : 0)
+  }
+  pile.list.sort(function(a, b) {
+    return sort_n(b) - sort_n(a)
+  })
 
   // ----------------------------
   // return

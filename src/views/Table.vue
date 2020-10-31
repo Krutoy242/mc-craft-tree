@@ -28,6 +28,7 @@
       :items="pile.list"
       class="elevation-1"
       :search="search"
+      :custom-filter="filter"
       dense
       item-key="id"
       single-expand
@@ -42,9 +43,7 @@
         {{ header.text.toUpperCase() }}
       </template> -->
 
-      <template #item.display="{ item }">
-        <tree-entry :node="item" class="pa-2" />
-      </template>
+      <template #item.display="{ item }"><tree-entry :node="item" class="pa-2" /></template>
 
       <template #item.complexity="{ item }">
         <v-edit-dialog
@@ -96,7 +95,6 @@
 </template>
 
 <script>
-const arrows = ['🠇','🠯','🠳','🡇','🡻']
 
 export default {
   props: {
@@ -132,23 +130,14 @@ export default {
     }
   },
   methods: {
-    getArrows(n, offset){
-      var arr = []
-
-
-      if ((n > 9 + offset) && (offset===0))arr.unshift(arrows[4])
-      if ( n > 8 + offset) arr.push   (arrows[4])
-      if ( n > 7 + offset) arr.unshift(arrows[3])
-      if ( n > 6 + offset) arr.push   (arrows[3])
-      if ( n > 5 + offset) arr.unshift(arrows[2])
-      if ( n > 4 + offset) arr.push   (arrows[2])
-      if ( n > 3 + offset) arr.unshift(arrows[1])
-      if ( n > 2 + offset) arr.push   (arrows[1])
-      if ( n > 1 + offset) arr.unshift(arrows[0])
-      if ( n > 0 + offset) arr.push   (arrows[0])
-        
-      return arr.join('')
-    }
+    filter (value, search, item) {
+      return value != null &&
+        search != null &&
+        typeof value === 'string' && (
+        value.indexOf(search) !== -1 ||
+        item.id.indexOf(search) !== -1
+      )
+    },
   },
   computed: {
     trueHeaders(){

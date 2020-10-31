@@ -1,6 +1,5 @@
 <template>
   <v-app id="inspire">
-
     <v-app-bar app clipped-left>
       <v-tabs>
 
@@ -18,57 +17,32 @@
       <v-spacer />
 
       <!-- Debug Button -->
-      <v-dialog scrollable max-width="500px">
+      <v-dialog scrollable width="auto " :fullscreen="$vuetify.breakpoint.xsOnly">
         
         <template v-slot:activator="{ on, attrs }">
-          <v-btn  color="primary" small
-            v-bind="attrs"
-            v-on="on"
+          <v-badge
+            :value="listLoops"
+            :content="'💫'+listLoops.length"
+            type="info"
+            left
           >
-            Debug info
-          </v-btn>
+            <v-badge
+              :value="noIcons"
+              :content="'🔲'+noIcons.length"
+              type="info"
+              left bottom
+            >
+              <v-btn small
+                v-bind="attrs"
+                v-on="on"
+              >
+                Debug info
+              </v-btn>
+            </v-badge>
+          </v-badge>
         </template>
 
-        <v-tabs>
-
-          <v-tab>
-            <v-icon left>mdi-border-none-variant</v-icon>
-            No icons
-          </v-tab>
-
-          <v-tab>
-            <v-icon left>mdi-sync</v-icon>
-            Recipe Loops
-          </v-tab>
-
-          <v-tab-item>
-            <v-card>
-              <v-card-text>
-                <tree-entry
-                  v-for="node in sortedNoIcon"
-                  :key="node.id"
-                  :node="node"
-                />
-              </v-card-text>
-            </v-card>
-          </v-tab-item>
-
-          <v-tab-item v-if="pile.info && pile.info.listLoops">
-            <v-card>
-              <v-card-title v-if="pile.info.listLoops.length === 0">
-                No loops found 👍
-              </v-card-title>
-              <v-card-text>
-                <tree-entry
-                  v-for="node in pile.info.listLoops"
-                  :key="node.id"
-                  :node="node"
-                />
-              </v-card-text>
-            </v-card>
-          </v-tab-item>
-
-        </v-tabs>
+        <debug-view :debugInfo="pile.info"/>
 
       </v-dialog>
 
@@ -84,11 +58,27 @@
     </v-main>
 
     <!-- <v-footer app> -->
+
+    <template>
+      <div class="text-center">
+        <v-bottom-sheet v-model="isMoreInfo">
+          <v-sheet
+            class="text-center"
+            height="300px"
+          >
+            <div class="py-3">
+              This is a bottom sheet using the controlled by v-model instead of activator
+            </div>
+          </v-sheet>
+        </v-bottom-sheet>
+      </div>
+    </template>
+
     <v-system-bar>
-      Navigation: 
-      <v-icon class="ml-4" small>mdi-mouse</v-icon> LCM Show Inputs
-      <v-icon class="ml-4" small>mdi-mouse</v-icon> RCM Show outputs
-      <v-icon class="ml-4" small>mdi-graph</v-icon> Return to whole tree
+      Unique Items: {{ uniqueItems }}
+      Recipes Registered: {{ recipesStore.count }}
+      <v-spacer></v-spacer>
+      <v-btn class="mx-1" x-small color="info" @click="isMoreInfo=!isMoreInfo">Show more info</v-btn>
       <v-spacer></v-spacer>
       <v-btn class="mx-1" x-small color="secondary" href="https://github.com/Krutoy242/CraftTreeVisualizer">GutHub</v-btn>
       <v-btn class="mx-1" x-small color="secondary" href="https://github.com/Krutoy242/Enigmatica2Expert-Extended">Recipes from E2:E - Extended</v-btn>
@@ -99,25 +89,24 @@
 
 <script>
 import { parseJECgroups } from './assets/js/jec_parse.js'
-import DownloadLists from './components/DownloadLists.vue'
 import { setAdditionals, calculate } from './assets/js/constituents.js'
-import { mergeJECGroups, mergeDefaultAdditionals } from './assets/js/recipes.js'
+import { recipesStore, mergeJECGroups, mergeDefaultAdditionals } from './assets/js/recipes.js'
 
 import default_additionals from './assets/default_additionals.json'
-import default_jecGroups from './assets/jec_groups.json'
-
-// import groups from './assets/groups.json'
-// import parsedData from './assets/parsedData.json'
-// import recipes from './assets/recipes.json'
+// import default_jecGroups from './assets/jec_groups.json'
 
 export default {
-  components: {
-    DownloadLists,
-  },
   data: () => ({
     drawer: null,
     pile: Object,
+    isMoreInfo: false,
+    recipesStore
   }),
+  computed: {
+    listLoops() {return this.pile?.info?.listLoops ?? []},
+    noIcons() {return this.pile?.info?.noIcon ?? []},
+    uniqueItems() {return this.pile?.list?.length},
+  },
 
   created() {
     this.$vuetify.theme.dark = true
@@ -125,21 +114,12 @@ export default {
 
   mounted() {
     setAdditionals(default_additionals)
-    var jec_groups = parseJECgroups(default_jecGroups, default_additionals)
+    // var jec_groups = parseJECgroups(default_jecGroups, default_additionals)
+    var jec_groups = parseJECgroups(require('./assets/jec_groups.json'), default_additionals)
     mergeDefaultAdditionals(default_additionals)
     mergeJECGroups(jec_groups)
 
     this.pile = calculate('storagedrawers:upgrade_creative:1')
-  },
-  
-  computed: {
-    sortedNoIcon(){
-      if (this.pile?.info?.noIcon)
-        return this.pile.info.noIcon.slice(0).sort(function (a, b) {   
-          return ('' + a.name).localeCompare(b.name)
-        })
-      return undefined
-    }
   },
 }
 </script>

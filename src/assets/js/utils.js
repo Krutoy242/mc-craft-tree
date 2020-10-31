@@ -14,3 +14,17 @@ export function clearEmpties(o) {
     }
   }
 }
+
+
+
+export class NumLimits {
+  constructor() {
+    this.min = 999999999999
+    this.max = 0
+  }
+
+  update(num) {
+    this.min = Math.min(this.min, num)
+    this.max = Math.max(this.max, num)
+  }
+}

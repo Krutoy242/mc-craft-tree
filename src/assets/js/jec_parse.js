@@ -1,24 +1,10 @@
-
-// import './recipes.js'
-// const fs = require('fs')
-// const path = require('path')
 import { clearEmpties } from './utils'
 
 
-export function parseJECgroups(jecGroupsRawPath, additionals) {
-
-  /*=====  Remove type letters (like 2L or 0b)  ======*/ 
-  // const groupsJsonText = jecGroupsRawPath
-  //   .replace(/(\W\d+)[LBbsfd](\W)/gi, '$1$2')
-  //   .replace(/("SideCache".*)\[.*\]/gi, '$1"DataRemoved"')
-
-
-  // ====================================================
-  // Organize raw Just Enough Calculation json input
-  // ====================================================
-
-  // const jec_groups = JSON.parse(groupsJsonText)
-  const jec_groups = jecGroupsRawPath
+// ====================================================
+// Organize raw Just Enough Calculation json input
+// ====================================================
+export function parseJECgroups(jec_groups, additionals) {
 
   // Replace oredict to itemstacks if needed
   function mutateOreToItemstack(raw) {
