@@ -2,7 +2,7 @@
   <v-tooltip right class="ma-0">
     <template v-slot:activator="{ on, attrs }">
       <v-card
-        :width="(size|0 + 32*9) + 'px'"
+        :width="dense ? '': (size|0 + 32*9) + 'px'"
         :class="'d-inline-block text-truncate ' +  isBigSmall('glassed', '')"
         v-bind="attrs"
         v-on="on"
@@ -11,22 +11,30 @@
         <v-list class="pa-0 transparent">
           <v-list-item class="pa-0">
             <v-list-item-icon class="ma-2">
-              <v-badge dot color="green" :value="node.inputsAmount == 0">
-                <svg
-                  :viewBox="node.viewBox"
-                  :width="size + 'px'"
-                  :height="size + 'px'"
-                  class="justify-center"
-                >
-                  <image
-                    :xlink:href="require('@/assets/Spritesheet.png')"
-                    image-rendering="pixelated"
-                  ></image>
-                </svg>
-                <!-- <span width="2em">{{ entryIcon }} </span> -->
+              <v-badge
+                bottom
+                overlap
+                bordered
+                :value="amount>1"
+                :content="amount"
+              >
+                <v-badge dot color="green" :value="node.inputsAmount == 0">
+                  <svg
+                    :viewBox="node.viewBox"
+                    :width="size + 'px'"
+                    :height="size + 'px'"
+                    class="justify-center"
+                  >
+                    <image
+                      :xlink:href="require('@/assets/Spritesheet.png')"
+                      image-rendering="pixelated"
+                    ></image>
+                  </svg>
+                  <!-- <span width="2em">{{ entryIcon }} </span> -->
+                </v-badge>
               </v-badge>
             </v-list-item-icon>
-            <v-list-item-content class="pa-0">
+            <v-list-item-content class="pa-0" v-if="!dense">
               <v-card-text class="pa-0 pl-1 text-subtitle-1">
                 {{ display }}
                 </v-card-text>
@@ -79,8 +87,11 @@ export default {
     node: {
       type: Object,
     },
-    size: {
-      default: 32,
+    size: { default: 32},
+    amount: { default: 1},
+    dense: {
+      type: Boolean,
+      default: false,
     }
   },
   data() {

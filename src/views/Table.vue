@@ -77,11 +77,38 @@
       <template #item.cost="{ item }"><big-number :number="item.cost"/></template>
       <template #item.processing="{ item }"><big-number :number="item.processing"/></template>
       
-      <template #item.popularity="{ item }"><popularity :number="item.popularity"/></template>
+      <template #item.popularity="{ item }">
+        <v-tooltip left>
+          <template #activator="{ on, attrs }">
+            <v-card outlined v-bind="attrs" v-on="on">
+              <popularity :number="item.popularity"/>
+            </v-card>
+          </template>
+          <entry-grid :cuentStackArray="item.popList"/>
+        </v-tooltip>
+      </template>
       
-      <template #item.inputsAmount="{ item }"><hedgehog :number="item.inputsAmount"/></template>
+      <template #item.inputsAmount="{ item }">
+        <v-tooltip left>
+          <template #activator="{ on, attrs }">
+            <v-card outlined v-bind="attrs" v-on="on">
+              <hedgehog :number="item.inputsAmount"/>
+            </v-card>
+          </template>
+          <entry-grid :cuentStackArray="item.recipe ? item.recipe.inputs : null"/>
+        </v-tooltip>
+      </template>
       
-      <template #item.outputsAmount="{ item }"><hedgehog :number="item.outputsAmount" inverted="true"/></template>
+      <template #item.outputsAmount="{ item }">
+        <v-tooltip left>
+          <template #activator="{ on, attrs }">
+            <v-card outlined v-bind="attrs" v-on="on">
+              <hedgehog :number="item.outputsAmount" inverted="true"/>
+            </v-card>
+          </template>
+          <entry-grid :cuentStackArray="item.outsList"/>
+        </v-tooltip>
+      </template>
 
       <template #item.steps="{ item }"><processing-steps :number="item.steps"/></template>
 
@@ -95,6 +122,8 @@
 </template>
 
 <script>
+
+const _ = require('lodash')
 
 export default {
   props: {
@@ -137,7 +166,7 @@ export default {
         value.indexOf(search) !== -1 ||
         item.id.indexOf(search) !== -1
       )
-    },
+    }
   },
   computed: {
     trueHeaders(){
@@ -158,3 +187,9 @@ export default {
 
 }
 </script>
+
+<style scoped>
+.v-tooltip__content {
+  background-color: rgba(0, 0, 0, 0) !important;
+}
+</style>

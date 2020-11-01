@@ -25,6 +25,7 @@
     "vue-filter-number-format": "^3.0.1",
     "vue-konva": "^2.1.6",
     "vue-router": "^3.4.7",
+    "vue-static": "^0.0.5",
     "vue-wrapped-component": "^1.0.0",
     "vuetify": "^2.3.15"
   },

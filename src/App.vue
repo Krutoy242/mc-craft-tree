@@ -98,8 +98,10 @@ import default_additionals from './assets/default_additionals.json'
 export default {
   data: () => ({
     drawer: null,
+    isMoreInfo: false
+  }),
+  static: () => ({
     pile: Object,
-    isMoreInfo: false,
     recipesStore
   }),
   computed: {
@@ -119,7 +121,15 @@ export default {
     mergeDefaultAdditionals(default_additionals)
     mergeJECGroups(jec_groups)
 
-    this.pile = calculate('storagedrawers:upgrade_creative:1')
+    const pile = calculate('storagedrawers:upgrade_creative:1')
+    // for (const key in pile) {
+    //   Object.defineProperty(pile, key, { configurable: false })
+    // }
+    console.log('pile :>> ', pile)
+    // pile.list = []
+
+    // Object.freeze(pile)
+    this.pile = pile
   },
 }
 </script>

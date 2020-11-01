@@ -7,7 +7,7 @@ import numFormat from 'vue-filter-number-format'
 import WrappedComponent from 'vue-wrapped-component'
 import VueKonva from 'vue-konva'
 import { paramCase } from 'change-case'
-
+import VueStatic from 'vue-static'
 
 import vueCurveText from '@inotom/vue-curve-text'
 Vue.component('curve-text', vueCurveText)
@@ -44,6 +44,7 @@ Vue.$cookies.config('7d') // set default config
 
 Vue.use(WrappedComponent)
 Vue.use(VueKonva)
+Vue.use(VueStatic)
 
 Vue.config.productionTip = false
 

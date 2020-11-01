@@ -254,7 +254,7 @@ export class Constituent {
 
             this.recipe = recipe
             this.inputsAmount  += recipe.inputs.length
-            this.outputsAmount += recipe.outputs.length
+            // this.outputsAmount += recipe.outputs.length
             this.recipeLinks = recipe.links.find(l=>l.outputStack.cuent===this)
             this.inputLinks = this.recipeLinks.inputs
 
@@ -266,6 +266,8 @@ export class Constituent {
 
             for (const link of this.recipeLinks.inputs) {
               link.from.outputsAmount++
+              link.from.outsList = link.from.outsList ?? []
+              link.from.outsList.push(new ConstituentStack(this, 1))
               this.cost += link.from.cost * link.weight // Calculate cost
               this.catalystsKeys.mergeChain(link.from.catalystsKeys, catal => {
                 this.processing += catal.complexity??0
@@ -280,6 +282,8 @@ export class Constituent {
 
             for (const link of this.recipeLinks.catalysts) {
               link.from.popularity++
+              link.from.popList = link.from.popList ?? []
+              link.from.popList.push(new ConstituentStack(this, 1))
               if (this.catalystsKeys.mergeKey(link.from.id, link.from))
                 this.processing += link.from.complexity??0
             }
