@@ -84,25 +84,42 @@
       <v-btn class="mx-1" x-small color="secondary" href="https://github.com/Krutoy242/Enigmatica2Expert-Extended">Recipes from E2:E - Extended</v-btn>
     </v-system-bar>
     <!-- </v-footer> -->
+
+    <!-- <v-row justify="center"> -->
+      <v-dialog 
+        v-model="showRecipesDialog"  
+        width="auto " 
+        :fullscreen="$vuetify.breakpoint.xsOnly"
+      >
+        <recipes 
+          :recipes="recipesDialog"
+          style="overflow-x: hidden;"
+        />
+      </v-dialog>
+    <!-- </v-row> -->
   </v-app>
 </template>
 
 <script>
+import Vue from 'vue'
 import { parseJECgroups } from './assets/js/parsers/jec_parse.js'
 import { setAdditionals, calculate } from './assets/js/constituents.js'
 import { recipesStore, mergeJECGroups, mergeDefaultAdditionals } from './assets/js/recipes.js'
 
 import default_additionals from './assets/default_additionals.json'
+import { EventBus } from './assets/js/lib/event-bus.js'
 // import default_jecGroups from './assets/jec_groups.json'
+
 
 export default {
   data: () => ({
     drawer: null,
-    isMoreInfo: false
-  }),
-  static: () => ({
+    isMoreInfo: false,
     pile: Object,
-    recipesStore
+    recipesStore:  Object,
+
+    recipesDialog: Object,
+    showRecipesDialog: false,
   }),
   computed: {
     listLoops() {return this.pile?.info?.listLoops ?? []},
@@ -115,21 +132,30 @@ export default {
   },
 
   mounted() {
+    // Listen for the i-got-clicked event and its payload.
+    EventBus.$off('show-recipes-dialog')
+    EventBus.$on('show-recipes-dialog', recipes => {
+      this.recipesDialog = recipes
+      this.showRecipesDialog = true
+    })
+
     setAdditionals(default_additionals)
     // var jec_groups = parseJECgroups(default_jecGroups, default_additionals)
-    var jec_groups = parseJECgroups(require('./assets/jec_groups.json'), default_additionals)
+    // var jec_groups = parseJECgroups(require('./assets/jec_groups.json'), default_additionals)
+    var jec_groups = require('./assets/jec_groups.json')
     mergeDefaultAdditionals(default_additionals)
     mergeJECGroups(jec_groups)
 
     const pile = calculate('storagedrawers:upgrade_creative:1')
-    // for (const key in pile) {
-    //   Object.defineProperty(pile, key, { configurable: false })
-    // }
+    for (const key in pile) { Vue.nonreactive(pile[key]) }
     console.log('pile :>> ', pile)
     // pile.list = []
 
     // Object.freeze(pile)
     this.pile = pile
+
+    Vue.nonreactive(recipesStore.map)
+    this.recipesStore = recipesStore
   },
 }
 </script>

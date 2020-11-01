@@ -11,10 +11,10 @@
     </v-container>
     <v-icon v-if="number > 0"
       large
-      color="#BF360C"
+      :color="color"
       style="position: relative;"
     >
-      mdi-cog
+      <slot>mdi-cog</slot>
     </v-icon>
   </v-container>
 </template>
@@ -25,6 +25,10 @@ export default {
     number: {
       type: Number
     },
+    color: {
+      type: String,
+      default: '#BF360C'
+    }
   },
 }
 </script>

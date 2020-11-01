@@ -78,39 +78,25 @@
       <template #item.processing="{ item }"><big-number :number="item.processing"/></template>
       
       <template #item.popularity="{ item }">
-        <v-tooltip left>
-          <template #activator="{ on, attrs }">
-            <v-card outlined v-bind="attrs" v-on="on">
-              <popularity :number="item.popularity"/>
-            </v-card>
-          </template>
-          <entry-grid :cuentStackArray="item.popList"/>
-        </v-tooltip>
+        <entry-grid :cuentStackArray="item.popList">
+          <popularity :number="item.popularity"/>
+        </entry-grid>
       </template>
       
       <template #item.inputsAmount="{ item }">
-        <v-tooltip left>
-          <template #activator="{ on, attrs }">
-            <v-card outlined v-bind="attrs" v-on="on">
-              <hedgehog :number="item.inputsAmount"/>
-            </v-card>
-          </template>
-          <entry-grid :cuentStackArray="item.recipe ? item.recipe.inputs : null"/>
-        </v-tooltip>
+        <entry-grid :cuentStackArray="item.recipe ? item.recipe.inputs : null" @click.native="showRecipes(item.recipes)">
+          <hedgehog :number="item.inputsAmount"/>
+        </entry-grid>
       </template>
       
       <template #item.outputsAmount="{ item }">
-        <v-tooltip left>
-          <template #activator="{ on, attrs }">
-            <v-card outlined v-bind="attrs" v-on="on">
-              <hedgehog :number="item.outputsAmount" inverted="true"/>
-            </v-card>
-          </template>
-          <entry-grid :cuentStackArray="item.outsList"/>
-        </v-tooltip>
+        <entry-grid :cuentStackArray="item.outsList">
+          <hedgehog :number="item.outputsAmount" inverted="true"/>
+        </entry-grid>
       </template>
 
       <template #item.steps="{ item }"><processing-steps :number="item.steps"/></template>
+      <template #item.recipesLength="{ item }"><popularity :number="item.recipes.length" color="#101404">mdi-buffer</popularity></template>
 
       <!-- <template #expanded-item="{ headers, item }">
         <td :colspan="headers.length">
@@ -124,6 +110,7 @@
 <script>
 
 const _ = require('lodash')
+import { EventBus } from '../assets/js/lib/event-bus.js'
 
 export default {
   props: {
@@ -134,6 +121,7 @@ export default {
 
   data() {
     return {
+      recipesDialog: false,
       search: '',
       selectedHeadersModel: [],
       selectedHeaders: [],
@@ -153,6 +141,7 @@ export default {
         { align: 'center' ,text: 'Popularity', value: 'popularity' },
         { align: 'center' ,text: 'Inputs', value: 'inputsAmount' },
         { align: 'center' ,text: 'Outputs', value: 'outputsAmount' },
+        { align: 'center' ,text: 'Alt. Recipes', value: 'recipesLength' },
         { align: 'center' ,text: 'Steps', value: 'steps' },
       ],
       isNumber: (v) => !isNaN(v) || 'Input should be number!',
@@ -166,6 +155,9 @@ export default {
         value.indexOf(search) !== -1 ||
         item.id.indexOf(search) !== -1
       )
+    },
+    showRecipes(recipes) {
+      EventBus.$emit('show-recipes-dialog', recipes)
     }
   },
   computed: {
@@ -187,9 +179,3 @@ export default {
 
 }
 </script>
-
-<style scoped>
-.v-tooltip__content {
-  background-color: rgba(0, 0, 0, 0) !important;
-}
-</style>

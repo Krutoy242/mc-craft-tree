@@ -1,5 +1,5 @@
 <template>
-  <v-tooltip right class="ma-0">
+  <v-tooltip right class="ma-0" transition="slide-x-reverse-transition">
     <template v-slot:activator="{ on, attrs }">
       <v-card
         :width="dense ? '': (size|0 + 32*9) + 'px'"

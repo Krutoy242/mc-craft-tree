@@ -209,11 +209,13 @@ export class Constituent {
         }
 
         if(this.recipes.length > 0) {
-          this.processing_byRecipe = {}
-          this.cost_byRecipe = {}
+          // this.processing_byRecipe = {}
+          // this.cost_byRecipe = {}
+          this.complexity_byRecipe = {}
           for (const recipe of this.recipes) {
-            this.processing_byRecipe[recipe.id] = 0
-            this.cost_byRecipe[recipe.id] = 0
+            // this.processing_byRecipe[recipe.id] = 0
+            // this.cost_byRecipe[recipe.id] = 0
+            this.complexity_byRecipe[recipe.id] = 0.0
           }
         }
       },
@@ -221,9 +223,11 @@ export class Constituent {
       afterDive: function(link, deph, recipe, listName) {
         const recipeId = recipe.id
         if(listName == 'catalysts') {
-          this.processing_byRecipe[recipeId] += link.from.complexity
+          // this.processing_byRecipe[recipeId] += link.from.complexity
+          this.complexity_byRecipe[recipeId] += link.from.complexity / 100
         } else {
-          this.cost_byRecipe[recipeId] += link.from.cost
+          // this.cost_byRecipe[recipeId] += link.from.cost
+          this.complexity_byRecipe[recipeId] += link.from.cost
         }
       },
 
@@ -234,7 +238,8 @@ export class Constituent {
           // Intelectual chosing right recipe
           const recipes = this.recipes
             .filter(r =>
-              this.cost_byRecipe[r.id] > 0
+              // this.cost_byRecipe[r.id] > 0
+              this.complexity_byRecipe[r.id] > 0
             )
           const recLen = recipes.length
           if(recLen > 0) {
@@ -245,8 +250,9 @@ export class Constituent {
             } else {
               recipes
                 .sort((a,b) =>
-                  (this.cost_byRecipe[b.id] + this.processing_byRecipe[b.id] / 100) -
-                  (this.cost_byRecipe[a.id] + this.processing_byRecipe[a.id] / 100)
+                  // (this.cost_byRecipe[b.id] + this.processing_byRecipe[b.id] / 100) -
+                  // (this.cost_byRecipe[a.id] + this.processing_byRecipe[a.id] / 100)
+                  this.complexity_byRecipe[b.id] - this.complexity_byRecipe[a.id]
                 )
               /* if(recLen==2) */ recipe = recipes[0]
               /* else          recipe = recipes[1] */

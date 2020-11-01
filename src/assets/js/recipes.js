@@ -4,20 +4,20 @@ import { NumLimits } from './utils.js'
 
 
 function amount(raw) {
-  const percent = (raw.content.percent || 100.0) / 100.0
+  const percent = (raw.content.percent ?? 100.0) / 100.0
   var mult = 1.0
   const name = raw.content.name
   if (raw.type == 'placeholder' && name == 'Ticks') mult = 0.01
   if (raw.type == 'placeholder' && name == 'Mana') mult = 0.01
   if (raw.type == 'placeholder' && name == 'RF') mult = 0.001
   if (
-    raw.type == 'fluidStack' ||
-    raw.content.item == 'thermalfoundation:fluid_redstone' ||
-    raw.content.item == 'plustic:plustic.molten_osmium'
+    raw.type === 'fluidStack' ||
+    raw.content.item === 'thermalfoundation:fluid_redstone' ||
+    raw.content.item === 'plustic:plustic.molten_osmium'
   )
     mult = 0.001
 
-  return (raw.content.amount || 1.0) * mult * percent
+  return (raw.content.amount ?? 1.0) * mult * percent
 }
 
 export const recipesStore = {
@@ -104,6 +104,7 @@ export class Recipe {
 
     this.links = outputs.map(outputStack => {
       outputStack.cuent.recipes.push(this)
+      outputStack.cuent.recipesLength = (outputStack.cuent.recipesLength || 0) + 1
 
       const inputLinks = inputs.map(inputStack =>
         new RecipeLink(

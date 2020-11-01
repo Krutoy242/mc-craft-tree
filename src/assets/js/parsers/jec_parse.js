@@ -4,7 +4,20 @@ import { clearEmpties } from '../utils'
 // ====================================================
 // Organize raw Just Enough Calculation json input
 // ====================================================
-export function parseJECgroups(jec_groups, additionals) {
+export function parseJECgroups(jecGroupsRaw_text, additionals) {
+
+  /*=====  Remove type letters (like 2L or 0b)  ======*/ 
+  const groupsJsonText = jecGroupsRaw_text
+    // .replace(/(\W\d+)[LBbsfd](\W)/gi, '$1$2')
+    .replace(/((?:\[|,)-?\d+(?:\.\d+)?)[ILBbsfd](?=\W)/gi, '$1') // Remove value types
+    // .replace(/("SideCache".*)\[.*\]/gi, '$1"DataRemoved"')
+
+
+  // ====================================================
+  // Organize raw Just Enough Calculation json input
+  // ====================================================
+
+  const jec_groups = JSON.parse(groupsJsonText)
 
   // Replace oredict to itemstacks if needed
   function mutateOreToItemstack(raw) {
@@ -15,6 +28,7 @@ export function parseJECgroups(jec_groups, additionals) {
       } else {
         raw.type = 'itemStack'
         raw.content = {
+          ...raw.content,
           name: undefined,
           item: oreAlias.item,
           meta: oreAlias.meta

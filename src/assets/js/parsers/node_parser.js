@@ -8,10 +8,10 @@ Lunch with NodeJS
 =============================================*/
 const fs = require('fs')
 const path = require('path')
-// const { constituents, setField } = require('../constituents.js')
-const { parseCrafttweakerLog } = require('../crafttweakerLog_parse.js')
+const { parseCrafttweakerLog } = require('./crafttweakerLog_parse.js')
 
 const {initZenscriptGrammar, parseZenscriptLine} = require('./zenscript_parser.js')
+const {parseJECgroups} = require('./jec_parse.js')
 
 /*=============================================
 =                   Helpers                   =
@@ -62,7 +62,7 @@ function setField(id, field, value) {
 /*=============================================
 =            Spritesheet
 =============================================*/
-const spritesheetRaw = loadJson('./Spritesheet.json')
+const spritesheetRaw = loadJson('../../raw/Spritesheet.json')
 
 function pushViewBox(name, viewBox) { setField(name, 'viewBox', viewBox) }
 
@@ -98,10 +98,17 @@ for (let k of Object.keys(spritesheetRaw.frames)) {
 initZenscriptGrammar(loadText('../../zenscript.ohm'))
 
 parseCrafttweakerLog(
-  loadText('./crafttweaker.log'), 
+  loadText('../../raw/crafttweaker.log'), 
   parseZenscriptLine,
   setField
 )
+
+
+/*=============================================
+=      Prepare JEC groups.json
+=============================================*/
+const parsedJEC_obj = parseJECgroups(loadText('../../raw/groups.json'), additionals)
+saveObjAsJson(parsedJEC_obj, '../../jec_groups.json')
 
 
 /*=====  Save parsed data ======*/

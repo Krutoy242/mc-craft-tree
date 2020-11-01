@@ -135,7 +135,7 @@ export function calculate(topCuentID) {
   function sort_n(o) {
     var diff = 0
     for (const [key, value] of Object.entries(o))
-      if (value !== (Constituent[key] || 0)) diff += importancyOfKeys[key] || 1
+      if (Constituent[key]!==undefined && value !== (Constituent[key] || 0)) diff += importancyOfKeys[key] || 1
     return diff - (o.isNoIcon ? 100 : 0)
   }
   pile.list.sort(function(a, b) {

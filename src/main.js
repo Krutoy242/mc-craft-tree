@@ -4,10 +4,13 @@ import vuetify from './plugins/vuetify'
 import router from './router'
 import numeral from 'numeral'
 import numFormat from 'vue-filter-number-format'
-import WrappedComponent from 'vue-wrapped-component'
-import VueKonva from 'vue-konva'
 import { paramCase } from 'change-case'
-import VueStatic from 'vue-static'
+
+import WrappedComponent from 'vue-wrapped-component'
+Vue.use(WrappedComponent)
+
+import VueNonreactive from 'vue-nonreactive'
+Vue.use(VueNonreactive)
 
 import vueCurveText from '@inotom/vue-curve-text'
 Vue.component('curve-text', vueCurveText)
@@ -42,9 +45,6 @@ Vue.filter('numFormat', numFormat(numeral))
 Vue.use(require('vue-cookies'))
 Vue.$cookies.config('7d') // set default config
 
-Vue.use(WrappedComponent)
-Vue.use(VueKonva)
-Vue.use(VueStatic)
 
 Vue.config.productionTip = false
 
