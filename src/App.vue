@@ -92,7 +92,7 @@
         :fullscreen="$vuetify.breakpoint.xsOnly"
       >
         <recipes 
-          :recipes="recipesDialog"
+          :cuent="recipesDialog"
           style="overflow-x: hidden;"
         />
       </v-dialog>
@@ -134,8 +134,8 @@ export default {
   mounted() {
     // Listen for the i-got-clicked event and its payload.
     EventBus.$off('show-recipes-dialog')
-    EventBus.$on('show-recipes-dialog', recipes => {
-      this.recipesDialog = recipes
+    EventBus.$on('show-recipes-dialog', cuent => {
+      this.recipesDialog = cuent
       this.showRecipesDialog = true
     })
 
@@ -147,6 +147,7 @@ export default {
     mergeJECGroups(jec_groups)
 
     const pile = calculate('storagedrawers:upgrade_creative:1')
+    // const pile = calculate('minecraft:coal:1')
     for (const key in pile) { Vue.nonreactive(pile[key]) }
     console.log('pile :>> ', pile)
     // pile.list = []

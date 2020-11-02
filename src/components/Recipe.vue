@@ -28,14 +28,14 @@
         v-for="(listName, i) in ['Inputs','Catalysts']"
         :key="i"
       >
-        <v-list-item-content>
+        <v-list-item-content v-if="list(listName).length>0">
           <v-divider v-if="i!=0"/>
           <v-list-item-title :class="i===0 ? 'green--text' : 'teal--text'">
             {{ listName }}:
           </v-list-item-title>
           <v-list-item-subtitle class="d-flex flex-wrap"> 
             <tree-entry 
-              v-for="(cs, i) in (recipe ? recipe[listName.toLowerCase()] : [])"
+              v-for="(cs, i) in list(listName)"
               :key="i"
               :node="cs.cuent"
               :amount="cs.amount"
@@ -55,6 +55,11 @@ export default {
       type: Object,
       default:()=>{}
     },
+  },
+  methods: {
+    list(listName) {
+      return this.recipe ? this.recipe[listName.toLowerCase()] : []
+    }
   },
 }
 </script>

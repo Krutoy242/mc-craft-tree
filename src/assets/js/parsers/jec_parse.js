@@ -1,15 +1,17 @@
-import { clearEmpties } from '../utils'
+const { clearEmpties } = require('../utils')
 
 
 // ====================================================
 // Organize raw Just Enough Calculation json input
 // ====================================================
-export function parseJECgroups(jecGroupsRaw_text, additionals) {
+
+exports.parseJECgroups = function parseJECgroups(jecGroupsRaw_text, additionals) {
 
   /*=====  Remove type letters (like 2L or 0b)  ======*/ 
   const groupsJsonText = jecGroupsRaw_text
     // .replace(/(\W\d+)[LBbsfd](\W)/gi, '$1$2')
-    .replace(/((?:\[|,)-?\d+(?:\.\d+)?)[ILBbsfd](?=\W)/gi, '$1') // Remove value types
+    .replace(/\[\w;/g, '[') // Remove list types
+    .replace(/([[, ]-?\d+(?:\.\d+)?)[ILBbsfd](?=\W)/gi, '$1') // Remove value types
     // .replace(/("SideCache".*)\[.*\]/gi, '$1"DataRemoved"')
 
 

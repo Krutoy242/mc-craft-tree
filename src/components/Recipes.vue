@@ -1,10 +1,10 @@
 <template>
   <!-- <v-container fluid> -->
     <v-data-iterator
-      :items="recipes"
+      :items="cuent.recipes"
       :page="page"
       :items-per-page="4"
-      :hide-default-footer="recipes.length<=4"
+      :hide-default-footer="cuent.recipes.length<=4"
     >
 
       <template #default="{items}">
@@ -13,7 +13,7 @@
             v-for="recipe in items"
             :key="recipe.id"
           >
-            <recipe :recipe="recipe" />
+            <recipe :recipe="recipe" :class="recipe===cuent.recipe ? 'selected-recipe' : ''"/>
           </v-col>
         </v-row>
       </template>
@@ -30,15 +30,21 @@ export default {
     }
   },
   props: {
-    recipes: {
-      type: Array,
-      default:()=>[]
+    cuent: {
+      type: Object,
+      default:()=>{}
     },
   },
   watch: {
-    recipes(newValue, oldValue) {
+    cuent(newValue, oldValue) {
       this.page = 1
     }
   },
 }
 </script>
+
+<style>
+  .selected-recipe {
+    border-color: rgb(0, 119, 255) !important;
+  }
+</style>

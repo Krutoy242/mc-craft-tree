@@ -57,7 +57,7 @@ export function mergeJECGroups(jec_groups) {
 
 export function mergeDefaultAdditionals(additionals) {
 
-  const craftingTableCatal = [new ConstituentStack(pushConstituent('minecraft:crafting_table'), 1)]
+  // const craftingTableCatal = [new ConstituentStack(pushConstituent('minecraft:crafting_table'), 1)]
 
   const keys = Object.keys(additionals)
   function keysToArr(collection) {
@@ -78,9 +78,9 @@ export function mergeDefaultAdditionals(additionals) {
         const outStack = new ConstituentStack(outCuent, adsRecipe.out || 1)
 
         const inputs = keysToArr(adsRecipe.ins)
-        const catals = adsRecipe.ctl ? keysToArr(adsRecipe.ctl) : undefined
+        const catals = adsRecipe.ctl ? keysToArr(adsRecipe.ctl) : []
 
-        const recipe = new Recipe([outStack], inputs, catals || craftingTableCatal)
+        const recipe = new Recipe([outStack], inputs, catals)
         appendRecipe(recipe)
       }
     }
@@ -103,8 +103,7 @@ export class Recipe {
     this.id = nextId()
 
     this.links = outputs.map(outputStack => {
-      outputStack.cuent.recipes.push(this)
-      outputStack.cuent.recipesLength = (outputStack.cuent.recipesLength || 0) + 1
+      outputStack.cuent.addRecipe(this)
 
       const inputLinks = inputs.map(inputStack =>
         new RecipeLink(
@@ -129,6 +128,24 @@ export class Recipe {
         )
       }
     })
+  }
+
+  match(recipe) {
+    if(this === recipe) return true
+
+    for (const name of ['outputs', 'inputs', 'catalysts']) {
+      const arr1 = this[name]
+      const arr2 = recipe[name]
+      if(arr1.length != arr2.length) return false
+      
+      const arr1_s = arr1.slice().sort(ConstituentStack.sort)
+      const arr2_s = arr2.slice().sort(ConstituentStack.sort)
+
+      if(!arr1_s.every((a,i) => a.match(arr2_s[i]))) {
+        return false
+      }
+    }
+    return true
   }
 }
 

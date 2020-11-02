@@ -1,8 +1,8 @@
 // var sortobject = require('deep-sort-object')
-const objToString = require('./objToString.js')
+const { objToString } = require('../utils')
 const _ = require('lodash')
 /*=====  OreDict first items  ======*/
-const {sqrt, max, ceil} = Math
+const {sqrt, max, ceil, floor} = Math
 
 
 function serializeNameMeta(ctName) {
@@ -193,8 +193,8 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
 
   // eslint-disable-next-line no-unused-vars
   const recipes = {
-    addShaped: addRecipe,
-    addShapeless: (recipName, output, input1d) => addRecipe(recipName, output, [input1d])
+    addShaped:    (recipName, output, input2d) => addRecipe(recipName, output, input2d, max(input2d.length, input2d.reduce((x,y)=>max(x, y.length), 0)) > 2 ? [BH('minecraft:crafting_table')] : null),
+    addShapeless: (recipName, output, input1d) => addRecipe(recipName, output, [input1d], input1d.length>4 ? [BH('minecraft:crafting_table')] : null)
   }
   // eslint-disable-next-line no-unused-vars
   const furnace = {
@@ -210,6 +210,20 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
     ManaInfusion_Conjuration: [BH('botania:pool'), BH('botania:conjurationcatalyst')],
     ManaInfusion_Infusion:    [BH('botania:pool')],
     extendedTable: [[BH('extendedcrafting:table_basic')],[BH('extendedcrafting:table_advanced')],[BH('extendedcrafting:table_elite')],[BH('extendedcrafting:table_ultimate')]]
+  }
+
+  function EC_TierCalc(level, inputs) {
+    if(level>0) return catalysts.extendedTable[level - 1]
+
+    if(Array.isArray(inputs[0])) {
+      return catalysts.extendedTable[
+        floor(max(inputs.length/2, inputs.reduce((x,y)=>max(x, y.length/2), 0))) - 1
+      ]
+    } else {
+      return catalysts.extendedTable[
+        floor(max(0, ceil(sqrt(inputs.length))/2 - 1))
+      ]
+    }
   }
   // eslint-disable-next-line no-unused-vars
   const mods = {
@@ -248,8 +262,8 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
         remove:                                     (out)                                 => null },
       EnderCrafting: { addShaped:             (out, input2d)                    => addRecipe(null, out, input2d, [BH('extendedcrafting:ender_crafter'), BH('extendedcrafting:ender_alternator').amount(input2d.flat().length)]) },
       TableCrafting: { 
-        addShaped:                                  (level, out, inputs)              => addRecipe(null, out, inputs,   catalysts.extendedTable[level ?? max(inputs.length, inputs.reduce((x,y)=>max(x,y.length), 0))]),
-        addShapeless:                               (level, out, inputs)              => addRecipe(null, out, [inputs], catalysts.extendedTable[level ?? ceil(sqrt(inputs.length))])
+        addShaped:   (level, out, inputs) => addRecipe(null, out, inputs,   EC_TierCalc(level, inputs)),
+        addShapeless:(level, out, inputs) => addRecipe(null, out, [inputs], EC_TierCalc(level, inputs))
       }
     },
     astralsorcery: {
@@ -268,6 +282,7 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
 
   /*=====   ======*/
   // const recipesRgx = /^((?:recipes\.addShap|mods\.botania\.|furnace\.addRecipe).*)/gm
+  // const recipesRgx = /(^(\w+\.\w+(?:.\w+)*\(.*)$\n){1,}/gm
   const recipesRgx = /^(\w+\.\w+(?:.\w+)*\(.*)/gm
   var k = 0
   for (const match of crLog.matchAll(recipesRgx)) {

@@ -2328,8 +2328,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "128"
+            "meta": 128
           }
         }
       ],
@@ -2390,8 +2391,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "128"
+            "meta": 128
           }
         }
       ],
@@ -2452,8 +2454,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "128"
+            "meta": 128
           }
         }
       ],
@@ -2579,15 +2582,17 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "771"
+            "meta": 771
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "nuclearcraft:uranium",
-            "meta": "8"
+            "meta": 8
           }
         },
         {
@@ -2738,8 +2743,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "nuclearcraft:ingot_block",
-            "meta": "8"
+            "meta": 8
           }
         }
       ],
@@ -2767,8 +2773,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "thermalfoundation:material",
-            "meta": "32"
+            "meta": 32
           }
         },
         {
@@ -2907,8 +2914,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "131"
+            "meta": 131
           }
         }
       ],
@@ -2968,8 +2976,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "128"
+            "meta": 128
           }
         }
       ],
@@ -3387,6 +3396,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:crafting_table"
           }
         }
@@ -3415,6 +3425,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "minecraft:planks"
           }
         }
@@ -3509,6 +3520,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "minecraft:redstone_block"
           }
         },
@@ -3522,8 +3534,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:stained_glass_pane",
-            "meta": "14"
+            "meta": 14
           }
         }
       ],
@@ -3718,8 +3731,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "libvulpes:productrod",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -3763,8 +3777,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "288"
+            "meta": 288
           }
         }
       ],
@@ -4023,8 +4038,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:dye",
-            "meta": "10"
+            "meta": 10
           }
         },
         {
@@ -4176,8 +4192,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "160"
+            "meta": 160
           }
         }
       ],
@@ -4214,6 +4231,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 40,
             "item": "minecraft:redstone_block"
           }
         }
@@ -4226,7 +4244,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -4335,7 +4360,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -4542,8 +4574,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "32"
+            "meta": 32
           }
         },
         {
@@ -4580,13 +4613,15 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "129"
+            "meta": 129
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "minecraft:glass"
           }
         },
@@ -4637,6 +4672,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:glass_pane"
           }
         }
@@ -4783,7 +4819,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                2,
+                3,
+                3,
+                3,
+                3
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -4820,7 +4863,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved"
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ]
             },
             "amount": 1,
             "item": "thermalexpansion:device",
@@ -4901,8 +4951,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "thermalfoundation:material",
-            "meta": "163"
+            "meta": 163
           }
         }
       ],
@@ -4928,10 +4979,6 @@
         }
       ],
       "input": [
-        {
-          "type": "empty",
-          "content": {}
-        },
         {
           "type": "itemStack",
           "content": {
@@ -5004,8 +5051,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "nuclearcraft:uranium",
-            "meta": "8"
+            "meta": 8
           }
         },
         {
@@ -5057,8 +5105,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "770"
+            "meta": 770
           }
         },
         {
@@ -5123,12 +5172,9 @@
       ],
       "input": [
         {
-          "type": "empty",
-          "content": {}
-        },
-        {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:glass"
           }
         },
@@ -5194,8 +5240,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "libvulpes:productrod",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -5239,8 +5286,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 8,
             "item": "thermalfoundation:material",
-            "meta": "132"
+            "meta": 132
           }
         }
       ],
@@ -5457,8 +5505,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "ic2:crafting",
-            "meta": "2"
+            "meta": 2
           }
         },
         {
@@ -5487,6 +5536,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "chisel:block_coal_coke"
           }
         }
@@ -5523,6 +5573,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "ic2:crafting"
           }
         },
@@ -5560,8 +5611,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "324"
+            "meta": 324
           }
         },
         {
@@ -5708,8 +5760,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "2"
+            "meta": 2
           }
         }
       ],
@@ -5752,8 +5805,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         }
       ],
@@ -5900,8 +5954,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "164"
+            "meta": 164
           }
         },
         {
@@ -6149,12 +6204,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:piston"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:stick"
           }
         },
@@ -6286,8 +6343,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "32"
+            "meta": 32
           }
         }
       ],
@@ -6347,8 +6405,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "160"
+            "meta": 160
           }
         }
       ],
@@ -6430,8 +6489,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "163"
+            "meta": 163
           }
         },
         {
@@ -6468,8 +6528,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "163"
+            "meta": 163
           }
         }
       ],
@@ -6498,8 +6559,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "163"
+            "meta": 163
           }
         }
       ],
@@ -6650,8 +6712,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "768"
+            "meta": 768
           }
         }
       ],
@@ -6779,8 +6842,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 9,
             "item": "thermalfoundation:material",
-            "meta": "32"
+            "meta": 32
           }
         }
       ],
@@ -7230,8 +7294,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -7331,6 +7396,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting"
           }
         },
@@ -8420,8 +8486,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "libvulpes:productrod",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -8653,7 +8720,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -9016,8 +9090,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "thermalfoundation:material",
-            "meta": "32"
+            "meta": 32
           }
         },
         {
@@ -9052,13 +9127,15 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 8,
             "item": "thermalfoundation:material",
-            "meta": "32"
+            "meta": 32
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:chest"
           }
         }
@@ -9095,6 +9172,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "minecraft:glass"
           }
         }
@@ -9131,6 +9209,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "appliedenergistics2:material"
           }
         },
@@ -10011,6 +10090,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:diamond_block"
           }
         }
@@ -10111,10 +10191,6 @@
         }
       ],
       "input": [
-        {
-          "type": "empty",
-          "content": {}
-        },
         {
           "type": "itemStack",
           "content": {
@@ -10222,7 +10298,8 @@
         {
           "type": "itemStack",
           "content": {
-            "item": "mysticalagriculture:ender_amethyst_essence"
+            "amount": 4,
+            "item": "mysticalagriculture:iridium_essence"
           }
         },
         {
@@ -10286,6 +10363,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:crafting_table"
           }
         },
@@ -10404,10 +10482,6 @@
         }
       ],
       "input": [
-        {
-          "type": "empty",
-          "content": {}
-        },
         {
           "type": "itemStack",
           "content": {
@@ -10534,6 +10608,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "environmentaltech:aethium"
           }
         },
@@ -10808,10 +10883,6 @@
           }
         },
         {
-          "type": "empty",
-          "content": {}
-        },
-        {
           "type": "itemStack",
           "content": {
             "amount": 2,
@@ -10951,10 +11022,6 @@
           }
         },
         {
-          "type": "empty",
-          "content": {}
-        },
-        {
           "type": "itemStack",
           "content": {
             "amount": 4,
@@ -10980,7 +11047,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                2,
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
               "Level": 4,
               "Send": 250000
             },
@@ -10995,10 +11069,6 @@
             "amount": 2,
             "item": "environmentaltech:solar_cont_5"
           }
-        },
-        {
-          "type": "empty",
-          "content": {}
         },
         {
           "type": "itemStack",
@@ -11108,6 +11178,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "environmentaltech:pladium"
           }
         },
@@ -11155,7 +11226,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                2,
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
               "Level": 4,
               "Send": 250000
             },
@@ -11174,7 +11252,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                2,
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
               "Level": 0,
               "Send": 10000
             },
@@ -11211,7 +11296,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                2,
+                1,
+                1,
+                1,
+                1,
+                1
+              ],
               "Level": 0,
               "Send": 10000
             },
@@ -11231,8 +11323,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "thermalfoundation:material",
-            "meta": "131"
+            "meta": 131
           }
         },
         {
@@ -11522,6 +11615,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:planks"
           }
         }
@@ -11565,6 +11659,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 12,
             "item": "environmentaltech:ionite"
           }
         },
@@ -11632,6 +11727,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "environmentaltech:kyronite"
           }
         },
@@ -11674,6 +11770,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "environmentaltech:erodium"
           }
         },
@@ -11716,18 +11813,21 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "environmentaltech:litherite"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "minecraft:lapis_block"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "environmentaltech:solar_cell_litherite"
           }
         }
@@ -11753,10 +11853,6 @@
         }
       ],
       "input": [
-        {
-          "type": "empty",
-          "content": {}
-        },
         {
           "type": "itemStack",
           "content": {
@@ -11909,10 +12005,6 @@
             "item": "mekanism:basicblock2",
             "meta": 4
           }
-        },
-        {
-          "type": "empty",
-          "content": {}
         },
         {
           "type": "itemStack",
@@ -12292,10 +12384,6 @@
           }
         },
         {
-          "type": "empty",
-          "content": {}
-        },
-        {
           "type": "itemStack",
           "content": {
             "amount": 1,
@@ -12530,8 +12618,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "ic2:dust",
-            "meta": "11"
+            "meta": 11
           }
         },
         {
@@ -12745,8 +12834,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -12801,7 +12891,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -12942,6 +13039,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "immersiveengineering:treated_wood"
           }
         },
@@ -13157,6 +13255,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "immersiveengineering:treated_wood"
           }
         },
@@ -13215,6 +13314,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "immersiveengineering:treated_wood"
           }
         },
@@ -13395,6 +13495,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:iron_block"
           }
         }
@@ -13670,10 +13771,6 @@
         }
       ],
       "input": [
-        {
-          "type": "empty",
-          "content": {}
-        },
         {
           "type": "itemStack",
           "content": {
@@ -14033,7 +14130,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -14072,7 +14176,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -14313,10 +14424,6 @@
       ],
       "input": [
         {
-          "type": "empty",
-          "content": {}
-        },
-        {
           "type": "itemStack",
           "content": {
             "amount": 1,
@@ -14411,8 +14518,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "ic2:crafting",
-            "meta": "2"
+            "meta": 2
           }
         },
         {
@@ -14468,8 +14576,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -15439,12 +15548,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "immersiveengineering:treated_wood"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "extrautils2:compressedcobblestone"
           }
         },
@@ -15517,6 +15628,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 8,
             "item": "minecraft:planks"
           }
         },
@@ -15662,8 +15774,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "2"
+            "meta": 2
           }
         },
         {
@@ -16145,8 +16258,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "160"
+            "meta": 160
           }
         },
         {
@@ -16197,15 +16311,17 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "131"
+            "meta": 131
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "160"
+            "meta": 160
           }
         },
         {
@@ -16257,15 +16373,17 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "thermalfoundation:material",
-            "meta": "160"
+            "meta": 160
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "128"
+            "meta": 128
           }
         }
       ],
@@ -16301,6 +16419,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:dye"
           }
         }
@@ -16385,8 +16504,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "132"
+            "meta": 132
           }
         }
       ],
@@ -16445,8 +16565,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:stone",
-            "meta": "3"
+            "meta": 3
           }
         }
       ],
@@ -16702,7 +16823,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -16726,6 +16854,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:planks"
           }
         }
@@ -16777,7 +16906,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -17402,6 +17538,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 8,
             "item": "minecraft:stone"
           }
         },
@@ -17676,6 +17813,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:glowstone"
           }
         },
@@ -17689,6 +17827,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "bloodmagic:blood_orb"
           }
         }
@@ -17717,6 +17856,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "bloodmagic:blood_orb"
           }
         },
@@ -17739,8 +17879,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -18067,6 +18208,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:glass"
           }
         }
@@ -18106,12 +18248,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "minecraft:sugar"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:cake"
           }
         }
@@ -18174,6 +18318,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "bloodmagic:blood_orb"
           }
         },
@@ -18224,6 +18369,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:egg"
           }
         },
@@ -18259,6 +18405,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "minecraft:glass"
           }
         }
@@ -18361,6 +18508,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "minecraft:stone"
           }
         },
@@ -18374,6 +18522,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "bloodmagic:blood_orb"
           }
         }
@@ -18403,6 +18552,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "bloodmagic:blood_orb"
           }
         },
@@ -18475,6 +18625,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "bloodmagic:blood_orb"
           }
         },
@@ -18518,6 +18669,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:stone"
           }
         },
@@ -18589,13 +18741,15 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "thermalfoundation:material",
-            "meta": "32"
+            "meta": 32
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:stick"
           }
         },
@@ -18699,7 +18853,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -19050,8 +19211,9 @@
         {
           "type": "itemStack",
           "content": {
-            "item": "nuclearcraft:gem",
-            "meta": "6"
+            "amount": 2,
+            "item": "appliedenergistics2:material",
+            "meta": 5
           }
         },
         {
@@ -19376,7 +19538,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -19599,7 +19768,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -19760,8 +19936,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "2"
+            "meta": 2
           }
         },
         {
@@ -19876,20 +20053,23 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "extrautils2:compressedcobblestone"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:cobblestone"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "thermalfoundation:material",
-            "meta": "23"
+            "meta": 23
           }
         },
         {
@@ -19926,12 +20106,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "minecraft:planks"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "minecraft:cobblestone"
           }
         }
@@ -20504,6 +20686,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:dye"
           }
         },
@@ -20554,8 +20737,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:storage",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -20623,15 +20807,17 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "thermalfoundation:material",
-            "meta": "64"
+            "meta": 64
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "66"
+            "meta": 66
           }
         },
         {
@@ -20729,6 +20915,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 16,
             "item": "environmentaltech:aethium"
           }
         },
@@ -21305,8 +21492,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "immersiveengineering:metal",
-            "meta": "5"
+            "meta": 5
           }
         },
         {
@@ -21375,8 +21563,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "thermalfoundation:material",
-            "meta": "163"
+            "meta": 163
           }
         }
       ],
@@ -21541,15 +21730,17 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "771"
+            "meta": 771
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "67"
+            "meta": 67
           }
         }
       ],
@@ -21648,6 +21839,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting"
           }
         },
@@ -21723,10 +21915,6 @@
             "amount": 500,
             "fluid": "glass"
           }
-        },
-        {
-          "type": "empty",
-          "content": {}
         },
         {
           "type": "itemStack",
@@ -22517,8 +22705,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "771"
+            "meta": 771
           }
         }
       ],
@@ -22562,8 +22751,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "772"
+            "meta": 772
           }
         }
       ],
@@ -22607,8 +22797,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "770"
+            "meta": 770
           }
         }
       ],
@@ -22675,6 +22866,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:obsidian"
           }
         }
@@ -22718,7 +22910,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -22757,7 +22956,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -22796,7 +23002,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -22820,8 +23033,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 9,
             "item": "biomesoplenty:gem",
-            "meta": "7"
+            "meta": 7
           }
         }
       ],
@@ -22975,8 +23189,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "161"
+            "meta": 161
           }
         }
       ],
@@ -23063,7 +23278,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -23088,8 +23310,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "130"
+            "meta": 130
           }
         }
       ],
@@ -23126,8 +23349,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "160"
+            "meta": 160
           }
         }
       ],
@@ -23336,8 +23560,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         }
       ],
@@ -23365,6 +23590,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "minecraft:glass_pane"
           }
         },
@@ -23456,6 +23682,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "ic2:crafting"
           }
         },
@@ -23532,8 +23759,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "thermalfoundation:material",
-            "meta": "160"
+            "meta": 160
           }
         },
         {
@@ -23570,8 +23798,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "immersiveengineering:metal",
-            "meta": "5"
+            "meta": 5
           }
         }
       ],
@@ -23682,7 +23911,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -23710,14 +23946,16 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:sand"
           }
         },
         {
           "type": "itemStack",
           "content": {
-            "item": "nuclearcraft:gem_dust",
-            "meta": "2"
+            "amount": 1,
+            "item": "appliedenergistics2:material",
+            "meta": 3
           }
         }
       ],
@@ -24799,8 +25037,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "128"
+            "meta": 128
           }
         }
       ],
@@ -24860,6 +25099,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:end_stone"
           }
         },
@@ -24911,8 +25151,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "768"
+            "meta": 768
           }
         },
         {
@@ -24968,7 +25209,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -24992,15 +25240,17 @@
         {
           "type": "itemStack",
           "content": {
-            "item": "nuclearcraft:gem",
-            "meta": "6"
+            "amount": 1,
+            "item": "appliedenergistics2:material",
+            "meta": 5
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "160"
+            "meta": 160
           }
         }
       ],
@@ -25012,7 +25262,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -25346,15 +25603,17 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "thermalfoundation:material",
-            "meta": "129"
+            "meta": 129
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "130"
+            "meta": 130
           }
         },
         {
@@ -25677,6 +25936,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:cobblestone"
           }
         }
@@ -26089,8 +26349,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "135"
+            "meta": 135
           }
         }
       ],
@@ -26140,8 +26401,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "nuclearcraft:dust",
-            "meta": "9"
+            "meta": 9
           }
         },
         {
@@ -26167,8 +26429,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:stone",
-            "meta": "5"
+            "meta": 5
           }
         }
       ],
@@ -26227,8 +26490,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:storage_alloy",
-            "meta": "2"
+            "meta": 2
           }
         },
         {
@@ -26248,7 +26512,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -27198,6 +27469,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "chisel:basalt"
           }
         },
@@ -28114,6 +28386,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:redstone_block"
           }
         }
@@ -28321,6 +28594,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:cooked_beef"
           }
         },
@@ -28529,6 +28803,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:bookshelf"
           }
         },
@@ -29050,6 +29325,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:redstone_block"
           }
         },
@@ -29308,12 +29584,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 5,
             "item": "minecraft:slime_ball"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:slime"
           }
         },
@@ -29362,6 +29640,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 5,
             "item": "minecraft:cobblestone"
           }
         },
@@ -29517,6 +29796,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 9,
             "item": "minecraft:slime_ball"
           }
         }
@@ -29589,6 +29869,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "minecraft:cobblestone"
           }
         }
@@ -30064,8 +30345,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "161"
+            "meta": 161
           }
         },
         {
@@ -30079,6 +30361,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "thermalfoundation:glass"
           }
         }
@@ -30262,6 +30545,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "ic2:crafting"
           }
         },
@@ -30328,12 +30612,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "environmentaltech:aethium"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:obsidian"
           }
         },
@@ -30347,6 +30633,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "environmentaltech:laser_lens"
           }
         }
@@ -30375,12 +30662,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "environmentaltech:ionite"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:obsidian"
           }
         },
@@ -30394,6 +30683,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "environmentaltech:laser_lens"
           }
         }
@@ -30422,12 +30712,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "environmentaltech:pladium"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:obsidian"
           }
         },
@@ -30441,6 +30733,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "environmentaltech:laser_lens"
           }
         }
@@ -30469,12 +30762,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "environmentaltech:kyronite"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:obsidian"
           }
         },
@@ -30488,6 +30783,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "environmentaltech:laser_lens"
           }
         }
@@ -30516,12 +30812,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "environmentaltech:erodium"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:obsidian"
           }
         },
@@ -30535,6 +30833,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "environmentaltech:laser_lens"
           }
         }
@@ -30563,12 +30862,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "environmentaltech:litherite"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:obsidian"
           }
         },
@@ -30589,6 +30890,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "environmentaltech:laser_lens"
           }
         }
@@ -30932,6 +31234,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 7,
             "item": "minecraft:glass"
           }
         }
@@ -31340,6 +31643,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:chest"
           }
         },
@@ -31422,8 +31726,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:dye",
-            "meta": "2"
+            "meta": 2
           }
         }
       ],
@@ -31458,6 +31763,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "immersiveengineering:treated_wood"
           }
         },
@@ -31667,6 +31973,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:piston"
           }
         }
@@ -31979,15 +32286,17 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:dye",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:dye",
-            "meta": "2"
+            "meta": 2
           }
         },
         {
@@ -32001,14 +32310,16 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:glass"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:dye",
-            "meta": "4"
+            "meta": 4
           }
         }
       ],
@@ -32041,8 +32352,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -32089,8 +32401,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "160"
+            "meta": 160
           }
         },
         {
@@ -32147,6 +32460,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:stone"
           }
         }
@@ -32268,8 +32582,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "ic2:crafting",
-            "meta": "2"
+            "meta": 2
           }
         },
         {
@@ -32332,8 +32647,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -32392,8 +32708,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "66"
+            "meta": 66
           }
         }
       ],
@@ -32425,8 +32742,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -32467,8 +32785,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -32512,8 +32831,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -32554,8 +32874,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -32708,8 +33029,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -32787,8 +33109,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "thermalfoundation:material",
-            "meta": "32"
+            "meta": 32
           }
         },
         {
@@ -32823,6 +33146,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 5,
             "item": "minecraft:planks"
           }
         }
@@ -32887,6 +33211,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 20,
             "item": "minecraft:end_stone"
           }
         },
@@ -33003,6 +33328,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:iron_block"
           }
         }
@@ -33158,6 +33484,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "environmentaltech:aethium"
           }
         },
@@ -33290,15 +33617,17 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "65"
+            "meta": 65
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "768"
+            "meta": 768
           }
         },
         {
@@ -33371,8 +33700,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "135"
+            "meta": 135
           }
         },
         {
@@ -33415,6 +33745,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "environmentaltech:ionite"
           }
         },
@@ -33457,12 +33788,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "environmentaltech:pladium"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:diamond_block"
           }
         },
@@ -33476,6 +33809,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "environmentaltech:laser_lens"
           }
         }
@@ -33504,12 +33838,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "environmentaltech:kyronite"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:diamond_block"
           }
         },
@@ -33523,6 +33859,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "environmentaltech:laser_lens"
           }
         }
@@ -33551,12 +33888,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "environmentaltech:erodium"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:diamond_block"
           }
         },
@@ -33570,6 +33909,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "environmentaltech:laser_lens"
           }
         }
@@ -33598,12 +33938,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "environmentaltech:litherite"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:diamond_block"
           }
         },
@@ -33624,6 +33966,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "environmentaltech:laser_lens"
           }
         }
@@ -33668,6 +34011,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:glass_pane"
           }
         }
@@ -34067,6 +34411,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:record_13"
           }
         },
@@ -34827,6 +35172,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "environmentaltech:aethium"
           }
         },
@@ -35425,7 +35771,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -35458,8 +35811,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "772"
+            "meta": 772
           }
         },
         {
@@ -35656,6 +36010,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 8,
             "item": "minecraft:crafting_table"
           }
         },
@@ -35699,6 +36054,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:planks"
           }
         }
@@ -35727,12 +36083,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:stick"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:cobblestone"
           }
         }
@@ -35768,6 +36126,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:stick"
           }
         }
@@ -36105,8 +36464,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "2"
+            "meta": 2
           }
         },
         {
@@ -36171,7 +36531,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -36295,8 +36662,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "minecraft:stained_glass",
-            "meta": "14"
+            "meta": 14
           }
         }
       ],
@@ -36325,14 +36693,16 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 8,
             "item": "minecraft:glass"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:dye",
-            "meta": "1"
+            "meta": 1
           }
         }
       ],
@@ -36420,8 +36790,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "16"
+            "meta": 16
           }
         },
         {
@@ -36745,7 +37116,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -36800,20 +37178,23 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:glass"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "thermalfoundation:material"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:dye",
-            "meta": "2"
+            "meta": 2
           }
         }
       ],
@@ -36872,8 +37253,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:storage",
-            "meta": "5"
+            "meta": 5
           }
         }
       ],
@@ -37012,8 +37394,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:dye",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -37049,6 +37432,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:dye"
           }
         },
@@ -37152,6 +37536,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "animania:friesian_cheese_wheel"
           }
         }
@@ -37234,8 +37619,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         }
       ],
@@ -37356,8 +37742,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "32"
+            "meta": 32
           }
         }
       ],
@@ -37425,6 +37812,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "minecraft:glass"
           }
         },
@@ -37640,8 +38028,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "32"
+            "meta": 32
           }
         }
       ],
@@ -37670,6 +38059,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:slime_ball"
           }
         },
@@ -37712,12 +38102,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "minecraft:sand"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:clay"
           }
         }
@@ -37747,6 +38139,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:clay"
           }
         }
@@ -37776,6 +38169,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:sand"
           }
         }
@@ -37890,6 +38284,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:log"
           }
         }
@@ -38046,6 +38441,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:stick"
           }
         }
@@ -38259,6 +38655,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:glass_pane"
           }
         },
@@ -38273,8 +38670,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:dye",
-            "meta": "6"
+            "meta": 6
           }
         },
         {
@@ -38376,8 +38774,10 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 80,
+            "percent": 1,
             "item": "nuclearcraft:gem_dust",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -38483,6 +38883,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "minecraft:mycelium"
           }
         },
@@ -38534,6 +38935,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "darkutils:material"
           }
         },
@@ -38569,8 +38971,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "tconstruct:materials",
-            "meta": "17"
+            "meta": 17
           }
         }
       ],
@@ -39015,6 +39418,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "ic2:crafting"
           }
         },
@@ -39095,8 +39499,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:dye",
-            "meta": "8"
+            "meta": 8
           }
         }
       ],
@@ -39645,6 +40050,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "extrautils2:unstableingots"
           }
         }
@@ -39711,6 +40117,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:stick"
           }
         },
@@ -39785,15 +40192,17 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "nuclearcraft:ingot",
-            "meta": "8"
+            "meta": 8
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "nuclearcraft:californium",
-            "meta": "4"
+            "meta": 4
           }
         }
       ],
@@ -40009,8 +40418,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "161"
+            "meta": 161
           }
         }
       ],
@@ -40120,6 +40530,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:redstone_block"
           }
         }
@@ -40279,14 +40690,16 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "minecraft:glass"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "128"
+            "meta": 128
           }
         },
         {
@@ -40481,7 +40894,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                2,
+                3,
+                3,
+                3,
+                3
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -40526,7 +40946,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                2,
+                3,
+                3,
+                3,
+                3
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -40944,8 +41371,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "128"
+            "meta": 128
           }
         }
       ],
@@ -41334,8 +41762,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 7,
             "item": "thermalfoundation:storage",
-            "meta": "4"
+            "meta": 4
           }
         },
         {
@@ -41543,12 +41972,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:planks"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:stick"
           }
         }
@@ -41665,8 +42096,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:dye",
-            "meta": "9"
+            "meta": 9
           }
         },
         {
@@ -41730,8 +42162,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "64"
+            "meta": 64
           }
         },
         {
@@ -41744,8 +42177,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "770"
+            "meta": 770
           }
         },
         {
@@ -41772,6 +42206,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:clay"
           }
         }
@@ -42033,8 +42468,9 @@
         {
           "type": "itemStack",
           "content": {
-            "item": "nuclearcraft:gem",
-            "meta": "6"
+            "amount": 1,
+            "item": "appliedenergistics2:material",
+            "meta": 5
           }
         }
       ],
@@ -42101,8 +42537,9 @@
         {
           "type": "itemStack",
           "content": {
-            "item": "nuclearcraft:gem",
-            "meta": "6"
+            "amount": 1,
+            "item": "appliedenergistics2:material",
+            "meta": 5
           }
         }
       ],
@@ -42260,8 +42697,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "129"
+            "meta": 129
           }
         }
       ],
@@ -44075,6 +44513,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "minecraft:stick"
           }
         },
@@ -44111,21 +44550,24 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:glass"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "768"
+            "meta": 768
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "32"
+            "meta": 32
           }
         },
         {
@@ -44140,8 +44582,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         }
       ],
@@ -44212,8 +44655,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -44331,8 +44775,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         }
       ],
@@ -44556,6 +45001,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:glass"
           }
         }
@@ -44672,8 +45118,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -44731,6 +45178,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:chest"
           }
         }
@@ -44886,8 +45334,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "minecraft:dye",
-            "meta": "12"
+            "meta": 12
           }
         },
         {
@@ -45005,8 +45454,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         }
       ],
@@ -45029,7 +45479,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -45050,6 +45507,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:sand"
           }
         },
@@ -45101,8 +45559,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "131"
+            "meta": 131
           }
         },
         {
@@ -45462,8 +45921,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "nuclearcraft:ingot",
-            "meta": "8"
+            "meta": 8
           }
         },
         {
@@ -45691,8 +46151,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "160"
+            "meta": 160
           }
         },
         {
@@ -45713,8 +46174,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "128"
+            "meta": 128
           }
         }
       ],
@@ -45749,8 +46211,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "160"
+            "meta": 160
           }
         },
         {
@@ -46184,7 +46647,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -46197,6 +46667,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:piston"
           }
         },
@@ -46279,6 +46750,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:cobblestone"
           }
         },
@@ -46388,7 +46860,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -46412,6 +46891,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:log"
           }
         },
@@ -46475,8 +46955,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -46514,7 +46995,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -46535,6 +47023,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:dirt"
           }
         },
@@ -46581,7 +47070,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -46601,8 +47097,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "thermalfoundation:material",
-            "meta": "163"
+            "meta": 163
           }
         },
         {
@@ -46648,7 +47145,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -46661,6 +47165,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:glass"
           }
         },
@@ -46714,7 +47219,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                2,
+                3,
+                3,
+                3,
+                3
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -46735,6 +47247,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:glass"
           }
         },
@@ -46781,7 +47294,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -46815,6 +47335,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:glass"
           }
         },
@@ -46861,7 +47382,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -46930,7 +47458,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -46950,8 +47485,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "thermalfoundation:material",
-            "meta": "164"
+            "meta": 164
           }
         },
         {
@@ -46997,7 +47533,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -47010,14 +47553,16 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:crafting_table"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "thermalfoundation:material",
-            "meta": "129"
+            "meta": 129
           }
         },
         {
@@ -47063,7 +47608,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -47083,6 +47635,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "thermalfoundation:glass"
           }
         },
@@ -47129,7 +47682,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -47149,6 +47709,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:lapis_block"
           }
         },
@@ -47195,7 +47756,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -47263,7 +47831,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -47276,6 +47851,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:glass"
           }
         },
@@ -47390,8 +47966,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "129"
+            "meta": 129
           }
         }
       ],
@@ -47466,8 +48043,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "164"
+            "meta": 164
           }
         }
       ],
@@ -47580,8 +48158,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "164"
+            "meta": 164
           }
         }
       ],
@@ -47617,8 +48196,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "161"
+            "meta": 161
           }
         }
       ],
@@ -47692,8 +48272,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "135"
+            "meta": 135
           }
         }
       ],
@@ -47767,8 +48348,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -47812,8 +48394,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "ic2:dust",
-            "meta": "5"
+            "meta": 5
           }
         },
         {
@@ -47867,18 +48450,21 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "minecraft:stick"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:iron_block"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:planks"
           }
         },
@@ -47963,6 +48549,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:redstone_block"
           }
         }
@@ -48068,12 +48655,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 5,
             "item": "minecraft:log"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:dye"
           }
         },
@@ -48609,6 +49198,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:stone"
           }
         }
@@ -48830,14 +49420,16 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "environmentaltech:laser_lens"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:dye",
-            "meta": "2"
+            "meta": 2
           }
         }
       ],
@@ -49019,6 +49611,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "minecraft:crafting_table"
           }
         },
@@ -49032,6 +49625,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:iron_block"
           }
         }
@@ -49164,8 +49758,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "ic2:crafting",
-            "meta": "2"
+            "meta": 2
           }
         },
         {
@@ -49208,21 +49803,24 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "minecraft:redstone_block"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "ic2:crafting",
-            "meta": "2"
+            "meta": 2
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "thermalfoundation:material",
-            "meta": "160"
+            "meta": 160
           }
         },
         {
@@ -49258,12 +49856,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "immersiveengineering:treated_wood"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:water_bucket"
           }
         },
@@ -49583,6 +50183,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:log"
           }
         }
@@ -49655,6 +50256,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "minecraft:glass"
           }
         },
@@ -49704,6 +50306,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 8,
             "item": "minecraft:log"
           }
         }
@@ -49799,6 +50402,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "immersiveengineering:treated_wood"
           }
         },
@@ -49841,6 +50445,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "immersiveengineering:treated_wood"
           }
         },
@@ -49876,6 +50481,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "immersiveengineering:treated_wood"
           }
         }
@@ -49978,27 +50584,31 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 5,
             "item": "thermalfoundation:material",
-            "meta": "160"
+            "meta": 160
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:glass"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:chest"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         }
       ],
@@ -50149,7 +50759,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                2,
+                3,
+                3,
+                3,
+                3
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -50197,6 +50814,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:glass"
           }
         }
@@ -50358,8 +50976,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "thermalfoundation:material",
-            "meta": "67"
+            "meta": 67
           }
         },
         {
@@ -50549,8 +51168,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "288"
+            "meta": 288
           }
         },
         {
@@ -50589,6 +51209,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "astralsorcery:blockmarble"
           }
         },
@@ -51015,10 +51636,6 @@
       ],
       "input": [
         {
-          "type": "empty",
-          "content": {}
-        },
-        {
           "type": "itemStack",
           "content": {
             "amount": 1,
@@ -51035,12 +51652,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:cobblestone"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:coal_block"
           }
         }
@@ -51078,10 +51697,6 @@
       ],
       "input": [
         {
-          "type": "empty",
-          "content": {}
-        },
-        {
           "type": "itemStack",
           "content": {
             "amount": 1,
@@ -51091,6 +51706,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:feather"
           }
         }
@@ -51128,10 +51744,6 @@
         }
       ],
       "input": [
-        {
-          "type": "empty",
-          "content": {}
-        },
         {
           "type": "itemStack",
           "content": {
@@ -51242,6 +51854,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:sand"
           }
         }
@@ -51313,6 +51926,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:sand"
           }
         },
@@ -51394,6 +52008,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "astralsorcery:itemrockcrystalsimple"
           }
         },
@@ -51441,6 +52056,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:iron_ingot"
           }
         }
@@ -51476,6 +52092,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:glass"
           }
         }
@@ -51540,12 +52157,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:stick"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "minecraft:stone"
           }
         }
@@ -51574,8 +52193,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "thermalfoundation:material",
-            "meta": "288"
+            "meta": 288
           }
         },
         {
@@ -51705,6 +52325,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "appliedenergistics2:material"
           }
         },
@@ -51736,7 +52357,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved"
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ]
             },
             "amount": 1,
             "item": "thermalexpansion:device",
@@ -51748,13 +52376,15 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "128"
+            "meta": 128
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:planks"
           }
         },
@@ -52178,6 +52808,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:coal_block"
           }
         }
@@ -52378,7 +53009,8 @@
         {
           "type": "itemStack",
           "content": {
-            "item": "thaumcraft:nitor_gray"
+            "amount": 1,
+            "item": "thaumcraft:nitor_yellow"
           }
         }
       ],
@@ -52486,6 +53118,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "chisel:marble"
           }
         },
@@ -52499,6 +53132,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:crafting_table"
           }
         }
@@ -53297,13 +53931,15 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "thermalfoundation:material",
-            "meta": "128"
+            "meta": 128
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:glass"
           }
         },
@@ -54001,8 +54637,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "131"
+            "meta": 131
           }
         }
       ],
@@ -54039,8 +54676,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "thermalfoundation:material",
-            "meta": "133"
+            "meta": 133
           }
         }
       ],
@@ -54076,6 +54714,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 7,
             "item": "minecraft:cobblestone"
           }
         },
@@ -54140,6 +54779,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 8,
             "item": "chisel:marble"
           }
         },
@@ -54205,6 +54845,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 7,
             "item": "tconstruct:seared"
           }
         },
@@ -54248,6 +54889,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "appliedenergistics2:quartz_block"
           }
         }
@@ -54260,7 +54902,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -54285,6 +54934,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:diamond_block"
           }
         }
@@ -54297,7 +54947,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -54336,7 +54993,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -54375,7 +55039,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                1,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -54581,6 +55252,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:piston"
           }
         },
@@ -54626,8 +55298,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 6,
             "item": "opencomputers:material",
-            "meta": "29"
+            "meta": 29
           }
         },
         {
@@ -54936,6 +55609,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 5,
             "item": "minecraft:glass"
           }
         },
@@ -55171,6 +55845,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "minecraft:lapis_block"
           }
         },
@@ -55244,10 +55919,6 @@
       ],
       "input": [
         {
-          "type": "empty",
-          "content": {}
-        },
-        {
           "type": "itemStack",
           "content": {
             "amount": 1,
@@ -55272,6 +55943,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:feather"
           }
         },
@@ -55305,10 +55977,6 @@
         }
       ],
       "input": [
-        {
-          "type": "empty",
-          "content": {}
-        },
         {
           "type": "itemStack",
           "content": {
@@ -55348,10 +56016,6 @@
       ],
       "input": [
         {
-          "type": "empty",
-          "content": {}
-        },
-        {
           "type": "itemStack",
           "content": {
             "amount": 1,
@@ -55369,12 +56033,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:stone"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:coal_block"
           }
         },
@@ -55408,10 +56074,6 @@
         }
       ],
       "input": [
-        {
-          "type": "empty",
-          "content": {}
-        },
         {
           "type": "itemStack",
           "content": {
@@ -55470,10 +56132,6 @@
         }
       ],
       "input": [
-        {
-          "type": "empty",
-          "content": {}
-        },
         {
           "type": "itemStack",
           "content": {
@@ -55597,12 +56255,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "minecraft:stone"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "minecraft:planks"
           }
         },
@@ -55623,6 +56283,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "bloodmagic:blood_orb"
           }
         }
@@ -55835,7 +56496,14 @@
               "RSControl": 0,
               "Facing": 3,
               "Energy": 0,
-              "SideCache": "DataRemoved",
+              "SideCache": [
+                3,
+                1,
+                2,
+                2,
+                2,
+                2
+              ],
               "Level": 0
             },
             "amount": 1,
@@ -55912,6 +56580,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 4,
             "item": "minecraft:iron_nugget"
           }
         },
@@ -55994,6 +56663,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:skull"
           }
         },
@@ -56127,8 +56797,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "163"
+            "meta": 163
           }
         }
       ],
@@ -56206,8 +56877,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "thermalfoundation:material",
-            "meta": "160"
+            "meta": 160
           }
         },
         {
@@ -56220,8 +56892,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -56281,8 +56954,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "ic2:crafting",
-            "meta": "1"
+            "meta": 1
           }
         },
         {
@@ -56347,8 +57021,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 2,
             "item": "thermalfoundation:material",
-            "meta": "23"
+            "meta": 23
           }
         },
         {
@@ -56682,8 +57357,9 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "thermalfoundation:material",
-            "meta": "161"
+            "meta": 161
           }
         }
       ],
@@ -56783,12 +57459,14 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:iron_block"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 3,
             "item": "minecraft:obsidian"
           }
         }
@@ -57670,10 +58348,6 @@
       ],
       "input": [
         {
-          "type": "empty",
-          "content": {}
-        },
-        {
           "type": "itemStack",
           "content": {
             "amount": 1,
@@ -57690,14 +58364,16 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:glass"
           }
         },
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:dye",
-            "meta": "4"
+            "meta": 4
           }
         }
       ],
@@ -57970,6 +58646,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:redstone_block"
           }
         },
@@ -58441,8 +59118,9 @@
         {
           "type": "itemStack",
           "content": {
-            "item": "nuclearcraft:gem_dust",
-            "meta": "2"
+            "amount": 4,
+            "item": "appliedenergistics2:material",
+            "meta": 3
           }
         },
         {
@@ -58526,6 +59204,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:slime_ball"
           }
         }
@@ -58563,6 +59242,7 @@
         {
           "type": "itemStack",
           "content": {
+            "amount": 1,
             "item": "minecraft:slime_ball"
           }
         },

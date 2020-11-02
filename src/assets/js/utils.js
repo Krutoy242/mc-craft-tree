@@ -1,5 +1,9 @@
 
-export function clearEmpties(o) {
+Object.defineProperty(exports, '__esModule', {
+  value: true
+})
+
+function clearEmpties(o) {
   if (!o) return
 
   for (var k in o) {
@@ -16,7 +20,7 @@ export function clearEmpties(o) {
 }
 
 
-export function objToString(obj, ndeep) {
+function objToString(obj, ndeep) {
   switch (typeof obj) {
   case 'string':
     return '"' + obj + '"'
@@ -40,7 +44,7 @@ export function objToString(obj, ndeep) {
 }
 
 
-export class NumLimits {
+class NumLimits {
   constructor() {
     this.min = 999999999999
     this.max = 0
@@ -51,3 +55,7 @@ export class NumLimits {
     this.max = Math.max(this.max, num)
   }
 }
+
+exports.NumLimits = NumLimits
+exports.clearEmpties = clearEmpties
+exports.objToString = objToString

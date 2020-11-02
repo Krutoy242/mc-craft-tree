@@ -84,7 +84,7 @@
       </template>
       
       <template #item.inputsAmount="{ item }">
-        <entry-grid :cuentStackArray="item.recipe ? item.recipe.inputs : null" @click.native="showRecipes(item.recipes)">
+        <entry-grid :cuentStackArray="item.recipe ? item.recipe.inputs : null" @click.native="showRecipes(item)">
           <hedgehog :number="item.inputsAmount"/>
         </entry-grid>
       </template>
@@ -121,7 +121,6 @@ export default {
 
   data() {
     return {
-      recipesDialog: false,
       search: '',
       selectedHeadersModel: [],
       selectedHeaders: [],
@@ -156,8 +155,8 @@ export default {
         item.id.indexOf(search) !== -1
       )
     },
-    showRecipes(recipes) {
-      EventBus.$emit('show-recipes-dialog', recipes)
+    showRecipes(cuent) {
+      EventBus.$emit('show-recipes-dialog', cuent)
     }
   },
   computed: {
