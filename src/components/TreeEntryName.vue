@@ -2,11 +2,11 @@
   <div>
     <kbd
       ><span :style="{ 'color' : `hsl(${h}, 60%, 40%)` }">{{
-        node.entrySource
+        node.namespace
       }}</span
       >:<span class="blue--text text--lighten-3">{{ node.entryName
       }}</span
-      ><span v-if="node.entryMeta&&node.entryMeta!=0">:{{ node.entryMeta }}</span></kbd
+      ><span v-if="node.meta&&node.meta!=0">:{{ node.meta }}</span></kbd
     >
   </div>
 </template>
@@ -15,7 +15,7 @@
 
 Object.defineProperty(String.prototype, 'hashCode', {
   value: function() {
-    var hash = 0, i, chr
+    let hash = 0, i, chr
     for (i = 0; i < this.length; i++) {
       chr   = this.charCodeAt(i)
       hash  = ((hash << 5) - hash) + chr
@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     h(str) {
-      return Math.abs(this.node.entrySource.hashCode()) % 256
+      return Math.abs(this.node.namespace.hashCode()) % 256
     },
   },
 }

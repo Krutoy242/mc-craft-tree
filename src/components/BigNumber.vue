@@ -30,7 +30,7 @@
 <script>
 import numeral from 'numeral'
 
-var SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E']
+let SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E']
 
 function abbreviateNumber(num){
   num = Math.round(num * 1000) / 1000.0
@@ -38,17 +38,17 @@ function abbreviateNumber(num){
   if(num <= 1) return num
 
   // what tier? (determines SI symbol)
-  var tier = Math.log10(num) / 3 | 0
+  let tier = Math.log10(num) / 3 | 0
 
   // if zero, we don't need a suffix
   if(tier == 0) return num
 
   // get suffix and determine scale
-  var suffix = SI_SYMBOL[tier]
-  var scale = Math.pow(10, tier * 3)
+  let suffix = SI_SYMBOL[tier]
+  let scale = Math.pow(10, tier * 3)
 
   // scale the num
-  var scaled = num / scale
+  let scaled = num / scale
 
   // format num and add suffix
   return scaled.toFixed(1) + suffix
@@ -75,7 +75,7 @@ export default {
   },
   computed: {
     compNumber() {
-      var num = this.number
+      let num = this.number
 
       if (!this.short) {
         if (num >= 1000) num = Math.round(num)

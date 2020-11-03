@@ -1,7 +1,6 @@
-const _ = require('lodash')
 import { listUU } from './listUU.js'
 const listUUIndexes = listUU.reduce((a,b,i)=> (a[b.name]=i,a),{})
-import { clearEmpties, objToString } from './utils'
+import { cleanupNbt, objToString, UniqueKeys } from './utils'
 
 const CRAFTING_TABLE_COST = 50.0
 
@@ -11,46 +10,27 @@ function processingCostFromInputAmount(x) {
   return Math.floor(Math.max(0, Math.pow(1.055, x+100) - Math.pow(1.055, 101) + x*25 + CRAFTING_TABLE_COST/2))
 }
 
-function getMeta(raw) {
-  return (raw.content.fMeta === 1)
-    ? undefined
-    : raw.content.meta
-}
-
-function trueNbt(nbt, fNbt){
-  return (nbt && Object.keys(nbt).length !== 0 && !fNbt)
-    ? nbt
-    : undefined
-}
-
 export class Constituent {
-
-
-  // Default values for nodes
-  static cost           = 0.0;
-  static complexity     = 0.0;
-  static usability      = 0.0;
-  static popularity     = 0.0;
-  static processing     = 0.0;
+  display       = ''
+  name          = ''
+  complexity    = 0.0
+  cost          = 0.0
+  processing    = 0.0
+  usability     = 0.0
+  popularity    = 0.0
+  type          = ''
+  inputsAmount  = 0
+  outputsAmount = 0
+  steps         = 0
+  recipes       = []
 
   static additionals;
-  static noOreDictsKeys={};
+  static noOreDictsKeys=new Set();
 
   static sort = (a, b) => a.id.localeCompare(b.id)
 
   constructor(rawOrId) {
-
-    // Predefine fields for pretty console log
-    this.display = undefined
-    this.name = undefined
-    this.complexity = undefined
-    this.cost = undefined
-    this.processing = undefined
-    this.usability = undefined
-    this.popularity = undefined
-    this.type = undefined
-
-    const isJEC = typeof rawOrId == 'object'
+    const isJEC = typeof rawOrId === 'object'
 
     if(isJEC) {
       const raw = rawOrId
@@ -59,120 +39,107 @@ export class Constituent {
       this.type  = raw.type
       this.nbt   = raw.content.nbt
 
-      switch (this.type) {
-      case 'itemStack':
-        [this.entrySource, this.entryName] = raw.content.item.split(':')
-        this.entryMeta   = getMeta(raw)               // Meta. Only for itemStacks
-        break
-      case 'fluidStack':
-        this.entrySource = 'fluid'
-        this.entryName = raw.content.fluid
-        break
-      case 'oreDict':
-        this.entrySource = 'ore'
-        this.entryName = raw.content.name
-        break
-      case 'placeholder':
-        this.entrySource = 'placeholder'
-        this.entryName = raw.content.name
-        break
-      default:
-        this.entrySource = 'NO_SOURCE'
-        this.entryName = 'NO_NAME'
-      }
+      ;[this.namespace, this.entryName, this.meta] = ({
+        'itemStack':  ()=>[...raw.content.item.split(':'), this.fMeta ? 0 : (raw.content.meta??0)],
+        'fluidStack': ()=>['fluid',       raw.content.fluid],
+        'oreDict':    ()=>['ore',         raw.content.name],
+        'placeholder':()=>['placeholder', raw.content.name],
+      })[this.type]()
     } else {
-      const groups = rawOrId.match(/^(?<source>[^:]+)(?::(?<name>[^:]+))?(?::(?<meta>[^:]+))?(?<tag>\{.*\})?$/).groups
-
+      const groups = rawOrId.match(
+        /^(?<namespace>[^:{]+)(?::(?<name>[^:{]+))?(?::(?<meta>[^:{]+))?(?<tag>\{.*\})?$/
+      ).groups
 
       if(groups.name) {
-        this.entrySource = groups.source
-        this.entryName   = groups.name
-        this.entryMeta   = groups.meta
-        if(this.entrySource === 'fluid') {
-          this.type = 'fluidStack'
-        } else {
-          this.type = 'itemStack'
+        // Itemstacks
+        this.namespace = groups.namespace
+        this.entryName = groups.name
+        this.meta      = groups.meta??0
+        const switchers = {
+          'placeholder':()=>'placeholder',
+          'fluid'      :()=>'fluidStack',
+          'default'    :()=>'itemStack',
         }
+        this.type = (switchers[this.namespace] ?? switchers['default'])()
       } else {
-        var oreAlias = Constituent.additionals[groups.source]
+        // Oredicts
+        const oreAlias = Constituent.additionals[groups.namespace]
         if (!oreAlias?.item) {
-          Constituent.noOreDictsKeys[groups.source] = true
           this.type = 'oreDict'
-          this.entrySource = 'ore'
-          this.entryName = groups.source
+          this.namespace = 'ore'
+          this.entryName = groups.namespace
+          Constituent.noOreDictsKeys.add(this.entryName)
         } else {
           this.type = 'itemStack'
-          ;[this.entrySource, this.entryName] = oreAlias.item.split(':')
-          this.entryMeta   = oreAlias.meta
+          ;[this.namespace, this.entryName] = oreAlias.item.split(':')
+          this.meta = oreAlias.meta??0
         }
       }
 
       if(groups.tag) {
-        try {
-          this.nbt   = eval(`(${groups.tag})`)
-        } catch (error) {
-          console.error('nbtEvaluationError :>> ', groups.tag, 'Error: ', error.message)
-        }
+        try { this.nbt = eval(`(${groups.tag})`) }
+        catch (error) { console.error('nbtEvaluationError :>> ', groups.tag, 'Error: ', error.message) }
       }
     }
 
+    if(this.fNbt) delete this.nbt // Remove nbt data if ingredient is match with any nbt
     if(this.nbt) {
-      clearEmpties(this.nbt)
-      this.nbt = trueNbt(this.nbt, this.fNbt)
+      this.nbt = cleanupNbt(this.nbt)
       this.nbtStr = objToString(this.nbt)
     }
 
-    this.entryMeta     = this.entryMeta||0
-    this.definition    = `${this.entrySource}:${this.entryName}`
-    this.name          = this.definition + (this.entryMeta ? ':'+this.entryMeta : '') // "minecraft:stone:2", "ore:stone"
-    this.nameMandatory = this.definition + ':' + this.entryMeta
-    this.volume        = (this.type                                                                                      == 'fluidStack') ? 1000.0 : 1.0
-    this.recipes       = []
-    this.inputsAmount  = 0
-    this.outputsAmount = 0
-    this.steps         = 0
-    this.popularity    = Constituent.popularity
-    this.usability     = Constituent.usability
-    this.processing    = Constituent.processing
-    this.cost          = Constituent.cost
+    this.definition    = `${this.namespace}:${this.entryName}`
+    this.name          = this.definition + (this.meta ? ':'+this.meta : '') // "minecraft:stone:2", "ore:stone"
+    this.nameMandatory = this.definition + ':' + this.meta
+    this.volume        = (this.type == 'fluidStack') ? 1000.0 : 1.0
 
 
-    const definitionIdNoMeta = this.definition+':0'
     this.id = this.nameMandatory + (this.nbtStr??'')
 
-
-    // Find item field entry in parsed data
-    const self = this
-    function descent(field) {
-      var o = Constituent.additionals[self.id]// Regular icon
-      if (!o?.[field]) o = Constituent.additionals[self.nameMandatory]// Icon without nbt
-      if (!o?.[field]) o = Constituent.additionals[definitionIdNoMeta] // And without meta (meta = 0)
-      if (!o?.[field]) o = Constituent.additionals[self.definition] // meta not showing
-      return o?.[field]
-    }
-
-    this.display = descent('display') || `[${this.name}]` // Display localized name
-    var viewBox = descent('viewBox') // View Box on texture sheet
-
-    if (!viewBox) {
-      if (this.type === 'placeholder') {
-        viewBox = Constituent.additionals['fluid:betterquesting.placeholder:0']?.viewBox || '672 1344'
-      } else if (this.name === 'forge:bucketfilled') {
-        viewBox = Constituent.additionals['minecraft:bucket:0']?.viewBox || '4000 2816'
-      } else {
-        viewBox = Constituent.additionals['openblocks:dev_null:0']?.viewBox || '576 3136'
-        this.isNoIcon = true
+    //*************************************
+    // Viewbox and Display
+    //*************************************
+    if(this.type === '') {
+      const placeholderIcon = 'fluid:betterquesting.placeholder:0'
+      this.viewBox = Constituent.additionals[placeholderIcon]?.viewBox || '672 1344 32 32'
+      this.display = this.entryName
+    } else {
+      // Find item field entry in parsed data
+      const definitionIdNoMeta = this.definition+':0'
+      const self = this
+      let descent = function descent(field) {
+        let o = Constituent.additionals[self.id] // Regular icon
+        if (!o?.[field]) o = Constituent.additionals[self.nameMandatory] // Icon without nbt
+        if (!o?.[field]) o = Constituent.additionals[definitionIdNoMeta] // And without meta (meta = 0)
+        if (!o?.[field]) o = Constituent.additionals[self.definition]    // meta not showing
+        return o?.[field]
       }
-    }
 
-    this.viewBox = viewBox + ' 32 32'
+      // Display localized name
+      if(!this.display) this.display = descent('display') || `[${this.name}]`
+
+      // View Box on texture sheet
+      let viewBox = this.viewBox
+      if(!this.viewBox) viewBox = descent('viewBox')
+
+      if (!viewBox) {
+        if (this.name === 'forge:bucketfilled') {
+          viewBox = Constituent.additionals['minecraft:bucket:0']?.viewBox || '4000 2816'
+        } else {
+          viewBox = Constituent.additionals['openblocks:dev_null:0']?.viewBox || '576 3136'
+          this.isNoIcon = true
+        }
+      }
+
+      this.viewBox = viewBox + ' 32 32'
+    }
   }
 
   match(o) {
     if(this === o) return true
 
     if(this.definition != o.definition) return false
-    if(!(this.fMeta || o.fMeta) && this.entryMeta != o.entryMeta) return false
+    if(!(this.fMeta || o.fMeta) && this.meta != o.meta) return false
     if(!(this.fNbt || o.fNbt) && this.nbtStr != o.nbtStr) return false
     return true
   }
@@ -211,22 +178,16 @@ export class Constituent {
             return true
           }
         }
-
-        if(this.recipes.length > 0) {
-          this.complexity_byRecipe = this.complexity_byRecipe ?? {}
-          // for (const recipe of this.recipes) {
-          //   this.complexity_byRecipe[recipe.id] = 0.0
-          // }
-        }
       },
 
       afterDive: function(link, deph, recipe, listName) {
-        if(this.id==='minecraft:coal:1') {
-          // console.log('afterDive link.from:>> ', link.from);
-        }
         if(listName == 'catalysts') {
           // Temporary cost for items caused in loop
-          this.complexity_byRecipe[recipe.id] = (this.complexity_byRecipe[recipe.id]??0.0) + (link.from.complexity ?? 100000.0) / 100
+          if(link.from.complexity === undefined) {
+            delete this.complexity_byRecipe[recipe.id]
+          } else {
+            this.complexity_byRecipe[recipe.id] = (this.complexity_byRecipe[recipe.id]??0.0) + link.from.complexity / 100
+          }
         } else {
           this.complexity_byRecipe[recipe.id] = (this.complexity_byRecipe[recipe.id]??0.0) + link.from.cost
         }
@@ -236,18 +197,15 @@ export class Constituent {
 
       result: function() {
         // Check if we tryed all recipes before calculate final result
-        if(this.complexity_byRecipe && Object.keys(this.complexity_byRecipe).length !== this.recipes.length) return
+        if(this.complexity_byRecipe && Object.keys(this.complexity_byRecipe).length !== this.recipes.length) return null
 
         if(!this.calculated) {
           // Intelectual chosing right recipe
-          if(this.id==='minecraft:coal:1' || this.id==='minecraft:crafting_table:0') {
-            console.log('inspect item :>> ', this)
-          }
           const recipes = this.recipes.filter(r => this.complexity_byRecipe[r.id] > 0)
           const recLen = recipes.length
           if(recLen > 0) {
 
-            var recipe = null
+            let recipe = null
             if(recLen === 1) {
               recipe = recipes[0]
             } else {
@@ -310,7 +268,7 @@ export class Constituent {
 
   // Recursively iterate through all items in list
   // usually "inputs" or "outputs"
-  safeDive(listNameArg, callbacks, deph = 999999999, antiloop={}) {
+  safeDive(listNameArg, callbacks, deph = 999999999, antiloop=new WeakSet()) {
     if (!callbacks.onSelf?.call(this) && deph>0 && this.recipes.length>0) {
 
       // Links lists
@@ -321,8 +279,9 @@ export class Constituent {
       //TODO: Pick recipes for 'outputs' list name
       const recipesToIterate = this.recipe ? [this.recipe] : this.recipes
       for (const recipe of recipesToIterate) {
-        if (!antiloop[recipe.id]) {
-          antiloop[recipe.id] = true
+        if(this.id==='thermalfoundation:storage_resource:0') { console.log('inspect item :>> ', this) }
+        if (!antiloop.has(recipe)) {
+          antiloop.add(recipe)
 
           const recipeLinksLists = recipe.links.find(l=>l.outputStack.cuent===this)
 
@@ -340,8 +299,6 @@ export class Constituent {
               callbacks.afterDive?.call(this, link, deph, recipe, listName)
             }
           }
-
-          delete antiloop[recipe.id]
         } else {
           callbacks.onLoop?.call(this)
         }
@@ -362,6 +319,7 @@ export class Constituent {
     if(!this.recipes.find(r=>r.match(recipe))) {
       this.recipes.push(recipe)
       this.recipesLength = (this.recipesLength || 0) + 1
+      this.complexity_byRecipe = this.complexity_byRecipe ?? {}
     }
   }
 
@@ -379,30 +337,4 @@ export class ConstituentStack {
   }
 
   match(cs) { return this.amount === cs.amount && this.cuent.match(cs.cuent)}
-}
-
-class UniqueKeys {
-  constructor() {
-    this.ids = {}
-    this.count = 0
-  }
-
-  mergeKey(key, val) {
-    if(!key || !val) return
-    if(this.ids[key] === undefined) {
-      this.ids[key] = val
-      this.count++
-      return true
-    } else {
-      return false
-    }
-  }
-
-  mergeChain(chain, onUnique) {
-    if(!chain) return
-    for (const [key, value] of Object.entries(chain.ids)) {
-      if (this.mergeKey(key, value))
-        onUnique?.(value)
-    }
-  }
 }

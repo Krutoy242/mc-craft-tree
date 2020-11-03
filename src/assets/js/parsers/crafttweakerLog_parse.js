@@ -1,4 +1,4 @@
-// var sortobject = require('deep-sort-object')
+// let sortobject = require('deep-sort-object')
 const { objToString } = require('../utils')
 const _ = require('lodash')
 /*=====  OreDict first items  ======*/
@@ -8,7 +8,7 @@ const {sqrt, max, ceil, floor} = Math
 function serializeNameMeta(ctName) {
   const match = ctName.split(':')
   const haveMeta = match.length > 2
-  var result = ctName
+  let result = ctName
   if (haveMeta) {
     if(ctName.slice(-1) === '*')
       result = ctName.slice(0, -1) + '0'
@@ -59,7 +59,7 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
     if(/^conarm:(helmet|chestplate|leggins|boots)$/.test(match.groups.name)) continue
 
     const itemName = serializeNameMeta(match.groups.name)
-    var nbt=null
+    let nbt=null
     if(match.groups.tag!=null) {
       nbt = match.groups.tag
         .replace(/""/g, '"') // Remove double quotes
@@ -71,7 +71,7 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
       if(nbt?.match(/^.*\{ *\}.*$/)) console.log('nbt :>> ', nbt)
     }
     const display = match.groups.display
-    var fullName = itemName + serializeNbt(nbt)
+    let fullName = itemName + serializeNbt(nbt)
 
     setField(itemName, 'display', display)
     setField(fullName, 'display', display)
@@ -109,7 +109,7 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
     withTag(tag) {
       if(!tag || Object.keys(tag).length === 0) return this
 
-      var n = new IIngredient(this.name)
+      let n = new IIngredient(this.name)
       n.count = this.count
       n.tag = tag
       n.update()
@@ -156,7 +156,7 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
   function itemsToIndexes(arr) {
     if(!arr) return null
 
-    var isFutile = false
+    let isFutile = false
     const keys = arr.reduce((acc, i) => {
       if(i.futile || isFutile) {
         isFutile = true
@@ -174,10 +174,10 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
 
     const inputsArr = input2d.flat().filter(i=>i!=null)
 
-    var keys_inputs = itemsToIndexes(inputsArr)
+    let keys_inputs = itemsToIndexes(inputsArr)
     if(keys_inputs?.isFutile) return
 
-    var keys_catals = itemsToIndexes(catalyst)
+    let keys_catals = itemsToIndexes(catalyst)
     if(keys_catals?.isFutile) return
 
     if(!(keys_inputs?.length > 0 || keys_catals?.length > 0)) return
@@ -284,7 +284,7 @@ exports.parseCrafttweakerLog = function(crLog, zs_parseFnc, setField) {
   // const recipesRgx = /^((?:recipes\.addShap|mods\.botania\.|furnace\.addRecipe).*)/gm
   // const recipesRgx = /(^(\w+\.\w+(?:.\w+)*\(.*)$\n){1,}/gm
   const recipesRgx = /^(\w+\.\w+(?:.\w+)*\(.*)/gm
-  var k = 0
+  let k = 0
   for (const match of crLog.matchAll(recipesRgx)) {
     // if(k >= 300) break
     const parseResult = zs_parseFnc(match[0].trim())

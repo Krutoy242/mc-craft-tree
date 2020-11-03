@@ -33,16 +33,16 @@ export function mergeWith(filePath) {
 }
 
 const cuentsTree = {}
-var constituentsCount = 0
+let constituentsCount = 0
 
 
 function pushTree(cuent) {
 
-  var cursor = (cuentsTree[cuent.entrySource] = cuentsTree[cuent.entrySource] || {})
+  let cursor = (cuentsTree[cuent.namespace] = cuentsTree[cuent.namespace] || {})
   if(cursor) {
     cursor = (cursor[cuent.entryName] = cursor[cuent.entryName] || {})
     if(cursor) {
-      const meta = cuent.entryMeta
+      const meta = cuent.meta
       cursor = (cursor[meta] = cursor[meta] || [])
       cursor.push(cuent)
     }
@@ -56,12 +56,12 @@ export function pushConstituent(rawOrId, isForced) {
   // const found = Object.values(constituents).find(n =>
   //   isForced ? cuent.match(n) : n.match(cuent)
   // )
-  var found
-  var cursor = cuentsTree[cuent.entrySource]
+  let found
+  let cursor = cuentsTree[cuent.namespace]
   if(cursor) {
     cursor = cursor[cuent.entryName]
     if(cursor) {
-      cursor = cursor[cuent.entryMeta]
+      cursor = cursor[cuent.meta]
       if(cursor) {
         found = cursor.find(n =>
           isForced ? cuent.match(n) : n.match(cuent)
@@ -133,7 +133,7 @@ export function calculate(topCuentID) {
   // ----------------------------
   const importancyOfKeys = {}
   function sort_n(o) {
-    var diff = 0
+    let diff = 0
     for (const [key, value] of Object.entries(o))
       if (Constituent[key]!==undefined && value !== (Constituent[key] || 0)) diff += importancyOfKeys[key] || 1
     return diff - (o.isNoIcon ? 100 : 0)

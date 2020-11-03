@@ -38,14 +38,14 @@ function saveObjAsJson(obj, filename) {
 =============================================*/
 
 const additionals = {}
-var additionalsLength = 0
+let additionalsLength = 0
 
 function setField(id, field, value) { 
   const found = isNaN(id)
     ? additionals[id]
     : Object.values(additionals)[id]
 
-  var picked = found
+  let picked = found
   if(!found) {
     picked = {
       index: additionalsLength++

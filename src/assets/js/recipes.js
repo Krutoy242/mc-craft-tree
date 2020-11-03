@@ -5,7 +5,7 @@ import { NumLimits } from './utils.js'
 
 function amount(raw) {
   const percent = (raw.content.percent ?? 100.0) / 100.0
-  var mult = 1.0
+  let mult = 1.0
   const name = raw.content.name
   if (raw.type == 'placeholder' && name == 'Ticks') mult = 0.01
   if (raw.type == 'placeholder' && name == 'Mana') mult = 0.01
@@ -43,7 +43,7 @@ export function mergeJECGroups(jec_groups) {
   // Create nodes
   // ====================================================
   jec_groups.Default.forEach(jec_recipe => {
-    var recipeArrs = ['output','input','catalyst']
+    let recipeArrs = ['output','input','catalyst']
     const recipe = new Recipe(
       ...recipeArrs.map(arrName =>
         jec_recipe[arrName].map(
@@ -88,7 +88,7 @@ export function mergeDefaultAdditionals(additionals) {
 }
 
 
-var recipesCount = 0
+let recipesCount = 0
 
 function nextId() {
   recipesCount++

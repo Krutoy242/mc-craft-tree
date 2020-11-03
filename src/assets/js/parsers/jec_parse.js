@@ -1,4 +1,4 @@
-const { clearEmpties } = require('../utils')
+const { cleanupNbt } = require('../utils')
 
 
 // ====================================================
@@ -24,7 +24,7 @@ exports.parseJECgroups = function parseJECgroups(jecGroupsRaw_text, additionals)
   // Replace oredict to itemstacks if needed
   function mutateOreToItemstack(raw) {
     if (raw.type === 'oreDict') {
-      var oreAlias = additionals[raw.content.name]
+      let oreAlias = additionals[raw.content.name]
       if (!oreAlias) {
         console.log('Cant find OreDict name for:', raw.content.name)
       } else {
@@ -43,7 +43,7 @@ exports.parseJECgroups = function parseJECgroups(jecGroupsRaw_text, additionals)
   function prepareEntry(raw, isMutate) {
     if (raw.type === 'empty') return false
 
-    clearEmpties(raw.content.nbt)
+    cleanupNbt(raw.content.nbt)
 
     if (isMutate) {
       const nbt = raw.content?.nbt
@@ -61,15 +61,15 @@ exports.parseJECgroups = function parseJECgroups(jecGroupsRaw_text, additionals)
   }
 
   // Try to remove placeholders that created only to extend ingredient count
-  var remIndexes = []
+  let remIndexes = []
   jec_groups.Default.forEach((jec_recipe, recipe_index) => {
 
     
     jec_recipe.input = jec_recipe.input.filter(raw => prepareEntry(raw, true))
 
-    var wasRemoved = false
+    let wasRemoved = false
     function replaceInList(craft, listName, phRaw) {
-      var pos = craft[listName]
+      let pos = craft[listName]
         .map(e => e.content?.name)
         .indexOf(phRaw.content.name)
 
@@ -82,7 +82,7 @@ exports.parseJECgroups = function parseJECgroups(jecGroupsRaw_text, additionals)
 
     // Special case for placeholder in output:
     // Add its all inputs to recipe where it represent input
-    var i = jec_recipe.output.length
+    let i = jec_recipe.output.length
     while (i--) {
       const raw = jec_recipe.output[i]
       if (!prepareEntry(raw)) { 
@@ -113,8 +113,8 @@ exports.parseJECgroups = function parseJECgroups(jecGroupsRaw_text, additionals)
   })
 
   // Make indexes unique and remove
-  var uniqRemIndexes = [...new Set(remIndexes)]
-  for (var i = uniqRemIndexes.length - 1; i >= 0; i--)
+  let uniqRemIndexes = [...new Set(remIndexes)]
+  for (let i = uniqRemIndexes.length - 1; i >= 0; i--)
     jec_groups.Default.splice(uniqRemIndexes[i], 1)
 
   return jec_groups

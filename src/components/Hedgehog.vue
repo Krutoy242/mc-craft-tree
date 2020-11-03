@@ -54,7 +54,7 @@ export default {
   
   methods: {
     getArrows(n, offset){
-      var arr = []
+      let arr = []
       const r = this.inverted ? arrowsInverted : arrows
 
       if ((n > 9 + offset) && (offset===0))arr.unshift(r[4])

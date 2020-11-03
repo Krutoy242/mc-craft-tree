@@ -1,6 +1,6 @@
-var ohm = require('ohm-js')
+let ohm = require('ohm-js')
 
-var grammar, semantics
+let grammar, semantics
 
 function toStr(_) { return this.sourceString}
 function toStr2(_,__) { return this.sourceString}
@@ -42,27 +42,27 @@ exports.initZenscriptGrammar = function(grammarString) {
     decimalLiteral_decimalsOnly:   toStr3,
     decimalLiteral_integerOnly:    toStr2,
     decimalIntegerLiteral_nonZero: toStr2,
-    NonemptyListOf:                (a,b,c) => { var arr=c.eval(); return `${a.eval()}${arr.length?',':''}${arr}`},
+    NonemptyListOf:                (a,b,c) => { let arr=c.eval(); return `${a.eval()}${arr.length?',':''}${arr}`},
     EmptyListOf:                   () => { return this.sourceString },
     _terminal:                     function() { return this.sourceString },
     // _nonterminal:                  function() { return this.sourceString },
   })
 }
 
-// var once = 1
+// let once = 1
 exports.parseZenscriptLine = function(zsLine) {
   // if(once-->0) console.log('grammar.trace(zsLine) :>> ', 
   //   grammar.trace(zsLine)
   // )
   // console.log('zsLine :>> ', zsLine);
-  // var matchResult = grammar.match(zsLine, 'ArgumentsList')
-  var matchResult = grammar.match(zsLine)
+  // let matchResult = grammar.match(zsLine, 'ArgumentsList')
+  let matchResult = grammar.match(zsLine)
   if(matchResult.failed()) {
     console.error('grammar.match() failed :>> ', matchResult)
     return undefined
   }
 
-  var semanticResult = semantics(matchResult)
+  let semanticResult = semantics(matchResult)
 
   return semanticResult.eval()
 }

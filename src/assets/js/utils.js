@@ -3,20 +3,22 @@ Object.defineProperty(exports, '__esModule', {
   value: true
 })
 
-function clearEmpties(o) {
+function cleanupNbt(o) {
   if (!o) return
 
-  for (var k in o) {
+  for (let k in o) {
     if (!o[k] || typeof o[k] !== 'object') {
       continue // If null or not an object, skip to the next iteration
     }
 
     // The property is an object
-    clearEmpties(o[k]) // <-- Make a recursive call on the nested object
+    cleanupNbt(o[k]) // <-- Make a recursive call on the nested object
     if (Object.keys(o[k]).length === 0) {
       delete o[k] // The object had no properties, so delete that property
     }
   }
+
+  if(Object.keys(o).length !== 0) return o // Return undefined if object is empty
 }
 
 
@@ -27,8 +29,8 @@ function objToString(obj, ndeep) {
   case 'function':
     return obj.name || obj.toString()
   case 'object':
-    var indent = Array(ndeep || 1).join('\t'),
-      isArray = Array.isArray(obj)
+    var indent = Array(ndeep || 1).join('\t')
+    var isArray = Array.isArray(obj)
     return (
       '{['[+isArray] + Object.keys(obj)
         .map(function (key) {
@@ -56,6 +58,34 @@ class NumLimits {
   }
 }
 
+
+class UniqueKeys {
+  constructor() {
+    this.ids = {}
+    this.count = 0
+  }
+
+  mergeKey(key, val) {
+    if(!key || !val) return
+    if(this.ids[key] === undefined) {
+      this.ids[key] = val
+      this.count++
+      return true
+    } else {
+      return false
+    }
+  }
+
+  mergeChain(chain, onUnique) {
+    if(!chain) return
+    for (const [key, value] of Object.entries(chain.ids)) {
+      if (this.mergeKey(key, value))
+        onUnique?.(value)
+    }
+  }
+}
+
+exports.UniqueKeys = UniqueKeys
 exports.NumLimits = NumLimits
-exports.clearEmpties = clearEmpties
+exports.cleanupNbt = cleanupNbt
 exports.objToString = objToString

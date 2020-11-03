@@ -102,7 +102,6 @@
 
 <script>
 import Vue from 'vue'
-import { parseJECgroups } from './assets/js/parsers/jec_parse.js'
 import { setAdditionals, calculate } from './assets/js/constituents.js'
 import { recipesStore, mergeJECGroups, mergeDefaultAdditionals } from './assets/js/recipes.js'
 
@@ -140,9 +139,9 @@ export default {
     })
 
     setAdditionals(default_additionals)
-    // var jec_groups = parseJECgroups(default_jecGroups, default_additionals)
-    // var jec_groups = parseJECgroups(require('./assets/jec_groups.json'), default_additionals)
-    var jec_groups = require('./assets/jec_groups.json')
+    // let jec_groups = parseJECgroups(default_jecGroups, default_additionals)
+    // let jec_groups = parseJECgroups(require('./assets/jec_groups.json'), default_additionals)
+    let jec_groups = require('./assets/jec_groups.json')
     mergeDefaultAdditionals(default_additionals)
     mergeJECGroups(jec_groups)
 

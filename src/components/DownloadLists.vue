@@ -27,8 +27,8 @@ const ic2Factor = 100
 import { listUU } from '../assets/js/listUU.js'
 
 function download(content, fileName, contentType) {
-  var a = document.createElement('a')
-  var file = new Blob([content], { type: contentType })
+  let a = document.createElement('a')
+  let file = new Blob([content], { type: contentType })
   a.href = URL.createObjectURL(file)
   a.download = fileName
   a.click()
@@ -42,7 +42,7 @@ function prepareRawListUU(graph) {
   // and add display name
   graph.nodes.forEach((node) => {
     if (node.steps === 0 && node.complexity !== 1) {
-      var obj = listUU.find(x => (x.name === node.name))
+      let obj = listUU.find(x => (x.name === node.name))
       if (obj) {
         obj.uu = node.complexity
         obj.name = node.name
@@ -57,7 +57,7 @@ function prepareRawListUU(graph) {
   // Push presented but unused nodes
   listUU.forEach((l) => {
     if (!rawListUU.find(x => (x.name === l.name))) {
-      var node = graph.nodes.find(x => (x.name === l.name))
+      let node = graph.nodes.find(x => (x.name === l.name))
       rawListUU.push({uu: l.uu, name: l.name, display: node?.display|| ''})
     }
   })
@@ -126,7 +126,7 @@ function saveIC2ini(graph) {
     // Items that didnt added to defined list yet
     if (n.type !== 'itemStack' || n.nbt || prepared.find(x => x.name === n.name)) return
 
-    const icName = `${n.definition}` + (n.entryMeta ? '@'+n.entryMeta : '')
+    const icName = `${n.definition}` + (n.meta ? '@'+n.meta : '')
     const display = (n.display && n.display !== '') ? '; '+n.display : ''
     const cost = Math.max(1, (n.getUUCost(ic2Factor)) | 0)
 

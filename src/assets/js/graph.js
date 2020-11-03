@@ -1,15 +1,15 @@
 import forceManyBodyReuse from './lib/d3ForcManyBodyReuse.js'
 
 
-var vizWidth = window.innerWidth
-var vizHeight = window.innerHeight
+let vizWidth = window.innerWidth
+let vizHeight = window.innerHeight
 
-var svg = null
-var container = null
-var linkContainer = null
-var nodeContainer = null
-var simulation = null
-var axisContainer = null
+let svg = null
+let container = null
+let linkContainer = null
+let nodeContainer = null
+let simulation = null
+let axisContainer = null
 
 
 export function init() {
@@ -54,7 +54,7 @@ export function makeGraph(pile, vue, query, isScatter) {
 
   // Filter all graphNodes
   // Remove elements that dont have inputs or outputs
-  var graphNodes = null
+  let graphNodes = null
 
 
   // Find selected node to show only it
@@ -221,13 +221,13 @@ export function makeGraph(pile, vue, query, isScatter) {
   function usabFnc(d) { return nonLinear(importancy(d.usability,  pile.info.uLimits.min, pile.info.uLimits.max)) }
   function strokeWfnc(d) { return nonLinear(nonLinear(d.weight)) }
 
-  var minSize = 20
-  var maxSize = parseInt(graphNodes.length / 9)
-  var diffSize = maxSize - minSize
+  let minSize = 20
+  let maxSize = parseInt(graphNodes.length / 9)
+  let diffSize = maxSize - minSize
 
   function sizeFnc(d) {
-    var size = (compFnc(d) + usabFnc(d))/2 * maxSize + minSize
-    var result = Math.max(minSize, Math.min(maxSize, size))
+    let size = (compFnc(d) + usabFnc(d))/2 * maxSize + minSize
+    let result = Math.max(minSize, Math.min(maxSize, size))
     // if(isNaN(result)) console.log('SizeFnc ERROR! :>> ', d)
     return isNaN(result) ? 10 : result
   }
@@ -278,8 +278,8 @@ export function makeGraph(pile, vue, query, isScatter) {
     // ====================================================
     // Links
     // ====================================================
-    var handleHover
-    var linkSelection
+    let handleHover
+    let linkSelection
 
     // Connect graph nodes
     const graphLinks = []
@@ -333,7 +333,7 @@ export function makeGraph(pile, vue, query, isScatter) {
 
         // d3link.source.outputs.find(l => l.from.id === d3link.target.id).d3node = d3node
         // d3link.target.inputs.find(l => l.from.id === d3link.source.id).d3node = d3node
-        var foundLink = d3link.source.inputLinks.find(l => l.from === d3link.target)
+        let foundLink = d3link.source.inputLinks.find(l => l.from === d3link.target)
         foundLink.d3node = d3node
         foundLink.flipped.d3node = d3node
       })
@@ -354,7 +354,7 @@ export function makeGraph(pile, vue, query, isScatter) {
   // ====================================================
   // Nodes
   // ====================================================
-  var nodeSelection = nodeContainer
+  let nodeSelection = nodeContainer
     .selectAll('g')
     .data(graphNodes)
     .join(appendNode, updateNode)
@@ -413,7 +413,7 @@ export function makeGraph(pile, vue, query, isScatter) {
   // Events
   // ====================================================
 
-  var globalScale = 1
+  let globalScale = 1
   function nodeT(d) {
     if (isScatter)
       return `translate(${d.x},${d.y})scale(${globalScale})`
@@ -462,7 +462,7 @@ export function makeGraph(pile, vue, query, isScatter) {
   function diveToList(targetNode, targetDeph, listName, style) {   
     targetDeph = targetDeph || 999999999
     const isInput = listName === 'inputs'
-    var maxDeph = 0
+    let maxDeph = 0
     
     targetNode.safeDive(listName, {
       afterDive: (link, deph) => {
@@ -498,7 +498,7 @@ export function makeGraph(pile, vue, query, isScatter) {
     }
   }
 
-  var currIntervalID = null
+  let currIntervalID = null
 
   function drawDive() {
 
