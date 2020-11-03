@@ -102,7 +102,7 @@ export class Recipe {
 
     this.id = nextId()
 
-    this.links = outputs.map(outputStack => {
+    this.links = outputs.reduce((acc, outputStack) => {
       outputStack.cuent.addRecipe(this)
 
       const inputLinks = inputs.map(inputStack =>
@@ -113,8 +113,8 @@ export class Recipe {
           this.id
         )
       )
-      
-      return {
+
+      return acc.set(outputStack.cuent, {
         outputStack,
         outputs: inputLinks.map(inp => inp.flip()),
         inputs: inputLinks,
@@ -126,8 +126,8 @@ export class Recipe {
             this.id
           )
         )
-      }
-    })
+      })
+    }, new Map())
   }
 
   match(recipe) {

@@ -22,7 +22,7 @@
         <template v-slot:activator="{ on, attrs }">
           <v-badge
             :value="listLoops"
-            :content="'💫'+listLoops.length"
+            :content="'💫'+listLoops.size"
             type="info"
             left
           >
@@ -121,7 +121,7 @@ export default {
     showRecipesDialog: false,
   }),
   computed: {
-    listLoops() {return this.pile?.info?.listLoops ?? []},
+    listLoops() {return this.pile?.info?.listLoops ?? new Set()},
     noIcons() {return this.pile?.info?.noIcon ?? []},
     uniqueItems() {return this.pile?.list?.length},
   },

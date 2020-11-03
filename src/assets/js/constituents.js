@@ -94,7 +94,7 @@ export function calculate(topCuentID) {
   const pile = {
     list: [],
     info: {
-      listLoops: [],
+      listLoops: new Set(),
       cLimits: new NumLimits(),
       uLimits: new NumLimits(),
       noIcon: []
@@ -105,8 +105,7 @@ export function calculate(topCuentID) {
   function computeSingle(cuent) {
     cuent.calculate({
       onLoop: function () {
-        if (info.listLoops.indexOf(this) === -1)
-          info.listLoops.push(this)
+        info.listLoops.add(this)
       },
       onCalculated: function() {
         info.cLimits.update(this.complexity)

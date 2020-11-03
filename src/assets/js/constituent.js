@@ -24,6 +24,10 @@ export class Constituent {
   steps         = 0
   recipes       = []
 
+  fMeta         = 0
+  fNbt          = 0
+  nbt           = undefined
+
   static additionals;
   static noOreDictsKeys=new Set();
 
@@ -180,76 +184,47 @@ export class Constituent {
         }
       },
 
+      // Called for each link list member
+      // For each Input and each Catalyst
       afterDive: function(link, deph, recipe, listName) {
+        let cr = this.complexity_byRecipe
+        cr[recipe.id] = cr[recipe.id] ?? 0.0
+
         if(listName == 'catalysts') {
           // Temporary cost for items caused in loop
           if(link.from.complexity === undefined) {
-            delete this.complexity_byRecipe[recipe.id]
+            // delete cr[recipe.id]
+            cr[recipe.id] = -Infinity
           } else {
-            this.complexity_byRecipe[recipe.id] = (this.complexity_byRecipe[recipe.id]??0.0) + link.from.complexity / 100
+            cr[recipe.id] += link.from.complexity / 100
           }
         } else {
-          this.complexity_byRecipe[recipe.id] = (this.complexity_byRecipe[recipe.id]??0.0) + link.from.cost
+          cr[recipe.id] += link.from.cost
         }
       },
 
       onLoop: options.onLoop,
 
       result: function() {
+        if(this.id==='minecraft:crafting_table:0') {
+          // console.log('Reuslt for Table :>> ');
+          for (const [k, v] of Object.entries(this)) {
+            if(!isNaN(v)) {
+              // console.log(`table.${k} = `, v)
+            }
+          }
+        }
         // Check if we tryed all recipes before calculate final result
-        if(this.complexity_byRecipe && Object.keys(this.complexity_byRecipe).length !== this.recipes.length) return null
+        // if(this.complexity_byRecipe && Object.keys(this.complexity_byRecipe).length !== this.recipes.length) return null
 
         if(!this.calculated) {
           // Intelectual chosing right recipe
           const recipes = this.recipes.filter(r => this.complexity_byRecipe[r.id] > 0)
-          const recLen = recipes.length
-          if(recLen > 0) {
-
-            let recipe = null
-            if(recLen === 1) {
-              recipe = recipes[0]
-            } else {
-              recipes
-                .sort((a,b) => this.complexity_byRecipe[a.id] - this.complexity_byRecipe[b.id] )
-              /* if(recLen==2) */ recipe = recipes[0]
-              /* else          recipe = recipes[1] */
-            }
-
-            this.recipe = recipe
-            this.inputsAmount  += recipe.inputs.length
-            // this.outputsAmount += recipe.outputs.length
-            this.recipeLinks = recipe.links.find(l=>l.outputStack.cuent===this)
-            this.inputLinks = this.recipeLinks.inputs
-
-            this.steps++
-            this.processing += processingCostFromInputAmount(recipe.inputs.length)
-            this.catalystsKeys = new UniqueKeys()
-            this.recipesKeys = new UniqueKeys()
-            this.recipesKeys.mergeKey(recipe.id, recipe)
-
-            for (const link of this.recipeLinks.inputs) {
-              link.from.outputsAmount++
-              link.from.outsList = link.from.outsList ?? []
-              link.from.outsList.push(new ConstituentStack(this, recipe.outputs.find(cs=>cs.cuent===this).amount))
-              this.cost += link.from.cost * link.weight // Calculate cost
-              this.catalystsKeys.mergeChain(link.from.catalystsKeys, catal => {
-                this.processing += catal.complexity??0
-              })
-              this.recipesKeys.mergeChain(link.from.recipesKeys, chainRecipe => {
-                this.steps++
-                this.processing += processingCostFromInputAmount(chainRecipe.inputs.length)
-              })
-
-              // link.from.usability += (this.usability + 1.0) * link.weight
-            }
-
-            for (const link of this.recipeLinks.catalysts) {
-              link.from.popularity++
-              link.from.popList = link.from.popList ?? []
-              link.from.popList.push(new ConstituentStack(this, 1))
-              if (this.catalystsKeys.mergeKey(link.from.id, link.from))
-                this.processing += link.from.complexity??0
-            }
+          if(recipes.length > 0) {
+            recipes.sort((a,b) => 
+              this.complexity_byRecipe[a.id] - this.complexity_byRecipe[b.id]
+            )
+            this.pickRecipe(recipes[0])
           } else {
             // No correct recipe found
             // This item probably spawn naturally
@@ -272,41 +247,73 @@ export class Constituent {
     if (!callbacks.onSelf?.call(this) && deph>0 && this.recipes.length>0) {
 
       // Links lists
-      const listNamesArr = Array.isArray(listNameArg)
-        ? listNameArg
-        : [listNameArg]
+      const listNamesArr = Array.isArray(listNameArg) ? listNameArg : [listNameArg]
 
       //TODO: Pick recipes for 'outputs' list name
       const recipesToIterate = this.recipe ? [this.recipe] : this.recipes
       for (const recipe of recipesToIterate) {
-        if(this.id==='thermalfoundation:storage_resource:0') { console.log('inspect item :>> ', this) }
-        if (!antiloop.has(recipe)) {
+        if(antiloop.has(recipe)) {
+          // This recipe already processing
+          // Its dfinitely looped
+          recipe.isLooped = true
+          callbacks.onLoop?.call(this)
+        } else {
           antiloop.add(recipe)
 
-          const recipeLinksLists = recipe.links.find(l=>l.outputStack.cuent===this)
+          const recipeLinksLists = recipe.links.get(this)
 
           for (const listName of listNamesArr) {
             const linksList = recipeLinksLists[listName]
 
             for (const link of linksList) {
               // Recursion 💫
-              link.from.safeDive(
-                listNameArg,
-                callbacks,
-                deph - 1,
-                antiloop
-              )
+              link.from.safeDive(listNameArg, callbacks, deph-1, antiloop)
               callbacks.afterDive?.call(this, link, deph, recipe, listName)
             }
           }
-        } else {
-          callbacks.onLoop?.call(this)
         }
       }
 
     }
 
     return callbacks.result?.call(this)
+  }
+
+  pickRecipe(recipe) {
+    this.recipe        = recipe
+    this.inputsAmount  = recipe.inputs.length
+    this.recipeLinks   = recipe.links.get(this)
+    this.inputLinks    = this.recipeLinks.inputs
+
+    this.processing    = processingCostFromInputAmount(this.inputsAmount)
+    this.catalystsKeys = new UniqueKeys()
+    this.recipesKeys   = new UniqueKeys()
+    this.recipesKeys.mergeKey(recipe.id, recipe)
+    this.steps++
+
+    for (const link of this.recipeLinks.inputs) {
+      link.from.outputsAmount++
+      link.from.outsList = link.from.outsList ?? []
+      link.from.outsList.push(new ConstituentStack(this, recipe.outputs.find(cs=>cs.cuent===this).amount))
+      this.cost += link.from.cost * link.weight // Calculate cost
+      this.catalystsKeys.mergeChain(link.from.catalystsKeys, catal => {
+        this.processing += catal.complexity??0
+      })
+      this.recipesKeys.mergeChain(link.from.recipesKeys, chainRecipe => {
+        this.processing += processingCostFromInputAmount(chainRecipe.inputs.length)
+        this.steps++
+      })
+
+      // link.from.usability += (this.usability + 1.0) * link.weight
+    }
+
+    for (const link of this.recipeLinks.catalysts) {
+      link.from.popularity++
+      link.from.popList = link.from.popList ?? []
+      link.from.popList.push(new ConstituentStack(this, 1))
+      if (this.catalystsKeys.mergeKey(link.from.id, link.from))
+        this.processing += link.from.complexity??0
+    }
   }
 
   recalculateField(field) {
@@ -337,4 +344,28 @@ export class ConstituentStack {
   }
 
   match(cs) { return this.amount === cs.amount && this.cuent.match(cs.cuent)}
+
+  // Get cost of this item by recursively 
+  // add costs of all its inputs
+  calculate(antiloop = new WeakSet()) {
+
+    // Iterate over all alternative recipes
+    for (const recipe of this.recipes) {
+
+      // Check if we already calculating this recipe to prevent
+      // infinity loop
+      if(!antiloop.has(recipe)) {
+        antiloop.add(recipe)
+
+        // Iterate over inputs and catalysts of this recipe
+        for (const item of recipe.requiredItems) {
+          this.costByRecipe[recipe.id] += item.calculate(antiloop)
+        }
+      }
+    }
+
+    // Compare this.costByRecipe to pick most cheaper recipe
+    // and return cost
+    return this.pickBestRecipeAndReturnCost()
+  }
 }

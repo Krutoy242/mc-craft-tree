@@ -38,7 +38,7 @@
         </v-card-title>
         <v-card-text>
           <tree-entry
-            v-for="node in listLoop"
+            v-for="node in [...listLoop]"
             :key="node.id"
             :node="node"
           />
@@ -46,7 +46,7 @@
       </v-card> -->
       <v-data-table
         :headers="[{text: 'Item', value: 'display'}]"
-        :items="listLoop"
+        :items="[...listLoop]"
         hide-default-header
         class="elevation-1"
       >
