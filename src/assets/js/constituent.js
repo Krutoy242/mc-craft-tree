@@ -10,6 +10,9 @@ function processingCostFromInputAmount(x) {
   return Math.floor(Math.max(0, Math.pow(1.055, x+100) - Math.pow(1.055, 101) + x*25 + CRAFTING_TABLE_COST/2))
 }
 
+let logAmount = 0
+function log(...args) { if(logAmount++ < 1000) console.log(...args)}
+
 export class Constituent {
   display       = ''
   name          = ''
@@ -165,7 +168,7 @@ export class Constituent {
       options.onCalculated?.call(self)
     }
 
-    this.safeDive(['inputs', 'catalysts'], {
+    this.safeDive(['catalysts', 'inputs'], {
 
       // Called On each entrance
       // if returns true, dive body skipped to result()
@@ -206,17 +209,6 @@ export class Constituent {
       onLoop: options.onLoop,
 
       result: function() {
-        if(this.id==='minecraft:crafting_table:0') {
-          // console.log('Reuslt for Table :>> ');
-          for (const [k, v] of Object.entries(this)) {
-            if(!isNaN(v)) {
-              // console.log(`table.${k} = `, v)
-            }
-          }
-        }
-        // Check if we tryed all recipes before calculate final result
-        // if(this.complexity_byRecipe && Object.keys(this.complexity_byRecipe).length !== this.recipes.length) return null
-
         if(!this.calculated) {
           // Intelectual chosing right recipe
           const recipes = this.recipes.filter(r => this.complexity_byRecipe[r.id] > 0)
@@ -234,6 +226,7 @@ export class Constituent {
 
           onCalculated(this)
         }
+        log('<<<', this.display);
       },
 
     })
@@ -243,22 +236,42 @@ export class Constituent {
 
   // Recursively iterate through all items in list
   // usually "inputs" or "outputs"
-  safeDive(listNameArg, callbacks, deph = 999999999, antiloop=new WeakSet()) {
+  safeDive(listNameArg, callbacks, deph = 999999999, link, refs = {recipes:new Set(), cuents:new Set(), blocked:new Set()}) {
     if (!callbacks.onSelf?.call(this) && deph>0 && this.recipes.length>0) {
+      log('>>', this.display);
+      // if(this.id==='minecraft:crafting_table:0') log('table');
+      if(refs.cuents.has(this)) {
+        const setList = [...refs.recipes]
+        let i = setList.length
+        let haveAlts = false
+        while (i--) {
+          let rec = setList[i]
+          haveAlts = haveAlts || rec.haveAlternatives()
+          if(rec.hasOutput(this)) break
+          if(haveAlts) {
+            // log('%c 🍮 Unblock this recipe: ', 'font-size:20px;background-color: #FCA650;color:#fff;', rec.display());
+            refs.blocked.delete(rec)
+          }
+        }
+      }
+      refs.cuents.add(this)
 
       // Links lists
       const listNamesArr = Array.isArray(listNameArg) ? listNameArg : [listNameArg]
 
       //TODO: Pick recipes for 'outputs' list name
-      const recipesToIterate = this.recipe ? [this.recipe] : this.recipes
-      for (const recipe of recipesToIterate) {
-        if(antiloop.has(recipe)) {
-          // This recipe already processing
-          // Its dfinitely looped
-          recipe.isLooped = true
+      const recipes = this.recipe ? [this.recipe] : this.recipes
+      // for (const recipe of recipes) {
+      for (const i in recipes) {
+        const recipe = recipes[i]
+
+        if(refs.blocked.has(recipe)) {
           callbacks.onLoop?.call(this)
         } else {
-          antiloop.add(recipe)
+          // refs.recipes.delete(recipe)
+          refs.recipes.add(recipe)
+          refs.blocked.add(recipe)
+          if(i === recipes.length - 1) this.noAlternatives = true
 
           const recipeLinksLists = recipe.links.get(this)
 
@@ -267,13 +280,17 @@ export class Constituent {
 
             for (const link of linksList) {
               // Recursion 💫
-              link.from.safeDive(listNameArg, callbacks, deph-1, antiloop)
+              link.from.safeDive(listNameArg, callbacks, deph-1, link, refs)
               callbacks.afterDive?.call(this, link, deph, recipe, listName)
             }
           }
+
+          refs.recipes.delete(recipe)
+          refs.blocked.delete(recipe)
         }
       }
 
+      refs.cuents.delete(this)
     }
 
     return callbacks.result?.call(this)

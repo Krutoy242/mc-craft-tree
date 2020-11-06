@@ -45,7 +45,6 @@ function objToString(obj, ndeep) {
   }
 }
 
-
 class NumLimits {
   constructor() {
     this.min = 999999999999

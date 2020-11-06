@@ -22,7 +22,6 @@ exports.initZenscriptGrammar = function(grammarString) {
     LeftHandSideExpression_typed:  (a,_,__) => a.eval(),
     LeftHandSideExpression_mult:   (a,b,c) => `${a.eval()}.amount(${c.eval()})`,
     LeftHandSideExpression_or:     (a,b,c) => `${a.eval()}.or(${c.eval()})`,
-    // anyType:                       toStr2,
     CallExpression:                (a,b) => a.eval() + b.eval(),
     MemberExpression_arrayRefExp:  (a,b,c,d) => a.eval() + b.sourceString + c.eval() + d.sourceString,
     MemberExpression_propRefExp:   delimiter,
@@ -45,17 +44,10 @@ exports.initZenscriptGrammar = function(grammarString) {
     NonemptyListOf:                (a,b,c) => { let arr=c.eval(); return `${a.eval()}${arr.length?',':''}${arr}`},
     EmptyListOf:                   () => { return this.sourceString },
     _terminal:                     function() { return this.sourceString },
-    // _nonterminal:                  function() { return this.sourceString },
   })
 }
 
-// let once = 1
 exports.parseZenscriptLine = function(zsLine) {
-  // if(once-->0) console.log('grammar.trace(zsLine) :>> ', 
-  //   grammar.trace(zsLine)
-  // )
-  // console.log('zsLine :>> ', zsLine);
-  // let matchResult = grammar.match(zsLine, 'ArgumentsList')
   let matchResult = grammar.match(zsLine)
   if(matchResult.failed()) {
     console.error('grammar.match() failed :>> ', matchResult)

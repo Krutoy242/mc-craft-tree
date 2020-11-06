@@ -59,28 +59,30 @@ export function mergeDefaultAdditionals(additionals) {
 
   // const craftingTableCatal = [new ConstituentStack(pushConstituent('minecraft:crafting_table'), 1)]
 
-  const keys = Object.keys(additionals)
+  const ids_arr = Object.keys(additionals)
   function keysToArr(collection) {
     return Object.entries(collection).map(
-      kv => new ConstituentStack(pushConstituent(keys[kv[0]]), kv[1])
+      kv => new ConstituentStack(pushConstituent(ids_arr[kv[0]]), kv[1])
     )
   }
-  for (let i = 0; i < keys.length; i++) {
-    const keyOut = keys[i]
+  for (let i = 0; i < ids_arr.length; i++) {
+    const keyOut = ids_arr[i]
     const ads = additionals[keyOut]
     
     if(ads.recipes) {
-      const outCuent = pushConstituent(keyOut)
+      const mainCuent = pushConstituent(keyOut)
 
       for (let j = 0; j < ads.recipes.length; j++) {
         const adsRecipe = ads.recipes[j]
 
-        const outStack = new ConstituentStack(outCuent, adsRecipe.out || 1)
+        let outputStacks = (adsRecipe.out && typeof adsRecipe.out === 'object')
+          ? keysToArr(adsRecipe.out)
+          : [new ConstituentStack(mainCuent, adsRecipe.out || 1)]
 
-        const inputs = keysToArr(adsRecipe.ins)
-        const catals = adsRecipe.ctl ? keysToArr(adsRecipe.ctl) : []
+        const inputStacks = keysToArr(adsRecipe.ins)
+        const catalStacks = adsRecipe.ctl ? keysToArr(adsRecipe.ctl) : []
 
-        const recipe = new Recipe([outStack], inputs, catals)
+        const recipe = new Recipe(outputStacks, inputStacks, catalStacks)
         appendRecipe(recipe)
       }
     }
@@ -96,9 +98,11 @@ function nextId() {
 }
 
 export class Recipe {
+  requirments;
 
   constructor(outputs, inputs, catalysts) {
     Object.assign(this, {outputs, inputs, catalysts})
+    this.requirments = [...inputs, ...catalysts]
 
     this.id = nextId()
 
@@ -146,6 +150,24 @@ export class Recipe {
       }
     }
     return true
+  }
+
+  hasRequirment(cuent) {
+    return this.inputs.some(cs=>cs.cuent === cuent) || this.catalysts.some(cs=>cs.cuent === cuent)
+  }
+
+  hasOutput(cuent) {
+    return this.outputs.some(cs=>cs.cuent === cuent)
+  }
+
+  haveAlternatives() {
+    return this.outputs.every(o=>!o.noAlternatives)
+  }
+
+  display() {
+    return `[${this.inputs[0].cuent.display}]` 
+    + (this.catalysts[0] && `->[${this.catalysts[0].cuent.display}]`)
+    + `->[${this.outputs[0].cuent.display}]`
   }
 }
 
