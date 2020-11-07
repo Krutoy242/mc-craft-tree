@@ -1,9 +1,9 @@
 
-Object.defineProperty(exports, '__esModule', {
-  value: true
-})
+// Object.defineProperty(exports, '__esModule', {
+//   value: true
+// })
 
-function cleanupNbt(o) {
+export function cleanupNbt(o?: any) {
   if (!o) return
 
   for (let k in o) {
@@ -22,7 +22,7 @@ function cleanupNbt(o) {
 }
 
 
-function objToString(obj, ndeep) {
+export function objToString(obj:any, ndeep:number):string {
   switch (typeof obj) {
   case 'string':
     return '"' + obj + '"'
@@ -45,29 +45,25 @@ function objToString(obj, ndeep) {
   }
 }
 
-class NumLimits {
-  constructor() {
-    this.min = 999999999999
-    this.max = 0
-  }
+export class NumLimits {
+  min = 999999999999
+  max = 0
 
-  update(num) {
+  update(num: number) {
     this.min = Math.min(this.min, num)
     this.max = Math.max(this.max, num)
   }
 }
 
 
-class UniqueKeys {
-  constructor() {
-    this.ids = {}
-    this.count = 0
-  }
+export class UniqueKeys<T,U> {
+  ids = new Map<T, U>()
+  count =  0
 
-  mergeKey(key, val) {
+  mergeKey(key: T, val: U) {
     if(!key || !val) return
-    if(this.ids[key] === undefined) {
-      this.ids[key] = val
+    if(!this.ids.has(key)) {
+      this.ids.set(key, val)
       this.count++
       return true
     } else {
@@ -75,16 +71,16 @@ class UniqueKeys {
     }
   }
 
-  mergeChain(chain, onUnique) {
+  mergeChain(chain: UniqueKeys<T,U>, onUnique?: (value:U)=>void) {
     if(!chain) return
-    for (const [key, value] of Object.entries(chain.ids)) {
+    for (const [key, value] of chain.ids.entries()) {
       if (this.mergeKey(key, value))
         onUnique?.(value)
     }
   }
 }
 
-exports.UniqueKeys = UniqueKeys
-exports.NumLimits = NumLimits
-exports.cleanupNbt = cleanupNbt
-exports.objToString = objToString
+// exports.UniqueKeys = UniqueKeys
+// exports.NumLimits = NumLimits
+// exports.cleanupNbt = cleanupNbt
+// exports.objToString = objToString

@@ -4,7 +4,7 @@
       ><span :style="{ 'color' : `hsl(${h}, 60%, 40%)` }">{{
         node.namespace
       }}</span
-      >:<span class="blue--text text--lighten-3">{{ node.entryName
+      >:<span class="blue--text text--lighten-3">{{ node.entry
       }}</span
       ><span v-if="node.meta&&node.meta!=0">:{{ node.meta }}</span></kbd
     >

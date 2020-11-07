@@ -110,10 +110,6 @@ export default {
     entryIcon() {
       return this.typeIcons[this.node.type]
     },
-    bgPosition() {
-      const s = this.node.viewBox.split(' ')
-      return `${s[0]}px ${s[1]}px`
-    }
   },
   methods: {
     isBigSmall(a, b) {
