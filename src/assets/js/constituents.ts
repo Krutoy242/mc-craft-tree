@@ -1,7 +1,5 @@
-import { readFileSync } from 'fs'
 import { Constituent } from './constituent'
-import { AdditionalsStore, ConstituentAdditionals } from './ConstituentBase'
-import { NumLimits } from './utils.js'
+import { NumLimits } from './utils'
 import * as _ from 'lodash'
 
 /* 

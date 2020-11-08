@@ -1,17 +1,3 @@
-/* 
-"actuallyadditions:battery_double_bauble:0": {
-  "viewBox": "64 0",
-  "display": "Double Battery",
-  "recipes": [
-    {
-      "ins": {
-        "159": 1
-      }
-    }
-  ]
-},
- */
-
 import { JEC_Types } from "./JEC_Types"
 
 export type CuentArgs = {
@@ -52,16 +38,19 @@ class ComplexName {
   path(): [string, string, number] {
     return [this.source, this.entry, this.meta]
   }
+
+  match(o: ComplexName):boolean {
+    if(this.definition != o.definition) return false
+    if(this.meta != o.meta) return false
+    if(this.nbt != o.nbt) return false
+    return true
+  }
 }
 
-export type AdditionalsStore = {
-  [key: string]: ConstituentAdditionals
-}
-
-export type RawCollection = Map<number, number>
+export type RawCollection = {[key: string]: number}
 
 interface RawRecipe {
-  out: RawCollection | number
+  out?: RawCollection | number
   ins: RawCollection
   ctl?: RawCollection
 }
@@ -83,7 +72,7 @@ export class ConstituentAdditionals {
 
   viewBox?: string
   display?: string
-  recipes?: RawRecipe[]
+  // recipes?: RawRecipe[]
 
   constructor(name?: ComplexName) {
     if(!name) return
@@ -104,11 +93,23 @@ export class ConstituentAdditionals {
 
 }
 
+export type AdditionalsStore = {
+  [key: string]: ConstituentAdditionals
+}
+
+interface RawAdditionals extends ConstituentAdditionals {
+  recipes: RawRecipe[]
+}
+
+export type RawAdditionalsStore = {
+  [key: string]: RawAdditionals
+}
 
 export class ConstituentVisible extends ConstituentAdditionals {
 
   type: JEC_Types
   name: ComplexName
+  volume: number
 
   constructor(args: CuentArgs) {
     let name = new ComplexName(args)
@@ -118,7 +119,15 @@ export class ConstituentVisible extends ConstituentAdditionals {
     this.name = name
 
     this.type = args.type
+
+    if(this.type === 'placeholder') {
+      if      (name.entry == 'Ticks') this.volume = 0.01
+      else if (name.entry == 'Mana') this.volume = 0.01
+      else if (name.entry == 'RF') this.volume = 0.001
+    } else 
+    if (this.type === 'fluidStack') {
+      this.volume = 0.001
+    }
+    this.volume ??= 1.0
   }
 }
-
-exports.ConstituentBase = ConstituentAdditionals

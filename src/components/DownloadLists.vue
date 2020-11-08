@@ -24,7 +24,7 @@ const ic2Factor = 100
 // Temporary save UU values to file
 // ----------------------------
 
-import { listUU } from '../assets/js/listUU.js'
+import { listUU } from '../assets/js/listUU.ts'
 
 function download(content, fileName, contentType) {
   let a = document.createElement('a')

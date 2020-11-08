@@ -3,7 +3,7 @@
 //   value: true
 // })
 
-export function cleanupNbt(o?: any) {
+export function cleanupNbt(o?: any): object|undefined {
   if (!o) return
 
   for (let k in o) {
@@ -22,20 +22,20 @@ export function cleanupNbt(o?: any) {
 }
 
 
-export function objToString(obj:any, ndeep:number):string {
+export function objToString(obj:any, ndeep = 1):string {
   switch (typeof obj) {
   case 'string':
     return '"' + obj + '"'
   case 'function':
     return obj.name || obj.toString()
   case 'object':
-    var indent = Array(ndeep || 1).join('\t')
+    var indent = Array(ndeep).join('\t')
     var isArray = Array.isArray(obj)
     return (
       '{['[+isArray] + Object.keys(obj)
         .map(function (key) {
           const quoted = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(key) ? key : `"${key}"`
-          return '\n\t' + indent + (isArray ? '' : quoted + ': ') + objToString(obj[key], (ndeep || 1) + 1)
+          return '\n\t' + indent + (isArray ? '' : quoted + ': ') + objToString(obj[key], ndeep + 1)
         })
         .join(',') + '\n' + indent + '}]'[+isArray]
     )
@@ -60,18 +60,15 @@ export class UniqueKeys<T,U> {
   ids = new Map<T, U>()
   count =  0
 
-  mergeKey(key: T, val: U) {
-    if(!key || !val) return
-    if(!this.ids.has(key)) {
-      this.ids.set(key, val)
-      this.count++
-      return true
-    } else {
-      return false
-    }
+  mergeKey(key: T, val: U):boolean {
+    if(!key || !val || this.ids.has(key)) return false
+    
+    this.ids.set(key, val)
+    this.count++
+    return true
   }
 
-  mergeChain(chain: UniqueKeys<T,U>, onUnique?: (value:U)=>void) {
+  mergeChain(chain?: UniqueKeys<T,U>, onUnique?: (value:U)=>void) {
     if(!chain) return
     for (const [key, value] of chain.ids.entries()) {
       if (this.mergeKey(key, value))

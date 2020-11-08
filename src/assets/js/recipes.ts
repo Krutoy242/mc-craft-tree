@@ -1,26 +1,13 @@
 import { Constituent, ConstituentStack } from "./constituent"
-import { AdditionalsStore, ConstituentAdditionals, CuentArgs, RawCollection } from "./ConstituentBase"
+import { CuentArgs, RawAdditionalsStore, RawCollection } from "./ConstituentBase"
 import { JEC_RootObject, JEC_Ingredient, JEC_Recipe } from "./JEC_Types"
 import { RecipeLink } from './RecipeLink'
 import { pushConstituent } from './constituents'
-import { cleanupNbt, NumLimits } from './utils'
+import { cleanupNbt, NumLimits, objToString } from './utils'
 
 
-function amount(raw: JEC_Ingredient) {
-  const percent = (raw.content.percent ?? 100.0) / 100.0
-  let mult = 1.0
-  const name = raw.content.name
-  if (raw.type == 'placeholder' && name == 'Ticks') mult = 0.01
-  if (raw.type == 'placeholder' && name == 'Mana') mult = 0.01
-  if (raw.type == 'placeholder' && name == 'RF') mult = 0.001
-  if (
-    raw.type === 'fluidStack' ||
-    raw.content.item === 'thermalfoundation:fluid_redstone' ||
-    raw.content.item === 'plustic:plustic.molten_osmium'
-  )
-    mult = 0.001
-
-  return (raw.content.amount ?? 1.0) * mult * percent
+function amount_jec(raw: JEC_Ingredient) {
+  return (raw.content.amount ?? 1.0) * (raw.content.percent ?? 100.0) / 100.0
 }
 
 class RecipesStore {
@@ -57,7 +44,7 @@ function fromJEC(raw: JEC_Ingredient): Constituent {
     source,
     entry,
     meta: raw.content.fMeta ? undefined : meta,
-    nbt:  raw.content.fNbt  ? undefined : cleanupNbt(raw.content.nbt),
+    nbt:  raw.content.fNbt  ? undefined : objToString(cleanupNbt(raw.content.nbt)),
     type: raw.type,
   })
 }
@@ -91,7 +78,6 @@ function fromId(id: string): Constituent {
         source: 'ore',
         entry: groups.source,
       }
-      Constituent.noOreDictsKeys.add(args.entry)
     } else {
       let [source, entry] = oreAlias.item.split(':')
       args = {
@@ -104,7 +90,7 @@ function fromId(id: string): Constituent {
   }
 
   if(groups.tag) {
-    try { args.nbt = eval(`(${groups.tag})`) }
+    try { args.nbt = objToString(eval(`(${groups.tag})`)) }
     catch (error) { console.error('nbtEvaluationError :>> ', groups.tag, 'Error: ', error.message) }
   }
 
@@ -116,26 +102,28 @@ export function mergeJECGroups(jec_groups: JEC_RootObject) {
     let recipeArrs = ['output', 'input', 'catalyst'] as Array<keyof JEC_Recipe>
     const recipe = new Recipe(
       ...(recipeArrs.map(arrName =>
-        jec_recipe[arrName].map(
-          raw => new ConstituentStack(pushConstituent(fromJEC(raw)), amount(raw))
-        )
+        jec_recipe[arrName].map(raw => {
+          let cuent = pushConstituent(fromJEC(raw))
+          return new ConstituentStack(cuent, amount_jec(raw) * cuent.volume)
+        })
       ) as ConstructorParameters<typeof Recipe>)
     )
     appendRecipe(recipe)
   })
 }
 
-export function mergeDefaultAdditionals(additionals: AdditionalsStore) {
+export function mergeDefaultAdditionals(additionals: RawAdditionalsStore) {
 
   const ids_arr = Object.keys(additionals)
   function keysToArr(collection: RawCollection) {
-    return [...collection.entries()].map(
-      ([k,v]) => new ConstituentStack(pushConstituent(fromId(ids_arr[k])), v)
-    )
+    return Object.entries(collection).map(([k,v]) => {
+      let cuent = pushConstituent(fromId(ids_arr[parseInt(k)]))
+      return new ConstituentStack(cuent, v * cuent.volume)
+    })
   }
   for (let i = 0; i < ids_arr.length; i++) {
     const keyOut = ids_arr[i]
-    const ads = additionals[keyOut] as ConstituentAdditionals
+    const ads = additionals[keyOut]
     
     if(ads.recipes) {
       const mainCuent = pushConstituent(fromId(keyOut))
@@ -143,7 +131,7 @@ export function mergeDefaultAdditionals(additionals: AdditionalsStore) {
       for (let j = 0; j < ads.recipes.length; j++) {
         const adsRecipe = ads.recipes[j]
 
-        let outputStacks = (adsRecipe.out && typeof adsRecipe.out === 'object')
+        let outputStacks = (typeof adsRecipe.out === 'object') 
           ? keysToArr(adsRecipe.out)
           : [new ConstituentStack(mainCuent, adsRecipe.out || 1)]
 
@@ -165,11 +153,28 @@ function nextId(): string {
   return String(recipesCount)
 }
 
+export interface RecipeHolder {
+  outputs: any[]
+  inputs: any[]
+  catalysts: any[]
+}
 
-export class Recipe {
+interface StacksHolder extends RecipeHolder {
+  outputs: ConstituentStack[]
+  inputs: ConstituentStack[]
+  catalysts: ConstituentStack[]
+}
+
+export interface LinksHolder extends RecipeHolder  {
+  outputs: RecipeLink[]
+  inputs: RecipeLink[]
+  catalysts: RecipeLink[]
+}
+
+export class Recipe implements StacksHolder {
   requirments: ConstituentStack[]
   id: string
-  links: Map<string,Constituent>
+  links: Map<Constituent,LinksHolder>
 
   constructor(
     public outputs: ConstituentStack[], 
@@ -193,7 +198,6 @@ export class Recipe {
       )
 
       return acc.set(outputStack.cuent, {
-        outputStack,
         outputs: inputLinks.map(inp => inp.flip()),
         inputs: inputLinks,
         catalysts: catalysts.map(catalStack =>
@@ -205,7 +209,7 @@ export class Recipe {
           )
         )
       })
-    }, new Map())
+    }, new Map<Constituent,LinksHolder>())
   }
 
   match(recipe: Recipe) {

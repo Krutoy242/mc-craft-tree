@@ -102,8 +102,9 @@
 
 <script>
 import Vue from 'vue'
-import { setAdditionals, calculate } from './assets/js/constituents.js'
-import { recipesStore, mergeJECGroups, mergeDefaultAdditionals } from './assets/js/recipes.js'
+import { calculate } from './assets/js/constituents.ts'
+import { ConstituentAdditionals } from './assets/js/ConstituentBase.ts'
+import { recipesStore, mergeJECGroups, mergeDefaultAdditionals } from './assets/js/recipes.ts'
 
 import default_additionals from './assets/default_additionals.json'
 import { EventBus } from './assets/js/lib/event-bus.js'
@@ -138,7 +139,7 @@ export default {
       this.showRecipesDialog = true
     })
 
-    setAdditionals(default_additionals)
+    ConstituentAdditionals.setAdditionals(default_additionals)
     // let jec_groups = parseJECgroups(default_jecGroups, default_additionals)
     // let jec_groups = parseJECgroups(require('./assets/jec_groups.json'), default_additionals)
     let jec_groups = require('./assets/jec_groups.json')

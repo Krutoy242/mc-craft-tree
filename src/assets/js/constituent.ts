@@ -1,8 +1,11 @@
-const { listUU } = require('./listUU.js')
-const { Recipe } = require('./recipes.js')
-const listUUIndexes = listUU.reduce((a: { [x: string]: any },b: { name: string | number },i: any)=> (a[b.name]=i,a),{})
-const { cleanupNbt, objToString, UniqueKeys } = require('./utils')
+import { listUU } from './listUU';
+import { LinksHolder, Recipe, RecipeHolder } from './recipes';
+import { UniqueKeys } from './utils';
 import {ConstituentVisible, CuentArgs} from './ConstituentBase';
+import { RecipeLink } from './RecipeLink.js';
+const listUUIndexes = listUU.reduce(
+  (a,b,i)=> (a[b.name]=i, a), {} as {[key: string]: number}
+)
 
 const CRAFTING_TABLE_COST = 50.0
 
@@ -25,9 +28,7 @@ interface DiveCallbacks {
 
 export class Constituent extends ConstituentVisible {
 
-  static noOreDictsKeys=new Set();
-
-  recipes            : InstanceType<typeof Recipe>[] = []
+  recipes: Recipe[] = []
   
   complexity    = 0.0
   cost          = 0.0
@@ -38,52 +39,37 @@ export class Constituent extends ConstituentVisible {
   outputsAmount = 0
   steps         = 0
   calculated         = false
-  recipe             : InstanceType<typeof Recipe>
-  recipeLinks        : any
-  inputLinks         : any
-  catalystsKeys      : InstanceType<typeof UniqueKeys>
-  recipesKeys        : InstanceType<typeof UniqueKeys>
+  recipeLinks       ?: LinksHolder
+  inputLinks        ?: RecipeLink[]
+  recipe            ?: Recipe
+  catalystsKeys     ?: UniqueKeys<string, Constituent>
+  recipesKeys       ?: UniqueKeys<string, Recipe>
   noAlternatives     = false
 
-
-  fMeta         = 0
-  fNbt          = 0
   isNoIcon           = false
-  nbtStr             = ''
-  volume             : number
+  // volume             : number
   recipesLength      : number = 0
-  complexity_byRecipe?: {[key: string]:number}
+  complexity_byRecipe?: Record<string, number>
+  outsList?: ConstituentStack[];
+  popList?: ConstituentStack[];
 
-  
-  public get id() : string {
-    return this.name.id
-  }
+
+  public get id() : string { return this.name.id }
+  public get nbt() : string { return this.name.nbt }
 
 
   constructor(cuentArgs: CuentArgs) {
     super(cuentArgs)
+
+    // Parent class have only shortand
     this.viewBox += ' 32 32'
-
-
-    if(this.fNbt) delete this.nbt // Remove nbt data if ingredient is match with any nbt
-    if(this.nbt) {
-      this.nbt = cleanupNbt(this.nbt)
-      this.nbtStr = objToString(this.nbt)
-    }
     
-    this.volume        = (this.type == 'fluidStack') ? 1000.0 : 1.0
-
-
-    this.id = this.mandatory + (this.nbtStr??'')
+    // this.volume = (this.type == 'fluidStack') ? 1000.0 : 1.0
   }
 
-  match(o: this) {
+  match(o: this): boolean {
     if(this === o) return true
-
-    if(this.definition != o.definition) return false
-    if(!(this.fMeta || o.fMeta) && this.meta != o.meta) return false
-    if(!(this.fNbt || o.fNbt) && this.nbtStr != o.nbtStr) return false
-    return true
+    return this.name.match(o.name)
   }
 
   getComplexity(count: number) {
@@ -95,12 +81,15 @@ export class Constituent extends ConstituentVisible {
   }
 
   // Calculate complexity and other values after all links are created
-  calculate(options:{onCalculated?: (c:Constituent)=>void, onLoop?: (c:Constituent)=>void} = {}) {
+  calculate(options:{
+    onCalculated?: (c:Constituent)=>void, 
+    onLoop?: (c:Constituent)=>void} = {}
+  ) {
 
     function onCalculated(self: Constituent) {
       self.complexity = self.cost + self.processing
       self.calculated = true
-      options.onCalculated?.call(self)
+      options.onCalculated?.(self)
     }
 
     this.safeDive(['catalysts', 'inputs'], {
@@ -112,7 +101,7 @@ export class Constituent extends ConstituentVisible {
 
         // Check if item spawning naturally
         if (!c.nbt) {
-          const predefCost = listUU[listUUIndexes[c.name]]?.uu
+          const predefCost = listUU[listUUIndexes[c.name.shortand]]?.uu
           if(predefCost) {
             c.cost = predefCost
             c.processing = 0.0
@@ -124,9 +113,9 @@ export class Constituent extends ConstituentVisible {
 
       // Called for each link list member
       // For each Input and each Catalyst
-      afterDive: function(c: Constituent, link: { from: { complexity: number | undefined; cost: any } }, deph: any, recipe: { id: string | number }, listName: string) {
-        let cr = c.complexity_byRecipe
-        cr[recipe.id] = cr[recipe.id] ?? 0.0
+      afterDive: function(c: Constituent, link: RecipeLink, deph: number, recipe: Recipe, listName: string) {
+        let cr = c.complexity_byRecipe as Record<string, number>
+        cr[recipe.id] ??= 0.0
 
         if(listName == 'catalysts') {
           // Temporary cost for items caused in loop
@@ -146,10 +135,10 @@ export class Constituent extends ConstituentVisible {
       result: function(c: Constituent) {
         if(!c.calculated) {
           // Intelectual chosing right recipe
-          const recipes = c.recipes.filter((r: { id: string | number }) => c.complexity_byRecipe[r.id] > 0)
+          const recipes = c.recipes!.filter(r => c.complexity_byRecipe![r.id] > 0)
           if(recipes.length) {
-            recipes.sort((a: { id: string | number },b: { id: string | number }) => 
-              c.complexity_byRecipe[a.id] - c.complexity_byRecipe[b.id]
+            recipes.sort((a,b) => 
+              c.complexity_byRecipe![a.id] - c.complexity_byRecipe![b.id]
             )
             c.pickRecipe(recipes[0])
           } else {
@@ -171,8 +160,8 @@ export class Constituent extends ConstituentVisible {
 
   // Recursively iterate through all items in list
   // usually "inputs" or "outputs"
-  safeDive(listNameArg: string[], callbacks: DiveCallbacks, deph = 999999999, refs = {recipes:new Set(), cuents:new Set(), blocked:new Set()}) {
-    if (!callbacks.onSelf?.(this) && deph>0 && this.recipes.length>0) {
+  safeDive(listNameArg: (keyof RecipeHolder)[], callbacks: DiveCallbacks, deph = 999999999, refs = {recipes:new Set(), cuents:new Set(), blocked:new Set()}) {
+    if (!callbacks.onSelf?.(this) && deph>0 && this.recipes?.length) {
       log('>>', this.display);
       // if(this.id==='minecraft:crafting_table:0') log('table');
       if(refs.cuents.has(this)) {
@@ -191,9 +180,6 @@ export class Constituent extends ConstituentVisible {
       }
       refs.cuents.add(this)
 
-      // Links lists
-      const listNamesArr = Array.isArray(listNameArg) ? listNameArg : [listNameArg]
-
       //TODO: Pick recipes for 'outputs' list name
       const recipes = this.recipe ? [this.recipe] : this.recipes
       // for (const recipe of recipes) {
@@ -210,8 +196,8 @@ export class Constituent extends ConstituentVisible {
 
           const recipeLinksLists = recipe.links.get(this)
 
-          for (const listName of listNamesArr) {
-            const linksList = recipeLinksLists[listName]
+          for (const listName of listNameArg) {
+            const linksList = recipeLinksLists![listName]
 
             for (const link of linksList) {
               // Recursion 💫
@@ -231,10 +217,10 @@ export class Constituent extends ConstituentVisible {
     return callbacks.result?.(this)
   }
 
-  pickRecipe(recipe: any) {
+  pickRecipe(recipe: Recipe) {
     this.recipe        = recipe
     this.inputsAmount  = recipe.inputs.length
-    this.recipeLinks   = recipe.links.get(this)
+    this.recipeLinks   = recipe.links.get(this) as LinksHolder
     this.inputLinks    = this.recipeLinks.inputs
 
     this.processing    = processingCostFromInputAmount(this.inputsAmount)
@@ -245,8 +231,8 @@ export class Constituent extends ConstituentVisible {
 
     for (const link of this.recipeLinks.inputs) {
       link.from.outputsAmount++
-      link.from.outsList = link.from.outsList ?? []
-      link.from.outsList.push(new ConstituentStack(this, recipe.outputs.find((cs: ConstituentStack)=>cs.cuent===this).amount))
+      link.from.outsList ??= []
+      link.from.outsList.push(new ConstituentStack(this, recipe.outputs.find(cs=>cs.cuent===this)!.amount))
       this.cost += link.from.cost * link.weight // Calculate cost
       this.catalystsKeys.mergeChain(link.from.catalystsKeys, (catal: { complexity: any }) => {
         this.processing += catal.complexity??0
@@ -261,7 +247,7 @@ export class Constituent extends ConstituentVisible {
 
     for (const link of this.recipeLinks.catalysts) {
       link.from.popularity++
-      link.from.popList = link.from.popList ?? []
+      link.from.popList ??= []
       link.from.popList.push(new ConstituentStack(this, 1))
       if (this.catalystsKeys.mergeKey(link.from.id, link.from))
         this.processing += link.from.complexity??0

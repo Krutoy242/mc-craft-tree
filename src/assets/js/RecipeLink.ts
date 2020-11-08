@@ -1,11 +1,12 @@
+import { Constituent } from "./constituent"
 
 
 export class RecipeLink {
   flipped!: RecipeLink
 
   constructor(
-    public from: any, 
-    public to: any, 
+    public from: Constituent, 
+    public to: Constituent, 
     public weight: number, 
     public id: string
   ) {
