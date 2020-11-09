@@ -1,4 +1,4 @@
-import { Constituent } from "./constituent"
+import { Constituent } from "./Constituent"
 
 
 export class RecipeLink {

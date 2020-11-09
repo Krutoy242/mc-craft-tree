@@ -73,6 +73,7 @@ export class ConstituentAdditionals {
   viewBox?: string
   display?: string
   // recipes?: RawRecipe[]
+  isNoIcon = false
 
   constructor(name?: ComplexName) {
     if(!name) return
@@ -86,9 +87,11 @@ export class ConstituentAdditionals {
       this.viewBox = this.viewBox ?? o?.viewBox
       this.display = this.display ?? o?.display
     }
-
-    this.viewBox = this.viewBox ?? ConstituentAdditionals.__null_viewBox
-    this.display = this.display ?? `[${name.shortand}]`
+    this.display ??= `[${name.shortand}]`
+    
+    if(!this.viewBox) this.isNoIcon = true
+    this.viewBox ??= ConstituentAdditionals.__null_viewBox
+    this.viewBox += ' 32 32'
   }
 
 }

@@ -26,45 +26,21 @@ interface DiveCallbacks {
   result?: Function
 }
 
-export class Constituent extends ConstituentVisible {
 
-  recipes: Recipe[] = []
+export class Uncraftable extends ConstituentVisible {
   
   complexity    = 0.0
   cost          = 0.0
-  processing    = 0.0
   usability     = 0.0
   popularity    = 0.0
-  inputsAmount  = 0
   outputsAmount = 0
-  steps         = 0
-  calculated         = false
-  recipeLinks       ?: LinksHolder
-  inputLinks        ?: RecipeLink[]
-  recipe            ?: Recipe
-  catalystsKeys     ?: UniqueKeys<string, Constituent>
-  recipesKeys       ?: UniqueKeys<string, Recipe>
-  noAlternatives     = false
-
-  isNoIcon           = false
-  // volume             : number
-  recipesLength      : number = 0
-  complexity_byRecipe?: Record<string, number>
-  outsList?: ConstituentStack[];
-  popList?: ConstituentStack[];
-
+  calculated    = false
 
   public get id() : string { return this.name.id }
   public get nbt() : string { return this.name.nbt }
 
-
   constructor(cuentArgs: CuentArgs) {
     super(cuentArgs)
-
-    // Parent class have only shortand
-    this.viewBox += ' 32 32'
-    
-    // this.volume = (this.type == 'fluidStack') ? 1000.0 : 1.0
   }
 
   match(o: this): boolean {
@@ -72,13 +48,41 @@ export class Constituent extends ConstituentVisible {
     return this.name.match(o.name)
   }
 
-  getComplexity(count: number) {
-    return (this.cost * count) + this.processing
+}
+
+class RecipesInfo extends LinksHolder {
+  recipes: Recipe[]
+
+  constructor() {
+    super()
+  }
+}
+
+export class Constituent extends Uncraftable {
+  processing    = 0.0
+  inputsAmount  = 0
+  steps         = 0
+  noAlternatives     = false
+  recipes = new RecipesInfo()
+  recipes: Recipe[] = []
+  recipesLength: number = 0
+  recipeLinks         : LinksHolder
+  inputLinks          : RecipeLink[]
+  recipe              : Recipe
+  catalystsKeys       : UniqueKeys<string, Constituent>
+  recipesKeys         : UniqueKeys<string, Recipe>
+  complexity_byRecipe : Record<string, number>
+  outsList            : ConstituentStack[]
+  popList             : ConstituentStack[]
+
+  constructor(cuentArgs: CuentArgs) {
+    super(cuentArgs)
   }
 
   getUUCost(factor: number) {
     return this.cost + this.processing / (factor + Math.sqrt(this.usability || 1))
   }
+
 
   // Calculate complexity and other values after all links are created
   calculate(options:{
@@ -260,8 +264,8 @@ export class Constituent extends ConstituentVisible {
     this.calculate()
   }
 
-  addRecipe(recipe: any) {
-    if(!this.recipes.find(r=>r.match(recipe))) {
+  addRecipe(recipe: Recipe) {
+    if(!this.recipes.find(recipe.match)) {
       this.recipes.push(recipe)
       this.recipesLength = (this.recipesLength || 0) + 1
       this.complexity_byRecipe = this.complexity_byRecipe ?? {}
@@ -274,10 +278,15 @@ export class Constituent extends ConstituentVisible {
   }
 }
 
+
 export class ConstituentStack {
   static sort = (a:ConstituentStack, b:ConstituentStack) => a.cuent.id.localeCompare(b.cuent.id)
 
-  constructor(public cuent: Constituent, public amount: number) {
+  constructor(
+    public cuent: Constituent, 
+    public amount: number
+  ) {
+
   }
 
   match(cs: ConstituentStack) { return this.amount === cs.amount && this.cuent.match(cs.cuent)}

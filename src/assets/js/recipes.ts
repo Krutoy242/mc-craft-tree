@@ -1,4 +1,4 @@
-import { Constituent, ConstituentStack } from "./constituent"
+import { Constituent, ConstituentStack } from "./Constituent"
 import { CuentArgs, RawAdditionalsStore, RawCollection } from "./ConstituentBase"
 import { JEC_RootObject, JEC_Ingredient, JEC_Recipe } from "./JEC_Types"
 import { RecipeLink } from './RecipeLink'
@@ -165,16 +165,22 @@ interface StacksHolder extends RecipeHolder {
   catalysts: ConstituentStack[]
 }
 
-export interface LinksHolder extends RecipeHolder  {
+export class LinksHolder implements RecipeHolder  {
   outputs: RecipeLink[]
   inputs: RecipeLink[]
   catalysts: RecipeLink[]
+
+  constructor(a: RecipeHolder) {
+    this.outputs   = a.outputs
+    this.inputs    = a.inputs
+    this.catalysts = a.catalysts
+  }
 }
 
 export class Recipe implements StacksHolder {
   requirments: ConstituentStack[]
   id: string
-  links: Map<Constituent,LinksHolder>
+  links = new Map<ConstituentStack,LinksHolder>()
 
   constructor(
     public outputs: ConstituentStack[], 
@@ -185,9 +191,7 @@ export class Recipe implements StacksHolder {
 
     this.id = nextId()
 
-    this.links = outputs.reduce((acc, outputStack) => {
-      outputStack.cuent.addRecipe(this)
-
+    outputs.forEach(outputStack => {
       const inputLinks = inputs.map(inputStack =>
         new RecipeLink(
           inputStack.cuent, 
@@ -197,19 +201,26 @@ export class Recipe implements StacksHolder {
         )
       )
 
-      return acc.set(outputStack.cuent, {
-        outputs: inputLinks.map(inp => inp.flip()),
-        inputs: inputLinks,
-        catalysts: catalysts.map(catalStack =>
-          new RecipeLink(
-            catalStack.cuent, 
-            outputStack.cuent, 
-            catalStack.amount, 
-            this.id
-          )
+      const catalLinks = catalysts.map(catalStack =>
+        new RecipeLink(
+          catalStack.cuent, 
+          outputStack.cuent, 
+          catalStack.amount, 
+          this.id
         )
-      })
-    }, new Map<Constituent,LinksHolder>())
+      )
+
+      this.links.set(outputStack, new LinksHolder({
+        outputs  : inputLinks.map(inp => inp.flip()),
+        inputs   : inputLinks,
+        catalysts: catalLinks
+      }))
+    })
+
+    outputs.forEach(outputStack => 
+      outputStack.cuent.addRecipe(this)
+    )
+      
   }
 
   match(recipe: Recipe) {

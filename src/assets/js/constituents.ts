@@ -1,35 +1,7 @@
-import { Constituent } from './constituent'
+import { Constituent } from './Constituent'
 import { NumLimits } from './utils'
 import * as _ from 'lodash'
 
-/* 
-export const constituents = {}
-
-
-export const options: { additionals?: AdditionalsStore } = {}
-
-export function setAdditionals(new_additionals: AdditionalsStore) { 
-  options.additionals = new_additionals
-  ConstituentAdditionals.setAdditionals(new_additionals)
-}
-
-
-export function setField(id, field, value) { 
-  // Create object if empty
-  constituents[id] = constituents[id] ?? {}
-
-  // Add value
-  constituents[id][field] = constituents[id][field] ?? value
-}
-
-
-export function mergeWith(filePath) {
-  const loadedCuons = JSON.parse(readFileSync(filePath, 'utf8'))
-  for (const [key, value] of Object.entries(loadedCuons)) {
-    constituents[key] = value
-  }
-}
- */
 
 class ConstituentTree {
   //                       source   ->  entry   ->  name   ->  meta   ->  []
