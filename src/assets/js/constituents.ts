@@ -77,29 +77,19 @@ export function calculate(topCuentID: string) {
   }
   const info = pile.info
 
-  function computeSingle(cuent: Constituent) {
-    cuent.calculate({
+  if(topCuentID) {
+    let top = tree.getById(topCuentID) as Constituent
+    top.calculate()
+    top.safeDive(['catalysts', 'inputs'], { result: c => {
+      if(c.recipes.isLooped) info.listLoops.add(c)
       
-      onLoop: function (c) {
-        info.listLoops.add(c)
-      },
-
-      onCalculated: function(c) {
-        info.cLimits.update(c.complexity)
-        info.uLimits.update(c.usability)
-        
-        if (c.isNoIcon) info.noIcon.push(c)
-        pile.list.push(c)
-      }
-    })
+      info.cLimits.update(c.complexity)
+      info.uLimits.update(c.usability)
+      
+      if (c.isNoIcon) info.noIcon.push(c)
+      pile.list.push(c)
+    }})
   }
-
-  if(topCuentID) computeSingle(tree.getById(topCuentID) as Constituent)
-
-  // for (const cuent of Object.values(constituents)) {
-  //   computeSingle(cuent)
-  //   pile.list.push(cuent)
-  // }
 
   console.log('tree :>> ', tree)
 

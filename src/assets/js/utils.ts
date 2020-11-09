@@ -75,6 +75,11 @@ export class UniqueKeys<T,U> {
         onUnique?.(value)
     }
   }
+
+  values() {
+    return this.ids.values()
+  }
+  
 }
 
 // exports.UniqueKeys = UniqueKeys

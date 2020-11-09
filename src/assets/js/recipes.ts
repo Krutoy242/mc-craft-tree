@@ -169,12 +169,22 @@ export class LinksHolder implements RecipeHolder  {
   outputs: RecipeLink[]
   inputs: RecipeLink[]
   catalysts: RecipeLink[]
+  private cost = 0.0
+  private processing = 0.0
 
   constructor(a: RecipeHolder) {
     this.outputs   = a.outputs
     this.inputs    = a.inputs
     this.catalysts = a.catalysts
   }
+
+  public get complexity() : number {
+    return this.cost + this.processing
+  }
+
+  addCost(n:number) { this.cost += n }
+  addProcessing(n:number) { this.processing += n }
+  
 }
 
 export class Recipe implements StacksHolder {
@@ -210,25 +220,28 @@ export class Recipe implements StacksHolder {
         )
       )
 
-      this.links.set(outputStack, new LinksHolder({
+      const linksHolder = new LinksHolder({
         outputs  : inputLinks.map(inp => inp.flip()),
         inputs   : inputLinks,
         catalysts: catalLinks
-      }))
+      })
+
+      this.links.set(outputStack, linksHolder)
     })
 
-    outputs.forEach(outputStack => 
-      outputStack.cuent.addRecipe(this)
-    )
+    outputs.forEach(outputStack => {
+      outputStack.cuent.recipes.pushIfUnique(this, this.links.get(outputStack) as LinksHolder)
+    })
+
       
   }
 
   match(recipe: Recipe) {
     if(this === recipe) return true
 
-    for (const name of ['outputs', 'inputs', 'catalysts']) {
-      const arr1 = (<any>this)[name] as ConstituentStack[]
-      const arr2 = (<any>recipe)[name] as ConstituentStack[]
+    for (const name of (['outputs', 'inputs', 'catalysts'] as Array<keyof StacksHolder>)) {
+      const arr1 = this[name]
+      const arr2 = recipe[name]
       if(arr1.length != arr2.length) return false
       
       const arr1_s = arr1.slice().sort(ConstituentStack.sort)

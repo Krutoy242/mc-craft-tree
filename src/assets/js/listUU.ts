@@ -1,367 +1,367 @@
-export const listUU = [
-  {uu: 0.1      , name: 'placeholder:Ticks'                         },// [placeholder:Ticks]
-  {uu: 0.001    , name: 'fluid:water'                               },// Water
-  {uu: 0.4      , name: 'placeholder:Mana'                          },// [placeholder:Mana]
-  {uu: 0.005    , name: 'fluid:oxygen'                              },// Oxygen
-  {uu: 1        , name: 'placeholder:RF'                            },// [placeholder:RF]
-  {uu: 0.6        , name: 'fluid:blood'                               },// Blood
-  {uu: 1.2        , name: 'fluid:lava'                                },// Lava
-  {uu: 2        , name: 'minecraft:dirt'                            },// Dirt
-  {uu: 2        , name: 'minecraft:snowball'                        },// Snowball
-  {uu: 1.5        , name: 'fluid:essence'                             },// Essence
-  {uu: 2        , name: 'fluid:lifeessence'                         },// Life Essence
-  {uu: 3        , name: 'minecraft:stone:1'                         },// Granite
-  {uu: 3        , name: 'minecraft:stone:3'                         },// Diorite
-  {uu: 3        , name: 'minecraft:stone:5'                         },// Dolomite
-  {uu: 1.5        , name: 'fluid:milk_goat'                           },// Goat Milk
-  {uu: 4        , name: 'forestry:sapling'                          },// [forestry:sapling]
-  {uu: 4        , name: 'minecraft:stone'                           },// Stone
-  {uu: 5        , name: 'minecraft:log'                             },// Oak Log
-  {uu: 6        , name: 'minecraft:netherrack'                      },// Netherrack
-  {uu: 8        , name: 'minecraft:wheat_seeds'                     },// Seeds
-  {uu: 10       , name: 'minecraft:clay_ball'                       },// Clay
-  {uu: 10       , name: 'placeholder:Bees'                          },// 
-  {uu: 12       , name: 'minecraft:sand'                            },// Sand
-  {uu: 12       , name: 'minecraft:string'                          },// String
-  {uu: 15       , name: 'minecraft:coal'                            },// Coal
-  {uu: 20       , name: 'ic2:crafting'                              },// Rubber
-  {uu: 20       , name: 'ic2:rubber_wood'                           },// Rubber Wood
-  {uu: 20       , name: 'minecraft:gravel'                          },// Gravel
-  {uu: 20       , name: 'minecraft:redstone'                        },// Redstone
-  {uu: 20       , name: 'minecraft:reeds'                           },// Sugar Canes
-  {uu: 20       , name: 'placeholder:Seconds'                       },// [placeholder:Seconds]
-  {uu: 20       , name: 'rustic:olives'                             },// Olives
-  {uu: 20       , name: 'thermalfoundation:material:128'            },// Copper Ingot
-  {uu: 30       , name: 'botania:petal'                             },// Mystical White Petal
-  {uu: 30       , name: 'minecraft:apple'                           },// Apple
-  {uu: 30       , name: 'minecraft:dye:15'                          },// Bone Meal
-  {uu: 30       , name: 'minecraft:slime_ball'                      },// Slimeball
-  {uu: 30       , name: 'thermalfoundation:material:131'            },// Lead Ingot
-  {uu: 35       , name: 'thermalfoundation:material:132'            },// Aluminum Ingot
-  {uu: 40       , name: 'minecraft:dye:1'                           },// Rose Red
-  {uu: 40       , name: 'minecraft:dye:2'                           },// Cactus Green
-  {uu: 40       , name: 'minecraft:dye:3'                           },// 
-  {uu: 40       , name: 'minecraft:dye:5'                           },// 
-  {uu: 40       , name: 'minecraft:dye:6'                           },// Cyan Dye
-  {uu: 40       , name: 'minecraft:dye:7'                           },// 
-  {uu: 40       , name: 'minecraft:dye:8'                           },// Gray Dye
-  {uu: 40       , name: 'minecraft:dye:9'                           },// Pink Dye
-  {uu: 40       , name: 'minecraft:dye:10'                          },// Lime Dye
-  {uu: 40       , name: 'minecraft:dye:11'                          },// 
-  {uu: 40       , name: 'minecraft:dye:12'                          },// Light Blue Dye
-  {uu: 40       , name: 'minecraft:dye:13'                          },// 
-  {uu: 40       , name: 'minecraft:dye:14'                          },// 
-  {uu: 40       , name: 'minecraft:dye'                             },// Ink Sac
-  {uu: 40       , name: 'minecraft:wheat'                           },// Wheat
-  {uu: 40       , name: 'thermalfoundation:material:129'            },// Tin Ingot
-  {uu: 40       , name: 'thermalfoundation:material:771'            },// Sulfur
-  {uu: 46       , name: 'mysticalagriculture:dirt_essence'          },// 
-  {uu: 46       , name: 'mysticalagriculture:ice_essence'           },// Ice Essence
-  {uu: 46       , name: 'mysticalagriculture:nature_essence'        },// 
-  {uu: 46       , name: 'mysticalagriculture:stone_essence'         },// 
-  {uu: 46       , name: 'mysticalagriculture:water_essence'         },// 
-  {uu: 46       , name: 'mysticalagriculture:wood_essence'          },// 
-  {uu: 46       , name: 'mysticalagriculture:zombie_essence'        },// 
-  {uu: 50       , name: 'astralsorcery:blockmarble'                 },// Marble
-  {uu: 50       , name: 'mekanism:substrate'                        },// Substrate
-  {uu: 50       , name: 'minecraft:double_plant'                    },// Sunflower
-  {uu: 50       , name: 'minecraft:flint'                           },// Flint
-  {uu: 50       , name: 'minecraft:iron_ingot'                      },// Iron Ingot
-  {uu: 50       , name: 'minecraft:wool:1'                          },// 
-  {uu: 50       , name: 'minecraft:wool:2'                          },// 
-  {uu: 50       , name: 'minecraft:wool:3'                          },// 
-  {uu: 50       , name: 'minecraft:wool:4'                          },// 
-  {uu: 50       , name: 'minecraft:wool:5'                          },// 
-  {uu: 50       , name: 'minecraft:wool:6'                          },// Pink Wool
-  {uu: 50       , name: 'minecraft:wool:7'                          },// 
-  {uu: 50       , name: 'minecraft:wool:8'                          },// 
-  {uu: 50       , name: 'minecraft:wool:9'                          },// 
-  {uu: 50       , name: 'minecraft:wool:10'                         },// 
-  {uu: 50       , name: 'minecraft:wool:11'                         },// 
-  {uu: 50       , name: 'minecraft:wool:12'                         },// 
-  {uu: 50       , name: 'minecraft:wool:13'                         },// 
-  {uu: 50       , name: 'minecraft:wool:14'                         },// Red Wool
-  {uu: 50       , name: 'minecraft:wool:15'                         },// Black Wool
-  {uu: 50       , name: 'minecraft:wool'                            },// White Wool
-  {uu: 60       , name: 'minecraft:bone'                            },// Bone
-  {uu: 60       , name: 'minecraft:nether_wart'                     },// Nether Wart
-  {uu: 60       , name: 'tconstruct:edible:1'                       },// Slime Ball
-  {uu: 60       , name: 'tconstruct:edible:2'                       },// Slime Ball
-  {uu: 70       , name: 'minecraft:end_stone'                       },// End Stone
-  {uu: 80       , name: 'harvestcraft:anchovyrawitem'               },// 
-  {uu: 80       , name: 'harvestcraft:bassrawitem'                  },// 
-  {uu: 80       , name: 'harvestcraft:calamarirawitem'              },// 
-  {uu: 80       , name: 'harvestcraft:carprawitem'                  },// 
-  {uu: 80       , name: 'harvestcraft:catfishrawitem'               },// 
-  {uu: 80       , name: 'harvestcraft:charrrawitem'                 },// 
-  {uu: 80       , name: 'harvestcraft:greenheartfishitem'           },// 
-  {uu: 80       , name: 'harvestcraft:grouperrawitem'               },// 
-  {uu: 80       , name: 'harvestcraft:herringrawitem'               },// 
-  {uu: 80       , name: 'harvestcraft:mudfishrawitem'               },// 
-  {uu: 80       , name: 'harvestcraft:perchrawitem'                 },// 
-  {uu: 80       , name: 'harvestcraft:sardinerawitem'               },// 
-  {uu: 80       , name: 'harvestcraft:snapperrawitem'               },// 
-  {uu: 80       , name: 'harvestcraft:tilapiarawitem'               },// 
-  {uu: 80       , name: 'harvestcraft:troutrawitem'                 },// 
-  {uu: 80       , name: 'harvestcraft:tunarawitem'                  },// 
-  {uu: 80       , name: 'harvestcraft:walleyerawitem'               },// 
-  {uu: 80       , name: 'integrateddynamics:crystalized_menril_chunk'},// Crystalized Menril Chunk
-  {uu: 80       , name: 'minecraft:brown_mushroom'                  },// Mushroom
-  {uu: 80       , name: 'minecraft:fish:1'                          },// 
-  {uu: 80       , name: 'minecraft:fish:2'                          },// 
-  {uu: 80       , name: 'minecraft:fish:3'                          },// Pufferfish
-  {uu: 80       , name: 'minecraft:fish'                            },// 
-  {uu: 80       , name: 'minecraft:red_mushroom'                    },// Mushroom
-  {uu: 90       , name: 'enderio:item_material:20'                  },// Grains of Infinity
-  {uu: 90       , name: 'industrialforegoing:pink_slime'            },// Pink Slime
-  {uu: 97       , name: 'botania:flower:1'                          },// 
-  {uu: 97       , name: 'botania:flower:2'                          },// 
-  {uu: 97       , name: 'botania:flower:3'                          },// 
-  {uu: 97       , name: 'botania:flower:4'                          },// 
-  {uu: 97       , name: 'botania:flower:5'                          },// 
-  {uu: 97       , name: 'botania:flower:6'                          },// 
-  {uu: 97       , name: 'botania:flower:7'                          },// 
-  {uu: 97       , name: 'botania:flower:8'                          },// 
-  {uu: 97       , name: 'botania:flower:9'                          },// 
-  {uu: 97       , name: 'botania:flower:10'                         },// 
-  {uu: 97       , name: 'botania:flower:11'                         },// 
-  {uu: 97       , name: 'botania:flower:12'                         },// 
-  {uu: 97       , name: 'botania:flower:13'                         },// 
-  {uu: 97       , name: 'botania:flower:14'                         },// 
-  {uu: 97       , name: 'botania:flower:15'                         },// 
-  {uu: 97       , name: 'botania:flower'                            },// 
-  {uu: 100      , name: 'integrateddynamics:menril_log'             },// Menril Wood
-  {uu: 100      , name: 'minecraft:log:1'                           },// 
-  {uu: 100      , name: 'minecraft:log:2'                           },// 
-  {uu: 100      , name: 'minecraft:log:3'                           },// 
-  {uu: 100      , name: 'minecraft:log2:1'                          },// 
-  {uu: 100      , name: 'minecraft:log2'                            },// 
-  {uu: 120      , name: 'minecraft:mycelium'                        },// Mycelium
-  {uu: 145      , name: 'mysticalagriculture:aluminum_essence'      },// 
-  {uu: 145      , name: 'mysticalagriculture:apatite_essence'       },// 
-  {uu: 145      , name: 'mysticalagriculture:basalt_essence'        },// 
-  {uu: 145      , name: 'mysticalagriculture:chicken_essence'       },// 
-  {uu: 145      , name: 'mysticalagriculture:coal_essence'          },// 
-  {uu: 145      , name: 'mysticalagriculture:copper_essence'        },// 
-  {uu: 145      , name: 'mysticalagriculture:cow_essence'           },// 
-  {uu: 145      , name: 'mysticalagriculture:dye_essence'           },// 
-  {uu: 145      , name: 'mysticalagriculture:fire_essence'          },// 
-  {uu: 145      , name: 'mysticalagriculture:limestone_essence'     },// 
-  {uu: 145      , name: 'mysticalagriculture:marble_essence'        },// 
-  {uu: 145      , name: 'mysticalagriculture:menril_essence'        },// 
-  {uu: 145      , name: 'mysticalagriculture:mystical_flower_essence'},// 
-  {uu: 145      , name: 'mysticalagriculture:pig_essence'           },// 
-  {uu: 145      , name: 'mysticalagriculture:sheep_essence'         },// 
-  {uu: 145      , name: 'mysticalagriculture:slate_essence'         },// 
-  {uu: 145      , name: 'mysticalagriculture:slime_essence'         },// 
-  {uu: 145      , name: 'mysticalagriculture:sulfur_essence'        },// 
-  {uu: 150      , name: 'minecraft:quartz'                          },// Nether Quartz
-  {uu: 160      , name: 'minecraft:dye:4'                           },// Lapis Lazuli
-  {uu: 160      , name: 'minecraft:poisonous_potato'                },// Poisonous Potato
-  {uu: 160      , name: 'minecraft:spider_eye'                      },// Spider Eye
-  {uu: 170      , name: 'minecraft:egg'                             },// Egg
-  {uu: 170      , name: 'minecraft:feather'                         },// Feather
-  {uu: 180      , name: 'minecraft:leather'                         },// Leather
-  {uu: 180      , name: 'thermalfoundation:material:893'            },// Destabilized Clathrate
-  {uu: 180      , name: 'thermalfoundation:material:894'            },// Energized Clathrate
-  {uu: 180      , name: 'thermalfoundation:material:895'            },// Resonant Clathrate
-  {uu: 200      , name: 'minecraft:ender_pearl'                     },// Ender Pearl
-  {uu: 200      , name: 'minecraft:iron_ore'                        },// Iron Ore
-  {uu: 200      , name: 'placeholder:BossFight'                     },// [placeholder:BossFight]
-  {uu: 240      , name: 'actuallyadditions:item_misc:5'             },// Black Quartz
-  {uu: 350      , name: 'immersiveengineering:metal:5'              },// Uranium Ingot
-  {uu: 400      , name: 'mekanism:ingot:1'                          },// Osmium Ingot
-  {uu: 400      , name: 'minecraft:bucket'                          },// Bucket
-  {uu: 400      , name: 'minecraft:water_bucket'                    },// Water Bucket
-  {uu: 400      , name: 'mysticalagriculture:crafting'              },// Inferium Essence
-  {uu: 400      , name: 'thaumcraft:crystal_essence'                },// [thaumcraft:crystal_essence]
-  {uu: 500      , name: 'minecraft:gold_ingot'                      },// Gold Ingot
-  {uu: 550      , name: 'mysticalagriculture:aquamarine_essence'    },// 
-  {uu: 550      , name: 'mysticalagriculture:black_quartz_essence'  },// 
-  {uu: 550      , name: 'mysticalagriculture:certus_quartz_essence' },// 
-  {uu: 550      , name: 'mysticalagriculture:creeper_essence'       },// 
-  {uu: 550      , name: 'mysticalagriculture:glowstone_essence'     },// 
-  {uu: 550      , name: 'mysticalagriculture:guardian_essence'      },// 
-  {uu: 550      , name: 'mysticalagriculture:iron_essence'          },// 
-  {uu: 550      , name: 'mysticalagriculture:ironwood_essence'      },// 
-  {uu: 550      , name: 'mysticalagriculture:knightslime_essence'   },// 
-  {uu: 550      , name: 'mysticalagriculture:lead_essence'          },// 
-  {uu: 550      , name: 'mysticalagriculture:nether_essence'        },// 
-  {uu: 550      , name: 'mysticalagriculture:nether_quartz_essence' },// 
-  {uu: 550      , name: 'mysticalagriculture:obsidian_essence'      },// 
-  {uu: 550      , name: 'mysticalagriculture:quicksilver_essence'   },// 
-  {uu: 550      , name: 'mysticalagriculture:rabbit_essence'        },// 
-  {uu: 550      , name: 'mysticalagriculture:redstone_essence'      },// 
-  {uu: 550      , name: 'mysticalagriculture:saltpeter_essence'     },// 
-  {uu: 550      , name: 'mysticalagriculture:silver_essence'        },// 
-  {uu: 550      , name: 'mysticalagriculture:skeleton_essence'      },// 
-  {uu: 550      , name: 'mysticalagriculture:sky_stone_essence'     },// 
-  {uu: 550      , name: 'mysticalagriculture:spider_essence'        },// 
-  {uu: 550      , name: 'mysticalagriculture:steeleaf_essence'      },// 
-  {uu: 550      , name: 'mysticalagriculture:tin_essence'           },// 
-  {uu: 600      , name: 'extrautils2:ingredients:10'                },// Drop of Evil
-  {uu: 600      , name: 'minecraft:milk_bucket'                     },// Milk
-  {uu: 650      , name: 'appliedenergistics2:material'              },// Certus Quartz Crystal
-  {uu: 700      , name: 'mysticalagriculture:crafting:5'            },// Prosperity Shard
-  {uu: 700      , name: 'thermalfoundation:material:130'            },// Silver Ingot
-  {uu: 800      , name: 'astralsorcery:itemcraftingcomponent'       },// Aquamarine
-  {uu: 800      , name: 'extrautils2:ingredients'                   },// Resonating Redstone Crystal
-  {uu: 900      , name: 'minecraft:soul_sand'                       },// Soul Sand
-  {uu: 1000     , name: 'minecraft:blaze_rod'                       },// Blaze Rod
-  {uu: 1000     , name: 'quark:black_ash'                           },// Wither Ash
-  {uu: 900      , name: 'minecraft:glowstone_dust'                  },// Glowstone Dust
-  {uu: 1300     , name: 'nuclearcraft:ingot:5'                      },// Boron Ingot
-  {uu: 1300     , name: 'nuclearcraft:ingot:6'                      },// Lithium Ingot
-  {uu: 1300     , name: 'nuclearcraft:ingot:7'                      },// Magnesium Ingot
-  {uu: 1400     , name: 'appliedenergistics2:sky_stone_block'       },// Sky Stone
-  {uu: 1400     , name: 'botania:manaresource:15'                   },// Ender Air Bottle
-  {uu: 1500     , name: 'minecraft:diamond'                         },// Diamond
-  {uu: 1500     , name: 'minecraft:experience_bottle'               },// Bottle o' Enchanting
-  {uu: 1500     , name: 'thermalfoundation:material:133'            },// Nickel Ingot
-  {uu: 1600     , name: 'mysticalagriculture:amber_essence'         },// 
-  {uu: 1600     , name: 'mysticalagriculture:ardite_essence'        },// 
-  {uu: 1600     , name: 'mysticalagriculture:blaze_essence'         },// 
-  {uu: 1600     , name: 'mysticalagriculture:cobalt_essence'        },// 
-  {uu: 1600     , name: 'mysticalagriculture:end_essence'           },// 
-  {uu: 1600     , name: 'mysticalagriculture:enderman_essence'      },// 
-  {uu: 1600     , name: 'mysticalagriculture:experience_essence'    },// 
-  {uu: 1600     , name: 'mysticalagriculture:fiery_ingot_essence'   },// 
-  {uu: 1600     , name: 'mysticalagriculture:fluix_essence'         },// 
-  {uu: 1600     , name: 'mysticalagriculture:ghast_essence'         },// 
-  {uu: 1600     , name: 'mysticalagriculture:gold_essence'          },// 
-  {uu: 1600     , name: 'mysticalagriculture:knightmetal_essence'   },// 
-  {uu: 1600     , name: 'mysticalagriculture:lapis_lazuli_essence'  },// 
-  {uu: 1600     , name: 'mysticalagriculture:malachite_essence'     },// 
-  {uu: 1600     , name: 'mysticalagriculture:nickel_essence'        },// 
-  {uu: 1600     , name: 'mysticalagriculture:osmium_essence'        },// 
-  {uu: 1600     , name: 'mysticalagriculture:peridot_essence'       },// 
-  {uu: 1600     , name: 'mysticalagriculture:ruby_essence'          },// 
-  {uu: 1600     , name: 'mysticalagriculture:sapphire_essence'      },// 
-  {uu: 1600     , name: 'mysticalagriculture:tanzanite_essence'     },// 
-  {uu: 1600     , name: 'mysticalagriculture:thaumium_essence'      },// 
-  {uu: 1600     , name: 'mysticalagriculture:topaz_essence'         },// 
-  {uu: 1600     , name: 'nuclearcraft:ingot:3'                      },// Thorium Ingot
-  {uu: 1600     , name: 'thermalfoundation:material:865'            },// Rich Slag
-  {uu: 2000     , name: 'thaumcraft:ore_cinnabar'                   },// Cinnabar Ore
-  {uu: 2400     , name: 'minecraft:obsidian'                        },// Obsidian
-  {uu: 2500     , name: 'thermalfoundation:material:2048'           },// Blizz Rod
-  {uu: 2600     , name: 'thermalfoundation:material:2050'           },// Blitz Rod
-  {uu: 2600     , name: 'thermalfoundation:material:2052'           },// Basalz Rod
-  {uu: 3000     , name: 'minecraft:lava_bucket'                     },// Lava Bucket
-  {uu: 3000     , name: 'minecraft:purpur_block'                    },// Purpur Block
-  {uu: 3000     , name: 'tconstruct:ingots:1'                       },// Ardite Ingot
-  {uu: 3000     , name: 'tconstruct:ingots'                         },// Cobalt Ingot
-  {uu: 3600     , name: 'minecraft:chorus_fruit'                    },// Chorus Fruit
-  {uu: 4000     , name: 'rftools:dimensional_shard'                 },// Dimensional Shard
-  {uu: 4230     , name: 'mysticalagriculture:diamond_essence'       },// 
-  {uu: 4230     , name: 'mysticalagriculture:draconium_essence'     },// 
-  {uu: 4230     , name: 'mysticalagriculture:emerald_essence'       },// 
-  {uu: 4230     , name: 'mysticalagriculture:platinum_essence'      },// 
-  {uu: 4230     , name: 'mysticalagriculture:rock_crystal_essence'  },// 
-  {uu: 4230     , name: 'mysticalagriculture:uranium_essence'       },// 
-  {uu: 4230     , name: 'mysticalagriculture:void_metal_essence'    },// 
-  {uu: 4400     , name: 'libvulpes:productingot:7'                  },// Titanium Ingot
-  {uu: 6000     , name: 'biomesoplenty:gem:1'                       },// Ruby
-  {uu: 6000     , name: 'biomesoplenty:gem:2'                       },// 
-  {uu: 6000     , name: 'biomesoplenty:gem:3'                       },// 
-  {uu: 6000     , name: 'biomesoplenty:gem:4'                       },// 
-  {uu: 6000     , name: 'biomesoplenty:gem:5'                       },// Malachite
-  {uu: 6000     , name: 'biomesoplenty:gem:6'                       },// Sapphire
-  {uu: 6000     , name: 'biomesoplenty:gem:7'                       },// Amber
-  {uu: 10000    , name: 'fluid:ic2uu_matter'                        },// UU-Matter
-  {uu: 10000    , name: 'minecraft:emerald'                         },// Emerald
-  {uu: 13000    , name: 'biomesoplenty:crystal_shard'               },// Celestial Crystal Shard
-  {uu: 15000    , name: 'thermalfoundation:ore:6'                   },// Platinum Ore
-  {uu: 16000    , name: 'twilightforest:knightmetal_ingot'          },// Knightmetal Ingot
-  {uu: 17000    , name: 'minecraft:chorus_flower'                   },// Chorus Flower
-  {uu: 19000    , name: 'tconstruct:materials:17'                   },// Necrotic Bone
-  {uu: 22000    , name: 'mysticalagriculture:infusion_crystal'      },// Infusion Crystal
-  {uu: 23000    , name: 'twilightforest:ironwood_ingot'             },// Ironwood Ingot
-  {uu: 25000    , name: 'jaopca:item_crystaldraconium'              },// Draconium Crystal
-  {uu: 27000    , name: 'twilightforest:fiery_ingot'                },// Fiery Ingot
-  {uu: 40000    , name: 'libvulpes:productgem'                      },// Dilithium Crystal
-  {uu: 40000    , name: 'minecraft:emerald_ore'                     },// Emerald Ore
-  {uu: 40000    , name: 'minecraft:shulker_shell'                   },// Shulker Shell
-  {uu: 43000    , name: 'enderio:block_enderman_skull'              },// Enderman Head
-  {uu: 44000    , name: 'minecraft:skull:1'                         },// Wither Skeleton Skull
-  {uu: 55000    , name: 'minecraft:ghast_tear'                      },// Ghast Tear
-  {uu: 60000    , name: 'bloodmagic:blood_shard'                    },// Weak Blood Shard
-  {uu: 76000    , name: 'minecraft:record_13'                       },// Music Disc
-  {uu: 80000    , name: 'biomesoplenty:gem'                         },// Ender Amethyst
-  {uu: 90000    , name: 'draconicevolution:draconium_ingot'         },// Draconium Ingot
-  {uu: 90000    , name: 'mysticalagriculture:master_infusion_crystal'},// Master Infusion Crystal
-  {uu: 200000   , name: 'nuclearcraft:californium:4'                },// Californium-250
-  {uu: 1600000  , name: 'avaritia:cosmic_meatballs'                 },// Cosmic Meatballs
-  {uu: 1900000  , name: 'avaritia:ultimate_stew'                    },// Ultimate Stew
-  {uu: 15000 , name: 'mysticalagradditions:nether_star_essence' },
-  {uu: 15000 , name: 'mysticalagradditions:dragon_egg_essence' },
-  {uu: 15000 , name: 'mysticalagradditions:awakened_draconium_essence' },
-  {uu: 15000 , name: 'mysticalagradditions:neutronium_essence' },
-  {uu: 15000 , name: 'mysticalagriculture:iridium_essence' },
-  {uu: 15000 , name: 'mysticalagriculture:enderium_essence' },
-  {uu: 15000 , name: 'mysticalagriculture:terrasteel_essence' },
-  {uu: 15000 , name: 'mysticalagriculture:ender_amethyst_essence' },
+export const listUU: Record<string, number> = {
+'placeholder:Ticks'                              : 0.1,     // [placeholder:Ticks]
+'fluid:water'                                    : 0.001,   // Water
+'placeholder:Mana'                               : 0.4,     // [placeholder:Mana]
+'fluid:oxygen'                                   : 0.005,   // Oxygen
+'placeholder:RF'                                 : 1,       // [placeholder:RF]
+'fluid:blood'                                    : 0.6,     // Blood
+'fluid:lava'                                     : 1.2,     // Lava
+'minecraft:dirt'                                 : 2,       // Dirt
+'minecraft:snowball'                             : 2,       // Snowball
+'fluid:essence'                                  : 1.5,     // Essence
+'fluid:lifeessence'                              : 2,       // Life Essence
+'minecraft:stone:1'                              : 3,       // Granite
+'minecraft:stone:3'                              : 3,       // Diorite
+'minecraft:stone:5'                              : 3,       // Dolomite
+'fluid:milk_goat'                                : 1.5,     // Goat Milk
+'forestry:sapling'                               : 4,       // [forestry:sapling]
+'minecraft:stone'                                : 4,       // Stone
+'minecraft:log'                                  : 5,       // Oak Log
+'minecraft:netherrack'                           : 6,       // Netherrack
+'minecraft:wheat_seeds'                          : 8,       // Seeds
+'minecraft:clay_ball'                            : 10,      // Clay
+'placeholder:Bees'                               : 10,      // 
+'minecraft:sand'                                 : 12,      // Sand
+'minecraft:string'                               : 12,      // String
+'minecraft:coal'                                 : 15,      // Coal
+'ic2:crafting'                                   : 20,      // Rubber
+'ic2:rubber_wood'                                : 20,      // Rubber Wood
+'minecraft:gravel'                               : 20,      // Gravel
+'minecraft:redstone'                             : 20,      // Redstone
+'minecraft:reeds'                                : 20,      // Sugar Canes
+'placeholder:Seconds'                            : 20,      // [placeholder:Seconds]
+'rustic:olives'                                  : 20,      // Olives
+'thermalfoundation:material:128'                 : 20,      // Copper Ingot
+'botania:petal'                                  : 30,      // Mystical White Petal
+'minecraft:apple'                                : 30,      // Apple
+'minecraft:dye:15'                               : 30,      // Bone Meal
+'minecraft:slime_ball'                           : 30,      // Slimeball
+'thermalfoundation:material:131'                 : 30,      // Lead Ingot
+'thermalfoundation:material:132'                 : 35,      // Aluminum Ingot
+'minecraft:dye:1'                                : 40,      // Rose Red
+'minecraft:dye:2'                                : 40,      // Cactus Green
+'minecraft:dye:3'                                : 40,      // 
+'minecraft:dye:5'                                : 40,      // 
+'minecraft:dye:6'                                : 40,      // Cyan Dye
+'minecraft:dye:7'                                : 40,      // 
+'minecraft:dye:8'                                : 40,      // Gray Dye
+'minecraft:dye:9'                                : 40,      // Pink Dye
+'minecraft:dye:10'                               : 40,      // Lime Dye
+'minecraft:dye:11'                               : 40,      // 
+'minecraft:dye:12'                               : 40,      // Light Blue Dye
+'minecraft:dye:13'                               : 40,      // 
+'minecraft:dye:14'                               : 40,      // 
+'minecraft:dye'                                  : 40,      // Ink Sac
+'minecraft:wheat'                                : 40,      // Wheat
+'thermalfoundation:material:129'                 : 40,      // Tin Ingot
+'thermalfoundation:material:771'                 : 40,      // Sulfur
+'mysticalagriculture:dirt_essence'               : 46,      // 
+'mysticalagriculture:ice_essence'                : 46,      // Ice Essence
+'mysticalagriculture:nature_essence'             : 46,      // 
+'mysticalagriculture:stone_essence'              : 46,      // 
+'mysticalagriculture:water_essence'              : 46,      // 
+'mysticalagriculture:wood_essence'               : 46,      // 
+'mysticalagriculture:zombie_essence'             : 46,      // 
+'astralsorcery:blockmarble'                      : 50,      // Marble
+'mekanism:substrate'                             : 50,      // Substrate
+'minecraft:double_plant'                         : 50,      // Sunflower
+'minecraft:flint'                                : 50,      // Flint
+'minecraft:iron_ingot'                           : 50,      // Iron Ingot
+'minecraft:wool:1'                               : 50,      // 
+'minecraft:wool:2'                               : 50,      // 
+'minecraft:wool:3'                               : 50,      // 
+'minecraft:wool:4'                               : 50,      // 
+'minecraft:wool:5'                               : 50,      // 
+'minecraft:wool:6'                               : 50,      // Pink Wool
+'minecraft:wool:7'                               : 50,      // 
+'minecraft:wool:8'                               : 50,      // 
+'minecraft:wool:9'                               : 50,      // 
+'minecraft:wool:10'                              : 50,      // 
+'minecraft:wool:11'                              : 50,      // 
+'minecraft:wool:12'                              : 50,      // 
+'minecraft:wool:13'                              : 50,      // 
+'minecraft:wool:14'                              : 50,      // Red Wool
+'minecraft:wool:15'                              : 50,      // Black Wool
+'minecraft:wool'                                 : 50,      // White Wool
+'minecraft:bone'                                 : 60,      // Bone
+'minecraft:nether_wart'                          : 60,      // Nether Wart
+'tconstruct:edible:1'                            : 60,      // Slime Ball
+'tconstruct:edible:2'                            : 60,      // Slime Ball
+'minecraft:end_stone'                            : 70,      // End Stone
+'harvestcraft:anchovyrawitem'                    : 80,      // 
+'harvestcraft:bassrawitem'                       : 80,      // 
+'harvestcraft:calamarirawitem'                   : 80,      // 
+'harvestcraft:carprawitem'                       : 80,      // 
+'harvestcraft:catfishrawitem'                    : 80,      // 
+'harvestcraft:charrrawitem'                      : 80,      // 
+'harvestcraft:greenheartfishitem'                : 80,      // 
+'harvestcraft:grouperrawitem'                    : 80,      // 
+'harvestcraft:herringrawitem'                    : 80,      // 
+'harvestcraft:mudfishrawitem'                    : 80,      // 
+'harvestcraft:perchrawitem'                      : 80,      // 
+'harvestcraft:sardinerawitem'                    : 80,      // 
+'harvestcraft:snapperrawitem'                    : 80,      // 
+'harvestcraft:tilapiarawitem'                    : 80,      // 
+'harvestcraft:troutrawitem'                      : 80,      // 
+'harvestcraft:tunarawitem'                       : 80,      // 
+'harvestcraft:walleyerawitem'                    : 80,      // 
+'integrateddynamics:crystalized_menril_chunk'    : 80,      // Crystalized Menril Chunk
+'minecraft:brown_mushroom'                       : 80,      // Mushroom
+'minecraft:fish:1'                               : 80,      // 
+'minecraft:fish:2'                               : 80,      // 
+'minecraft:fish:3'                               : 80,      // Pufferfish
+'minecraft:fish'                                 : 80,      // 
+'minecraft:red_mushroom'                         : 80,      // Mushroom
+'enderio:item_material:20'                       : 90,      // Grains of Infinity
+'industrialforegoing:pink_slime'                 : 90,      // Pink Slime
+'botania:flower:1'                               : 97,      // 
+'botania:flower:2'                               : 97,      // 
+'botania:flower:3'                               : 97,      // 
+'botania:flower:4'                               : 97,      // 
+'botania:flower:5'                               : 97,      // 
+'botania:flower:6'                               : 97,      // 
+'botania:flower:7'                               : 97,      // 
+'botania:flower:8'                               : 97,      // 
+'botania:flower:9'                               : 97,      // 
+'botania:flower:10'                              : 97,      // 
+'botania:flower:11'                              : 97,      // 
+'botania:flower:12'                              : 97,      // 
+'botania:flower:13'                              : 97,      // 
+'botania:flower:14'                              : 97,      // 
+'botania:flower:15'                              : 97,      // 
+'botania:flower'                                 : 97,      // 
+'integrateddynamics:menril_log'                  : 100,     // Menril Wood
+'minecraft:log:1'                                : 100,     // 
+'minecraft:log:2'                                : 100,     // 
+'minecraft:log:3'                                : 100,     // 
+'minecraft:log2:1'                               : 100,     // 
+'minecraft:log2'                                 : 100,     // 
+'minecraft:mycelium'                             : 120,     // Mycelium
+'mysticalagriculture:aluminum_essence'           : 145,     // 
+'mysticalagriculture:apatite_essence'            : 145,     // 
+'mysticalagriculture:basalt_essence'             : 145,     // 
+'mysticalagriculture:chicken_essence'            : 145,     // 
+'mysticalagriculture:coal_essence'               : 145,     // 
+'mysticalagriculture:copper_essence'             : 145,     // 
+'mysticalagriculture:cow_essence'                : 145,     // 
+'mysticalagriculture:dye_essence'                : 145,     // 
+'mysticalagriculture:fire_essence'               : 145,     // 
+'mysticalagriculture:limestone_essence'          : 145,     // 
+'mysticalagriculture:marble_essence'             : 145,     // 
+'mysticalagriculture:menril_essence'             : 145,     // 
+'mysticalagriculture:mystical_flower_essence'    : 145,     // 
+'mysticalagriculture:pig_essence'                : 145,     // 
+'mysticalagriculture:sheep_essence'              : 145,     // 
+'mysticalagriculture:slate_essence'              : 145,     // 
+'mysticalagriculture:slime_essence'              : 145,     // 
+'mysticalagriculture:sulfur_essence'             : 145,     // 
+'minecraft:quartz'                               : 150,     // Nether Quartz
+'minecraft:dye:4'                                : 160,     // Lapis Lazuli
+'minecraft:poisonous_potato'                     : 160,     // Poisonous Potato
+'minecraft:spider_eye'                           : 160,     // Spider Eye
+'minecraft:egg'                                  : 170,     // Egg
+'minecraft:feather'                              : 170,     // Feather
+'minecraft:leather'                              : 180,     // Leather
+'thermalfoundation:material:893'                 : 180,     // Destabilized Clathrate
+'thermalfoundation:material:894'                 : 180,     // Energized Clathrate
+'thermalfoundation:material:895'                 : 180,     // Resonant Clathrate
+'minecraft:ender_pearl'                          : 200,     // Ender Pearl
+'minecraft:iron_ore'                             : 200,     // Iron Ore
+'placeholder:BossFight'                          : 200,     // [placeholder:BossFight]
+'actuallyadditions:item_misc:5'                  : 240,     // Black Quartz
+'immersiveengineering:metal:5'                   : 350,     // Uranium Ingot
+'mekanism:ingot:1'                               : 400,     // Osmium Ingot
+'minecraft:bucket'                               : 400,     // Bucket
+'minecraft:water_bucket'                         : 400,     // Water Bucket
+'mysticalagriculture:crafting'                   : 400,     // Inferium Essence
+'thaumcraft:crystal_essence'                     : 400,     // [thaumcraft:crystal_essence]
+'minecraft:gold_ingot'                           : 500,     // Gold Ingot
+'mysticalagriculture:aquamarine_essence'         : 550,     // 
+'mysticalagriculture:black_quartz_essence'       : 550,     // 
+'mysticalagriculture:certus_quartz_essence'      : 550,     // 
+'mysticalagriculture:creeper_essence'            : 550,     // 
+'mysticalagriculture:glowstone_essence'          : 550,     // 
+'mysticalagriculture:guardian_essence'           : 550,     // 
+'mysticalagriculture:iron_essence'               : 550,     // 
+'mysticalagriculture:ironwood_essence'           : 550,     // 
+'mysticalagriculture:knightslime_essence'        : 550,     // 
+'mysticalagriculture:lead_essence'               : 550,     // 
+'mysticalagriculture:nether_essence'             : 550,     // 
+'mysticalagriculture:nether_quartz_essence'      : 550,     // 
+'mysticalagriculture:obsidian_essence'           : 550,     // 
+'mysticalagriculture:quicksilver_essence'        : 550,     // 
+'mysticalagriculture:rabbit_essence'             : 550,     // 
+'mysticalagriculture:redstone_essence'           : 550,     // 
+'mysticalagriculture:saltpeter_essence'          : 550,     // 
+'mysticalagriculture:silver_essence'             : 550,     // 
+'mysticalagriculture:skeleton_essence'           : 550,     // 
+'mysticalagriculture:sky_stone_essence'          : 550,     // 
+'mysticalagriculture:spider_essence'             : 550,     // 
+'mysticalagriculture:steeleaf_essence'           : 550,     // 
+'mysticalagriculture:tin_essence'                : 550,     // 
+'extrautils2:ingredients:10'                     : 600,     // Drop of Evil
+'minecraft:milk_bucket'                          : 600,     // Milk
+'appliedenergistics2:material'                   : 650,     // Certus Quartz Crystal
+'mysticalagriculture:crafting:5'                 : 700,     // Prosperity Shard
+'thermalfoundation:material:130'                 : 700,     // Silver Ingot
+'astralsorcery:itemcraftingcomponent'            : 800,     // Aquamarine
+'extrautils2:ingredients'                        : 800,     // Resonating Redstone Crystal
+'minecraft:soul_sand'                            : 900,     // Soul Sand
+'minecraft:blaze_rod'                            : 1000,    // Blaze Rod
+'quark:black_ash'                                : 1000,    // Wither Ash
+'minecraft:glowstone_dust'                       : 900,     // Glowstone Dust
+'nuclearcraft:ingot:5'                           : 1300,    // Boron Ingot
+'nuclearcraft:ingot:6'                           : 1300,    // Lithium Ingot
+'nuclearcraft:ingot:7'                           : 1300,    // Magnesium Ingot
+'appliedenergistics2:sky_stone_block'            : 1400,    // Sky Stone
+'botania:manaresource:15'                        : 1400,    // Ender Air Bottle
+'minecraft:diamond'                              : 1500,    // Diamond
+'minecraft:experience_bottle'                    : 1500,    // Bottle o' Enchanting
+'thermalfoundation:material:133'                 : 1500,    // Nickel Ingot
+'mysticalagriculture:amber_essence'              : 1600,    // 
+'mysticalagriculture:ardite_essence'             : 1600,    // 
+'mysticalagriculture:blaze_essence'              : 1600,    // 
+'mysticalagriculture:cobalt_essence'             : 1600,    // 
+'mysticalagriculture:end_essence'                : 1600,    // 
+'mysticalagriculture:enderman_essence'           : 1600,    // 
+'mysticalagriculture:experience_essence'         : 1600,    // 
+'mysticalagriculture:fiery_ingot_essence'        : 1600,    // 
+'mysticalagriculture:fluix_essence'              : 1600,    // 
+'mysticalagriculture:ghast_essence'              : 1600,    // 
+'mysticalagriculture:gold_essence'               : 1600,    // 
+'mysticalagriculture:knightmetal_essence'        : 1600,    // 
+'mysticalagriculture:lapis_lazuli_essence'       : 1600,    // 
+'mysticalagriculture:malachite_essence'          : 1600,    // 
+'mysticalagriculture:nickel_essence'             : 1600,    // 
+'mysticalagriculture:osmium_essence'             : 1600,    // 
+'mysticalagriculture:peridot_essence'            : 1600,    // 
+'mysticalagriculture:ruby_essence'               : 1600,    // 
+'mysticalagriculture:sapphire_essence'           : 1600,    // 
+'mysticalagriculture:tanzanite_essence'          : 1600,    // 
+'mysticalagriculture:thaumium_essence'           : 1600,    // 
+'mysticalagriculture:topaz_essence'              : 1600,    // 
+'nuclearcraft:ingot:3'                           : 1600,    // Thorium Ingot
+'thermalfoundation:material:865'                 : 1600,    // Rich Slag
+'thaumcraft:ore_cinnabar'                        : 2000,    // Cinnabar Ore
+'minecraft:obsidian'                             : 2400,    // Obsidian
+'thermalfoundation:material:2048'                : 2500,    // Blizz Rod
+'thermalfoundation:material:2050'                : 2600,    // Blitz Rod
+'thermalfoundation:material:2052'                : 2600,    // Basalz Rod
+'minecraft:lava_bucket'                          : 3000,    // Lava Bucket
+'minecraft:purpur_block'                         : 3000,    // Purpur Block
+'tconstruct:ingots:1'                            : 3000,    // Ardite Ingot
+'tconstruct:ingots'                              : 3000,    // Cobalt Ingot
+'minecraft:chorus_fruit'                         : 3600,    // Chorus Fruit
+'rftools:dimensional_shard'                      : 4000,    // Dimensional Shard
+'mysticalagriculture:diamond_essence'            : 4230,    // 
+'mysticalagriculture:draconium_essence'          : 4230,    // 
+'mysticalagriculture:emerald_essence'            : 4230,    // 
+'mysticalagriculture:platinum_essence'           : 4230,    // 
+'mysticalagriculture:rock_crystal_essence'       : 4230,    // 
+'mysticalagriculture:uranium_essence'            : 4230,    // 
+'mysticalagriculture:void_metal_essence'         : 4230,    // 
+'libvulpes:productingot:7'                       : 4400,    // Titanium Ingot
+'biomesoplenty:gem:1'                            : 6000,    // Ruby
+'biomesoplenty:gem:2'                            : 6000,    // 
+'biomesoplenty:gem:3'                            : 6000,    // 
+'biomesoplenty:gem:4'                            : 6000,    // 
+'biomesoplenty:gem:5'                            : 6000,    // Malachite
+'biomesoplenty:gem:6'                            : 6000,    // Sapphire
+'biomesoplenty:gem:7'                            : 6000,    // Amber
+'fluid:ic2uu_matter'                             : 10000,   // UU-Matter
+'minecraft:emerald'                              : 10000,   // Emerald
+'biomesoplenty:crystal_shard'                    : 13000,   // Celestial Crystal Shard
+'thermalfoundation:ore:6'                        : 15000,   // Platinum Ore
+'twilightforest:knightmetal_ingot'               : 16000,   // Knightmetal Ingot
+'minecraft:chorus_flower'                        : 17000,   // Chorus Flower
+'tconstruct:materials:17'                        : 19000,   // Necrotic Bone
+'mysticalagriculture:infusion_crystal'           : 22000,   // Infusion Crystal
+'twilightforest:ironwood_ingot'                  : 23000,   // Ironwood Ingot
+'jaopca:item_crystaldraconium'                   : 25000,   // Draconium Crystal
+'twilightforest:fiery_ingot'                     : 27000,   // Fiery Ingot
+'libvulpes:productgem'                           : 40000,   // Dilithium Crystal
+'minecraft:emerald_ore'                          : 40000,   // Emerald Ore
+'minecraft:shulker_shell'                        : 40000,   // Shulker Shell
+'enderio:block_enderman_skull'                   : 43000,   // Enderman Head
+'minecraft:skull:1'                              : 44000,   // Wither Skeleton Skull
+'minecraft:ghast_tear'                           : 55000,   // Ghast Tear
+'bloodmagic:blood_shard'                         : 60000,   // Weak Blood Shard
+'minecraft:record_13'                            : 76000,   // Music Disc
+'biomesoplenty:gem'                              : 80000,   // Ender Amethyst
+'draconicevolution:draconium_ingot'              : 90000,   // Draconium Ingot
+'mysticalagriculture:master_infusion_crystal'    : 90000,   // Master Infusion Crystal
+'nuclearcraft:californium:4'                     : 200000,  // Californium-250
+'avaritia:cosmic_meatballs'                      : 1600000, // Cosmic Meatballs
+'avaritia:ultimate_stew'                         : 1900000, // Ultimate Stew
+'mysticalagradditions:nether_star_essence'       : 15000,
+'mysticalagradditions:dragon_egg_essence'        : 15000,
+'mysticalagradditions:awakened_draconium_essence': 15000,
+'mysticalagradditions:neutronium_essence'        : 15000,
+'mysticalagriculture:iridium_essence'            : 15000,
+'mysticalagriculture:enderium_essence'           : 15000,
+'mysticalagriculture:terrasteel_essence'         : 15000,
+'mysticalagriculture:ender_amethyst_essence'     : 15000,
 
-  {uu: 400, name: 'animania:friesian_cheese_wheel'},
-  {uu: 400, name: 'animania:holstein_cheese_wheel'},
-  {uu: 400, name: 'animania:jersey_cheese_wheel'},
-  {uu: 400, name: 'animania:goat_cheese_wheel'},
-  {uu: 400, name: 'animania:sheep_cheese_wheel'},
-  {uu: 45, name: 'rats:tiny_coin'},
+'animania:friesian_cheese_wheel'                 : 400,
+'animania:holstein_cheese_wheel'                 : 400,
+'animania:jersey_cheese_wheel'                   : 400,
+'animania:goat_cheese_wheel'                     : 400,
+'animania:sheep_cheese_wheel'                    : 400,
+'rats:tiny_coin'                                 : 45,
 
-  {uu: 8, name: 'rats:marbled_cheese_raw'},
-  {uu: 30, name: 'rats:cheese'},
-  {uu: 105, name: 'rats:ratglove_flower'},
-  {uu: 180, name: 'rats:block_of_cheese'},
-  {uu: 570, name: 'rats:ratlantean_flame'},
-  {uu: 600, name: 'rats:charged_creeper_chunk'},
-  {uu: 840, name: 'rats:rat_toga'},
-  {uu: 1200, name: 'rats:feral_bagh_nakhs'},
-  {uu: 1950, name: 'rats:marbled_cheese_rat_head'},
-  {uu: 1950, name: 'rats:vial_of_sentience'},
-  {uu: 2400, name: 'rats:feral_rat_claw'},
-  {uu: 2400, name: 'rats:idol_of_ratlantis'},
-  {uu: 3900, name: 'rats:ancient_sawblade'},
-  {uu: 3900, name: 'rats:arcane_technology'},
-  {uu: 3900, name: 'rats:psionic_rat_brain'},
-  {uu: 3900, name: 'rats:treacle'},
+'rats:marbled_cheese_raw'                        : 8,
+'rats:cheese'                                    : 30,
+'rats:ratglove_flower'                           : 105,
+'rats:block_of_cheese'                           : 180,
+'rats:ratlantean_flame'                          : 570,
+'rats:charged_creeper_chunk'                     : 600,
+'rats:rat_toga'                                  : 840,
+'rats:feral_bagh_nakhs'                          : 1200,
+'rats:marbled_cheese_rat_head'                   : 1950,
+'rats:vial_of_sentience'                         : 1950,
+'rats:feral_rat_claw'                            : 2400,
+'rats:idol_of_ratlantis'                         : 2400,
+'rats:ancient_sawblade'                          : 3900,
+'rats:arcane_technology'                         : 3900,
+'rats:psionic_rat_brain'                         : 3900,
+'rats:treacle'                                   : 3900,
 
-  {uu: 130, name: 'botania:doubleflower1'},
-  {uu: 130, name: 'botania:doubleflower1:1'},
-  {uu: 130, name: 'botania:doubleflower1:2'},
-  {uu: 130, name: 'botania:doubleflower1:3'},
-  {uu: 130, name: 'botania:doubleflower1:4'},
-  {uu: 130, name: 'botania:doubleflower1:5'},
-  {uu: 130, name: 'botania:doubleflower1:6'},
-  {uu: 130, name: 'botania:doubleflower1:7'},
-  {uu: 130, name: 'botania:doubleflower2'},
-  {uu: 130, name: 'botania:doubleflower2:1'},
-  {uu: 130, name: 'botania:doubleflower2:2'},
-  {uu: 130, name: 'botania:doubleflower2:3'},
-  {uu: 130, name: 'botania:doubleflower2:4'},
-  {uu: 130, name: 'botania:doubleflower2:5'},
-  {uu: 130, name: 'botania:doubleflower2:6'},
-  {uu: 130, name: 'botania:doubleflower2:7'},
+'botania:doubleflower1'                          : 130,
+'botania:doubleflower1:1'                        : 130,
+'botania:doubleflower1:2'                        : 130,
+'botania:doubleflower1:3'                        : 130,
+'botania:doubleflower1:4'                        : 130,
+'botania:doubleflower1:5'                        : 130,
+'botania:doubleflower1:6'                        : 130,
+'botania:doubleflower1:7'                        : 130,
+'botania:doubleflower2'                          : 130,
+'botania:doubleflower2:1'                        : 130,
+'botania:doubleflower2:2'                        : 130,
+'botania:doubleflower2:3'                        : 130,
+'botania:doubleflower2:4'                        : 130,
+'botania:doubleflower2:5'                        : 130,
+'botania:doubleflower2:6'                        : 130,
+'botania:doubleflower2:7'                        : 130,
 
-  {uu:1100, name: 'thaumcraft:nitor_white'},
-  {uu:1100, name: 'thaumcraft:nitor_orange'},
-  {uu:1100, name: 'thaumcraft:nitor_magenta'},
-  {uu:1100, name: 'thaumcraft:nitor_lightblue'},
-  {uu:1100, name: 'thaumcraft:nitor_lime'},
-  {uu:1100, name: 'thaumcraft:nitor_pink'},
-  {uu:1100, name: 'thaumcraft:nitor_gray'},
-  {uu:1100, name: 'thaumcraft:nitor_silver'},
-  {uu:1100, name: 'thaumcraft:nitor_cyan'},
-  {uu:1100, name: 'thaumcraft:nitor_purple'},
-  {uu:1100, name: 'thaumcraft:nitor_blue'},
-  {uu:1100, name: 'thaumcraft:nitor_brown'},
-  {uu:1100, name: 'thaumcraft:nitor_green'},
-  {uu:1100, name: 'thaumcraft:nitor_red'},
-  {uu:1100, name: 'thaumcraft:nitor_black'},
+'thaumcraft:nitor_white'                         : 1100,
+'thaumcraft:nitor_orange'                        : 1100,
+'thaumcraft:nitor_magenta'                       : 1100,
+'thaumcraft:nitor_lightblue'                     : 1100,
+'thaumcraft:nitor_lime'                          : 1100,
+'thaumcraft:nitor_pink'                          : 1100,
+'thaumcraft:nitor_gray'                          : 1100,
+'thaumcraft:nitor_silver'                        : 1100,
+'thaumcraft:nitor_cyan'                          : 1100,
+'thaumcraft:nitor_purple'                        : 1100,
+'thaumcraft:nitor_blue'                          : 1100,
+'thaumcraft:nitor_brown'                         : 1100,
+'thaumcraft:nitor_green'                         : 1100,
+'thaumcraft:nitor_red'                           : 1100,
+'thaumcraft:nitor_black'                         : 1100,
 
-  {uu: 11, name: 'actuallyadditions:item_misc:13'},
-  {uu: 2, name: 'fluid:oil'},
-  {uu: 2, name: 'fluid:crude_oil'},
-  {uu: 2.5, name: 'fluid:liquidethene'},
+'actuallyadditions:item_misc:13'                 : 11,
+'fluid:oil'                                      : 2,
+'fluid:crude_oil'                                : 2,
+'fluid:liquidethene'                             : 2.5,
 
-]
+}
