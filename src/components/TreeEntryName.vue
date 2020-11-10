@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     h() {
-      return Math.abs(this.node.name.shortand.hashCode()) % 256
+      return Math.abs(this.node.name.source.hashCode()) % 256
     },
   },
 }

@@ -51,7 +51,7 @@
           :is="item.steps === 0 ? 'v-edit-dialog' : 'div'"
         >
           <div style="position: relative" class="d-flex justify-end">
-                <complexity :node="item" />
+                <complexity :number="item.complexity" />
                 <v-btn absolute dark fab x-small text
                   v-if="item.steps === 0"
                   :style="{left: '90%', top: '-0.4em'}"
@@ -84,9 +84,16 @@
       </template>
       
       <template #item.inputsAmount="{ item }">
-        <entry-grid :cuentStackArray="item.recipe ? item.recipe.inputs : null" @click.native="showRecipes(item)">
-          <hedgehog :number="item.inputsAmount"/>
-        </entry-grid>
+        <v-badge 
+          overlap bordered
+          color="green darken-4" 
+          :value="item.recipes.list.size > 1"
+          :content="`${item.recipes.list.size === 2 ? '+' : '+' + item.recipes.list.size}`"
+        >
+          <entry-grid :cuentStackArray="item.recipes.main ? item.recipes.main.inputs : undefined" @click.native="showRecipes(item)">
+            <hedgehog :number="item.inputsAmount"/>
+          </entry-grid>
+        </v-badge>
       </template>
       
       <template #item.outputsAmount="{ item }">
@@ -96,7 +103,7 @@
       </template>
 
       <template #item.steps="{ item }"><processing-steps :number="item.steps"/></template>
-      <template #item.recipesLength="{ item }"><popularity :number="item.recipes.length" color="#101404">mdi-buffer</popularity></template>
+      <!-- <template #item.recipesLength="{ item }"><popularity :number="item.recipes.length" color="#101404">mdi-buffer</popularity></template> -->
 
       <!-- <template #expanded-item="{ headers, item }">
         <td :colspan="headers.length">
@@ -140,7 +147,7 @@ export default {
         { align: 'center' ,text: 'Popularity', value: 'popularity' },
         { align: 'center' ,text: 'Inputs', value: 'inputsAmount' },
         { align: 'center' ,text: 'Outputs', value: 'outputsAmount' },
-        { align: 'center' ,text: 'Alt. Recipes', value: 'recipesLength' },
+        // { align: 'center' ,text: 'Alt. Recipes', value: 'recipesLength' },
         { align: 'center' ,text: 'Steps', value: 'steps' },
       ],
       isNumber: (v) => !isNaN(v) || 'Input should be number!',

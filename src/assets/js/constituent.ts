@@ -4,8 +4,11 @@ import { RecipeLink } from './RecipeLink';
 import { UniqueKeys } from './utils';
 import { listUU } from './listUU';
 import * as _ from 'lodash';
+import { random } from 'lodash';
 
 const CRAFTING_TABLE_COST = 50.0
+
+let maxDives = 5000000
 
 
 function processingCostFromInputAmount(x: number) {
@@ -21,6 +24,7 @@ interface DiveCallbacks {
   onSelf?: (c:Constituent)=>boolean
   afterDive?: (c: Constituent, link: RecipeLink, deph: number, lh: LinksHolder, listName: (keyof RecipeHolder))=>void
   result?: (c: Constituent)=>void
+  once?: (c: Constituent)=>void
 }
 
 
@@ -40,7 +44,7 @@ export class Uncraftable extends ConstituentVisible {
     super(cuentArgs)
   }
 
-  match(o: this): boolean {
+  match(o: Uncraftable): boolean {
     if(this === o) return true
     return this.name.match(o.name)
   }
@@ -60,7 +64,9 @@ class RecipesInfo {
   mainHolder ?: LinksHolder
   private catalystsKeys = new UniqueKeys<string, Constituent>()
   private recipesKeys   = new UniqueKeys<string, Recipe>()
-  list                = new Map<Recipe, LinksHolder>()
+  list                  = new Map<Recipe, LinksHolder>()
+  // iterable: Recipe[] = []
+  // iterableLinks: LinksHolder[] = []
   isLooped = false
 
   mainInputLinks(): RecipeLink[] {
@@ -80,6 +86,8 @@ class RecipesInfo {
       [[this.main, this.mainHolder]] = typles.sort(([,a],[,b]) => 
         a.complexity - b.complexity
       )
+      // this.iterable = [this.main]
+      // this.iterableLinks = [this.mainHolder]
 
       //************************
       this.recipesKeys.mergeKey(this.main.id, this.main)
@@ -95,30 +103,40 @@ class RecipesInfo {
       //************************
       return true
     }
+    // this.iterable = []
+    // this.iterableLinks = []
     if(this.list.size > 0) this.isLooped = true
     return false
   }
 
   pushIfUnique(recipe: Recipe, linksHolder: LinksHolder): boolean {
-    if([...this.list.keys()].some(recipe.match)) return false
+    if([...this.list.keys()].some(r=>Recipe.match(recipe, r))) return false
 
+    // this.iterable.push(recipe)
+    // this.iterableLinks.push(linksHolder)
     this.list.set(recipe, linksHolder)
     return true
   }
   
-  iterable() : [Recipe, boolean][] {
-    return this.main 
-      ? [[this.main, true]] 
-      : [...this.list.keys()].map((r,i)=>[r, i===this.list.size-1])
+  iterable() : [Recipe, LinksHolder, boolean][] {
+    if(this.isLooped) return []
+    if(this.main && this.mainHolder) return [[this.main, this.mainHolder, true]]
+    return [...this.list.entries()].map(([r, lh],i)=>[r, lh, i===this.list.size-1])
   }
+  
+  // iterable() : [Recipe, boolean][] {
+  //   return this.main 
+  //     ? [[this.main, true]] 
+  //     : [...this.list.keys()].map((r,i)=>[r, i===this.list.size-1])
+  // }
 
-  getLinks(r: Recipe, holderFields: (keyof RecipeHolder)[]): [RecipeLink, (keyof RecipeHolder)][] {
-    let holder = this.list.get(r) as LinksHolder
-    let arrs = holderFields.map(field => 
-      holder[field].map(l=>([l, field] as [RecipeLink, (keyof RecipeHolder)]))
-    )
-    return _.flatten(arrs)
-  }
+  // getLinks(r: Recipe, holderFields: (keyof RecipeHolder)[]): [RecipeLink, (keyof RecipeHolder)][] {
+  //   let holder = this.list.get(r) as LinksHolder
+  //   let arrs = holderFields.map(field => 
+  //     holder[field].map(l=>([l, field] as [RecipeLink, (keyof RecipeHolder)]))
+  //   )
+  //   return _.flatten(arrs)
+  // }
 }
 
 export class Constituent extends Uncraftable {
@@ -126,15 +144,20 @@ export class Constituent extends Uncraftable {
   steps          = 0
   noAlternatives = false
   recipes = new RecipesInfo()
+  private divehash = 0
   
   outsList: ConstituentStack[] = []
   popList: ConstituentStack[] = []
+  inputsAmount = 0
 
   
   public get haveRecipes() : boolean {
     return !!this.recipes.list.size
   }
   
+  getRecipes() {
+    return [...this.recipes.list.keys()]
+  }
 
   constructor(cuentArgs: CuentArgs) {
     super(cuentArgs)
@@ -159,6 +182,7 @@ export class Constituent extends Uncraftable {
     //************************
     //* This block would be skipped if cuent have no recipes
     for (const link of this.recipes.mainInputLinks()) {
+      this.inputsAmount++
       link.from.outputsAmount++
       link.from.outsList.push(this.stack(this.recipes.main!.outputs.find(cs=>cs.cuent===this)!.amount))
       this.cost += link.from.cost * link.weight
@@ -218,7 +242,7 @@ export class Constituent extends Uncraftable {
           }
           c.finishCalc()
         }
-        log('🔚', c.display);
+        log('🔸', c.display);
       },
 
     })
@@ -230,12 +254,25 @@ export class Constituent extends Uncraftable {
   // usually "inputs" or "outputs"
   safeDive(
     listNameArg: (keyof RecipeHolder)[], 
-    callbacks: DiveCallbacks, 
+    callbacks: DiveCallbacks,
     deph = 999999999, 
-    refs = {recipes:new Set<Recipe>(), cuents:new Set<Constituent>(), blocked:new Set<Recipe>()}
+    refs = {
+      recipes:new Set<Recipe>(), 
+      cuents:new Set<Constituent>(), 
+      blocked:new Set<Recipe>()
+    },
+    hash = Math.random()
   ) {
     if (!callbacks.onSelf?.(this) && deph>0 && this.haveRecipes) {
-      log('🔸', this.display);
+      // if(maxDives--<=0) return
+      if(this.divehash !== hash) {
+        this.divehash = hash
+        callbacks.once?.(this)
+      } else if (callbacks.once) {
+        return
+      }
+
+      log('🔚', this.display);
       if(refs.cuents.has(this)) {
         const setList = [...refs.recipes]
         let i = setList.length
@@ -252,18 +289,18 @@ export class Constituent extends Uncraftable {
       refs.cuents.add(this)
 
       //TODO: Pick recipes for 'outputs' list name
-      for (const [recipe, isLast] of this.recipes.iterable()) {
+      for(const [recipe, linksHolder, isLast] of this.recipes.iterable()) {
         this.noAlternatives ||= isLast
 
         if(!refs.blocked.has(recipe)) {
-          let lh = this.recipes.list.get(recipe) as LinksHolder
           refs.recipes.add(recipe)
           refs.blocked.add(recipe)
 
-          for (const [link, listName] of this.recipes.getLinks(recipe, listNameArg)) {
-            //* Recursion 💫
-            link.from.safeDive(listNameArg, callbacks, deph-1, refs)
-            callbacks.afterDive?.(this, link, deph, lh, listName)
+          for (const listName of listNameArg) {
+            for (const link of linksHolder[listName]) {
+              link.from.safeDive(listNameArg, callbacks, deph-1, refs, hash)
+              callbacks.afterDive?.(this, link, deph, linksHolder, listName)
+            }
           }
 
           refs.recipes.delete(recipe)

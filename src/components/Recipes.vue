@@ -1,10 +1,10 @@
 <template>
   <!-- <v-container fluid> -->
     <v-data-iterator
-      :items="cuent.recipes"
+      :items="list"
       :page="page"
       :items-per-page="4"
-      :hide-default-footer="cuent.recipes.length<=4"
+      :hide-default-footer="list.length<=4"
     >
 
       <template #default="{items}">
@@ -13,7 +13,7 @@
             v-for="recipe in items"
             :key="recipe.id"
           >
-            <recipe :recipe="recipe" :class="recipe===cuent.recipe ? 'selected-recipe' : ''"/>
+            <recipe :recipe="recipe" :class="recipe===cuent.recipes.main ? 'selected-recipe' : ''"/>
           </v-col>
         </v-row>
       </template>
@@ -38,6 +38,11 @@ export default {
   watch: {
     cuent(newValue, oldValue) {
       this.page = 1
+    }
+  },
+  computed: {
+    list() {
+      return this.cuent.getRecipes() 
     }
   },
 }

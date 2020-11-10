@@ -72,7 +72,7 @@
           </v-container>
         
           <div style="position: absolute; bottom:0; right: 0;" class="ma-2">
-            <complexity :node="node" short/>
+            <complexity :number="node.complexity" short/>
           </div>
         </div>
       </v-card>

@@ -4,9 +4,6 @@ import * as _ from 'lodash'
 
 
 class ConstituentTree {
-  //                       source   ->  entry   ->  name   ->  meta   ->  []
-  // private tree = new Map<string, Map<string, Map<string, Map<number, Constituent[]>>>>()
-
   // source -> entry -> meta -> []
   private tree = {} as {
     [key: string]: {
@@ -76,21 +73,24 @@ export function calculate(topCuentID: string) {
     }
   }
   const info = pile.info
+  // const tmpSet = new Set<Constituent>()
 
   if(topCuentID) {
     let top = tree.getById(topCuentID) as Constituent
     top.calculate()
-    top.safeDive(['catalysts', 'inputs'], { result: c => {
-      if(c.recipes.isLooped) info.listLoops.add(c)
-      
-      info.cLimits.update(c.complexity)
-      info.uLimits.update(c.usability)
-      
-      if (c.isNoIcon) info.noIcon.push(c)
-      pile.list.push(c)
-    }})
+    top.safeDive(['catalysts', 'inputs'], {
+      once(c){
+        info.cLimits.update(c.complexity)
+        info.uLimits.update(c.usability)
+        
+        if (c.recipes.isLooped) info.listLoops.add(c)
+        if (c.isNoIcon) info.noIcon.push(c)
+        pile.list.push(c)
+      }
+    })
   }
 
+  // pile.list = [...tmpSet]
   console.log('tree :>> ', tree)
 
   // ----------------------------

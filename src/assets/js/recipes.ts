@@ -227,21 +227,22 @@ export class Recipe implements StacksHolder {
       })
 
       this.links.set(outputStack, linksHolder)
+      outputStack.cuent.recipes.pushIfUnique(this, linksHolder)
     })
-
-    outputs.forEach(outputStack => {
-      outputStack.cuent.recipes.pushIfUnique(this, this.links.get(outputStack) as LinksHolder)
-    })
-
-      
   }
 
-  match(recipe: Recipe) {
-    if(this === recipe) return true
+  getCuentStackCost(cs: ConstituentStack) {
+    // const foundCS = this.outputs.find(cs=>cs.cuent === cuent)
+    // if(!foundCS) return
+    return this.links.get(cs)!.complexity / cs.amount
+  }
+
+  static match(r1: Recipe, r2: Recipe) {
+    if(r1 === r2) return true
 
     for (const name of (['outputs', 'inputs', 'catalysts'] as Array<keyof StacksHolder>)) {
-      const arr1 = this[name]
-      const arr2 = recipe[name]
+      const arr1 = r1[name]
+      const arr2 = r2[name]
       if(arr1.length != arr2.length) return false
       
       const arr1_s = arr1.slice().sort(ConstituentStack.sort)

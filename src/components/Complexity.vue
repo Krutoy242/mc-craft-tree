@@ -5,7 +5,7 @@
       <big-number :number="node.cost" :dim="true"/>
     </div> -->
 
-    <big-number :number="node.complexity" bordered :short='short'/>
+    <big-number :number="number" bordered :short='short'/>
     
     <!-- <big-number :number="node.processing" style="position: absolute; left: 2em; top: 1.4em"/> -->
   </div>
@@ -16,8 +16,8 @@
 export default {
 
   props: {
-    node: {
-      type: Object,
+    number: {
+      type: Number,
     },
     short: {
       type: Boolean,
