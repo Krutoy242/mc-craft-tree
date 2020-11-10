@@ -1,18 +1,19 @@
+import * as d3 from 'd3'
 import forceManyBodyReuse from './lib/d3ForcManyBodyReuse.js'
 
 
-let vizWidth = window.innerWidth
-let vizHeight = window.innerHeight
+const vizWidth = window.innerWidth
+const vizHeight = window.innerHeight
 
-let svg = null
-let container = null
-let linkContainer = null
-let nodeContainer = null
-let simulation = null
-let axisContainer = null
+let svg           : d3.Selection<d3.BaseType, unknown, HTMLElement, any>
+let container     : d3.Selection<SVGGElement, unknown, HTMLElement, any>
+let linkContainer : d3.Selection<SVGGElement, unknown, HTMLElement, any>
+let nodeContainer : d3.Selection<SVGGElement, unknown, HTMLElement, any>
+let simulation    : d3.Simulation<d3.SimulationNodeDatum, undefined> | undefined
+let axisContainer : d3.Selection<SVGGElement, unknown, HTMLElement, any>
 
 
-export function init() {
+function init() {
   
   svg = d3.select('#viz')
   container = svg.append('g')
@@ -454,7 +455,7 @@ export function makeGraph(pile, vue, query, isScatter) {
     })
   svg.call(zoom)
 
-  
+
   // ====================================================
   // Node and links highliting
   // ====================================================
