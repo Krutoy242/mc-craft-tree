@@ -45,7 +45,7 @@ export default {
 
   props: {
     number: {
-      type: Number
+      default: ''
     },
     inverted: {
       default: false
@@ -54,6 +54,7 @@ export default {
   
   methods: {
     getArrows(n, offset){
+      if(isNaN(n)) return '???'
       let arr = []
       const r = this.inverted ? arrowsInverted : arrows
 

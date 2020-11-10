@@ -1,8 +1,8 @@
 import { Constituent, ConstituentStack } from "./Constituent"
-import { CuentArgs, RawAdditionalsStore, RawCollection } from "./ConstituentBase"
+import { CuentBase, CuentArgs, RawAdditionalsStore, RawCollection } from "./ConstituentBase"
+import { tree } from "./constituents"
 import { JEC_RootObject, JEC_Ingredient, JEC_Recipe } from "./JEC_Types"
 import { RecipeLink } from './RecipeLink'
-import { pushConstituent } from './constituents'
 import { cleanupNbt, NumLimits, objToString } from './utils'
 
 
@@ -30,7 +30,7 @@ function appendRecipe(recipe: Recipe) {
   recipesStore.info.catalystsAmount.update(recipe.catalysts.length)
 }
 
-function fromJEC(raw: JEC_Ingredient): Constituent {
+function fromJEC(raw: JEC_Ingredient): CuentBase {
   type Triple = [string, string, number?]
   const [source, entry, meta] = {
     'itemStack':  ():Triple=>[...raw.content?.item?.split(':') as [string, string], raw.content.meta??0],
@@ -40,7 +40,7 @@ function fromJEC(raw: JEC_Ingredient): Constituent {
   }[raw.type]()
 
 
-  return new Constituent({
+  return new CuentBase({
     source,
     entry,
     meta: raw.content.fMeta ? undefined : meta,
@@ -49,8 +49,7 @@ function fromJEC(raw: JEC_Ingredient): Constituent {
   })
 }
 
-
-function fromId(id: string): Constituent {
+function fromId(id: string): CuentBase {
   let groups = id.match(
     /^(?<source>[^:{]+)(?::(?<entry>[^:{]+))?(?::(?<meta>[^:{]+))?(?<tag>\{.*\})?$/
   )?.groups ?? {};
@@ -94,7 +93,7 @@ function fromId(id: string): Constituent {
     catch (error) { console.error('nbtEvaluationError :>> ', groups.tag, 'Error: ', error.message) }
   }
 
-  return new Constituent(args)
+  return new CuentBase(args)
 }
 
 export function mergeJECGroups(jec_groups: JEC_RootObject) {
@@ -103,8 +102,8 @@ export function mergeJECGroups(jec_groups: JEC_RootObject) {
     const recipe = new Recipe(
       ...(recipeArrs.map(arrName =>
         jec_recipe[arrName].map(raw => {
-          let cuent = pushConstituent(fromJEC(raw))
-          return new ConstituentStack(cuent, amount_jec(raw) * cuent.volume)
+          const cuent = tree.pushBase(fromJEC(raw))
+          return cuent.stack(amount_jec(raw) * cuent.volume)
         })
       ) as ConstructorParameters<typeof Recipe>)
     )
@@ -117,16 +116,17 @@ export function mergeDefaultAdditionals(additionals: RawAdditionalsStore) {
   const ids_arr = Object.keys(additionals)
   function keysToArr(collection: RawCollection) {
     return Object.entries(collection).map(([k,v]) => {
-      let cuent = pushConstituent(fromId(ids_arr[parseInt(k)]))
+      let cuent = tree.pushBase(fromId(ids_arr[parseInt(k)]))
       return new ConstituentStack(cuent, v * cuent.volume)
     })
   }
+
   for (let i = 0; i < ids_arr.length; i++) {
     const keyOut = ids_arr[i]
     const ads = additionals[keyOut]
     
     if(ads.recipes) {
-      const mainCuent = pushConstituent(fromId(keyOut))
+      const mainCuent = tree.pushBase(fromId(keyOut))
 
       for (let j = 0; j < ads.recipes.length; j++) {
         const adsRecipe = ads.recipes[j]

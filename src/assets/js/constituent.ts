@@ -37,8 +37,8 @@ export class Uncraftable extends ConstituentVisible {
   outputsAmount = 0
   protected calculated    = false
 
-  public get id() : string { return this.name.id }
-  public get nbt() : string { return this.name.nbt }
+  public get id() : string { return this.base.id }
+  public get nbt() : string { return this.base.nbt }
 
   constructor(cuentArgs: CuentArgs) {
     super(cuentArgs)
@@ -46,7 +46,7 @@ export class Uncraftable extends ConstituentVisible {
 
   match(o: Uncraftable): boolean {
     if(this === o) return true
-    return this.name.match(o.name)
+    return this.base.match(o.base)
   }
 
 }
@@ -154,6 +154,8 @@ export class Constituent extends Uncraftable {
   public get haveRecipes() : boolean {
     return !!this.recipes.list.size
   }
+
+  get type() {return this.base.type}
   
   getRecipes() {
     return [...this.recipes.list.keys()]
@@ -167,7 +169,7 @@ export class Constituent extends Uncraftable {
   init(): boolean {
     // Check if item spawning naturally
     if (!this.nbt) {
-      const predefCost = listUU[this.name.shortand]
+      const predefCost = listUU[this.base.shortand]
       if(predefCost) {
         this.cost = predefCost
         this.processing = 0.0

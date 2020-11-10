@@ -2,11 +2,11 @@
   <div>
     <kbd
       ><span :style="{ 'color' : `hsl(${h}, 60%, 40%)` }">{{
-        node.name.source
+        node.base.source
       }}</span
-      >:<span class="blue--text text--lighten-3">{{ node.name.entry
+      >:<span class="blue--text text--lighten-3">{{ node.base.entry
       }}</span
-      ><span v-if="node.name.meta">:{{ node.name.meta }}</span></kbd
+      ><span v-if="node.base.meta">:{{ node.base.meta }}</span></kbd
     >
   </div>
 </template>
@@ -33,7 +33,7 @@ export default {
   },
   computed: {
     h() {
-      return Math.abs(this.node.name.source.hashCode()) % 256
+      return Math.abs(this.node.base.source.hashCode()) % 256
     },
   },
 }

@@ -78,7 +78,7 @@
       Unique Items: {{ uniqueItems }}
       Recipes Registered: {{ recipesStore.count }}
       <v-spacer></v-spacer>
-      <v-btn class="mx-1" x-small color="info" @click="isMoreInfo=!isMoreInfo">Show more info</v-btn>
+      <!-- <v-btn class="mx-1" x-small color="info" @click="isMoreInfo=!isMoreInfo">Show more info</v-btn> -->
       <v-spacer></v-spacer>
       <v-btn class="mx-1" x-small color="secondary" href="https://github.com/Krutoy242/CraftTreeVisualizer">GutHub</v-btn>
       <v-btn class="mx-1" x-small color="secondary" href="https://github.com/Krutoy242/Enigmatica2Expert-Extended">Recipes from E2:E - Extended</v-btn>
@@ -92,7 +92,7 @@
         :fullscreen="$vuetify.breakpoint.xsOnly"
       >
         <recipes 
-          :cuent="recipesDialog"
+          :recipeInfoList="recipeInfoList"
           style="overflow-x: hidden;"
         />
       </v-dialog>
@@ -102,7 +102,7 @@
 
 <script>
 import Vue from 'vue'
-import { calculate } from './assets/js/constituents.ts'
+import { tree } from './assets/js/constituents.ts'
 import { ConstituentAdditionals } from './assets/js/ConstituentBase.ts'
 import { recipesStore, mergeJECGroups, mergeDefaultAdditionals } from './assets/js/recipes.ts'
 
@@ -118,7 +118,7 @@ export default {
     pile: Object,
     recipesStore:  Object,
 
-    recipesDialog: Object,
+    recipeInfoList: Object,
     showRecipesDialog: false,
   }),
   computed: {
@@ -134,8 +134,8 @@ export default {
   mounted() {
     // Listen for the i-got-clicked event and its payload.
     EventBus.$off('show-recipes-dialog')
-    EventBus.$on('show-recipes-dialog', cuent => {
-      this.recipesDialog = cuent
+    EventBus.$on('show-recipes-dialog', recipeInfoList => {
+      this.recipeInfoList = recipeInfoList
       this.showRecipesDialog = true
     })
 
@@ -146,7 +146,7 @@ export default {
     mergeDefaultAdditionals(default_additionals)
     mergeJECGroups(jec_groups)
 
-    const pile = calculate('storagedrawers:upgrade_creative:1')
+    const pile = tree.calculate('storagedrawers:upgrade_creative:1')
     // const pile = calculate('minecraft:coal:1')
     for (const key in pile) { Vue.nonreactive(pile[key]) }
     console.log('pile :>> ', pile)

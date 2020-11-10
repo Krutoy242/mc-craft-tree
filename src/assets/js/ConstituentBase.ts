@@ -1,45 +1,47 @@
 import { JEC_Types } from "./JEC_Types"
 
-export type CuentArgs = {
-  type: JEC_Types
-  source: string
-  entry?: string
-  meta?: number
-  nbt?: string
+export interface CuentArgs {
+  readonly source: string
+  readonly entry?: string
+  readonly meta?: number
+  readonly nbt?: string
+  readonly type?: JEC_Types
 }
 
-class ComplexName {
-  static sort = (a: ComplexName, b: ComplexName) => a.id.localeCompare(b.id)
+export class CuentBase implements CuentArgs {
+  static sort = (a: CuentBase, b: CuentBase) => a.id.localeCompare(b.id)
   
-  id        : string
-  source    : string
-  entry     : string
-  meta      : number
-  nbt       : string
+  readonly id        : string
+  readonly source    : string
+  readonly entry     : string
+  readonly meta      : number
+  readonly nbt       : string
 
-  shortand  : string
-  definition: string
-  mandatory : string
+  readonly shortand  : string
+  readonly definition: string
+  readonly mandatory : string
+
+  // readonly path : [string, string, number]
+  readonly type: JEC_Types
 
   constructor(args: CuentArgs) {
     this.source = args.source
     this.entry  = args.entry ?? ''
     this.meta   = args.meta ?? 0
     this.nbt    = args.nbt ?? ''
+    this.type   = args.type ?? 'itemStack'
 
     this.definition = `${this.source}:${this.entry}`
     this.shortand   = this.definition + (this.meta ? ':'+this.meta : '') // "minecraft:stone:2", "ore:stone"
     this.mandatory  = this.definition + ':' + this.meta
     this.id         = this.mandatory + this.nbt
 
+    // this.path = [this.source, this.entry, this.meta]
+
     return this
   }
 
-  path(): [string, string, number] {
-    return [this.source, this.entry, this.meta]
-  }
-
-  match(o: ComplexName):boolean {
+  match(o: CuentBase):boolean {
     if(this.definition != o.definition) return false
     if(this.meta != o.meta) return false
     if(this.nbt != o.nbt) return false
@@ -72,22 +74,21 @@ export class ConstituentAdditionals {
 
   viewBox?: string
   display?: string
-  // recipes?: RawRecipe[]
   isNoIcon = false
 
-  constructor(name?: ComplexName) {
-    if(!name) return
+  constructor(base?: CuentBase) {
+    if(!base) return
 
-    if(name.shortand === 'forge:bucketfilled') this.viewBox = ConstituentAdditionals.__bucket_viewBox
+    if(base.shortand === 'forge:bucketfilled') this.viewBox = ConstituentAdditionals.__bucket_viewBox
 
-    for (const id of [name.id, name.mandatory, name.definition, name.shortand]) {
+    for (const id of [base.id, base.mandatory, base.definition, base.shortand]) {
       if(this.viewBox && this.display) break
 
       let o = ConstituentAdditionals.additionals[id] // Regular icon
       this.viewBox = this.viewBox ?? o?.viewBox
       this.display = this.display ?? o?.display
     }
-    this.display ??= `[${name.shortand}]`
+    this.display ??= `[${base.shortand}]`
     
     if(!this.viewBox) this.isNoIcon = true
     this.viewBox ??= ConstituentAdditionals.__null_viewBox
@@ -110,25 +111,22 @@ export type RawAdditionalsStore = {
 
 export class ConstituentVisible extends ConstituentAdditionals {
 
-  type: JEC_Types
-  name: ComplexName
+  base: CuentBase
   volume: number
 
-  constructor(args: CuentArgs) {
-    let name = new ComplexName(args)
+  constructor(args: CuentArgs | CuentBase) {
+    const base = (args as CuentBase).id ? (args as CuentBase) : new CuentBase(args)
     
-    super(name)
+    super(base)
 
-    this.name = name
+    this.base = base
 
-    this.type = args.type
-
-    if(this.type === 'placeholder') {
-      if      (name.entry == 'Ticks') this.volume = 0.01
-      else if (name.entry == 'Mana') this.volume = 0.01
-      else if (name.entry == 'RF') this.volume = 0.001
+    if(base.type === 'placeholder') {
+      if      (base.entry == 'Ticks') this.volume = 0.01
+      else if (base.entry == 'Mana') this.volume = 0.01
+      else if (base.entry == 'RF') this.volume = 0.001
     } else 
-    if (this.type === 'fluidStack') {
+    if (base.type === 'fluidStack') {
       this.volume = 0.001
     }
     this.volume ??= 1.0

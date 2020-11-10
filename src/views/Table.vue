@@ -44,41 +44,13 @@
       </template> -->
 
       <template #item.display="{ item }"><tree-entry :node="item" class="pa-2" /></template>
-
-      <template #item.complexity="{ item }">
-        <v-edit-dialog
-          :return-value.sync="item.complexity"
-          :is="item.steps === 0 ? 'v-edit-dialog' : 'div'"
-        >
-          <div style="position: relative" class="d-flex justify-end">
-                <complexity :number="item.complexity" />
-                <v-btn absolute dark fab x-small text
-                  v-if="item.steps === 0"
-                  :style="{left: '90%', top: '-0.4em'}"
-                  :color="item.complexity===1 ? 'red' : 'gray'"
-                >
-                  <v-icon small>mdi-pencil</v-icon>
-                </v-btn>
-          </div>
-          <template #input>
-            <v-text-field
-              v-model="item.complexity"
-              :rules="[isNumber]"
-              label="Edit"
-              single-line
-              counter
-            >
-            </v-text-field>
-          </template>
-        </v-edit-dialog>
-      </template>
-
+      <template #item.complexity="{ item }"><complexity :number="item.complexity" /></template>
       <template #item.usability="{ item }"><big-number :number="item.usability"/></template>
       <template #item.cost="{ item }"><big-number :number="item.cost"/></template>
       <template #item.processing="{ item }"><big-number :number="item.processing"/></template>
       
       <template #item.popularity="{ item }">
-        <entry-grid :cuentStackArray="item.popList">
+        <entry-grid :cuentStackArray="item.popList" @click.native="showAsCatalysts(item)">
           <popularity :number="item.popularity"/>
         </entry-grid>
       </template>
@@ -90,14 +62,14 @@
           :value="item.recipes.list.size > 1"
           :content="`${item.recipes.list.size === 2 ? '+' : '+' + item.recipes.list.size}`"
         >
-          <entry-grid :cuentStackArray="item.recipes.main ? item.recipes.main.inputs : undefined" @click.native="showRecipes(item)">
-            <hedgehog :number="item.inputsAmount"/>
+          <entry-grid :cuentStackArray="item.recipes.main ? item.recipes.main.inputs : undefined" @click.native="showInputs(item)">
+            <hedgehog :number="item.recipes.main ? item.inputsAmount : '!'"/>
           </entry-grid>
         </v-badge>
       </template>
       
       <template #item.outputsAmount="{ item }">
-        <entry-grid :cuentStackArray="item.outsList">
+        <entry-grid :cuentStackArray="item.outsList" @click.native="showAsOutput(item)">
           <hedgehog :number="item.outputsAmount" inverted="true"/>
         </entry-grid>
       </template>
@@ -118,6 +90,18 @@
 
 const _ = require('lodash')
 import { EventBus } from '../assets/js/lib/event-bus.js'
+
+function emit(data) {
+  EventBus.$emit('show-recipes-dialog', data)
+}
+
+function extractFromCSList(csList, filter) {
+  return csList.reduce((acc, cs)=>{
+    const recipes = cs.cuent.getRecipes()
+    const filtered = recipes.filter(filter)
+    return acc.concat(filtered.map(r=>({it:r})))
+  }, [])
+}
 
 export default {
   props: {
@@ -162,8 +146,14 @@ export default {
         item.id.indexOf(search) !== -1
       )
     },
-    showRecipes(cuent) {
-      EventBus.$emit('show-recipes-dialog', cuent)
+    showInputs(cuent) {
+      emit(cuent.getRecipes().map(r=>({it:r, selected: r==cuent.recipes.main})))
+    },
+    showAsCatalysts(cuent) {
+      emit(extractFromCSList(cuent.popList, r=>r.catalysts.some(cs=>cs.cuent === cuent)))
+    },
+    showAsOutput(cuent) {
+      emit(extractFromCSList(cuent.outsList, r=>r.inputs.some(cs=>cs.cuent === cuent)))
     }
   },
   computed: {

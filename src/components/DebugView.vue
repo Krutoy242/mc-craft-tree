@@ -69,12 +69,12 @@ export default {
     sortedNoIcon(){
       if (this.debugInfo?.noIcon)
         return this.debugInfo.noIcon.slice(0).sort(function (a, b) {   
-          return ('' + a.name).localeCompare(b.name)
+          return ('' + a.base.name).localeCompare(b.base.name)
         })
       return undefined
     },
     listLoop() {
-      return this.debugInfo?.listLoops
+      return [...(this.debugInfo?.listLoops.values() ?? [])]
     }
   },
 
