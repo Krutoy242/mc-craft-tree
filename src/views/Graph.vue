@@ -27,8 +27,6 @@
 
 <script>
 
-import {makeGraph} from '../assets/js/graph.js'
-
 export default {
   name: 'Graph',
   data() {
@@ -47,9 +45,13 @@ export default {
 
   methods: {
     updateGraph(toQuery) {
-      if (typeof this.pile == 'object')
+      if (typeof this.pile == 'object') {
         makeGraph(this.pile, this, toQuery || this.$route.query, this.isScatter)
-      
+
+        function navig(d, isRightClick) {
+          vue.$router.push({ path: 'graph', query: { q: d.id, outputs: isRightClick } }).catch(err => {})
+        }
+      }
     }
   },
 

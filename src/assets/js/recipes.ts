@@ -1,6 +1,6 @@
 import { Constituent, ConstituentStack } from "./Constituent"
 import { CuentBase, CuentArgs, RawAdditionalsStore, RawCollection } from "./ConstituentBase"
-import { tree } from "./constituents"
+import { tree } from "./ConstituentTree"
 import { JEC_RootObject, JEC_Ingredient, JEC_Recipe } from "./JEC_Types"
 import { RecipeLink } from './RecipeLink'
 import { cleanupNbt, NumLimits, objToString } from './utils'

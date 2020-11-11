@@ -1,16 +1,31 @@
 import * as d3 from 'd3'
+import { EnterElement, SimulationLinkDatum, SimulationNodeDatum } from 'd3'
+import * as Vue from 'vue/types/umd'
+import { CombinedVueInstance } from 'vue/types/vue'
+import { Constituent } from './Constituent.js'
+import { applyMouse } from './D3Events.js'
 import forceManyBodyReuse from './lib/d3ForcManyBodyReuse.js'
+import { RecipeLink } from './RecipeLink.js'
+import { GraphPile } from './Types.js'
 
 
 const vizWidth = window.innerWidth
 const vizHeight = window.innerHeight
 
-let svg           : d3.Selection<d3.BaseType, unknown, HTMLElement, any>
-let container     : d3.Selection<SVGGElement, unknown, HTMLElement, any>
-let linkContainer : d3.Selection<SVGGElement, unknown, HTMLElement, any>
-let nodeContainer : d3.Selection<SVGGElement, unknown, HTMLElement, any>
-let simulation    : d3.Simulation<d3.SimulationNodeDatum, undefined> | undefined
-let axisContainer : d3.Selection<SVGGElement, unknown, HTMLElement, any>
+interface NodeDatum extends d3.SimulationNodeDatum, Constituent {
+  isGhost: boolean
+  d3node: d3.Selection<d3.BaseType, unknown, null, undefined>
+}
+interface LinkDatum extends d3.SimulationLinkDatum<NodeDatum>, RecipeLink {}
+
+type AnySelection = d3.Selection<SVGGElement, unknown, HTMLElement, unknown>
+
+let svg           : d3.Selection<d3.BaseType, unknown, HTMLElement, unknown>
+let container     : AnySelection
+let linkContainer : AnySelection
+let nodeContainer : AnySelection
+let axisContainer : AnySelection
+let simulation    : d3.Simulation<NodeDatum, LinkDatum>
 
 
 function init() {
@@ -35,44 +50,7 @@ function linkArc(d) {
     `
 }
 
-
-export function makeGraph(pile, vue, query, isScatter) {
-
-  if (!container) init()
-
-  // ====================================================
-  // Dispose previous
-  // ====================================================
-  if (simulation) {
-    simulation.on('tick', null)
-    simulation.stop()
-    simulation = undefined
-  }
-
-  // ====================================================
-  // Prepare nodes
-  // ====================================================
-
-  // Filter all graphNodes
-  // Remove elements that dont have inputs or outputs
-  let graphNodes = null
-
-
-  // Find selected node to show only it
-  if (query.q) {
-    const lookupNode = pile.list.find(n => n.id === query.q)
-
-    if (lookupNode) {
-      graphNodes = [lookupNode]
-      lookupNode.safeDive(query.outputs ? 'outputs' : 'inputs', {
-        afterDive: link => {
-          if (!graphNodes.find(n => n.id === link.from.id)) {
-            graphNodes.push(link.from)
-          }
-        }
-      })
-    }
-  } 
+function defaultFilter(): GraphPile {
   
   // If no selection provided, select everything, except items without inputs and outputs
   // If scattered, select only nodes without crafts
@@ -83,118 +61,6 @@ export function makeGraph(pile, vue, query, isScatter) {
         return n.inputsAmount > 0 || n.outputsAmount > 0
       })
     } else {
-      const whitelist = [
-        'actuallyadditions:block_display_stand',
-        'actuallyadditions:block_empowerer',
-        'actuallyadditions:item_crystal_empowered:5',
-        'actuallyadditions:item_crystal:5',
-        'appliedenergistics2:material:38',
-        'appliedenergistics2:material:46',
-        'astralsorcery:itemcraftingcomponent:2',
-        'astralsorcery:itemcraftingcomponent:4',
-        'avaritia:resource:5',
-        'avaritia:resource:6',
-        'bloodmagic:altar',
-        'botania:livingrock',
-        'botania:manaresource:7',
-        'draconicevolution:draconic_ingot',
-        'environmentaltech:aethium_crystal',
-        'environmentaltech:aethium',
-        'environmentaltech:erodium_crystal',
-        'environmentaltech:erodium',
-        'environmentaltech:ionite_crystal',
-        'environmentaltech:ionite',
-        'environmentaltech:kyronite_crystal',
-        'environmentaltech:kyronite',
-        'environmentaltech:laser_lens',
-        'environmentaltech:litherite_crystal',
-        'environmentaltech:litherite',
-        'environmentaltech:pladium_crystal',
-        'environmentaltech:pladium',
-        'environmentaltech:solar_cont_6',
-        'environmentaltech:void_ore_miner_cont_1',
-        'environmentaltech:void_ore_miner_cont_2',
-        'environmentaltech:void_ore_miner_cont_3',
-        'environmentaltech:void_ore_miner_cont_4',
-        'environmentaltech:void_ore_miner_cont_5',
-        'environmentaltech:void_ore_miner_cont_6',
-        'extendedcrafting:crafting_core',
-        'extendedcrafting:material:2',
-        'extendedcrafting:material:7',
-        'extendedcrafting:material:12',
-        'extendedcrafting:material:13',
-        'extendedcrafting:pedestal',
-        'extendedcrafting:singularity_ultimate',
-        'extendedcrafting:storage',
-        'extendedcrafting:table_advanced',
-        'extendedcrafting:table_basic',
-        'extendedcrafting:table_elite',
-        'extrautils2:decorativesolid:3',
-        'forestry:carpenter',
-        'forestry:centrifuge',
-        'ic2:te:43',
-        'ic2:te:86',
-        'immersiveengineering:metal_decoration0:5',
-        'integrateddynamics:drying_basin',
-        'integrateddynamics:squeezer',
-        'matc:inferiumcrystal',
-        'matc:intermediumcrystal',
-        'matc:prudentiumcrystal',
-        'matc:superiumcrystal',
-        'mekanism:compresseddiamond',
-        'mekanism:compressedredstone',
-        'mekanism:machineblock',
-        'mekanism:machineblock2:11',
-        'minecraft:beacon',
-        'minecraft:blaze_powder',
-        'minecraft:brick',
-        'minecraft:coal_block',
-        'minecraft:coal:1',
-        'minecraft:crafting_table',
-        'minecraft:diamond_block',
-        'minecraft:ender_eye',
-        'minecraft:furnace',
-        'minecraft:glass_pane',
-        'minecraft:glass',
-        'minecraft:gold_block',
-        'minecraft:gold_nugget',
-        'minecraft:gunpowder',
-        'minecraft:iron_bars',
-        'minecraft:iron_block',
-        'minecraft:iron_nugget',
-        'minecraft:lapis_block',
-        'minecraft:nether_brick',
-        'minecraft:netherbrick',
-        'minecraft:planks',
-        'minecraft:quartz_block',
-        'minecraft:redstone_block',
-        'minecraft:stick',
-        'minecraft:sugar',
-        'minecraft:tnt',
-        'mysticalagriculture:crafting:1',
-        'mysticalagriculture:crafting:2',
-        'mysticalagriculture:crafting:3',
-        'mysticalagriculture:crafting:4',
-        'nuclearcraft:chemical_reactor_idle',
-        'nuclearcraft:fusion_core',
-        'nuclearcraft:ingot:8',
-        'opencomputers:material:4',
-        'psi:material:1',
-        'rftools:powercell_creative',
-        'rftoolsdim:dimension_builder',
-        'storagedrawers:upgrade_creative:1',
-        'tconstruct:casting',
-        'tconstruct:materials',
-        'tconstruct:smeltery_controller',
-        'thermalexpansion:machine:7',
-        'thermalfoundation:material:32',
-        'thermalfoundation:material:165',
-        'thermalfoundation:material:256',
-        'thermalfoundation:material:320',
-        'thermalfoundation:material:352',
-        'thermalfoundation:material:768',
-        'thermalfoundation:material:770',
-      ]
       graphNodes = pile.list.filter(n => {
         if (n.inputsAmount === 0) return true
         if (whitelist.includes(n.name)) {
@@ -205,152 +71,40 @@ export function makeGraph(pile, vue, query, isScatter) {
       })
     }
   }
+}
 
-  const options = {
-    showLinks:       graphNodes.length < 500 && !isScatter,
-    showCurvedLinks: graphNodes.length < 100 && !isScatter,
-    useReuse:        graphNodes.length > 500,
+
+export function makeGraph(
+  pile: GraphPile, 
+  vue: CombinedVueInstance<Vue,unknown,unknown,unknown,unknown>,
+  cb: {
+    click: ()=>void
   }
+) {
+  
+  if (!container) init()
+
+  const graphNodes = pile.list as NodeDatum[]
+
 
   // ====================================================
   // Math functions
   // ====================================================
-  function nonLinear(v) {return Math.sqrt(v)}
+  const minSize = 20
+  const maxSize = Math.floor(graphNodes.length / 9)
+  const diffSize = maxSize - minSize
 
-  function importancy(v, min, max) { return (v - min) / (max + 1) }
-  function compFnc(d) { return nonLinear(importancy(d.complexity, pile.info.cLimits.min, pile.info.cLimits.max)) }
-  function usabFnc(d) { return nonLinear(importancy(d.usability,  pile.info.uLimits.min, pile.info.uLimits.max)) }
-  function strokeWfnc(d) { return nonLinear(nonLinear(d.weight)) }
-
-  let minSize = 20
-  let maxSize = parseInt(graphNodes.length / 9)
-  let diffSize = maxSize - minSize
-
-  function sizeFnc(d) {
-    let size = (compFnc(d) + usabFnc(d))/2 * maxSize + minSize
-    let result = Math.max(minSize, Math.min(maxSize, size))
-    // if(isNaN(result)) console.log('SizeFnc ERROR! :>> ', d)
+  const nonLinear  = Math.sqrt
+  const compFnc    = (c: NodeDatum) => nonLinear(pile.info.cLimits.importancy(c.complexity))
+  const usabFnc    = (c: NodeDatum) => nonLinear(pile.info.uLimits.importancy(c.usability))
+  const xFnc       = (d: NodeDatum) => vizWidth/2 + compFnc(d)*diffSize*20 - usabFnc(d)*diffSize*20
+  const strokeWfnc = (c: LinkDatum) => nonLinear(nonLinear(c.weight))
+  const sizeFnc    = (c: NodeDatum) => {
+    const size = (compFnc(c) + usabFnc(c))/2 * maxSize + minSize
+    const result = Math.max(minSize, Math.min(maxSize, size))
     return isNaN(result) ? 10 : result
   }
 
-  function xFnc(d) { return vizWidth/2 + compFnc(d)*diffSize*20 - usabFnc(d)*diffSize*20 }
-
-  // Scatter functions
-  const scaleLog = d3.scaleLog()
-    .domain([0.1, 1e12])
-    .range([0, 10000])
-    .base(10)
-    .nice()
-
-  // function getSX(v) { return Math.log(v + 1) * 200; }
-  // function setSX(v) { return Math.pow(Math.E, v / 200) - 1; }
-
-  function getSX(v) { return scaleLog(v) }
-  function setSX(v) { return scaleLog.invert((v)) }
-  
-  // 3. Call the x axis in a group tag
-  axisContainer.call(d3.axisTop(scaleLog).ticks(20, '.2s')) // Create an axis component with d3.axisBottom
-
-  function updateNodeX(node) {
-    node.x = getSX(node.complexity)
-  }
-
-  // Adjust starting positions
-  if (isScatter) {
-    const xObjs = {}
-    graphNodes.forEach((node, i) => {
-      updateNodeX(node)
-      xObjs[node.x] = (xObjs[node.x] || 0) + 1
-      node.y = xObjs[node.x] * 20
-    })
-  }
-
-  // ====================================================
-  // Layout
-  // ====================================================
-  if (!isScatter) {
-    simulation = d3.forceSimulation(graphNodes)
-      .force('charge', (options.useReuse ? forceManyBodyReuse : d3.forceManyBody()).strength(-2000))
-      .force('x', d3.forceX(xFnc).strength(1))
-      .force('y', d3.forceY(vizHeight / 2).strength(d => usabFnc(d) + 1))
-      .force('collision', d3.forceCollide().radius(sizeFnc).strength(0.75))
-      .on('tick', ticked)
-
-    // ====================================================
-    // Links
-    // ====================================================
-    let handleHover
-    let linkSelection
-
-    // Connect graph nodes
-    const graphLinks = []
-    for (let j = 0; j < graphNodes.length; j++) {
-      const n = graphNodes[j]
-
-      for (let i = 0; i < n.inputsAmount; i++) {
-        const link = n.inputLinks[i]
-        const source = graphNodes.findIndex(o => o.id === link.from.id)
-
-        if (source > -1) {
-          graphLinks.push({
-            source: source,
-            target: j,
-            weight: link.weight,
-            index: graphLinks.length,
-          })
-        }
-      }
-    }
-
-    simulation
-      .force('link', d3.forceLink(graphLinks).distance(diffSize/2).strength(1))
-
-    linkContainer.selectAll('*').remove()
-    
-
-    if (options.showLinks) {
-
-      if (options.showCurvedLinks) {
-        linkSelection = 
-          linkContainer
-            .attr('fill', 'none')
-            .selectAll('path')
-            .data(graphLinks)
-            .join('path')
-            .attr('stroke-width', 1)
-            .attr('stroke', '#555')
-      } else {
-        linkSelection = 
-          linkContainer
-            .attr('stroke', '#555')
-            .attr('stroke-width', 1)
-            .selectAll('line')
-            .data(graphLinks)
-            .join('line')
-      }
-
-      linkSelection.each(function(d3link, i) {
-        const d3node = d3.select(this) // Current ONE node
-
-        // d3link.source.outputs.find(l => l.from.id === d3link.target.id).d3node = d3node
-        // d3link.target.inputs.find(l => l.from.id === d3link.source.id).d3node = d3node
-        let foundLink = d3link.source.inputLinks.find(l => l.from === d3link.target)
-        foundLink.d3node = d3node
-        foundLink.flipped.d3node = d3node
-      })
-    }
-
-    handleHover = overNode => {
-      const filteredGraph = graphLinks.filter(l => l.target === overNode || l.source === overNode)
-
-      linkSelection = linkContainer
-        .attr('stroke-width', 3)
-        .selectAll('line')
-        .data(filteredGraph)
-        .join('line')
-        .attr('stroke', d => d.target === overNode ? '#7f7' : '#38f')
-    }
-  }
 
   // ====================================================
   // Nodes
@@ -360,48 +114,37 @@ export function makeGraph(pile, vue, query, isScatter) {
     .data(graphNodes)
     .join(appendNode, updateNode)
 
-  function appendNode(enter) {
-    const ec = enter.append('g')
-      .style('cursor', d => d.isGhost ? undefined : 'pointer')
-      .attr('opacity', d => d.isGhost ? 0.1 : 1)
-
-    ec.append('circle')
-    ec.append('svg').append('image')
-
-    return updateNode(ec)
+  function appendNode(d3Selection: any) {
+    return d3Selection.append('g')
+      .style('cursor', (d: NodeDatum) => d.isGhost ? undefined : 'pointer')
+      .attr('opacity', (d: NodeDatum) => d.isGhost ? 0.1 : 1)
+      .call((s:any)=>s
+        .append('circle')
+        .append('svg')
+        .append('image'))
   }
 
-  function navig(d, isRightClick) {
-    vue.$router.push({ path: 'graph', query: { q: d.id, outputs: isRightClick } }).catch(err => {})
-  }
-
-  function updateNode(update) {
+  function updateNode(update: any) {
     update
-      .on('click', d => navig(d))
-      .on('contextmenu', d => {
-        d3.event.preventDefault()
-        navig(d, true)
-      })
-
       .select('circle')
       .attr('r', sizeFnc)
-      .attr('stroke-width', d => usabFnc(d)*10 + 1)
+      .attr('stroke-width', (d: NodeDatum) => usabFnc(d)*10 + 1)
       .attr('stroke', '#fff')
-      .attr('fill', d => {
+      .attr('fill', (d: NodeDatum) => {
         return d.inputsAmount === 0 ? 'rgba(67, 113, 165, 0.3)' :
           (d.outputsAmount === 0 ? 'rgba(0, 145, 7, 0.4)' :
             '#111')
       })
 
     update.select('svg')
-      .attr('height', (d,i) => sizeFnc(d,i) * 2 * 0.9)
-      .attr('width',  (d,i) => sizeFnc(d,i) * 2 * 0.9)
-      .attr('x',      (d,i) => - sizeFnc(d,i) * 0.9)
-      .attr('y',      (d,i) => - sizeFnc(d,i) * 0.9)
-      .attr('viewBox', d => d.viewBox)
+      .attr('height', (d: NodeDatum) => sizeFnc(d) * 2 * 0.9)
+      .attr('width',  (d: NodeDatum) => sizeFnc(d) * 2 * 0.9)
+      .attr('x',      (d: NodeDatum) => - sizeFnc(d) * 0.9)
+      .attr('y',      (d: NodeDatum) => - sizeFnc(d) * 0.9)
+      .attr('viewBox',(d: NodeDatum) => d.viewBox)
       .select('image')
-      .attr('xlink:href', require('@/assets/Spritesheet.png'))
-      .attr('image-rendering', 'pixelated')
+        .attr('xlink:href', require('@/assets/Spritesheet.png'))
+        .attr('image-rendering', 'pixelated')
 
     return update
   }
@@ -424,7 +167,7 @@ export function makeGraph(pile, vue, query, isScatter) {
 
   function ticked() {
     if (linkSelection) {
-      if (options.showCurvedLinks) {
+      if (opts.showCurvedLinks) {
         linkSelection.attr('d', linkArc)
       } else {
         linkSelection
@@ -460,8 +203,7 @@ export function makeGraph(pile, vue, query, isScatter) {
   // Node and links highliting
   // ====================================================
 
-  function diveToList(targetNode, targetDeph, listName, style) {   
-    targetDeph = targetDeph || 999999999
+  function diveToList(targetNode, targetDeph=999999999, listName, style) {
     const isInput = listName === 'inputs'
     let maxDeph = 0
     
@@ -499,7 +241,7 @@ export function makeGraph(pile, vue, query, isScatter) {
     }
   }
 
-  let currIntervalID = null
+  let currIntervalID: NodeJS.Timeout
 
   function drawDive() {
 
@@ -515,83 +257,40 @@ export function makeGraph(pile, vue, query, isScatter) {
     vue.selectedDeph += 1
   }
 
-  function highlite(node) {
-
-    // Reset previous selected node links
-    if (options.showLinks) resetLines(vue.selectedNode)
-
-    vue.selectedNode = node
-    
-    // Show new links
-    if (options.showLinks) {
-      vue.selectedDeph = 1
-      clearInterval(currIntervalID)
-      currIntervalID = setInterval(drawDive, 100)
-    } else {
-      // If we have too many nodes, show only links over hovered node
-      if (handleHover) handleHover(node)
-    }
-  }
-
-  function unhighlite(d) {
-    if (options.showLinks) {
-      resetLines(vue.selectedNode)
-
-      vue.selectedDeph = 0
-      clearInterval(currIntervalID)
-    }
-  }
-
-  nodeSelection.on('mouseover', highlite)
-  nodeSelection.on('mouseout', unhighlite)
-
   // ====================================================
   // Node dragging
   // ====================================================
-  nodeSelection.call(
-    d3.drag()
-      .on('start', dragstarted)
-      .on('drag', dragged)
-      .on('end', dragended)
-  )
-  
-  function dragstarted(d) {
-    d3.event.sourceEvent.stopPropagation()
-    if (!d3.event.active && simulation) simulation.alphaTarget(0.3).restart()
-    d.fx = d.x
-    d.fy = d.y
-  }
 
-  function dragged(d) {
-    if (d.isGhost) return
+  applyMouse(nodeSelection, {
+    click(d,e,rmb) { cb.click?.(d, rmb) },
 
-    d.fx = d3.event.x
-    d.fy = d3.event.y
-    if (isScatter) {
-      d.x = d3.event.x
-      d.y = d3.event.y
-      d.complexity = d.cost = setSX(d.x)
-      d3.select(this).attr('transform', nodeT)
-    }
-  }
+    isGhost(d,e) { return (d as NodeDatum).isGhost },
+    dragstarted(d,e) { simulation?.alphaTarget(0.3).restart() },
+    dragended  (d,e) { simulation?.alphaTarget(0) },
+    mouseover  (d,e) { 
+      if (opts.showLinks) resetLines(vue.selectedNode)
 
-  function dragended(d) {
-    if (!d3.event.active && simulation) simulation.alphaTarget(0)
-    d.fx = null
-    d.fy = null
-
-    if (isScatter) {
-      d.safeDive('outputs', {
-        afterDive: link => {
-          const node = link.from
-          node.recalculateField('cost')
-          updateNodeX(node)
-        }
-      })
+      vue.selectedNode = d
       
-      ticked()
-    }
-  }
+      // Show new links
+      if (opts.showLinks) {
+        vue.selectedDeph = 1
+        clearInterval(currIntervalID)
+        currIntervalID = setInterval(drawDive, 100)
+      } else {
+        // If we have too many nodes, show only links over hovered node
+        if (handleHover) handleHover(d)
+      }
+    },
+    mouseout   (d,e) { 
+      if (opts.showLinks) {
+        resetLines(vue.selectedNode)
+
+        vue.selectedDeph = 0
+        clearInterval(currIntervalID)
+      } 
+    },
+  })
 
   return nodeSelection
 }

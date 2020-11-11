@@ -53,6 +53,10 @@ export class NumLimits {
     this.min = Math.min(this.min, num)
     this.max = Math.max(this.max, num)
   }
+
+  importancy(v: number) {
+    return (v - this.min) / Math.min(1, this.max)
+  }
 }
 
 
