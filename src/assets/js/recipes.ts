@@ -1,6 +1,6 @@
 import { Constituent, ConstituentStack } from "./Constituent"
 import { CuentBase, CuentArgs, RawAdditionalsStore, RawCollection } from "./ConstituentBase"
-import { tree } from "./ConstituentTree"
+import { globalTree } from "./ConstituentTree"
 import { JEC_RootObject, JEC_Ingredient, JEC_Recipe } from "./JEC_Types"
 import { RecipeLink } from './RecipeLink'
 import { cleanupNbt, NumLimits, objToString } from './utils'
@@ -102,7 +102,7 @@ export function mergeJECGroups(jec_groups: JEC_RootObject) {
     const recipe = new Recipe(
       ...(recipeArrs.map(arrName =>
         jec_recipe[arrName].map(raw => {
-          const cuent = tree.pushBase(fromJEC(raw))
+          const cuent = globalTree.pushBase(fromJEC(raw))
           return cuent.stack(amount_jec(raw) * cuent.volume)
         })
       ) as ConstructorParameters<typeof Recipe>)
@@ -116,7 +116,7 @@ export function mergeDefaultAdditionals(additionals: RawAdditionalsStore) {
   const ids_arr = Object.keys(additionals)
   function keysToArr(collection: RawCollection) {
     return Object.entries(collection).map(([k,v]) => {
-      let cuent = tree.pushBase(fromId(ids_arr[parseInt(k)]))
+      let cuent = globalTree.pushBase(fromId(ids_arr[parseInt(k)]))
       return new ConstituentStack(cuent, v * cuent.volume)
     })
   }
@@ -126,7 +126,7 @@ export function mergeDefaultAdditionals(additionals: RawAdditionalsStore) {
     const ads = additionals[keyOut]
     
     if(ads.recipes) {
-      const mainCuent = tree.pushBase(fromId(keyOut))
+      const mainCuent = globalTree.pushBase(fromId(keyOut))
 
       for (let j = 0; j < ads.recipes.length; j++) {
         const adsRecipe = ads.recipes[j]

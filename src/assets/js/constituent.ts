@@ -244,7 +244,7 @@ export class Constituent extends Uncraftable {
           }
           c.finishCalc()
         }
-        log('🔸', c.display);
+        // log('🔸', c.display);
       },
 
     })
@@ -274,7 +274,7 @@ export class Constituent extends Uncraftable {
         return
       }
 
-      log('🔚', this.display);
+      // log('🔚', this.display);
       if(refs.cuents.has(this)) {
         const setList = [...refs.recipes]
         let i = setList.length

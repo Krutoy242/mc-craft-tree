@@ -4,8 +4,9 @@ import * as _ from 'lodash'
 import { CuentBase } from './ConstituentBase'
 import { GlobalPile, GraphPile } from './Types'
 
+let constituentsCount = 0
 
-class ConstituentTree {
+export class ConstituentTree {
   // source -> entry -> meta -> []
   private tree = {} as {
     [key: string]: {
@@ -16,7 +17,15 @@ class ConstituentTree {
   }
 
   forEach(cb: (c:Constituent)=>void) {
-
+    for (const source of Object.values(this.tree)) {
+      for (const entry of Object.values(source)) {
+        for (const meta of Object.values(entry)) {
+          for (const c of meta) {
+            cb(c)
+          }
+        }
+      }
+    }
   }
 
   private _wholePile?: GraphPile
@@ -68,6 +77,8 @@ class ConstituentTree {
   }
   
 
+  public  makePileFrom(id: string) { return this.makePile(id, true) }
+  public  makePileTo  (id: string) { return this.makePile(id, false) }
   private makePile(arg: Constituent, toOutputs: boolean): GraphPile
   private makePile(arg: string, toOutputs: boolean): GraphPile
   private makePile(arg: Constituent | string, toOutputs: boolean): GraphPile {
@@ -91,15 +102,22 @@ class ConstituentTree {
 
     }
 
-    console.log(`tree ${toOutputs?'from':'to'} ${c.id}:>> `, tree)
+    console.log(`tree ${toOutputs?'from':'to'} ${c?.id}:>> `, this.tree)
     return pile.sort()
   }
 
-  makePileFrom(id: string) { return this.makePile(id, true) }
-  makePileTo  (id: string) { return this.makePile(id, false) }
+  makeFilteredPile(filter: (c:Constituent)=>boolean): GraphPile {
+    const pile = new GraphPile()
 
+    this.forEach(c=>{
+      if(filter(c)) {
+        c.calculate()
+        pile.merge(c)
+      }
+    })
+
+    return pile
+  }
 }
 
-
-export const tree = new ConstituentTree()
-let constituentsCount = 0
+export const globalTree = new ConstituentTree()

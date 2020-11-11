@@ -102,7 +102,7 @@
 
 <script>
 import Vue from 'vue'
-import { tree } from './assets/js/constituents.ts'
+import { globalTree } from './assets/js/ConstituentTree.ts'
 import { ConstituentAdditionals } from './assets/js/ConstituentBase.ts'
 import { recipesStore, mergeJECGroups, mergeDefaultAdditionals } from './assets/js/recipes.ts'
 
@@ -146,7 +146,7 @@ export default {
     mergeDefaultAdditionals(default_additionals)
     mergeJECGroups(jec_groups)
 
-    const pile = tree.makePileTo('storagedrawers:upgrade_creative:1')
+    const pile = globalTree.makePileTo('storagedrawers:upgrade_creative:1')
     // const pile = calculate('minecraft:coal:1')
     for (const key in pile) { Vue.nonreactive(pile[key]) }
     console.log('pile :>> ', pile)

@@ -4,8 +4,8 @@ export interface CuentArgs {
   readonly source: string
   readonly entry?: string
   readonly meta?: number
-  readonly nbt?: string
   readonly type?: JEC_Types
+  nbt?: string
 }
 
 export class CuentBase implements CuentArgs {
