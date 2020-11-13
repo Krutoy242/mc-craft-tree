@@ -65,12 +65,12 @@ export function makeGraph(
   const diffSize = maxSize - minSize
   const vizWidth = svg.node()?.getBoundingClientRect().width ?? 400
   const vizHeight= svg.node()?.getBoundingClientRect().height ?? 200
-
+  
   const fNonlinear  = Math.sqrt
+  const fStroke     = (c: LinkDatum) => fNonlinear(fNonlinear(c.weight))
   const fComp       = (c: NodeDatum) => fNonlinear(pile.info.cLimits.importancy(c.complexity))
   const fUsab       = (c: NodeDatum) => fNonlinear(pile.info.uLimits.importancy(c.usability))
   const fX          = (d: NodeDatum) => vizWidth/2 + fComp(d)*diffSize*20 - fUsab(d)*diffSize*20
-  const fStroke     = (c: LinkDatum) => fNonlinear(fNonlinear(c.weight))
   const fSize       = (c: NodeDatum) => {
     const size = (fComp(c) + fUsab(c))/2 * maxSize + minSize
     const result = Math.max(minSize, Math.min(maxSize, size))
@@ -88,17 +88,21 @@ export function makeGraph(
     .join(appendNode, updateNode)
 
   function appendNode(d3Selection: any) {
-    return d3Selection.append('g')
-      .style('cursor', (d: NodeDatum) => d.isGhost ? undefined : 'pointer')
-      .attr('opacity', (d: NodeDatum) => d.isGhost ? 0.1 : 1)
-      .call((s:any)=>s
-        .append('circle')
-        .append('svg')
-        .append('image'))
+    return updateNode(
+      d3Selection
+        .append('g')
+        .style('cursor', (d: NodeDatum) => d.isGhost ? undefined : 'pointer')
+        .attr('opacity', (d: NodeDatum) => d.isGhost ? 0.1 : undefined)
+        .call((s:any)=>s
+          .append('circle'))
+        .call((s:any)=>s
+          .append('svg')
+          .append('image'))
+    )
   }
 
-  function updateNode(update: any) {
-    update
+  function updateNode(d3Selection: any) {
+    d3Selection
       .select('circle')
       .attr('r', fSize)
       .attr('stroke-width', (d: NodeDatum) => fUsab(d)*10 + 1)
@@ -109,7 +113,7 @@ export function makeGraph(
             '#111')
       })
 
-    update.select('svg')
+    d3Selection.select('svg')
       .attr('height', (d: NodeDatum) => fSize(d) * 2 * 0.9)
       .attr('width',  (d: NodeDatum) => fSize(d) * 2 * 0.9)
       .attr('x',      (d: NodeDatum) => - fSize(d) * 0.9)
@@ -119,7 +123,7 @@ export function makeGraph(
         .attr('xlink:href', require('@/assets/Spritesheet.png'))
         .attr('image-rendering', 'pixelated')
 
-    return update
+    return d3Selection
   }
 
   nodes.each(function(d, i) {
@@ -133,10 +137,9 @@ export function makeGraph(
   // Zoom
   const zoom = d3.zoom()
     .scaleExtent([.01, 10])
-    .on('zoom', function () {
-      container.attr('transform', (d3 as any).event.transform)
-
-      cb.zoom?.((d3 as any).event)
+    .on('zoom', function (e) {
+      container.attr('transform', e.transform)
+      cb.zoom?.(e)
     })
   svg.call(zoom as any)
 
@@ -145,35 +148,32 @@ export function makeGraph(
   // Node dragging
   // ====================================================
   nodes
-    .on('click',      (d: NodeDatum)=>{navig(d, false); cb.click?.(d, false) })
-    .on('contextmenu',(d: NodeDatum)=>{navig(d, true); (d3 as any).event.preventDefault(); cb.click?.(d, true)})
-    .on('mouseover',  (d: NodeDatum)=>{(vue as any).selectedNode = d; cb.mouseover?.(d, (d3 as any).event)})
-    .on('mouseout',   (d: NodeDatum)=>cb.mouseout ?.(d, (d3 as any).event))
+    .on('click',      (e, d)=>{navig(d, false); cb.click?.(d, false) })
+    .on('contextmenu',(e, d)=>{navig(d, true); e.preventDefault(); cb.click?.(d, true)})
+    .on('mouseover',  (e, d)=>{(vue as any).selectedNode = d; cb.mouseover?.(d, e)})
+    .on('mouseout',   (e, d)=>cb.mouseout ?.(d, e))
     .call(
-      d3.drag()
+      d3.drag<any, NodeDatum>()
         .on('start', dragstarted)
         .on('drag', dragged)
-        .on('end', dragended) as any
+        .on('end', dragended)
     )
 
-  function dragstarted(d: NodeDatum) {
-    const e = (d3 as any).event
+  function dragstarted(e: any, d: NodeDatum) {
     e.sourceEvent.stopPropagation()
     if (!e.active) cb.dragstarted?.(d, e)
     d.fx = d.x
     d.fy = d.y
   }
 
-  function dragged(d: NodeDatum) {
-    const e = (d3 as any).event
+  function dragged(e: any, d: NodeDatum) {
     if (cb.isGhost?.(d, e)) return
     cb.dragged?.(d, e)
     d.fx = e.x
     d.fy = e.y
   }
 
-  function dragended(d: NodeDatum) {
-    const e = (d3 as any).event
+  function dragended(e: any, d: NodeDatum) {
     if (!e.active) cb.dragended?.(d, e)
     d.fx = null
     d.fy = null

@@ -123,20 +123,6 @@ class RecipesInfo {
     if(this.main && this.mainHolder) return [[this.main, this.mainHolder, true]]
     return [...this.list.entries()].map(([r, lh],i)=>[r, lh, i===this.list.size-1])
   }
-  
-  // iterable() : [Recipe, boolean][] {
-  //   return this.main 
-  //     ? [[this.main, true]] 
-  //     : [...this.list.keys()].map((r,i)=>[r, i===this.list.size-1])
-  // }
-
-  // getLinks(r: Recipe, holderFields: (keyof RecipeHolder)[]): [RecipeLink, (keyof RecipeHolder)][] {
-  //   let holder = this.list.get(r) as LinksHolder
-  //   let arrs = holderFields.map(field => 
-  //     holder[field].map(l=>([l, field] as [RecipeLink, (keyof RecipeHolder)]))
-  //   )
-  //   return _.flatten(arrs)
-  // }
 }
 
 export class Constituent extends Uncraftable {
@@ -178,6 +164,16 @@ export class Constituent extends Uncraftable {
       }
     }
     return false
+  }
+
+  iterableRecipes(toOutput: boolean) {
+    if(toOutput) {
+      return this.outsList.map(c=>
+        [c.cuent.recipes!.main, c.cuent.recipes!.mainHolder, false] as [Recipe, LinksHolder, boolean]
+      )
+    } else {
+      return this.recipes.iterable()
+    }
   }
 
   finishCalc() {
@@ -290,20 +286,19 @@ export class Constituent extends Uncraftable {
       }
       refs.cuents.add(this)
 
-      //TODO: Pick recipes for 'outputs' list name
-      for(const [recipe, linksHolder, isLast] of this.recipes.iterable()) {
-        this.noAlternatives ||= isLast
+      for (const listName of listNameArg) {
+        for(const [recipe, linksHolder, isLast] of this.iterableRecipes(listName === 'outputs')) {
+          this.noAlternatives ||= isLast
 
-        if(!refs.blocked.has(recipe)) {
+          if(refs.blocked.has(recipe)) continue
           refs.recipes.add(recipe)
           refs.blocked.add(recipe)
 
-          for (const listName of listNameArg) {
             for (const link of linksHolder[listName]) {
-              link.from.safeDive(listNameArg, callbacks, deph-1, refs, hash)
+              const linkCuetn = listName === 'outputs' ? link.to : link.from
+              linkCuetn.safeDive(listNameArg, callbacks, deph-1, refs, hash)
               callbacks.afterDive?.(this, link, deph, linksHolder, listName)
             }
-          }
 
           refs.recipes.delete(recipe)
           refs.blocked.delete(recipe)

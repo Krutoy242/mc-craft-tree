@@ -77,11 +77,11 @@ export class ConstituentTree {
   }
   
 
-  public  makePileFrom(id: string) { return this.makePile(id, true) }
-  public  makePileTo  (id: string) { return this.makePile(id, false) }
-  private makePile(arg: Constituent, toOutputs: boolean): GraphPile
-  private makePile(arg: string, toOutputs: boolean): GraphPile
-  private makePile(arg: Constituent | string, toOutputs: boolean): GraphPile {
+  public makePileFrom(id: string) { return this.makePile(id, true) }
+  public makePileTo  (id: string) { return this.makePile(id, false) }
+  public makePile(arg: Constituent, toOutputs: boolean): GraphPile
+  public makePile(arg: string, toOutputs: boolean): GraphPile
+  public makePile(arg: Constituent | string, toOutputs: boolean): GraphPile {
     let c: Constituent | undefined
     if(typeof arg === 'string') c = this.getById(arg)
     else c = arg

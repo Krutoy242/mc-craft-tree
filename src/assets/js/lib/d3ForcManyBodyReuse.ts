@@ -12,4 +12,4 @@ function forceUpdate() {
   }
 }
 
-export default d3.forceManyBodyReuse().update(forceUpdate)
+export default (d3 as any).forceManyBodyReuse().update(forceUpdate)

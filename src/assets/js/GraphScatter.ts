@@ -27,14 +27,14 @@ export function makeScatter(
   
   const selectors = makeGraph(pile, svg, {
     zoom(e){
-      const newScale = 1 / (d3 as any).event.transform.k
+      const newScale = 1 / e.transform.k
       if (globalScale !== newScale) {
         globalScale = newScale
       }
     },
-    isGhost(d,e) { return (d as NodeDatum).isGhost },
+    isGhost(d,e) { return d.isGhost },
     dragended(d,e) { 
-      (d as NodeDatum).safeDive(['outputs'], {
+      d.safeDive(['outputs'], {
         afterDive: (c, link) => {
           link.from.recalculateField('cost')
           updateNodeX(link.from as NodeDatum)
@@ -44,9 +44,8 @@ export function makeScatter(
     dragged(d,e) {
       d.x = e.x
       d.y = e.y
-      const c = d as NodeDatum
-      c.complexity = c.cost = setSX(d.x)
-      c.d3node.attr('transform', `translate(${d.x},${d.y})scale(${globalScale})`)
+      d.complexity = d.cost = setSX(d.x)
+      d.d3node.attr('transform', `translate(${d.x},${d.y})scale(${globalScale})`)
     },
   })
 

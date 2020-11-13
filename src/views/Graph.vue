@@ -20,6 +20,7 @@
 import { initGraph } from '../assets/js/graph.ts'
 import { globalTree } from '../assets/js/ConstituentTree.ts'
 import { makeGraphTree } from '../assets/js/GraphSimulation.ts'
+import * as d3 from 'd3'
 
 export default {
   name: 'Graph',
@@ -38,11 +39,10 @@ export default {
   methods: {
     updateGraph(toQuery) {
       if (typeof this.pile == 'object') {
-        initGraph(this, (d, isRightClick) => this.$router.push({ path: 'graph', query: { q: d.id, outputs: isRightClick } }).catch(_err => {}))
+        initGraph(this, (d, isRightClick) => this.$router.push({ path: 'graph', query: { id: d.id, isRightClick } }).catch(_err => {}))
         
-        makeGraphTree(d3.select('#viz'), this)
-
-        // makeGraph(this.pile, this, toQuery || this.$route.query, this.isScatter)
+        const q = toQuery ?? this.$route.query
+        makeGraphTree(d3.select('#viz'), this, {id:q.id??'storagedrawers:upgrade_creative:1', isRightClick: q.isRightClick ?? false})
       }
     }
   },
