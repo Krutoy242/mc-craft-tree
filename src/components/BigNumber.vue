@@ -6,7 +6,7 @@
     style="font-size: medium;"
     :is="bordered ? 'v-card' : 'div'"
   >
-    <v-row no-gutters style="flex-wrap: nowrap;">
+    <v-row no-gutters style="flex-wrap: nowrap;" :style="highlited ? 'background-color: rgba(27, 94, 32, 0.1);' : ''">
       <v-col 
         :class='"px-1" + compClass'
         :data-text="whole"
@@ -17,7 +17,8 @@
       <!-- <span class="spotlight"></span>  -->
       <v-col 
         v-if="!short"
-        class="flex-grow-0 flex-shrink-0 brown--text text--darken-2 pr-1"
+        class="flex-grow-0 flex-shrink-0 brown--text pr-1"
+        :class="residueIsZero ? 'text--darken-3' : ''"
       >
         {{ residue }}
       </v-col>
@@ -64,14 +65,9 @@ const tierClasses = [
 export default {
   props: {
     number: {},
-    bordered: {
-      type: Boolean,
-      default: false
-    },
-    short: {
-      type: Boolean,
-      default: false
-    },
+    bordered:  { type: Boolean, default: false },
+    highlited: { type: Boolean, default: false },
+    short:     { type: Boolean, default: false },
   },
   computed: {
     compNumber() {
@@ -97,6 +93,9 @@ export default {
     whole(){
       const num = Math.floor(this.number)
       return numeral(num).format('0,0')
+    },
+    residueIsZero(){
+      return this.number - Math.floor(this.number) === 0
     },
     residue(){
       const num = this.number - Math.floor(this.number)

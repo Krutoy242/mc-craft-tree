@@ -44,9 +44,9 @@
       </template> -->
 
       <template #item.display="{ item }"><tree-entry :node="item" class="pa-2" /></template>
-      <template #item.complexity="{ item }"><complexity :number="item.complexity" /></template>
+      <template #item.complexity="{ item }"><big-number :number="item.complexity" bordered/></template>
       <template #item.usability="{ item }"><big-number :number="item.usability"/></template>
-      <template #item.cost="{ item }"><big-number :number="item.cost"/></template>
+      <template #item.cost="{ item }"><big-number :number="item.cost" :highlited='item.isNatural'/></template>
       <template #item.processing="{ item }"><big-number :number="item.processing"/></template>
       
       <template #item.popularity="{ item }">

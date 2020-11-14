@@ -93,7 +93,8 @@ export class ConstituentTree {
     } else {
       pile = new GraphPile()
 
-      c.calculate()
+      // c.calculate()
+      c.calc()
       c.safeDive(toOutputs ? ['outputs'] : ['catalysts', 'inputs'], {
         once(c){
           pile.merge(c)

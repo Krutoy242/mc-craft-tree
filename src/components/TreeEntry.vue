@@ -18,7 +18,7 @@
                 :value="amount>1"
                 :content="amount"
               >
-                <v-badge dot color="green" :value="node.inputsAmount == 0">
+                <v-badge dot color="yellow" :value="node.recipes.isLooped">
                   <svg
                     :viewBox="node.viewBox"
                     :width="size + 'px'"
