@@ -1,7 +1,7 @@
 export const listUU: Record<string, number> = {
 'placeholder:Ticks'                              : 0.1,     // [placeholder:Ticks]
 'fluid:water'                                    : 0.001,   // Water
-'placeholder:Mana'                               : 0.4,     // [placeholder:Mana]
+'placeholder:Mana'                               : 0.04,    // [placeholder:Mana]
 'fluid:oxygen'                                   : 0.005,   // Oxygen
 'placeholder:RF'                                 : 1,       // [placeholder:RF]
 'fluid:blood'                                    : 0.6,     // Blood
@@ -9,7 +9,7 @@ export const listUU: Record<string, number> = {
 'minecraft:dirt'                                 : 2,       // Dirt
 'minecraft:snowball'                             : 2,       // Snowball
 'fluid:essence'                                  : 1.5,     // Essence
-'fluid:lifeessence'                              : 2,       // Life Essence
+'fluid:lifeessence'                              : 0.02,     // Life Essence
 'minecraft:stone:1'                              : 3,       // Granite
 'minecraft:stone:3'                              : 3,       // Diorite
 'minecraft:stone:5'                              : 3,       // Dolomite

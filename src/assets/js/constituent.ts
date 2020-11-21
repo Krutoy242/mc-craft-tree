@@ -1,7 +1,7 @@
 import { ConstituentVisible, CuentArgs } from './ConstituentBase';
 import { LinksHolder, Recipe, RecipeHolder } from './recipes';
 import { RecipeLink } from './RecipeLink';
-import { UniqueKeys } from './utils';
+import { SetEx, UniqueKeys } from './utils';
 import { listUU } from './listUU';
 import * as _ from 'lodash';
 import { random } from 'lodash';
@@ -210,98 +210,6 @@ export class Constituent extends ConstituentVisible {
     return this.cost + this.processing / (factor + Math.sqrt(this.usability || 1))
   }
 
-
-  // Calculate complexity and other values after all links are created
-  calculate() {
-
-    this.safeDive(['catalysts', 'inputs'], {
-      onSelf: function(c) {
-        if (c.calculated) return true
-        // c.init()
-        return false
-      },
-      afterDive: function(c, link, deph, lh, listName) {
-        if(listName == 'catalysts') {
-          lh.addProcessing(link.from.complexity)
-        } else {
-          lh.addCost(link.from.cost)
-        }
-      },
-      result: function(c) {
-        if(!c.calculated) {
-          if(!c.recipes.pickMain()) {
-            c.spawnsNaturally()
-          }
-          c.finishCalc()
-        }
-      },
-    })
-
-    return this
-  }
-
-  // Recursively iterate through all items in list
-  // usually "inputs" or "outputs"
-  safeDive(
-    listNameArg: (keyof RecipeHolder)[], 
-    callbacks: DiveCallbacks,
-    deph = 999999999, 
-    refs = {
-      recipes:new Set<Recipe>(), 
-      cuents:new Set<Constituent>(), 
-      blocked:new Set<Recipe>()
-    },
-    hash = Math.random()
-  ) {
-    if (!callbacks.onSelf?.(this) && deph>0 && this.haveRecipes) {
-      if(this.divehash !== hash) {
-        this.divehash = hash
-        callbacks.once?.(this)
-      } else if (callbacks.once) {
-        return
-      }
-
-      if(refs.cuents.has(this)) {
-        const setList = [...refs.recipes]
-        let i = setList.length
-        let haveAlts = false
-        while (i--) {
-          let rec = setList[i]
-          haveAlts = haveAlts || rec.haveAlternatives()
-          if(rec.hasOutput(this)) break
-          if(haveAlts) {
-            refs.blocked.delete(rec)
-          }
-        }
-      }
-      refs.cuents.add(this)
-
-      for (const listName of listNameArg) {
-        for(const [recipe, linksHolder, isLast] of this.iterableRecipes(listName === 'outputs')) {
-          this.noAlternatives ||= isLast
-
-          if(refs.blocked.has(recipe)) continue
-          refs.recipes.add(recipe)
-          refs.blocked.add(recipe)
-
-            for (const link of linksHolder[listName]) {
-              const linkCuetn = listName === 'outputs' ? link.to : link.from
-              linkCuetn.safeDive(listNameArg, callbacks, deph-1, refs, hash)
-              callbacks.afterDive?.(this, link, deph, linksHolder, listName)
-            }
-
-          refs.recipes.delete(recipe)
-          refs.blocked.delete(recipe)
-        }
-      }
-
-      refs.cuents.delete(this)
-    }
-
-    return callbacks.result?.(this)
-  }
-
-
   recalculateField(field: 'cost'|'usability') {
     this[field] = 0
     this.calculated = false
@@ -312,8 +220,8 @@ export class Constituent extends ConstituentVisible {
     return new ConstituentStack(this, amount)
   }
 
-  calc() {
-    this.dive('requirments', (c, deph) => {
+  calculate() {
+    this.dive('requirments', c => {
       if(c.calculated) return
       for(const lh of c.recipes.list.values()) {
         for(const l of lh.catalysts) lh.addProcessing(l.from.complexity)
@@ -326,26 +234,59 @@ export class Constituent extends ConstituentVisible {
 
   dive(
     way: Ways, 
-    callback:(c: Constituent, deph: number)=>void,
+    callback: (c: Constituent, deph: number)=>void,
     deph = 999999999,
     refs = new Map<Constituent, number>(),
-    stack= [] as Constituent[]
+    stack= [] as Constituent[],
+    once = new Set<Constituent>(),
   ): void {
     if(deph <= 0) return
-    let p = stack.length
-    refs.set(this, p)
+    let base = stack.length
+    let p = base
+    refs.set(this, base)
 
     stack.push(...this.recipes.ways[way])
     while (stack.length > p) {
-      let pop = stack.pop() as Constituent
+      let pop = stack[p]
       const popP = refs.get(pop)
-      if(popP==null) pop.dive(way, callback, deph - 1, refs, stack)
-      else{ 
-        if(stack.length<popP) callback(pop, deph)
-        else p = Math.min(p, popP)
+      if(popP==null) {
+        pop.dive(way, callback, deph - 1, refs, stack, once)
+      }else{
+        if(p<popP) {
+          if(!once.has(pop)) {
+            callback(pop, deph)
+            once.add(pop)
+          }
+        } else {
+          base = Math.min(base, popP)
+        }
       }
     }
     callback(this, deph)
+    once.add(this)
+  }
+
+  dive_(
+    way: Ways, 
+    callback: (c: Constituent, deph: number)=>void,
+    terminator?: (c: Constituent)=>boolean,
+    deph = 999999999,
+  ): void {
+    const refs = new SetEx<Constituent>()
+    const stack = [] as Constituent[]
+    let p = 0
+    let curr:Constituent = this
+
+    while(curr) {
+      if(!terminator?.(curr)) {
+        if(refs.merge(curr.recipes.ways[way], c=>stack.push(c))) {
+          p = stack.length
+        } else {
+          callback(curr, deph)
+        }
+      }
+      curr = stack[--p]
+    }
   }
 }
 

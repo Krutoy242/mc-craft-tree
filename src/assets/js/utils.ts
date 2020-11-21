@@ -86,6 +86,20 @@ export class UniqueKeys<T,U> {
   
 }
 
+export class SetEx<T> extends Set<T> {
+  merge(set: Set<T>, cb?: (t:T)=>void) {
+    let somethingAdded = false
+    for (let t of set) {
+      if(!this.has(t)) {
+        this.add(t)
+        cb?.(t)
+        somethingAdded = true
+      }
+    }
+    return somethingAdded
+  }
+}
+
 // exports.UniqueKeys = UniqueKeys
 // exports.NumLimits = NumLimits
 // exports.cleanupNbt = cleanupNbt

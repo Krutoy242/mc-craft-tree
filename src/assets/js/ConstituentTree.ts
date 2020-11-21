@@ -31,17 +31,20 @@ export class ConstituentTree {
   private _wholePile?: GraphPile
   
   getWholePile(): GraphPile {
-    if(!this._wholePile) {
-      const pile = new GraphPile()
+    return this._wholePile ?? (this._wholePile = this.makeFilteredPile())
+  }
 
-      this.forEach(c=>{
+  makeFilteredPile(filter?: (c:Constituent)=>boolean): GraphPile {
+    const pile = new GraphPile()
+
+    this.forEach(c=>{
+      if(!filter || filter(c)) {
         c.calculate()
         pile.merge(c)
-      })
-      
-      this._wholePile = pile
-    }
-    return this._wholePile
+      }
+    })
+
+    return pile
   }
 
   private get(base: CuentBase): Constituent|undefined {
@@ -93,31 +96,14 @@ export class ConstituentTree {
     } else {
       pile = new GraphPile()
 
-      // c.calculate()
-      c.calc()
-      c.safeDive(toOutputs ? ['outputs'] : ['catalysts', 'inputs'], {
-        once(c){
-          pile.merge(c)
-        }
-      })
-
+      c.calculate()
+      c.dive(toOutputs ? 'outputs' : 'requirments', 
+        (c)=>pile.merge(c)
+      )
     }
 
     console.log(`tree ${toOutputs?'from':'to'} ${c?.id}:>> `, this.tree)
     return pile.sort()
-  }
-
-  makeFilteredPile(filter: (c:Constituent)=>boolean): GraphPile {
-    const pile = new GraphPile()
-
-    this.forEach(c=>{
-      if(filter(c)) {
-        c.calculate()
-        pile.merge(c)
-      }
-    })
-
-    return pile
   }
 }
 

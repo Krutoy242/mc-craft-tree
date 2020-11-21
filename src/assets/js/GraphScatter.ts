@@ -34,11 +34,10 @@ export function makeScatter(
     },
     isGhost(d,e) { return d.isGhost },
     dragended(d,e) { 
-      d.safeDive(['outputs'], {
-        afterDive: (c, link) => {
-          link.from.recalculateField('cost')
-          updateNodeX(link.from as NodeDatum)
-        }
+      d.dive('outputs', (c)=>{
+        // TODO: Handle drag
+        // link.from.recalculateField('cost')
+        // updateNodeX(link.from as NodeDatum)
       })
     },
     dragged(d,e) {
