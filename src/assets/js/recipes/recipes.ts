@@ -1,9 +1,10 @@
-import { Constituent, ConstituentStack } from "./Constituent"
-import { CuentBase, CuentArgs, RawAdditionalsStore, RawCollection } from "./ConstituentBase"
-import { globalTree } from "./ConstituentTree"
-import { JEC_RootObject, JEC_Ingredient, JEC_Recipe } from "./JEC_Types"
+import { Constituent } from '../cuents/Constituent'
+import { ConstituentStack } from "../cuents/ConstituentStack"
+import { CuentBase, CuentArgs, RawAdditionalsStore, RawCollection } from "../cuents/ConstituentBase"
+import { globalTree } from "../cuents/ConstituentTree"
+import { JEC_RootObject, JEC_Ingredient, JEC_Recipe } from "../JEC_Types"
 import { RecipeLink } from './RecipeLink'
-import { cleanupNbt, NumLimits, objToString } from './utils'
+import { cleanupNbt, NumLimits, objToString } from '../utils'
 
 
 function amount_jec(raw: JEC_Ingredient) {
@@ -111,7 +112,10 @@ export function mergeJECGroups(jec_groups: JEC_RootObject) {
   })
 }
 
-export function mergeDefaultAdditionals(additionals: RawAdditionalsStore) {
+export function mergeDefaultAdditionals(
+  additionals: RawAdditionalsStore,
+  progressCb?:(current:number, total:number)=>void
+) {
 
   const ids_arr = Object.keys(additionals)
   function keysToArr(collection: RawCollection) {
@@ -121,26 +125,26 @@ export function mergeDefaultAdditionals(additionals: RawAdditionalsStore) {
     })
   }
 
+  const chunkSize = ids_arr.length/300
   for (let i = 0; i < ids_arr.length; i++) {
+    if(i%chunkSize==0) progressCb?.(i, ids_arr.length)
+
     const keyOut = ids_arr[i]
     const ads = additionals[keyOut]
-    
-    if(ads.recipes) {
-      const mainCuent = globalTree.pushBase(fromId(keyOut))
+    if(!ads.recipes) continue
 
-      for (let j = 0; j < ads.recipes.length; j++) {
-        const adsRecipe = ads.recipes[j]
+    const mainCuent = globalTree.pushBase(fromId(keyOut))
 
-        let outputStacks = (typeof adsRecipe.out === 'object') 
-          ? keysToArr(adsRecipe.out)
-          : [new ConstituentStack(mainCuent, adsRecipe.out || 1)]
+    for (const adsRecipe of ads.recipes) {
+      let outputStacks = (typeof adsRecipe.out === 'object') 
+        ? keysToArr(adsRecipe.out)
+        : [new ConstituentStack(mainCuent, adsRecipe.out || 1)]
 
-        const inputStacks = keysToArr(adsRecipe.ins)
-        const catalStacks = adsRecipe.ctl ? keysToArr(adsRecipe.ctl) : []
+      const inputStacks = keysToArr(adsRecipe.ins)
+      const catalStacks = adsRecipe.ctl ? keysToArr(adsRecipe.ctl) : []
 
-        const recipe = new Recipe(outputStacks, inputStacks, catalStacks)
-        appendRecipe(recipe)
-      }
+      const recipe = new Recipe(outputStacks, inputStacks, catalStacks)
+      appendRecipe(recipe)
     }
   }
 }

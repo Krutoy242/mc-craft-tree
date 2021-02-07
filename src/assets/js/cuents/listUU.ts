@@ -2,6 +2,7 @@ export const listUU: Record<string, number> = {
 'placeholder:Ticks'                              : 0.1,     // [placeholder:Ticks]
 'fluid:water'                                    : 0.001,   // Water
 'placeholder:Mana'                               : 0.04,    // [placeholder:Mana]
+'placeholder:Life Essence'                       : 0.1,    //
 'fluid:oxygen'                                   : 0.005,   // Oxygen
 'placeholder:RF'                                 : 1,       // [placeholder:RF]
 'fluid:blood'                                    : 0.6,     // Blood
@@ -268,6 +269,7 @@ export const listUU: Record<string, number> = {
 'biomesoplenty:gem:5'                            : 6000,    // Malachite
 'biomesoplenty:gem:6'                            : 6000,    // Sapphire
 'biomesoplenty:gem:7'                            : 6000,    // Amber
+'bloodmagic:component:8'                         : 5000,    // 
 'fluid:ic2uu_matter'                             : 10000,   // UU-Matter
 'minecraft:emerald'                              : 10000,   // Emerald
 'biomesoplenty:crystal_shard'                    : 13000,   // Celestial Crystal Shard

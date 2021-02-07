@@ -1,10 +1,8 @@
-import { ConstituentVisible, CuentArgs } from './ConstituentBase';
-import { LinksHolder, Recipe, RecipeHolder } from './recipes';
-import { RecipeLink } from './RecipeLink';
-import { SetEx, UniqueKeys } from './utils';
-import { listUU } from './listUU';
-import * as _ from 'lodash';
-import { random } from 'lodash';
+import { LinksHolder, Recipe, RecipeHolder } from '../recipes/recipes'
+import { ConstituentVisible, CuentArgs } from './ConstituentBase'
+import { ConstituentStack } from './ConstituentStack'
+import { listUU } from './listUU'
+import { RecipesInfo } from './RecipesInfo'
 
 const CRAFTING_TABLE_COST = 50.0
 
@@ -19,90 +17,6 @@ function processingCostFromInputAmount(x: number) {
 let logAmount = 0
 function log(...args: any[]) { if(logAmount++ < 1000) console.log(...args)}
 
-
-interface DiveCallbacks {
-  onSelf?: (c:Constituent)=>boolean
-  afterDive?: (c: Constituent, link: RecipeLink, deph: number, lh: LinksHolder, listName: (keyof RecipeHolder))=>void
-  result?: (c: Constituent)=>void
-  once?: (c: Constituent)=>void
-}
-
-class RecipesInfo {
-  main       ?: Recipe
-  mainHolder ?: LinksHolder
-  private catalystsKeys = new UniqueKeys<string, Constituent>()
-  private recipesKeys   = new UniqueKeys<string, Recipe>()
-  list                  = new Map<Recipe, LinksHolder>()
-  ways = {
-    requirments: new Set<Constituent>(),
-    inputs     : new Set<Constituent>(),
-    outputs    : new Set<Constituent>(),
-    catalysts  : new Set<Constituent>(),
-  }
-  
-  // iterable: Recipe[] = []
-  // iterableLinks: LinksHolder[] = []
-  isLooped = false
-
-  mainInputLinks(): RecipeLink[] {
-    return this.mainHolder?.inputs ?? []
-  }
-
-  mainCatalistLinks(): RecipeLink[] {
-    return this.mainHolder?.catalysts ?? []
-  }
-
-  catalystsChain() {return this.catalystsKeys.values()}
-  recipesChain() {return this.recipesKeys.values()}
-
-  pickMain(): boolean {
-    const typles = [...this.list].filter(([,lh]) => lh.complexity > 0)
-    if(typles.length) {
-      [[this.main, this.mainHolder]] = typles.sort(([,a],[,b]) => 
-        a.complexity - b.complexity
-      )
-      //************************
-      this.recipesKeys.mergeKey(this.main.id, this.main)
-
-      for (const link of this.mainHolder.catalysts) {
-        this.catalystsKeys.mergeKey(link.from.id, link.from)
-      }
-
-      for (const link of this.mainHolder.inputs) {       
-        this.catalystsKeys.mergeChain(link.from.recipes.catalystsKeys)
-        this.recipesKeys.mergeChain(link.from.recipes.recipesKeys)
-      }
-      //************************
-      return true
-    }
-    if(this.list.size > 0) this.isLooped = true
-    return false
-  }
-
-  pushIfUnique(recipe: Recipe, linksHolder: LinksHolder): boolean {
-    if([...this.list.keys()].some(r=>Recipe.match(recipe, r))) return false
-
-    // this.iterable.push(recipe)
-    // this.iterableLinks.push(linksHolder)
-    this.list.set(recipe, linksHolder)
-    for(const way of ['inputs', 'outputs', 'catalysts']) {
-      //@ts-ignore
-      for(const cs of recipe[way]) {
-        //@ts-ignore
-        this.ways[way].add(cs.cuent)
-        if(way === 'inputs' || way === 'catalysts')
-          this.ways.requirments.add(cs.cuent)
-      }
-    }
-    return true
-  }
-  
-  iterable() : [Recipe, LinksHolder, boolean][] {
-    if(this.isLooped) return []
-    if(this.main && this.mainHolder) return [[this.main, this.mainHolder, true]]
-    return [...this.list.entries()].map(([r, lh],i)=>[r, lh, i===this.list.size-1])
-  }
-}
 
 export class Constituent extends ConstituentVisible {
   complexity    = 0.0
@@ -142,10 +56,6 @@ export class Constituent extends ConstituentVisible {
   }
 
   get type() {return this.base.type}
-  
-  getRecipes() {
-    return [...this.recipes.list.keys()]
-  }
 
   // Should be called after all recipes added
   init(): boolean {
@@ -162,6 +72,11 @@ export class Constituent extends ConstituentVisible {
     }
     return false
   }
+  
+  getRecipes() {
+    return [...this.recipes.list.keys()]
+  }
+
 
   iterableRecipes(toOutput: boolean) {
     if(toOutput) {
@@ -213,7 +128,7 @@ export class Constituent extends ConstituentVisible {
   recalculateField(field: 'cost'|'usability') {
     this[field] = 0
     this.calculated = false
-    this.calculate()
+    this.purchase()
   }
 
   stack(amount = 1) : ConstituentStack {
@@ -221,16 +136,36 @@ export class Constituent extends ConstituentVisible {
   }
 
   calculate() {
-    this.dive('requirments', c => {
-      if(c.calculated) return
-      for(const lh of c.recipes.list.values()) {
-        for(const l of lh.catalysts) lh.addProcessing(l.from.complexity)
-        for(const l of lh.inputs)    lh.addCost(l.from.cost)
-      }
-      if(!c.recipes.pickMain()) c.spawnsNaturally()
-      c.finishCalc()
-    })
+    if(this.calculated) return false
+    for(const lh of this.recipes.list.values()) {
+      for(const l of lh.catalysts) lh.addProcessing(l.from.complexity)
+      for(const l of lh.inputs)    lh.addCost(l.from.cost)
+    }
+    if(!this.recipes.pickMain()) this.spawnsNaturally()
+    this.finishCalc()
+    return true
   }
+
+  purchase(callback?: (c: Constituent)=>void) {
+    const stack  = [...this.recipes.ways['requirments']]
+    const hashed = new Set<Constituent>()
+
+    const calcTop = ()=>{
+      const c = stack.pop() as Constituent
+      if(c.calculate() && callback) callback(c)
+    }
+    
+    while (stack.length > 0) {
+      const p = stack[stack.length-1]
+      if(hashed.has(p)) {calcTop(); continue}
+      hashed.add(p)
+
+      const reqs = p.recipes.ways['requirments']
+      if(reqs.size == 0) {calcTop(); continue}
+      stack.push(...reqs)
+    }
+  }
+
 
   dive(
     way: Ways, 
@@ -240,67 +175,10 @@ export class Constituent extends ConstituentVisible {
     stack= [] as Constituent[],
     once = new Set<Constituent>(),
   ): void {
-    if(deph <= 0) return
-    let base = stack.length
-    let p = base
-    refs.set(this, base)
-
-    stack.push(...this.recipes.ways[way])
-    while (stack.length > p) {
-      let pop = stack[p]
-      const popP = refs.get(pop)
-      if(popP==null) {
-        pop.dive(way, callback, deph - 1, refs, stack, once)
-      }else{
-        if(p<popP) {
-          if(!once.has(pop)) {
-            callback(pop, deph)
-            once.add(pop)
-          }
-        } else {
-          base = Math.min(base, popP)
-        }
-      }
-    }
-    callback(this, deph)
-    once.add(this)
-  }
-
-  dive_(
-    way: Ways, 
-    callback: (c: Constituent, deph: number)=>void,
-    terminator?: (c: Constituent)=>boolean,
-    deph = 999999999,
-  ): void {
-    const refs = new SetEx<Constituent>()
-    const stack = [] as Constituent[]
-    let p = 0
-    let curr:Constituent = this
-
-    while(curr) {
-      if(!terminator?.(curr)) {
-        if(refs.merge(curr.recipes.ways[way], c=>stack.push(c))) {
-          p = stack.length
-        } else {
-          callback(curr, deph)
-        }
-      }
-      curr = stack[--p]
-    }
+    return
   }
 }
 
 type Ways = keyof RecipeHolder | 'requirments'
 
-export class ConstituentStack {
-  static sort = (a:ConstituentStack, b:ConstituentStack) => a.cuent.id.localeCompare(b.cuent.id)
 
-  constructor(
-    public cuent: Constituent, 
-    public amount: number
-  ) {
-
-  }
-
-  match(cs: ConstituentStack) { return this.amount === cs.amount && this.cuent.match(cs.cuent)}
-}

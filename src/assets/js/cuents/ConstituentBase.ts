@@ -1,4 +1,4 @@
-import { JEC_Types } from "./JEC_Types"
+import { JEC_Types } from "../JEC_Types"
 
 export interface CuentArgs {
   readonly source: string

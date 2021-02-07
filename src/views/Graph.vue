@@ -18,7 +18,6 @@
 <script>
 
 import { initGraph } from '../assets/js/graph.ts'
-import { globalTree } from '../assets/js/ConstituentTree.ts'
 import { makeGraphTree } from '../assets/js/GraphSimulation.ts'
 import * as d3 from 'd3'
 

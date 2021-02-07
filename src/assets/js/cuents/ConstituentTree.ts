@@ -1,10 +1,8 @@
 import { Constituent } from './Constituent'
-import { NumLimits } from './utils'
+import { NumLimits } from '../utils'
 import * as _ from 'lodash'
 import { CuentBase } from './ConstituentBase'
-import { GlobalPile, GraphPile } from './Types'
-
-let constituentsCount = 0
+import { GlobalPile, GraphPile } from './Pile'
 
 export class ConstituentTree {
   // source -> entry -> meta -> []
@@ -39,7 +37,7 @@ export class ConstituentTree {
 
     this.forEach(c=>{
       if(!filter || filter(c)) {
-        c.calculate()
+        c.purchase()
         pile.merge(c)
       }
     })
@@ -72,10 +70,6 @@ export class ConstituentTree {
   
     const cuent = new Constituent(base)
     this.add(cuent)
-    
-    constituentsCount++
-    if(constituentsCount % 5000 === 0)
-      console.log('constituentsCount=', constituentsCount)
     return cuent
   }
   
@@ -96,10 +90,10 @@ export class ConstituentTree {
     } else {
       pile = new GraphPile()
 
-      c.calculate()
-      c.dive(toOutputs ? 'outputs' : 'requirments', 
-        (c)=>pile.merge(c)
-      )
+      c.purchase((c)=>pile.merge(c))
+      // c.dive(toOutputs ? 'outputs' : 'requirments', 
+      //   (c)=>pile.merge(c)
+      // )
     }
 
     console.log(`tree ${toOutputs?'from':'to'} ${c?.id}:>> `, this.tree)

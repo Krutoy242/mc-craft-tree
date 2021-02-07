@@ -89,7 +89,7 @@
 <script>
 
 const _ = require('lodash')
-import { EventBus } from '../assets/js/lib/event-bus.js'
+import { EventBus } from '../assets/js/lib/event-bus.ts'
 
 function emit(data) {
   EventBus.$emit('show-recipes-dialog', data)

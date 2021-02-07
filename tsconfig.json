@@ -4,6 +4,7 @@
     "strict": true,
     "module": "es2015",
     "moduleResolution": "node",
-    "allowUmdGlobalAccess": true
+    "allowUmdGlobalAccess": true,
+    "resolveJsonModule": true
   }
 }

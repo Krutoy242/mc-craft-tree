@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { globalTree } from "./ConstituentTree";
+import { globalTree } from "./cuents/ConstituentTree";
 import { AnySelection, LinkDatum, makeGraph, NodeDatum } from "./graph";
 
 let simulation: d3.Simulation<NodeDatum, LinkDatum>

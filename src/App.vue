@@ -42,7 +42,7 @@
           </v-badge>
         </template>
 
-        <debug-view :debugInfo="pile.info"/>
+        <debug-view :debugInfo="pile ? pile.info : null"/>
 
       </v-dialog>
 
@@ -76,7 +76,7 @@
 
     <v-system-bar>
       Unique Items: {{ uniqueItems }}
-      Recipes Registered: {{ recipesStore.count }}
+      Recipes Registered: {{ recipesStoreCount }}
       <v-spacer></v-spacer>
       <!-- <v-btn class="mx-1" x-small color="info" @click="isMoreInfo=!isMoreInfo">Show more info</v-btn> -->
       <v-spacer></v-spacer>
@@ -85,78 +85,85 @@
     </v-system-bar>
     <!-- </v-footer> -->
 
-    <!-- <v-row justify="center"> -->
-      <v-dialog 
-        v-model="showRecipesDialog"  
-        width="auto " 
-        :fullscreen="$vuetify.breakpoint.xsOnly"
-      >
-        <recipes 
-          :recipeInfoList="recipeInfoList"
-          style="overflow-x: hidden;"
-        />
-      </v-dialog>
-    <!-- </v-row> -->
+    <!-- OVERLAYS -->
+    <v-dialog 
+      v-model="showRecipesDialog"  
+      width="auto " 
+      :fullscreen="$vuetify.breakpoint.xsOnly"
+    >
+      <recipes 
+        :recipeInfoList="recipeInfoList"
+        style="overflow-x: hidden;"
+      />
+    </v-dialog>
+
+    <v-overlay :value="showLoadOverlay">
+      <div style="min-height: 4px; width: 400px;">
+        {{ progressText }}
+        <v-progress-linear
+          v-model="progressValue"
+          :indeterminate="progressIndeterminate"
+          :active="true"
+          :query="false"
+        ></v-progress-linear>
+      </div>
+    </v-overlay>
   </v-app>
 </template>
 
-<script>
+<script lang='ts'>
 import Vue from 'vue'
-import { globalTree } from './assets/js/ConstituentTree.ts'
-import { ConstituentAdditionals } from './assets/js/ConstituentBase.ts'
-import { recipesStore, mergeJECGroups, mergeDefaultAdditionals } from './assets/js/recipes.ts'
+import { globalTree } from './assets/js/cuents/ConstituentTree'
+import { recipesStore, Recipe } from './assets/js/recipes/recipes'
 
-import default_additionals from './assets/default_additionals.json'
-import { EventBus } from './assets/js/lib/event-bus.js'
-// import default_jecGroups from './assets/jec_groups.json'
+import { EventBus } from './assets/js/lib/event-bus'
+import { GlobalPile } from './assets/js/cuents/Pile'
+import { gatherData } from './assets/js/gatherer'
 
+export default Vue.extend({
+  data: () => (new class {
+    drawer = null
+    isMoreInfo = false
+    pile?: GlobalPile = {} as GlobalPile
 
-export default {
-  data: () => ({
-    drawer: null,
-    isMoreInfo: false,
-    pile: Object,
-    recipesStore:  Object,
+    recipeInfoList?: Recipe[] = undefined
+    showRecipesDialog = false
+    recipesStoreCount = 0
 
-    recipeInfoList: Object,
-    showRecipesDialog: false,
+    // Progress bar
+    progressText = "Loading..."
+    showLoadOverlay = true
+    progressIndeterminate = true
+    progressValue = 0
   }),
   computed: {
-    listLoops() {return this.pile?.info?.listLoops ?? new Set()},
-    noIcons() {return this.pile?.info?.noIcon ?? []},
+    listLoops() {return this.pile?.listLoops ?? new Set()},
+    noIcons() {return this.pile?.noIcon ?? []},
     uniqueItems() {return this.pile?.list?.length},
   },
 
   created() {
-    this.$vuetify.theme.dark = true
+    (this as any).$vuetify.theme.dark = true
   },
 
   mounted() {
-    // Listen for the i-got-clicked event and its payload.
     EventBus.$off('show-recipes-dialog')
-    EventBus.$on('show-recipes-dialog', recipeInfoList => {
+    EventBus.$on('show-recipes-dialog', (recipeInfoList: Recipe[]) => {
       this.recipeInfoList = recipeInfoList
       this.showRecipesDialog = true
     })
 
-    ConstituentAdditionals.setAdditionals(default_additionals)
-    // let jec_groups = parseJECgroups(default_jecGroups, default_additionals)
-    // let jec_groups = parseJECgroups(require('./assets/jec_groups.json'), default_additionals)
-    let jec_groups = require('./assets/jec_groups.json')
-    mergeDefaultAdditionals(default_additionals)
-    mergeJECGroups(jec_groups)
+    setTimeout(() => {
+      gatherData()
+      setTimeout(()=>{
+        this.showLoadOverlay = false
 
-    const pile = globalTree.makePileTo('storagedrawers:upgrade_creative:1')
-    // const pile = calculate('minecraft:coal:1')
-    for (const key in pile) { Vue.nonreactive(pile[key]) }
-    console.log('pile :>> ', pile)
-    // pile.list = []
-
-    // Object.freeze(pile)
-    this.pile = pile
-
-    Vue.nonreactive(recipesStore.map)
-    this.recipesStore = recipesStore
+        const pile = globalTree.makePileTo('storagedrawers:upgrade_creative:1')
+        for (const key in pile) { (Vue as any).nonreactive((pile as any)[key]) }
+        this.pile = pile as GlobalPile
+        this.recipesStoreCount = recipesStore.count
+      }, 1)
+    }, 1);
   },
-}
+})
 </script>

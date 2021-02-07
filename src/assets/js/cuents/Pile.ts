@@ -1,5 +1,5 @@
 import { Constituent } from "./Constituent"
-import { NumLimits } from "./utils"
+import { NumLimits } from "../utils"
 
 function sort_n(o: Constituent) {
   let diff = 0
@@ -27,17 +27,13 @@ export class GraphPile {
 }
 
 export class GlobalPile extends GraphPile {
-  info = {
-    cLimits: new NumLimits(),
-    uLimits: new NumLimits(),
-    listLoops: new Set<Constituent>(),
-    noIcon: [] as Constituent[]
-  }
+  listLoops = new Set<Constituent>()
+  noIcon = [] as Constituent[]
 
   merge(c: Constituent) {
     super.merge(c)
     
-    if (c.recipes.isLooped) this.info.listLoops.add(c)
-    if (c.isNoIcon) this.info.noIcon.push(c)
+    if (c.recipes.isLooped) this.listLoops.add(c)
+    if (c.isNoIcon) this.noIcon.push(c)
   }
 }

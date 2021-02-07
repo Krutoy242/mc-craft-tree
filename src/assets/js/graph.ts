@@ -2,9 +2,9 @@ import * as d3 from 'd3'
 import { D3ZoomEvent, EnterElement, SimulationLinkDatum, SimulationNodeDatum } from 'd3'
 import * as Vue from 'vue/types/umd'
 import { CombinedVueInstance } from 'vue/types/vue'
-import { Constituent } from './Constituent.js'
-import { RecipeLink } from './RecipeLink.js'
-import { GraphPile } from './Types.js'
+import { Constituent } from './cuents/Constituent.js'
+import { RecipeLink } from './recipes/RecipeLink.js'
+import { GraphPile } from './cuents/Pile.js'
 
 export interface NodeDatum extends d3.SimulationNodeDatum, Constituent {
   x: number;
