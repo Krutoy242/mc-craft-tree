@@ -7,6 +7,12 @@ import { RecipeLink } from './RecipeLink'
 import { cleanupNbt, NumLimits, objToString } from '../utils'
 
 
+const CRAFTING_TABLE_COST = 50.0
+function processingCostFromInputAmount(x: number) {
+  x--
+  return Math.floor(Math.max(0, Math.pow(1.055, x+100) - Math.pow(1.055, 101) + x*25 + CRAFTING_TABLE_COST/2))
+}
+
 function amount_jec(raw: JEC_Ingredient) {
   return (raw.content.amount ?? 1.0) * (raw.content.percent ?? 100.0) / 100.0
 }
@@ -173,8 +179,10 @@ export class LinksHolder implements RecipeHolder  {
   outputs: RecipeLink[]
   inputs: RecipeLink[]
   catalysts: RecipeLink[]
-  private cost = 0.0
-  private processing = 0.0
+
+  cost = 0.0
+  processing = 0.0
+  complexity = 0.0
 
   constructor(a: RecipeHolder) {
     this.outputs   = a.outputs
@@ -182,13 +190,15 @@ export class LinksHolder implements RecipeHolder  {
     this.catalysts = a.catalysts
   }
 
-  public get complexity() : number {
-    return this.cost + this.processing
-  }
-
-  addCost(n:number) { this.cost += n }
-  addProcessing(n:number) { this.processing += n }
-  
+  calculate() {
+    const oldComplexity = this.complexity
+    this.cost       = 0
+    this.processing = processingCostFromInputAmount(this.inputs.length)
+    for(const l of this.inputs)    this.cost       += l.from.cost * l.weight
+    for(const l of this.catalysts) this.processing += l.from.complexity
+    this.complexity = this.cost + this.processing
+    return oldComplexity != this.complexity
+  }  
 }
 
 export class Recipe implements StacksHolder {
@@ -236,9 +246,7 @@ export class Recipe implements StacksHolder {
   }
 
   getCuentStackCost(cs: ConstituentStack) {
-    // const foundCS = this.outputs.find(cs=>cs.cuent === cuent)
-    // if(!foundCS) return
-    return this.links.get(cs)!.complexity / cs.amount
+    return this.links.get(cs)!.complexity// / cs.amount
   }
 
   static match(r1: Recipe, r2: Recipe) {
@@ -265,10 +273,6 @@ export class Recipe implements StacksHolder {
 
   hasOutput(cuent: Constituent) {
     return this.outputs.some(cs=>cs.cuent === cuent)
-  }
-
-  haveAlternatives() {
-    return this.outputs.every(o=>!o.cuent.noAlternatives)
   }
 
   display() {

@@ -2,14 +2,15 @@ export const listUU: Record<string, number> = {
 'placeholder:Ticks'                              : 0.1,     // [placeholder:Ticks]
 'fluid:water'                                    : 0.001,   // Water
 'placeholder:Mana'                               : 0.04,    // [placeholder:Mana]
-'placeholder:Life Essence'                       : 0.1,    //
 'fluid:oxygen'                                   : 0.005,   // Oxygen
+'minecraft:cobblestone'                          : 1,       //
 'placeholder:RF'                                 : 1,       // [placeholder:RF]
 'fluid:blood'                                    : 0.6,     // Blood
 'fluid:lava'                                     : 1.2,     // Lava
 'minecraft:dirt'                                 : 2,       // Dirt
 'minecraft:snowball'                             : 2,       // Snowball
 'fluid:essence'                                  : 1.5,     // Essence
+'placeholder:Life Essence'                       : 0.02,    //
 'fluid:lifeessence'                              : 0.02,     // Life Essence
 'minecraft:stone:1'                              : 3,       // Granite
 'minecraft:stone:3'                              : 3,       // Diorite
@@ -65,6 +66,7 @@ export const listUU: Record<string, number> = {
 'mysticalagriculture:zombie_essence'             : 46,      // 
 'astralsorcery:blockmarble'                      : 50,      // Marble
 'mekanism:substrate'                             : 50,      // Substrate
+'minecraft:crafting_table'                       : 50,      //
 'minecraft:double_plant'                         : 50,      // Sunflower
 'minecraft:flint'                                : 50,      // Flint
 'minecraft:iron_ingot'                           : 50,      // Iron Ingot

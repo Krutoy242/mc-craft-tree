@@ -64,6 +64,11 @@ export class UniqueKeys<T,U> {
   ids = new Map<T, U>()
   count =  0
 
+  reset() {
+    this.ids = new Map<T, U>()
+    this.count =  0
+  }
+
   mergeKey(key: T, val: U):boolean {
     if(!key || !val || this.ids.has(key)) return false
     

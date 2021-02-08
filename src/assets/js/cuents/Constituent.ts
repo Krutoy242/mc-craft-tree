@@ -1,22 +1,11 @@
-import { LinksHolder, Recipe, RecipeHolder } from '../recipes/recipes'
+import * as _ from 'lodash'
+import { RecipeHolder } from '../recipes/recipes'
 import { ConstituentVisible, CuentArgs } from './ConstituentBase'
 import { ConstituentStack } from './ConstituentStack'
 import { listUU } from './listUU'
 import { RecipesInfo } from './RecipesInfo'
 
-const CRAFTING_TABLE_COST = 50.0
-
-const maxDives = 5000000
-
-
-function processingCostFromInputAmount(x: number) {
-  x--
-  return Math.floor(Math.max(0, Math.pow(1.055, x+100) - Math.pow(1.055, 101) + x*25 + CRAFTING_TABLE_COST/2))
-}
-
-let logAmount = 0
-function log(...args: any[]) { if(logAmount++ < 1000) console.log(...args)}
-
+type Ways = keyof RecipeHolder | 'requirments'
 
 export class Constituent extends ConstituentVisible {
   complexity    = 0.0
@@ -26,10 +15,8 @@ export class Constituent extends ConstituentVisible {
   outputsAmount = 0
   processing     = 0.0
   steps          = 0
-  noAlternatives = false
   recipes = new RecipesInfo()
-  private divehash = 0
-  
+
   outsList: ConstituentStack[] = []
   popList: ConstituentStack[] = []
   inputsAmount = 0
@@ -39,146 +26,100 @@ export class Constituent extends ConstituentVisible {
 
   public get id() : string { return this.base.id }
   public get nbt() : string { return this.base.nbt }
+  public get haveRecipes() : boolean { return !!this.recipes.list.size }
+  get type() { return this.base.type }
 
   constructor(cuentArgs: CuentArgs) {
     super(cuentArgs)
+    if (this.nbt) return
 
-    this.init()
+    const predefCost = listUU[this.base.shortand]
+    if(!predefCost) return
+
+    this.isNatural = true
+    this.cost = predefCost
+    this.processing = 0.0
+    this.finishCalc()
   }
 
-  match(o: this): boolean {
-    if(this === o) return true
-    return this.base.match(o.base)
-  }
-  
-  public get haveRecipes() : boolean {
-    return !!this.recipes.list.size
-  }
-
-  get type() {return this.base.type}
-
-  // Should be called after all recipes added
-  init(): boolean {
-    // Check if item spawning naturally
-    if (!this.nbt) {
-      const predefCost = listUU[this.base.shortand]
-      if(predefCost) {
-        this.isNatural = true
-        this.cost = predefCost
-        this.processing = 0.0
-        this.finishCalc()
-        return true
-      }
-    }
-    return false
-  }
-  
-  getRecipes() {
-    return [...this.recipes.list.keys()]
-  }
-
-
-  iterableRecipes(toOutput: boolean) {
-    if(toOutput) {
-      return this.outsList.map(c=>
-        [c.cuent.recipes!.main, c.cuent.recipes!.mainHolder, false] as [Recipe, LinksHolder, boolean]
-      )
-    } else {
-      return this.recipes.iterable()
-    }
-  }
-
-  finishCalc() {
-    //************************
-    //* This block would be skipped if cuent have no recipes
-    for (const link of this.recipes.mainInputLinks()) {
-      this.inputsAmount++
-      link.from.outputsAmount++
-      link.from.outsList.push(this.stack(this.recipes.main!.outputs.find(cs=>cs.cuent===this)!.amount))
-      this.cost += link.from.cost * link.weight
-    }
-
-    for (const link of this.recipes.mainCatalistLinks()) {
-      link.from.popularity++
-      link.from.popList.push(this.stack())
-    }
-
-    for (const recipeInChain of this.recipes.recipesChain()) {
-      this.processing = processingCostFromInputAmount(recipeInChain.inputs.length)
-      this.steps++
-    }
-
-    for (const catalInChain of this.recipes.catalystsChain()) {
-      this.processing += catalInChain.complexity ?? 0
-    }
-    //************************
-
-    this.complexity = this.cost + this.processing
-    this.calculated = true
-  }
-
-  spawnsNaturally() {
-    this.cost = 50.0
-  }
-
-  getUUCost(factor: number) {
-    return this.cost + this.processing / (factor + Math.sqrt(this.usability || 1))
-  }
-
-  recalculateField(field: 'cost'|'usability') {
-    this[field] = 0
-    this.calculated = false
-    this.purchase()
-  }
-
-  stack(amount = 1) : ConstituentStack {
-    return new ConstituentStack(this, amount)
-  }
+  match(o: this) { return this === o || this.base.match(o.base) }
+  getRecipes() { return [...this.recipes.list.keys()] }
+  finishCalc() { this.complexity = this.cost + this.processing }
+  spawnsNaturally() { this.cost = 50.0 }
+  stack(amount = 1) : ConstituentStack { return new ConstituentStack(this, amount) }
+  getUUCost(factor: number) { return this.cost + this.processing / (factor + Math.sqrt(this.usability)) }
 
   calculate() {
-    if(this.calculated) return false
-    for(const lh of this.recipes.list.values()) {
-      for(const l of lh.catalysts) lh.addProcessing(l.from.complexity)
-      for(const l of lh.inputs)    lh.addCost(l.from.cost)
-    }
-    if(!this.recipes.pickMain()) this.spawnsNaturally()
+    if(this.isNatural) return true
+    if(!this.recipes.pickMain(this)) this.spawnsNaturally()
     this.finishCalc()
     return true
   }
 
   purchase(callback?: (c: Constituent)=>void) {
-    const stack  = [...this.recipes.ways['requirments']]
-    const hashed = new Set<Constituent>()
-
-    const calcTop = ()=>{
-      const c = stack.pop() as Constituent
-      if(c.calculate() && callback) callback(c)
-    }
-    
-    while (stack.length > 0) {
-      const p = stack[stack.length-1]
-      if(hashed.has(p)) {calcTop(); continue}
-      hashed.add(p)
-
-      const reqs = p.recipes.ways['requirments']
-      if(reqs.size == 0) {calcTop(); continue}
-      stack.push(...reqs)
-    }
+    const once = new Set<Constituent>()
+    this.dive('requirments', c=> {
+      c.calculate()
+      if(!once.has(c)) {
+        once.add(c)
+        callback && callback(c)
+      }
+    })
   }
-
 
   dive(
-    way: Ways, 
-    callback: (c: Constituent, deph: number)=>void,
+    way: Ways,
+    cb: (c: Constituent, deph: number)=>void,
     deph = 999999999,
-    refs = new Map<Constituent, number>(),
-    stack= [] as Constituent[],
-    once = new Set<Constituent>(),
+    block = new Map<Constituent, Set<Constituent>>(),
+    alts = new Map<Constituent, number>(),
+    route = [] as Constituent[],
   ): void {
-    return
+    if(deph < 1) return
+    if(this.id == 'minecraft:crafting_table:0') return cb(this, deph)
+    route.push(this)
+
+    let b = block.get(this) as Set<Constituent>
+    if(!b) {
+      b = new Set<Constituent>()
+      block.set(this, b)
+    }
+
+    const ways = [...this.recipes.ways[way]].filter(o=>!b.has(o))
+    alts.set(this, ways.length)
+    for (const c of ways) {
+      const altsLeft = alts.get(this) as number - 1
+      altsLeft>0 ? alts.set(this, altsLeft) : alts.delete(this)
+
+      // unblock route up to loop top
+      if(b.has(c)) {
+        const _route = _(route)
+        let from, to
+        if(
+          (from = _route.findLastIndex(o=>c===o), from>-1) &&
+          (to = _route.slice(from).findLastIndex(o=>alts.has(o)), to>-1)
+        ) {
+          //TODO: This magic number means length of loop to skip
+          // resolve long loops
+          if(to>100) {/* console.log('skipped long loop'); */continue}
+          for (let j = from+1; j < from+to-1; j++) {
+            block.get(route[j-1])?.delete(route[j])
+          }
+        }
+        continue
+      }
+      b.add(c)
+
+      if(route.length > 2000) {
+        console.log('stack overflow')
+        cb(this, deph)
+        return
+      }
+
+      c.dive(way, cb, deph-1, block, alts, route)
+    }
+
+    cb(this, deph)
+    route.pop()
   }
 }
-
-type Ways = keyof RecipeHolder | 'requirments'
-
-
