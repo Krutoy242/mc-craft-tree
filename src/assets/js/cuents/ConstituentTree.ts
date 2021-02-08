@@ -58,7 +58,7 @@ export class ConstituentTree {
   }
 
   private getById(id: string): Constituent|undefined {
-    let [s, e, m] = id.split(':') as [string, string, number]
+    const [s, e, m] = id.split(':') as [string, string, number]
     return _
       .get(this.tree, [s, e, m ?? 0])
       ?.find(n => n.id === id)

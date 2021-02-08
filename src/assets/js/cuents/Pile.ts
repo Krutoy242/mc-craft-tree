@@ -1,5 +1,5 @@
-import { Constituent } from "./Constituent"
-import { NumLimits } from "../utils"
+import { Constituent } from './Constituent'
+import { NumLimits } from '../utils'
 
 function sort_n(o: Constituent) {
   let diff = 0

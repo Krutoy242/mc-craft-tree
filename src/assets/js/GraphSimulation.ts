@@ -1,6 +1,6 @@
-import * as d3 from "d3";
-import { globalTree } from "./cuents/ConstituentTree";
-import { AnySelection, LinkDatum, makeGraph, NodeDatum } from "./graph";
+import * as d3 from 'd3'
+import { globalTree } from './cuents/ConstituentTree'
+import { AnySelection, LinkDatum, makeGraph, NodeDatum } from './graph'
 
 let simulation: d3.Simulation<NodeDatum, LinkDatum>
 type LinkStyle = (l: LinkDatum, deph: number)=>void
@@ -13,7 +13,7 @@ interface StyleCallbacks {
 function forceUpdate() {
   let next = 1
   return function (i:any, nodes:any) {
-    let curr = Math.floor(20 * Math.log(i))
+    const curr = Math.floor(20 * Math.log(i))
     if (curr !== next) {
       next = curr
       return true
@@ -31,8 +31,8 @@ export function makeGraphTree(
 ) {
 
   //  ❓❓❓ To filter or not to filter
-  let maxCuents = 2000
-  console.log('arguments :>> ', ...arguments);
+  const maxCuents = 2000
+  console.log('arguments :>> ', ...arguments)
   const pile = globalTree.makePile(query.id, query.isRightClick)
   const graphNodes = pile.list as NodeDatum[]
 
@@ -71,7 +71,7 @@ export function makeGraphTree(
   for(const c of graphNodes) {
     for(const l of c.recipes.mainHolder?.inputs ?? []) {
       (l as any).source = l.from;
-      (l as any).target = l.to;
+      (l as any).target = l.to
       graphLinks.push(l as any)
     }
   }

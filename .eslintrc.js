@@ -1,45 +1,46 @@
 module.exports = {
-  'env': {
-    'browser': true,
-    'es6': true,
-    'node': true,
+  root: true,
+  parser: '@typescript-eslint/parser',
+  env: {
+    browser: true,
+    es6: true,
+    node: true,
   },
-  'extends': [
+  extends: [
     'eslint:recommended',
-    'plugin:vue/essential'
+    'plugin:vue/recommended',
+    'plugin:@typescript-eslint/recommended',
   ],
-  'globals': {
-    'Atomics': 'readonly',
-    'SharedArrayBuffer': 'readonly',
-    'd3': 'readonly',
+  globals: {
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly',
+    d3: 'readonly',
   },
-  'parserOptions': {
-    'parser': 'babel-eslint',
-    'ecmaVersion': 2020,
-    'sourceType': 'module'
+  parserOptions: {
+    parser: 'babel-eslint',
+    ecmaVersion: 2020,
+    sourceType: 'module'
   },
-  'plugins': [
+  plugins: [
+    '@typescript-eslint',
     'vue',
-    'plugin:vue/essential',
-    '@vue/airbnb',
-    '@vue/typescript/recommended',
-
-    '@vue/prettier',
-    '@vue/prettier/@typescript-eslint'
   ],
-  'rules': {
-    'indent': [
+  rules: {
+    '@typescript-eslint/no-non-null-assertion': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    indent: [
       'error',
       2
     ],
-    'quotes': [
+    quotes: [
       'error',
       'single'
     ],
-    'semi': [
+    semi: [
       'error',
-      'never'
+      'never',
     ],
+    '@typescript-eslint/semi': ['error','never'],
     'no-unused-vars': ["error", { "argsIgnorePattern": "^_" }],
   }
 }

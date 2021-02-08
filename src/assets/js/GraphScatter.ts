@@ -1,7 +1,7 @@
-import * as d3 from "d3"
-import { Constituent } from "./cuents/Constituent"
-import { globalTree } from "./cuents/ConstituentTree"
-import { AnySelection, makeGraph, NodeDatum } from "./graph"
+import * as d3 from 'd3'
+import { Constituent } from './cuents/Constituent'
+import { globalTree } from './cuents/ConstituentTree'
+import { AnySelection, makeGraph, NodeDatum } from './graph'
 
 export function makeScatter(
   svg: AnySelection

@@ -81,7 +81,7 @@ export function makeGraph(
   // ====================================================
   // Nodes
   // ====================================================
-  let nodes = container
+  const nodes = container
     .append('g')
     .selectAll('g')
     .data(graphNodes)
@@ -120,8 +120,8 @@ export function makeGraph(
       .attr('y',      (d: NodeDatum) => - fSize(d) * 0.9)
       .attr('viewBox',(d: NodeDatum) => d.viewBox)
       .select('image')
-        .attr('xlink:href', require('@/assets/Spritesheet.png'))
-        .attr('image-rendering', 'pixelated')
+      .attr('xlink:href', require('@/assets/Spritesheet.png'))
+      .attr('image-rendering', 'pixelated')
 
     return d3Selection
   }

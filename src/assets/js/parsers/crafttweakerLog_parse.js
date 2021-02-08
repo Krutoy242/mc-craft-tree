@@ -79,7 +79,7 @@ function applyDisplayNames(crLog, setField) {
 }
 
 class IIngredient {
-  static setField;
+  static setField
 
   constructor(str) {
     this.name = str

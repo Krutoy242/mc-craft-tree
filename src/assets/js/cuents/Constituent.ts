@@ -6,7 +6,7 @@ import { RecipesInfo } from './RecipesInfo'
 
 const CRAFTING_TABLE_COST = 50.0
 
-let maxDives = 5000000
+const maxDives = 5000000
 
 
 function processingCostFromInputAmount(x: number) {

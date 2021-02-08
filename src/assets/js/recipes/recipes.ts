@@ -1,8 +1,8 @@
 import { Constituent } from '../cuents/Constituent'
-import { ConstituentStack } from "../cuents/ConstituentStack"
-import { CuentBase, CuentArgs, RawAdditionalsStore, RawCollection } from "../cuents/ConstituentBase"
-import { globalTree } from "../cuents/ConstituentTree"
-import { JEC_RootObject, JEC_Ingredient, JEC_Recipe } from "../JEC_Types"
+import { ConstituentStack } from '../cuents/ConstituentStack'
+import { CuentBase, CuentArgs, RawAdditionalsStore, RawCollection } from '../cuents/ConstituentBase'
+import { globalTree } from '../cuents/ConstituentTree'
+import { JEC_RootObject, JEC_Ingredient, JEC_Recipe } from '../JEC_Types'
 import { RecipeLink } from './RecipeLink'
 import { cleanupNbt, NumLimits, objToString } from '../utils'
 
@@ -51,9 +51,9 @@ function fromJEC(raw: JEC_Ingredient): CuentBase {
 }
 
 function fromId(id: string): CuentBase {
-  let groups = id.match(
+  const groups = id.match(
     /^(?<source>[^:{]+)(?::(?<entry>[^:{]+))?(?::(?<meta>[^:{]+))?(?<tag>\{.*\})?$/
-  )?.groups ?? {};
+  )?.groups ?? {}
 
   let args: CuentArgs
 
@@ -79,7 +79,7 @@ function fromId(id: string): CuentBase {
         entry: groups.source,
       }
     } else {
-      let [source, entry] = oreAlias.item.split(':')
+      const [source, entry] = oreAlias.item.split(':')
       args = {
         source,
         entry,
@@ -99,7 +99,7 @@ function fromId(id: string): CuentBase {
 
 export function mergeJECGroups(jec_groups: JEC_RootObject) {
   jec_groups.Default.forEach(jec_recipe => {
-    let recipeArrs = ['output', 'input', 'catalyst'] as Array<keyof JEC_Recipe>
+    const recipeArrs = ['output', 'input', 'catalyst'] as Array<keyof JEC_Recipe>
     const recipe = new Recipe(
       ...(recipeArrs.map(arrName =>
         jec_recipe[arrName].map(raw => {
@@ -120,7 +120,7 @@ export function mergeDefaultAdditionals(
   const ids_arr = Object.keys(additionals)
   function keysToArr(collection: RawCollection) {
     return Object.entries(collection).map(([k,v]) => {
-      let cuent = globalTree.pushBase(fromId(ids_arr[parseInt(k)]))
+      const cuent = globalTree.pushBase(fromId(ids_arr[parseInt(k)]))
       return new ConstituentStack(cuent, v * cuent.volume)
     })
   }
@@ -136,7 +136,7 @@ export function mergeDefaultAdditionals(
     const mainCuent = globalTree.pushBase(fromId(keyOut))
 
     for (const adsRecipe of ads.recipes) {
-      let outputStacks = (typeof adsRecipe.out === 'object') 
+      const outputStacks = (typeof adsRecipe.out === 'object') 
         ? keysToArr(adsRecipe.out)
         : [new ConstituentStack(mainCuent, adsRecipe.out || 1)]
 

@@ -1,4 +1,4 @@
-import { JEC_Types } from "../JEC_Types"
+import { JEC_Types } from '../JEC_Types'
 
 export interface CuentArgs {
   readonly source: string
@@ -58,7 +58,7 @@ interface RawRecipe {
 }
 
 export class ConstituentAdditionals {
-  static additionals: AdditionalsStore;
+  static additionals: AdditionalsStore
   static __bucket_viewBox: string
   static __null_viewBox: string
 
@@ -84,7 +84,7 @@ export class ConstituentAdditionals {
     for (const id of [base.id, base.mandatory, base.definition, base.shortand]) {
       if(this.viewBox && this.display) break
 
-      let o = ConstituentAdditionals.additionals[id] // Regular icon
+      const o = ConstituentAdditionals.additionals[id] // Regular icon
       this.viewBox = this.viewBox ?? o?.viewBox
       this.display = this.display ?? o?.display
     }

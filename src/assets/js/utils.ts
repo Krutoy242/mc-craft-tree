@@ -6,7 +6,7 @@
 export function cleanupNbt(o?: any): object|undefined {
   if (!o) return
 
-  for (let k in o) {
+  for (const k in o) {
     if (!o[k] || typeof o[k] !== 'object') {
       continue // If null or not an object, skip to the next iteration
     }
@@ -89,7 +89,7 @@ export class UniqueKeys<T,U> {
 export class SetEx<T> extends Set<T> {
   merge(set: Set<T>, cb?: (t:T)=>void) {
     let somethingAdded = false
-    for (let t of set) {
+    for (const t of set) {
       if(!this.has(t)) {
         this.add(t)
         cb?.(t)
