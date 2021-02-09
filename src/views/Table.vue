@@ -48,6 +48,7 @@
       <template #item.usability="{ item }"><big-number :number="item.usability"/></template>
       <template #item.cost="{ item }"><big-number :number="item.cost" :highlited='item.isNatural'/></template>
       <template #item.processing="{ item }"><big-number :number="item.processing"/></template>
+      <template #item.purity="{ item }"><pured-value :purity="item.purity"><big-number :number="item.purity"/></pured-value></template>
       
       <template #item.popularity="{ item }">
         <entry-grid :cuentStackArray="item.popList" @click.native="showAsCatalysts(item)">
@@ -127,6 +128,7 @@ export default {
         { align: 'center' ,text: 'Complexity', value: 'complexity', divider: true},
         { align: 'center' ,text: 'Cost', value: 'cost' },
         { align: 'center' ,text: 'Processing Cost', value: 'processing' },
+        { align: 'center' ,text: 'Purity', value: 'purity' },
         { align: 'center' ,text: 'Usability', value: 'usability' },
         { align: 'center' ,text: 'Popularity', value: 'popularity' },
         { align: 'center' ,text: 'Inputs', value: 'inputsAmount' },

@@ -16,7 +16,9 @@
           dense
         />
         <div class="text--secondary text-caption d-flex justify-center ma-0">
-          {{ recipe.getCuentStackCost(outCS) | numFormat('0.0a') }}
+          <pured-value :purity="recipe.getLinksHolderFor(outCS).purity">
+            {{ recipe.getCuentStackCost(outCS) | numFormat('0.0a') }}
+          </pured-value>
         </div>
       </div>
     </v-card-title>

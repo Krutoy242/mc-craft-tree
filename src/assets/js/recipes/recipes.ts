@@ -17,6 +17,8 @@ function amount_jec(raw: JEC_Ingredient) {
   return (raw.content.amount ?? 1.0) * (raw.content.percent ?? 100.0) / 100.0
 }
 
+function floatCut(n:number) { return Math.round((n + Number.EPSILON) * 100000) / 100000 }
+
 class RecipesStore {
   map = new Map<string, Recipe>()
   count = 0
@@ -183,6 +185,7 @@ export class LinksHolder implements RecipeHolder  {
   cost = 0.0
   processing = 0.0
   complexity = 0.0
+  purity = 0.0
 
   constructor(a: RecipeHolder) {
     this.outputs   = a.outputs
@@ -194,9 +197,21 @@ export class LinksHolder implements RecipeHolder  {
     const oldComplexity = this.complexity
     this.cost       = 0
     this.processing = processingCostFromInputAmount(this.inputs.length)
-    for(const l of this.inputs)    this.cost       += l.from.cost * l.weight
-    for(const l of this.catalysts) this.processing += l.from.complexity
-    this.complexity = this.cost + this.processing
+    let newPurity   = 0.0
+
+    for(const l of this.inputs)    {
+      this.cost       += l.from.cost * l.weight
+      this.processing += l.from.steps
+      newPurity       += l.from.purity**2
+    }
+
+    for(const l of this.catalysts) {
+      this.processing += l.from.complexity + l.from.steps
+      newPurity       += l.from.purity**2
+    }
+
+    this.purity = floatCut((newPurity / (this.inputs.length + this.catalysts.length)))
+    this.complexity = floatCut(this.cost + this.processing)
     return oldComplexity != this.complexity
   }  
 }
@@ -247,6 +262,10 @@ export class Recipe implements StacksHolder {
 
   getCuentStackCost(cs: ConstituentStack) {
     return this.links.get(cs)!.complexity// / cs.amount
+  }
+
+  getLinksHolderFor(cs: ConstituentStack) {
+    return this.links.get(cs)
   }
 
   static match(r1: Recipe, r2: Recipe) {

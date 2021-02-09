@@ -13,8 +13,9 @@ export class Constituent extends ConstituentVisible {
   usability     = 0.0
   popularity    = 0.0
   outputsAmount = 0
-  processing     = 0.0
-  steps          = 0
+  processing    = 0.0
+  steps         = 0
+  purity        = 0.0
   recipes = new RecipesInfo()
 
   outsList: ConstituentStack[] = []
@@ -39,6 +40,7 @@ export class Constituent extends ConstituentVisible {
     this.isNatural = true
     this.cost = predefCost
     this.processing = 0.0
+    this.purity = 1.0
     this.finishCalc()
   }
 
@@ -52,7 +54,7 @@ export class Constituent extends ConstituentVisible {
   calculate() {
     if(this.isNatural) return true
     if(!this.recipes.pickMain(this)) this.spawnsNaturally()
-    this.finishCalc()
+    // this.finishCalc()
     return true
   }
 

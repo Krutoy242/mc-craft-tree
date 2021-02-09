@@ -26,6 +26,7 @@
     "konva": "^7.1.4",
     "numeral": "^2.0.6",
     "ohm-js": "^15.2.1",
+    "tinygradient": "^1.1.2",
     "vue": "^2.6.12",
     "vue-cookies": "^1.7.4",
     "vue-filter-number-format": "^3.0.1",

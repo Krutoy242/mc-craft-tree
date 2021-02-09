@@ -297,14 +297,14 @@ export const listUU: Record<string, number> = {
 'nuclearcraft:californium:4'                     : 200000,  // Californium-250
 'avaritia:cosmic_meatballs'                      : 1600000, // Cosmic Meatballs
 'avaritia:ultimate_stew'                         : 1900000, // Ultimate Stew
-'mysticalagradditions:nether_star_essence'       : 15000,
-'mysticalagradditions:dragon_egg_essence'        : 15000,
-'mysticalagradditions:awakened_draconium_essence': 15000,
-'mysticalagradditions:neutronium_essence'        : 15000,
-'mysticalagriculture:iridium_essence'            : 15000,
-'mysticalagriculture:enderium_essence'           : 15000,
-'mysticalagriculture:terrasteel_essence'         : 15000,
-'mysticalagriculture:ender_amethyst_essence'     : 15000,
+// 'mysticalagradditions:nether_star_essence'       : 15000,
+// 'mysticalagradditions:dragon_egg_essence'        : 15000,
+// 'mysticalagradditions:awakened_draconium_essence': 15000,
+// 'mysticalagradditions:neutronium_essence'        : 15000,
+// 'mysticalagriculture:iridium_essence'            : 15000,
+// 'mysticalagriculture:enderium_essence'           : 15000,
+// 'mysticalagriculture:terrasteel_essence'         : 15000,
+// 'mysticalagriculture:ender_amethyst_essence'     : 15000,
 
 'animania:friesian_cheese_wheel'                 : 400,
 'animania:holstein_cheese_wheel'                 : 400,

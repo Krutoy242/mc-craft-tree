@@ -48,7 +48,7 @@ export class RecipesInfo {
       isHoldersChanged ||= lh.calculate()
     }
 
-    const typles = [...this.list].filter(([, lh]) => lh.cost > 0)
+    const typles = [...this.list].filter(([, lh]) => lh.complexity > 0)
 
     if (!typles.length) {
       if (this.list.size > 0) this.isLooped = true
@@ -56,7 +56,10 @@ export class RecipesInfo {
     }
 
     const oldMainHolder = this.mainHolder
-    ;[[this.main, this.mainHolder]] = typles.sort(([, a], [, b]) => a.complexity - b.complexity)
+    ;[[this.main, this.mainHolder]] = typles.sort(([, a], [, b]) => 
+      b.purity - a.purity || a.complexity - b.complexity
+      // Math.log(a.complexity)/(a.purity**10+0.01) - Math.log(b.complexity)/(b.purity**10 +0.01)
+    )
 
     const sameMain = oldMainHolder === this.mainHolder
     if(oldMainHolder && !sameMain) {
@@ -70,17 +73,14 @@ export class RecipesInfo {
         _.remove(link.from.outsList, o=>o.cuent===c)
       }
     }
-
-    //--------------------------------------
-    // When only complexity of recipe is changed
-    if(sameMain && !isHoldersChanged) return true
-    
-    c.cost = this.mainHolder.cost
-    c.processing = this.mainHolder.processing
-    
     //--------------------------------------
     // When main recipe is changed
     if(sameMain) return true
+
+    c.cost       = this.mainHolder.cost
+    c.processing = this.mainHolder.processing
+    c.complexity = this.mainHolder.complexity
+    c.purity     = this.mainHolder.purity
 
     this.catalystsKeys.reset()
     this.recipesKeys.reset()
