@@ -3732,7 +3732,7 @@
           "type": "itemStack",
           "content": {
             "amount": 2,
-            "item": "libvulpes:productrod",
+            "item": "immersiveengineering:material",
             "meta": 1
           }
         },
@@ -5241,7 +5241,7 @@
           "type": "itemStack",
           "content": {
             "amount": 1,
-            "item": "libvulpes:productrod",
+            "item": "immersiveengineering:material",
             "meta": 1
           }
         },
@@ -8487,7 +8487,7 @@
           "type": "itemStack",
           "content": {
             "amount": 4,
-            "item": "libvulpes:productrod",
+            "item": "immersiveengineering:material",
             "meta": 1
           }
         },
@@ -10299,7 +10299,7 @@
           "type": "itemStack",
           "content": {
             "amount": 4,
-            "item": "mysticalagriculture:iridium_essence"
+            "item": "mysticalagriculture:enderium_essence"
           }
         },
         {
@@ -53010,7 +53010,7 @@
           "type": "itemStack",
           "content": {
             "amount": 1,
-            "item": "thaumcraft:nitor_yellow"
+            "item": "thaumcraft:nitor_orange"
           }
         }
       ],
@@ -55299,8 +55299,8 @@
           "type": "itemStack",
           "content": {
             "amount": 6,
-            "item": "opencomputers:material",
-            "meta": 29
+            "item": "thermalfoundation:material",
+            "meta": 16
           }
         },
         {

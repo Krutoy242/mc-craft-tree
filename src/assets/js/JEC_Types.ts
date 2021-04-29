@@ -27,7 +27,7 @@ interface JEC_Content {
   nbt?: Nbt;
 }
 
-export type JEC_Types = 'itemStack'|'fluidStack'|'oreDict'|'placeholder'
+export type JEC_Types = 'itemStack'|'fluidStack'|'oreDict'|'placeholder'|'empty'
 
 interface Nbt {
   [key: string]: any

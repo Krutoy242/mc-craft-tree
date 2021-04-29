@@ -74,7 +74,7 @@ export class ConstituentAdditionals {
 
   viewBox?: string
   display?: string
-  isNoIcon = false
+  isNoIcon?:boolean = false
 
   constructor(base?: CuentBase) {
     if(!base) return
@@ -101,8 +101,8 @@ export type AdditionalsStore = {
   [key: string]: ConstituentAdditionals
 }
 
-interface RawAdditionals extends ConstituentAdditionals {
-  recipes: RawRecipe[]
+export interface RawAdditionals extends ConstituentAdditionals {
+  recipes?: RawRecipe[]
 }
 
 export type RawAdditionalsStore = {
