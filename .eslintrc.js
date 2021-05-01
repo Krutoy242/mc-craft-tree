@@ -1,6 +1,7 @@
 module.exports = {
     'env': {
         'browser': true,
+        node: true,
         'es6': true
     },
     'extends': [
@@ -35,7 +36,5 @@ module.exports = {
             'never'
         ],
         "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars-experimental": "error"
     }
 }

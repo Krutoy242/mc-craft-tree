@@ -1,10 +1,13 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "ES2015",
+    "module": "commonjs",
+    "lib": ["ES2020"],
     "strict": true,
-    "module": "ES2020",
-    "moduleResolution": "node",
-    "allowUmdGlobalAccess": true,
-    "resolveJsonModule": true
-  }
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "display": "Recommended"
 }
