@@ -41,12 +41,12 @@ function appendRecipe(recipe: Recipe) {
 
 function fromJEC(raw: JEC_Ingredient): CuentBase {
   type Triple = [string, string, number?]
-  const [source, entry, meta] = {
+  const [source, entry, meta] = ({
     'itemStack':  ():Triple=>[...raw.content?.item?.split(':') as [string, string], raw.content.meta??0],
     'fluidStack': ():Triple=>['fluid',       raw.content.fluid as string],
     'oreDict':    ():Triple=>['ore',         raw.content.name as string],
     'placeholder':():Triple=>['placeholder', raw.content.name as string],
-  }[raw.type]()
+  } as Record<string, ()=>Triple>)[raw.type]()
 
 
   return new CuentBase({

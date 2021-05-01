@@ -1,5 +1,6 @@
 
 import _ from 'lodash'
+import { cleanupNbt } from '../utils'
 const {sqrt, max, ceil, floor} = Math
 import { serializeNameMeta, serializeNbt } from './utils_parse'
 
@@ -20,7 +21,7 @@ export class IIngredient {
     this.update()
   }
 
-  withTag(tag: { type?: string; brewKey?: any; orb?: string; Type?: string; recipeType?: number }) {
+  withTag(tag: object) {
     if (!tag || Object.keys(tag).length === 0) return this
 
     const n = new IIngredient(this.name)

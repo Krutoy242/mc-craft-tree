@@ -1,4 +1,4 @@
-import * as _ from 'lodash'
+import _ from 'lodash'
 import { RecipeHolder } from '../recipes/recipes'
 import { ConstituentVisible, CuentArgs } from './ConstituentBase'
 import { ConstituentStack } from './ConstituentStack'

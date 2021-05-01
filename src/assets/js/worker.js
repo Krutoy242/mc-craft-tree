@@ -1,1 +1,1 @@
-require('./worker')
+// require('./worker')

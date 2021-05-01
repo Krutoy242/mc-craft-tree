@@ -32,7 +32,7 @@ export function makeGraphTree(
 
   //  ❓❓❓ To filter or not to filter
   const maxCuents = 2000
-  console.log('arguments :>> ', ...arguments)
+  console.log('arguments :>> ', svg, vue, query)
   const pile = globalTree.makePile(query.id, query.isRightClick)
   const graphNodes = pile.list as NodeDatum[]
 
@@ -156,7 +156,7 @@ class Highliter {
         this.current = [center]
       }
       else {
-        clearInterval(this.timeoutID)
+        clearInterval(this.timeoutID as any)
       }
     } else {
       this.current = [...newSet.values()]
@@ -187,7 +187,7 @@ class Highliter {
       this.stylesCallbacks.defaultLink(l)
     }
     this.all.clear()
-    clearInterval(this.timeoutID)
+    clearInterval(this.timeoutID as any)
   }
 }
 

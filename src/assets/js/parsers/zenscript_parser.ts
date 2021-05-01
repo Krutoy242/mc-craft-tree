@@ -50,7 +50,7 @@ semantics.addOperation('eval', {
   _terminal:                     function() { return this.sourceString },
 })
 
-exports.parseZenscriptLine = function(zsLine: any) {
+export function parseZenscriptLine(zsLine: string) {
   const matchResult = grammar.match(zsLine)
   if(matchResult.failed()) {
     console.error('grammar.match() failed :>> ', matchResult)
@@ -61,3 +61,7 @@ exports.parseZenscriptLine = function(zsLine: any) {
 
   return semanticResult.eval()
 }
+
+// const test = 'recipes.addShapeless("ct_shapeless915879586", <mekanism:machineblock:7>.withTag({recipeType: 3, mekData: {}}), [<mekanism:machineblock:6>.withTag({recipeType: 3, mekData: {}}), <mekanism:tierinstaller:2>]);'
+// const parsed = parseZenscriptLine(test)
+// console.log('parsed :>> ', parsed)

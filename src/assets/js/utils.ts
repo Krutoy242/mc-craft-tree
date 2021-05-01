@@ -1,8 +1,3 @@
-
-// Object.defineProperty(exports, '__esModule', {
-//   value: true
-// })
-
 export function cleanupNbt(o?: any): object|undefined {
   if (!o) return
 
@@ -18,19 +13,18 @@ export function cleanupNbt(o?: any): object|undefined {
     }
   }
 
-  if(Object.keys(o).length !== 0) return o // Return undefined if object is empty
+  if(!Object.keys(o).length) return undefined // Return undefined if object is empty
+  return o 
 }
 
 
 export function objToString(obj:any, ndeep = 1):string {
-  switch (typeof obj) {
-  case 'string':
-    return '"' + obj + '"'
-  case 'function':
-    return obj.name || obj.toString()
-  case 'object':
-    var indent = Array(ndeep).join('\t')
-    var isArray = Array.isArray(obj)
+  const t:string = typeof obj
+  if (t=== 'string')   return '"' + obj + '"'
+  if (t=== 'function') return obj.name || obj.toString()
+  if (t=== 'object') {
+    const indent = Array(ndeep).join('\t')
+    const isArray = Array.isArray(obj)
     return (
       '{['[+isArray] + Object.keys(obj)
         .map(function (key) {
@@ -40,9 +34,9 @@ export function objToString(obj:any, ndeep = 1):string {
         .join(',') + '\n' + indent + '}]'[+isArray]
     )
       .replace(/[\s\t\n]+(?=(?:[^'"]*['"][^'"]*['"])*[^'"]*$)/g, '')
-  default:
-    return obj!=null ? obj.toString() : ''
   }
+  
+  return obj!=null ? obj.toString() : ''
 }
 
 export class NumLimits {

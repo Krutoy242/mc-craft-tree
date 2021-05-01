@@ -1,4 +1,4 @@
-import { ConstituentAdditionals, RawAdditionalsStore } from './cuents/ConstituentBase'
+/* import { ConstituentAdditionals, RawAdditionalsStore } from './cuents/ConstituentBase'
 import { globalTree } from './cuents/ConstituentTree'
 import { JEC_RootObject } from './JEC_Types'
 import { mergeDefaultAdditionals, mergeJECGroups } from './recipes/recipes'
@@ -6,7 +6,7 @@ import { mergeDefaultAdditionals, mergeJECGroups } from './recipes/recipes'
 const ctx: Worker = self as any
 
 // Respond to message from parent thread
-ctx.addEventListener('message', (event) => {
+ctx.addEventListener('message', (event:any) => {
   console.log(event)
   if(event.data == 'init') init()
 })
@@ -31,3 +31,4 @@ function init() {
   
   // ctx.postMessage({finish: globalTree})
 }
+ */

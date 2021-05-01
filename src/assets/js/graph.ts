@@ -18,7 +18,7 @@ export interface LinkDatum extends d3.SimulationLinkDatum<NodeDatum>, RecipeLink
   d3node: d3.Selection<d3.EnterElement, unknown, null, undefined>
 }
 
-export type AnySelection = d3.Selection<SVGGElement, unknown, HTMLElement, unknown>
+export type AnySelection = d3.Selection<any, unknown, any, unknown>
 
 // let svg           : d3.Selection<d3.BaseType, unknown, HTMLElement, unknown>
 // let container     : AnySelection
@@ -42,12 +42,12 @@ export function makeGraph(
   cb: {
     click?: (d: NodeDatum, isRight: boolean)=>void
     zoom?: (e: D3ZoomEvent<any, any>)=>void
-    isGhost?:     (d: NodeDatum, e: MouseEvent)=>boolean
-    dragstarted?: (d: NodeDatum, e: MouseEvent)=>void
-    dragended?:   (d: NodeDatum, e: MouseEvent)=>void
-    dragged?:     (d: NodeDatum, e: MouseEvent)=>void
-    mouseover?:   (d: NodeDatum, e: MouseEvent)=>void
-    mouseout?:    (d: NodeDatum, e: MouseEvent)=>void
+    isGhost?:     (d: NodeDatum, e: any)=>boolean
+    dragstarted?: (d: NodeDatum, e: any)=>void
+    dragended?:   (d: NodeDatum, e: any)=>void
+    dragged?:     (d: NodeDatum, e: any)=>void
+    mouseover?:   (d: NodeDatum, e: any)=>void
+    mouseout?:    (d: NodeDatum, e: any)=>void
   }
 ) {
   
