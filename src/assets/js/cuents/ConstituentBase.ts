@@ -57,45 +57,67 @@ interface RawRecipe {
   ctl?: RawCollection
 }
 
+function customRender(ads:ConstituentAdditionals, base: CuentBase): [viewBox?: string, display?: string] {
+  const additionals = ConstituentAdditionals.additionals
+
+  if(base.source === 'aspect') {
+    const a = additionals[`thaumcraft:crystal_essence:0{Aspects:[{amount:1,key:"${base.entry.toLowerCase()}"}]}`]
+    return [a.viewBox, 'Aspect: ' + base.entry]
+  }
+
+  if(base.source === 'placeholder') {
+    const a = additionals['openblocks:tank:0{tank:{FluidName:"betterquesting.placeholder",Amount:16000}}']
+    return [a.viewBox, '{' + base.entry + '}']
+  }
+
+  return []
+}
+
 export class ConstituentAdditionals {
   static additionals: AdditionalsStore
-  static __bucket_viewBox: string
-  static __null_viewBox: string
 
   static setAdditionals(additionals: AdditionalsStore) {
-    ConstituentAdditionals.additionals = additionals
-
-    ConstituentAdditionals.__bucket_viewBox = additionals['minecraft:bucket:0']?.viewBox || '4000 2816'
-    ConstituentAdditionals.__null_viewBox = additionals['openblocks:dev_null:0']?.viewBox || '576 3136'
+    this.additionals = additionals
   }
 
   item?: string // Oredict alias
   meta?: number // Oredict alias
 
-  viewBox?: string
-  display?: string
-  isNoIcon?:boolean = false
+  readonly viewBox?: string
+  readonly display?: string
+  readonly isNoIcon?:boolean = false
 
   constructor(base?: CuentBase) {
     if(!base) return
 
-    if(base.shortand === 'forge:bucketfilled') this.viewBox = ConstituentAdditionals.__bucket_viewBox
 
-    for (const id of [base.id, base.mandatory, base.definition, base.shortand]) {
+    for (const id of [base.id, base.mandatory, base.definition+':0', base.shortand]) {
       if(this.viewBox && this.display) break
 
       const o = ConstituentAdditionals.additionals[id] // Regular icon
-      this.viewBox = this.viewBox ?? o?.viewBox
-      this.display = this.display ?? o?.display
+      this.viewBox ??= o?.viewBox
+      this.display ??= o?.display
     }
-    this.display ??= `[${base.shortand}]`
+
+    if(!this.viewBox || !this.display) {
+      const o = customRender(this, base)
+      this.viewBox ??= o[0]
+      this.display ??= o[1]
+    }
     
-    if(!this.viewBox) this.isNoIcon = true
-    this.viewBox ??= ConstituentAdditionals.__null_viewBox
+    if(!this.display) {
+      this.display ??= `[${base.shortand}]`
+    }
+
+    if(!this.viewBox) {
+      this.isNoIcon = true
+      this.viewBox ??= ConstituentAdditionals.additionals['openblocks:dev_null:0']?.viewBox
+    }
+
     this.viewBox += ' 32 32'
   }
-
 }
+
 
 export type AdditionalsStore = {
   [key: string]: ConstituentAdditionals

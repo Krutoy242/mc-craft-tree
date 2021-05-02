@@ -1,11 +1,11 @@
 import _ from 'lodash'
-import { RecipeHolder } from '../recipes/recipes'
+import { Ways } from '../recipes/recipes'
+import { MapOfSets } from '../utils'
 import { ConstituentVisible, CuentArgs } from './ConstituentBase'
 import { ConstituentStack } from './ConstituentStack'
 import { listUU } from './listUU'
 import { RecipesInfo } from './RecipesInfo'
 
-type Ways = keyof RecipeHolder | 'requirments'
 
 export class Constituent extends ConstituentVisible {
   complexity    = 0.0
@@ -59,6 +59,7 @@ export class Constituent extends ConstituentVisible {
   }
 
   purchase(callback?: (c: Constituent)=>void) {
+    // Compute costs of all items somehow touches purchased one
     const once = new Set<Constituent>()
     this.dive('requirments', c=> {
       c.calculate()
@@ -67,61 +68,96 @@ export class Constituent extends ConstituentVisible {
         callback && callback(c)
       }
     })
+
+    // Compute usability
+    this.order()
+  }
+
+  order (
+    count = 1,
+    antiloop = new WeakSet<Constituent>(),
+    residue = new Map<Constituent, number>(),
+  ) {
+    this.usability += count
+    if (antiloop.has(this)) return
+    antiloop.add(this)
+    
+    const main = this.recipes.main
+    if (!main) return
+    const outAmount = main.outputs.find(o=>o.cuent === this)?.amount as number
+    
+    for (const cs of main.inputs) {
+      const have = residue.get(cs.cuent) ?? 0
+      const needed = count * cs.amount / outAmount - have
+      if(needed < 0) continue
+
+      const minimum = Math.max(outAmount, needed)
+      const resid = minimum - needed
+      residue.set(cs.cuent, resid)
+
+      if(this.id==='extendedcrafting:singularity_ultimate:0') console.log(count, cs.amount, outAmount, cs.cuent.display, '=>', this.display)
+      cs.cuent.order(minimum, antiloop, residue)
+    }
   }
 
   dive(
     way: Ways,
-    cb: (c: Constituent, deph: number)=>void,
+    cb: (c: Constituent, deph: number, way:Ways)=>void,
     deph = 999999999,
-    block = new Map<Constituent, Set<Constituent>>(),
+    block = new MapOfSets<Constituent>(),
     alts = new Map<Constituent, number>(),
     route = [] as Constituent[],
   ): void {
     if(deph < 1) return
-    if(this.id == 'minecraft:crafting_table:0') return cb(this, deph)
+    if(this.id == 'minecraft:crafting_table:0') return cb(this, deph, way)
     route.push(this)
 
-    let b = block.get(this) as Set<Constituent>
-    if(!b) {
-      b = new Set<Constituent>()
-      block.set(this, b)
-    }
+    const b = block.getForSure(this)
+    const cuentsForWay = this.recipes.getCuentsForWay(way, b)
 
-    const ways = [...this.recipes.ways[way]].filter(o=>!b.has(o))
-    alts.set(this, ways.length)
-    for (const c of ways) {
+    alts.set(this, cuentsForWay.length)
+    for (const c of cuentsForWay) {
       const altsLeft = alts.get(this) as number - 1
       altsLeft>0 ? alts.set(this, altsLeft) : alts.delete(this)
 
       // unblock route up to loop top
       if(b.has(c)) {
-        const _route = _(route)
-        let from, to
-        if(
-          (from = _route.findLastIndex(o=>c===o), from>-1) &&
-          (to = _route.slice(from).findLastIndex(o=>alts.has(o)), to>-1)
-        ) {
-          //TODO: This magic number means length of loop to skip
-          // resolve long loops
-          if(to>100) {/* console.log('skipped long loop'); */continue}
-          for (let j = from+1; j < from+to-1; j++) {
-            block.get(route[j-1])?.delete(route[j])
-          }
-        }
+        unblockRouteByBlock(route, block, alts, c)
         continue
       }
       b.add(c)
 
       if(route.length > 2000) {
         console.log('stack overflow')
-        cb(this, deph)
+        cb(this, deph, way)
         return
       }
 
       c.dive(way, cb, deph-1, block, alts, route)
     }
 
-    cb(this, deph)
+    cb(this, deph, way)
     route.pop()
+  }
+}
+
+function unblockRouteByBlock(
+  route: Constituent[],
+  block: MapOfSets<Constituent>,
+  alts: Map<Constituent, number>,
+  c: Constituent
+) {
+  const _route = _(route)
+  let from:number, to:number
+  if(
+    (from = _route.findLastIndex(o=>c===o), from>-1) &&
+    (to = _route.slice(from).findLastIndex(o=>alts.has(o)), to>-1)
+  ) {
+    //TODO: This magic number means length of loop to skip
+    // resolve long loops
+    if(to>100) {/* console.log('skipped long loop'); */return}
+    for (let j = from+1; j < from+to-1; j++) {
+      block.get(route[j-1])?.delete(route[j])
+    }
   }
 }

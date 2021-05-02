@@ -6,6 +6,7 @@ import { JEC_RootObject, JEC_Ingredient, JEC_Recipe } from '../JEC_Types'
 import { RecipeLink } from './RecipeLink'
 import { cleanupNbt, NumLimits, objToString } from '../utils'
 
+export type Ways = keyof RecipeHolder | 'requirments'
 
 const CRAFTING_TABLE_COST = 50.0
 function processingCostFromInputAmount(x: number) {
@@ -213,7 +214,7 @@ export class LinksHolder implements RecipeHolder  {
     this.purity = floatCut((newPurity / (this.inputs.length + this.catalysts.length)))
     this.complexity = floatCut(this.cost + this.processing)
     return oldComplexity != this.complexity
-  }  
+  }
 }
 
 export class Recipe implements StacksHolder {

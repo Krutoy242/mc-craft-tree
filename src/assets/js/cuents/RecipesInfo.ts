@@ -1,4 +1,4 @@
-import { LinksHolder, Recipe } from '../recipes/recipes'
+import { LinksHolder, Recipe, Ways } from '../recipes/recipes'
 import { RecipeLink } from '../recipes/RecipeLink'
 import { UniqueKeys } from '../utils'
 import { Constituent } from './Constituent'
@@ -10,22 +10,19 @@ export class RecipesInfo {
   private catalystsKeys = new UniqueKeys<string, Constituent>()
   private recipesKeys = new UniqueKeys<string, Recipe>()
   list = new Map<Recipe, LinksHolder>()
-  ways = {
+  private ways: {[key in Ways]: Set<Constituent>} = {
     requirments: new Set<Constituent>(),
     inputs: new Set<Constituent>(),
     outputs: new Set<Constituent>(),
     catalysts: new Set<Constituent>(),
   }
 
+  getCuentsForWay(way:Ways, block:Set<Constituent>, onlyMain = false) {
+    return (onlyMain ? (this.main?.requirments.map(cs=>cs.cuent) ?? []) : [...this.ways[way]])
+      .filter(o=>!block.has(o))
+  }
+
   isLooped = false
-
-  mainInputLinks(): RecipeLink[] {
-    return this.mainHolder?.inputs ?? []
-  }
-
-  mainCatalistLinks(): RecipeLink[] {
-    return this.mainHolder?.catalysts ?? []
-  }
 
   pushIfUnique(recipe: Recipe, linksHolder: LinksHolder): boolean {
     if ([...this.list.keys()].some(r => Recipe.match(recipe, r)))
@@ -73,14 +70,15 @@ export class RecipesInfo {
         _.remove(link.from.outsList, o=>o.cuent===c)
       }
     }
-    //--------------------------------------
-    // When main recipe is changed
-    if(sameMain) return true
 
     c.cost       = this.mainHolder.cost
     c.processing = this.mainHolder.processing
     c.complexity = this.mainHolder.complexity
     c.purity     = this.mainHolder.purity
+
+    //--------------------------------------
+    // When main recipe is changed
+    if(sameMain) return true
 
     this.catalystsKeys.reset()
     this.recipesKeys.reset()

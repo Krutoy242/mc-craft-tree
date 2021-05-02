@@ -98,6 +98,16 @@ export class SetEx<T> extends Set<T> {
     return somethingAdded
   }
 }
+export class MapOfSets<T> extends Map<T, Set<T>> {
+  getForSure(key:T): Set<T> {
+    let b = this.get(key)
+    if(!b) {
+      b = new Set<T>()
+      this.set(key, b)
+    }
+    return b
+  }
+}
 
 // exports.UniqueKeys = UniqueKeys
 // exports.NumLimits = NumLimits
