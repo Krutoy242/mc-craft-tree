@@ -1,10 +1,12 @@
 export const listUU: Record<string, number> = {
+'placeholder:Dim 0'                              : 1.0,     //
 'placeholder:Ticks'                              : 0.1,     // [placeholder:Ticks]
 'fluid:water'                                    : 0.001,   // Water
 'placeholder:Mana'                               : 0.04,    // [placeholder:Mana]
 'fluid:oxygen'                                   : 0.005,   // Oxygen
 'minecraft:cobblestone'                          : 1,       //
 'placeholder:RF'                                 : 1,       // [placeholder:RF]
+'placeholder:Exploration'                        : 1,       //
 'fluid:blood'                                    : 0.6,     // Blood
 'fluid:lava'                                     : 1.2,     // Lava
 'minecraft:dirt'                                 : 2,       // Dirt

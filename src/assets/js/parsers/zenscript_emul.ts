@@ -4,6 +4,14 @@ import { cleanupNbt } from '../utils'
 const {sqrt, max, ceil, floor} = Math
 import { serializeNameMeta, serializeNbt } from './utils_parse'
 
+const clearableTags = [
+  /\{"RSControl":\d+,"Facing":\d+,"Energy":\d+,"SideCache":\[\d+,\d+,\d+,\d+,\d+,\d+\],"Level":0\}/
+]
+function clearableTag(tag: object) {
+  return clearableTags.some(rgx=>rgx.test(JSON.stringify(tag)))
+}
+
+
 export class IIngredient {
 	public name: any;
 	public count: any;
@@ -22,7 +30,7 @@ export class IIngredient {
   }
 
   withTag(tag: object) {
-    if (!tag || Object.keys(tag).length === 0) return this
+    if (!tag || Object.keys(tag).length === 0 || clearableTag(tag)) return this
 
     const n = new IIngredient(this.name)
     n.count = this.count
@@ -47,7 +55,7 @@ export class IIngredient {
     return this
   }
 
-  asString() { return serializeNameMeta(this.name) + serializeNbt(this.tag) }
+  asString() { return serializeNameMeta(this.name) + serializeNbt(cleanupNbt(this.tag)) }
   update() {
     // Blacklist recipes that content this items
     // as inputs or outputs

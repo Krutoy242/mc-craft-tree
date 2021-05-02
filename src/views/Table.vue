@@ -30,6 +30,7 @@
       :search="search"
       :custom-filter="filter"
       dense
+      multi-sort
       item-key="id"
       single-expand
       :footer-props="{

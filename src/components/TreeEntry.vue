@@ -26,7 +26,7 @@
                     class="justify-center"
                   >
                     <image
-                      :xlink:href="require('@/assets/Spritesheet.png')"
+                      :xlink:href="require('@/assets/spritesheet.png')"
                       image-rendering="pixelated"
                     ></image>
                   </svg>

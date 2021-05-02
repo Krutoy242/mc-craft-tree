@@ -1,16 +1,17 @@
 import _ from 'lodash'
 import { IndexedRawAdditionals, SetFieldFn } from './node_parser'
+const {min, max, round} = Math
 
 
-interface RootObject {
+interface JER_Entry {
   block: string;
   distrib: string;
   silktouch: boolean;
   dim: string;
-  dropsList?: DropsList[];
+  dropsList?: DropsEntry[];
 }
 
-interface DropsList {
+interface DropsEntry {
   itemStack: string;
   fortunes: Fortunes;
 }
@@ -55,17 +56,21 @@ const worldDifficulty:Record<DimensionDisplay, number> = {
 const EXPLORATION_MAX_COST = 10000
 
 let initialized = false
-let explorationPH:IndexedRawAdditionals
+let ph_exploration:IndexedRawAdditionals
+let ph_pick:IndexedRawAdditionals
 const dimensionPHs:Record<keyof typeof worldDifficulty, IndexedRawAdditionals> = {}
 function dimJERFieldToID(key: string) {
   const [_, name, id] = key.match(/(.*) \((-?\d+)\)/) as RegExpMatchArray
   return {id:'placeholder:Dim ' + id + ':0', display: name}
 }
+
+
 function initDims(setField: SetFieldFn) {
   if(initialized) return
   initialized = true
 
-  explorationPH = setField('placeholder:Exploration:0')
+  ph_exploration = setField('placeholder:Exploration:0')
+  ph_pick        = setField('minecraft:iron_pickaxe:0')
 
   Object.entries(worldDifficulty).forEach(
     ([key, value]) => {
@@ -90,15 +95,8 @@ const maxHeightDiff = _(new Array(H))
   .map((_,i)=>difficulty_from_level(i))
   .sum()
 
-// console.log('maxHeightDiff :>> ', maxHeightDiff);
-
-// for (let i = 0; i < H; i++) {
-//   console.log(i, difficulty_from_level(i));
-// }
-
 const probFactor = 4
 
-let debugThis = false
 function getJERProbability(rawStrData:string) {
   return _(rawStrData)
     .split(';')
@@ -108,35 +106,46 @@ function getJERProbability(rawStrData:string) {
     .sum() / maxHeightDiff
 }
 
-export function parse_JER(
-  jer:RootObject[],
-  setField: SetFieldFn
-) {
+export function parse_JER(jer:JER_Entry[], setField: SetFieldFn) {
   initDims(setField)
   for (const jer_entry of jer) {
-    const ads = setField(jer_entry.block)
-
-    // 0 .. 1
-    if(jer_entry.block === 'minecraft:stone:0') debugThis = true
-    const probability = getJERProbability(jer_entry.distrib) ** (1/(0.05*probFactor * EXPLORATION_MAX_COST))
-    debugThis = false
-
-    // console.log('probability :>> ', probability);
-    // if(probability > 1) {
-    //   console.log('jer_entry :>> ', jer_entry);
-    // }
-
-    const worldMultiplier = (worldDifficulty as any)[jer_entry.dim] ?? 1.0
-    const exploreComplexity = Math.max(1,
-      worldMultiplier * (1 - probability) * EXPLORATION_MAX_COST
-    )
-
-    const dimAddit = dimensionPHs[jer_entry.dim] 
-      ?? setField(dimJERFieldToID(jer_entry.dim).id)
-
-    ;(ads.recipes??=[]).push({
-      ins: {[explorationPH.index]: exploreComplexity | 0},
-      ctl: {[dimAddit.index]: 1},
-    })
+    handleJerEntry(jer_entry, setField)
   }
+}
+
+function handleJerEntry(jer_entry:JER_Entry, setField: SetFieldFn) {
+  const ads = setField(jer_entry.block)
+
+  // 0 .. 1
+  const probability = getJERProbability(jer_entry.distrib) ** (1/(0.05*probFactor * EXPLORATION_MAX_COST))
+
+  const worldMultiplier = (worldDifficulty as any)[jer_entry.dim] ?? 1.0
+  const exploreComplexity = Math.max(1,
+    worldMultiplier * (1 - probability) * EXPLORATION_MAX_COST
+  )
+
+  const dimAddit = dimensionPHs[jer_entry.dim] 
+    ?? setField(dimJERFieldToID(jer_entry.dim).id)
+
+  ;(ads.recipes??=[]).push({
+    ins: {[ph_exploration.index]: exploreComplexity | 0},
+    ctl: {[dimAddit.index]: 1},
+  })
+
+  if(jer_entry.dropsList) jer_entry.dropsList.forEach(drop=>handleDrops(ads, drop, setField))
+}
+
+
+function handleDrops(block: IndexedRawAdditionals, drop:DropsEntry, setField: SetFieldFn) {
+  const ads = setField(drop.itemStack)
+
+  const fortunes = _(drop.fortunes).values().mean()
+  const inp_amount = fortunes < 1 ? 1 / fortunes : 1
+  const out_amount = max(1, round(fortunes))
+
+  ;(ads.recipes??=[]).push({
+    out: out_amount>1 ? out_amount : undefined,
+    ins: {[block.index]:   max(1, round(inp_amount))},
+    ctl: {[ph_pick.index]: 1},
+  })
 }

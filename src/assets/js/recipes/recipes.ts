@@ -74,7 +74,7 @@ function fromId(id: string): CuentBase {
     args = {
       source: groups.source,
       entry : groups.entry,
-      meta  : +groups.meta ?? 0,
+      meta  : parseInt(groups.meta) || 0,
       type  : (switchers[groups.source] ?? switchers['default'])()
     }
   } else {

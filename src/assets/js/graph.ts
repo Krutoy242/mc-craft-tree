@@ -120,7 +120,7 @@ export function makeGraph(
       .attr('y',      (d: NodeDatum) => - fSize(d) * 0.9)
       .attr('viewBox',(d: NodeDatum) => d.viewBox)
       .select('image')
-      .attr('xlink:href', require('@/assets/Spritesheet.png'))
+      .attr('xlink:href', require('@/assets/spritesheet.png'))
       .attr('image-rendering', 'pixelated')
 
     return d3Selection

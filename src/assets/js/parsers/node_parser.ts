@@ -79,7 +79,7 @@ function setField(
 /*=============================================
 =            Spritesheet
 =============================================*/
-parseSpritesheet(loadJson('../../raw/Spritesheet.json'), setField)
+parseSpritesheet(loadJson('../../raw/spritesheet.json'), setField)
 
 
 /*=============================================
