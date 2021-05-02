@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { SetFieldFn } from './node_parser'
+import { SetFieldFn } from './main_parser'
 
 export function parseSpritesheet(spritesheetRaw:{[itemID:string]: string[][]}, setField:SetFieldFn) {
 

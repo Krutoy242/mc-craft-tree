@@ -1,8 +1,8 @@
 // let sortobject = require('deep-sort-object')
 import _ from 'lodash'
-import { SetFieldFn } from './node_parser'
+import { SetFieldFn } from './main_parser'
+import { parseZenscriptLine } from './zenscript_parser'
 const {BH, mods, IIngredient, recipes, furnace} = require('./zenscript_emul')
-const { parseZenscriptLine } = require('./zenscript_parser')
 
 
 type CrlogRawType = { [mod:string]: [display:string, stack:string, snbt?:string][] }

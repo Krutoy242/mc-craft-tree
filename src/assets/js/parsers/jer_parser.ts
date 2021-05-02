@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { IndexedRawAdditionals, SetFieldFn } from './node_parser'
+import { IndexedRawAdditionals, SetFieldFn } from './main_parser'
 const {min, max, round} = Math
 
 
