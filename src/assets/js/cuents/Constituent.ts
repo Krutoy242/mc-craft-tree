@@ -76,7 +76,8 @@ export class Constituent extends ConstituentVisible {
   order (
     count = 1,
     antiloop = new WeakSet<Constituent>(),
-    residue = new Map<Constituent, number>(),
+    inventory = new Map<Constituent, number>(),
+    haveCatalysts = new Map<Constituent, number>(),
   ) {
     this.usability += count
     if (antiloop.has(this)) return
@@ -86,17 +87,27 @@ export class Constituent extends ConstituentVisible {
     if (!main) return
     const outAmount = main.outputs.find(o=>o.cuent === this)?.amount as number
     
-    for (const cs of main.inputs) {
-      const have = residue.get(cs.cuent) ?? 0
-      const needed = count * cs.amount / outAmount - have
+    for (const cs of main.catalysts) {
+      const required = cs.amount
+      const have     = (inventory.get(cs.cuent) ?? 0)
+      const haveCtls =(haveCatalysts.get(cs.cuent) ?? 0)
+      const needed   = required - have - haveCtls
+      inventory.set(cs.cuent, Math.max(0, have - required))
+      haveCatalysts.set(cs.cuent, Math.max(haveCtls, required))
       if(needed < 0) continue
 
-      const minimum = Math.max(outAmount, needed)
-      const resid = minimum - needed
-      residue.set(cs.cuent, resid)
+      cs.cuent.order(needed, antiloop, inventory, haveCatalysts)
+    }
+    
+    for (const cs of main.inputs) {
+      const required = count * cs.amount / outAmount
+      const have     = inventory.get(cs.cuent) ?? 0
+      const needed   = required - have
+      const minimum  = Math.max(outAmount, needed)
+      inventory.set(cs.cuent, Math.max(0, have - required))
+      if(needed < 0) continue
 
-      if(this.id==='extendedcrafting:singularity_ultimate:0') console.log(count, cs.amount, outAmount, cs.cuent.display, '=>', this.display)
-      cs.cuent.order(minimum, antiloop, residue)
+      cs.cuent.order(minimum, antiloop, inventory, haveCatalysts)
     }
   }
 
