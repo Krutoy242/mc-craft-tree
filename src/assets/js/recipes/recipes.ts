@@ -201,17 +201,18 @@ export class LinksHolder implements RecipeHolder  {
     let newPurity   = 0.0
 
     for(const l of this.inputs)    {
-      this.cost       += l.from.cost * l.weight
+      this.cost       += (l.from.cost + l.from.steps) * l.weight
       this.processing += l.from.steps
-      newPurity       += l.from.purity**2
+      newPurity       += l.from.purity**(2 - 1 / (l.from.steps+1))
     }
 
     for(const l of this.catalysts) {
       this.processing += l.from.complexity + l.from.steps
-      newPurity       += l.from.purity**2
+      newPurity       *= l.from.purity*0.9+0.1
     }
+    // if(!this.catalysts.length) newPurity++
 
-    this.purity = floatCut((newPurity / (this.inputs.length + this.catalysts.length)))
+    this.purity = floatCut(newPurity / this.inputs.length)
     this.complexity = floatCut(this.cost + this.processing)
     return oldComplexity != this.complexity
   }
