@@ -3,18 +3,21 @@ Helper script to prepare several files for fast acces
 Lunch with NodeJS
 */
 
-import { RawAdditionals } from '../cuents/ConstituentBase'
-
 /*=============================================
 =                Variables                    =
 =============================================*/
 import fs from 'fs'
 import path from 'path'
+import glob from 'glob'
+
+import { cleanupAdditionals } from './additionals'
 import { parseJECgroups } from './jec_parse'
 import { parse_JER } from './jer_parser'
 import { parseSpritesheet } from './spritesheet_parse'
-
+import { initCustomRecipes } from './zenscript_custom'
 import { parseCrafttweakerLog, parseCrafttweakerLog_raw } from './crafttweakerLog_parse'
+import { initAdvRocketryXMLRecipe } from './xml'
+import { fileNameFromPath } from './utils_parse'
 
 /*=============================================
 =                   Helpers                   =
@@ -35,51 +38,10 @@ function saveObjAsJson(obj:any, filename:string) {
   saveText(JSON.stringify(obj, null, 2), filename)
 }
 
-
-/*=============================================
-=           Parsing
-=============================================*/
-
-export interface IndexedRawAdditionals extends RawAdditionals {
-  index: number
-}
-export type IndexedRawAdditionalsStore = {[key: string]: IndexedRawAdditionals}
-
-type AdditID = string|number
-type ValueOf<T> = T[keyof T];
-
-const additionals:IndexedRawAdditionalsStore = {}
-let additionalsLength = 0
-
-export type SetFieldFn = typeof setField
-
-function setField(
-  id:AdditID,
-  field?: keyof IndexedRawAdditionals,
-  value?: ValueOf<IndexedRawAdditionals>
-) { 
-  const found = isNaN(Number(id))
-    ? additionals[id]
-    : Object.values(additionals)[id as number]
-
-  let picked = found
-  if(!picked) {
-    picked = {
-      index: additionalsLength++
-    }
-    additionals[id] = picked
-  }
-
-  if(field) (picked[field] as any) ||= value
-
-  return picked
-}
-
-
 /*=============================================
 =            Spritesheet
 =============================================*/
-parseSpritesheet(loadJson('../../raw/spritesheet.json'), setField)
+parseSpritesheet(loadJson('../../raw/spritesheet.json'))
 
 
 /*=============================================
@@ -87,26 +49,34 @@ parseSpritesheet(loadJson('../../raw/spritesheet.json'), setField)
 =============================================*/
 const realMCPath = 'D:/mc_client/Instances/Enigmatica2Expert - Extended/'
 const worldgenPath = realMCPath + 'config/jeresources/world-gen.json'
-parse_JER(loadJson(worldgenPath), setField)
+parse_JER(loadJson(worldgenPath))
 
+/*=============================================
+=            XML files
+=============================================*/
+glob.sync(realMCPath+'config/advRocketry/*.xml').forEach(filePath=>{
+  initAdvRocketryXMLRecipe(fileNameFromPath(filePath), loadText(filePath))
+})
 
 /*=============================================
 =            crafttweaker.log
 =============================================*/
-parseCrafttweakerLog_raw(loadText(realMCPath+'/crafttweaker_raw.log'), setField)
-parseCrafttweakerLog    (loadText(realMCPath+'/crafttweaker.log'), setField)
+parseCrafttweakerLog_raw(loadText(realMCPath+'/crafttweaker_raw.log'))
+parseCrafttweakerLog    (loadText(realMCPath+'/crafttweaker.log'))
+
+
+/*=============================================
+=            Custom
+=============================================*/
+initCustomRecipes()
 
 
 /*=====  Save parsed data ======*/
 // Remove technical data
-for (const key in additionals) {
-  delete (additionals[key] as any).index
-}
-saveObjAsJson(additionals, '../../default_additionals.json')
+saveObjAsJson(cleanupAdditionals(), '../../default_additionals.json')
 
 
 /*=============================================
 =      Prepare JEC groups.json
 =============================================*/
-const parsedJEC_obj = parseJECgroups(loadText('../../raw/groups.json'), additionals)
-saveObjAsJson(parsedJEC_obj, '../../jec_groups.json')
+saveObjAsJson(parseJECgroups(loadText(realMCPath+'/config/JustEnoughCalculation/data/groups.json')), '../../jec_groups.json')

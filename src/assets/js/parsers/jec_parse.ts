@@ -1,13 +1,13 @@
 import { JEC_Ingredient, JEC_Recipe, JEC_RootObject } from '../JEC_Types'
 import { cleanupNbt } from '../utils'
-import { IndexedRawAdditionalsStore } from './main_parser'
+import { additionals } from './additionals'
 
 
 // ====================================================
 // Organize raw Just Enough Calculation json input
 // ====================================================
 
-export function parseJECgroups(jecGroupsRaw_text:string, additionals:IndexedRawAdditionalsStore) {
+export function parseJECgroups(jecGroupsRaw_text:string) {
 
   /*=====  Remove type letters (like 2L or 0b)  ======*/ 
   const groupsJsonText = jecGroupsRaw_text

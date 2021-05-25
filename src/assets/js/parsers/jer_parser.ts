@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { IndexedRawAdditionals, SetFieldFn } from './main_parser'
+import { IndexedRawAdditionals, setField } from './additionals'
 const {min, max, round} = Math
 
 
@@ -65,7 +65,7 @@ function dimJERFieldToID(key: string) {
 }
 
 
-function initDims(setField: SetFieldFn) {
+function initDims() {
   if(initialized) return
   initialized = true
 
@@ -106,14 +106,14 @@ function getJERProbability(rawStrData:string) {
     .sum() / maxHeightDiff
 }
 
-export function parse_JER(jer:JER_Entry[], setField: SetFieldFn) {
-  initDims(setField)
+export function parse_JER(jer:JER_Entry[]) {
+  initDims()
   for (const jer_entry of jer) {
-    handleJerEntry(jer_entry, setField)
+    handleJerEntry(jer_entry)
   }
 }
 
-function handleJerEntry(jer_entry:JER_Entry, setField: SetFieldFn) {
+function handleJerEntry(jer_entry:JER_Entry) {
   const ads = setField(jer_entry.block)
 
   // 0 .. 1
@@ -132,20 +132,23 @@ function handleJerEntry(jer_entry:JER_Entry, setField: SetFieldFn) {
     ctl: {[dimAddit.index]: 1},
   })
 
-  if(jer_entry.dropsList) jer_entry.dropsList.forEach(drop=>handleDrops(ads, drop, setField))
+  if(jer_entry.dropsList) jer_entry.dropsList.forEach(drop=>handleDrops(ads, drop))
 }
 
 
-function handleDrops(block: IndexedRawAdditionals, drop:DropsEntry, setField: SetFieldFn) {
+function handleDrops(block: IndexedRawAdditionals, drop:DropsEntry) {
   const ads = setField(drop.itemStack)
 
   const fortunes = _(drop.fortunes).values().mean()
-  const inp_amount = fortunes < 1 ? 1 / fortunes : 1
+  const inp_amount = max(1, round(fortunes < 1 ? 1 / fortunes : 1))
   const out_amount = max(1, round(fortunes))
+
+  // Skip adding if block drop itself
+  if (ads.index === block.index && out_amount === inp_amount) return
 
   ;(ads.recipes??=[]).push({
     out: out_amount>1 ? out_amount : undefined,
-    ins: {[block.index]:   max(1, round(inp_amount))},
+    ins: {[block.index]: inp_amount},
     ctl: {[ph_pick.index]: 1},
   })
 }

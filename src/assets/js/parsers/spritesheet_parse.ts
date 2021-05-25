@@ -1,7 +1,7 @@
 import _ from 'lodash'
-import { SetFieldFn } from './main_parser'
+import { setField } from './additionals'
 
-export function parseSpritesheet(spritesheetRaw:{[itemID:string]: string[][]}, setField:SetFieldFn) {
+export function parseSpritesheet(spritesheetRaw:{[itemID:string]: string[][]}) {
 
   _(spritesheetRaw).entries().forEach(([def, list])=>{
     list.forEach(([viewBox, sNbt])=>{

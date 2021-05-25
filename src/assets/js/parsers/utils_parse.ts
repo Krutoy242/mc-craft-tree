@@ -22,3 +22,7 @@ export function serializeNbt(nbt?: string|object) {
     .replace(/, /g, ',')
     .replace(/: */g, ':')
 }
+
+export function fileNameFromPath(filePath: string) {
+  return filePath.split(/[\\/]/g).pop()!.split('.').slice(0,-1).join('.')
+}

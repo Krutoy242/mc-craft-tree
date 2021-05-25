@@ -61,7 +61,3 @@ export function parseZenscriptLine(zsLine: string) {
 
   return semanticResult.eval()
 }
-
-// const test = 'recipes.addShapeless("ct_shapeless915879586", <mekanism:machineblock:7>.withTag({recipeType: 3, mekData: {}}), [<mekanism:machineblock:6>.withTag({recipeType: 3, mekData: {}}), <mekanism:tierinstaller:2>]);'
-// const parsed = parseZenscriptLine(test)
-// console.log('parsed :>> ', parsed)
