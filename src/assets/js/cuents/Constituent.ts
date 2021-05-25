@@ -47,7 +47,7 @@ export class Constituent extends ConstituentVisible {
   match(o: this) { return this === o || this.base.match(o.base) }
   getRecipes() { return [...this.recipes.list.keys()] }
   finishCalc() { this.complexity = this.cost + this.processing }
-  spawnsNaturally() { this.cost = 50.0 }
+  spawnsNaturally() { this.cost = 100000.0 }
   stack(amount = 1) : ConstituentStack { return new ConstituentStack(this, amount) }
   getUUCost(factor: number) { return this.cost + this.processing / (factor + Math.sqrt(this.usability)) }
 

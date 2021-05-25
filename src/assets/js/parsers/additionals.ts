@@ -156,12 +156,13 @@ class IngredientList {
 
 export function BH(str: string) { return new IIngredient(str) }
 
-type RecipeParams = [outputs:AnyIngredients, inputs:AnyIngredients, catalysts?:AnyIngredients]
+type RecipeParams = [outputs:AnyIngredients, inputs?:AnyIngredients, catalysts?:AnyIngredients]
 
 export function addRecipe(_recipName: null, ...params: RecipeParams) {
   const [outputs, inputs, catalysts] = params.map(o=>new IngredientList(o))
   
-  if([outputs, inputs].some(il=>il.futile)) return
+  if(outputs.futile) return
+  if([inputs, catalysts].every(il=>il.futile)) return
 
   const ads = outputs.main.additionals
   ads.recipes = ads.recipes || []

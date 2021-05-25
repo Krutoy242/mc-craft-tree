@@ -53,7 +53,7 @@ export type RawCollection = {[key: string]: number}
 
 interface RawRecipe {
   out?: RawCollection | number
-  ins: RawCollection
+  ins?: RawCollection
   ctl?: RawCollection
 }
 
@@ -66,8 +66,19 @@ function customRender(ads:ConstituentAdditionals, base: CuentBase): [viewBox?: s
   }
 
   if(base.source === 'placeholder') {
+    if(base.entry === 'RF') {
+      return [additionals['thermalfoundation:meter:0'].viewBox, '{' + base.entry + '}']
+    }
+    if(base.entry === 'Exploration') {
+      return [additionals['botania:tinyplanet:0'].viewBox, '{' + base.entry + '}']
+    }
     const a = additionals['openblocks:tank:0{tank:{FluidName:"betterquesting.placeholder",Amount:16000}}']
     return [a.viewBox, '{' + base.entry + '}']
+  }
+
+  if(base.shortand === 'thaumcraft:infernal_furnace') {
+    const a = additionals['minecraft:nether_brick:0']
+    return [a.viewBox]
   }
 
   return []

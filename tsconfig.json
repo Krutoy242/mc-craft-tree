@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2015",
     "module": "commonjs",
-    "lib": ["ES6", "dom","es2020.string"],
+    "lib": ["ES6", "dom","es2020.string","es2019.array"],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,

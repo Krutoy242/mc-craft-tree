@@ -1,5 +1,4 @@
 import { LinksHolder, Recipe, Ways } from '../recipes/recipes'
-import { RecipeLink } from '../recipes/RecipeLink'
 import { UniqueKeys } from '../utils'
 import { Constituent } from './Constituent'
 import * as _ from 'lodash'
@@ -58,7 +57,7 @@ export class RecipesInfo {
       // Math.log(a.complexity)/(a.purity**10+0.01) - Math.log(b.complexity)/(b.purity**10 +0.01)
     )
 
-    const sameMain = oldMainHolder === this.mainHolder
+    const sameMain = false//oldMainHolder === this.mainHolder
     if(oldMainHolder && !sameMain) {
       // Undo previous computations
       for (const link of oldMainHolder.catalysts) {

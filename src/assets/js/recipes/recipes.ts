@@ -127,7 +127,7 @@ export function mergeDefaultAdditionals(
 ) {
 
   const ids_arr = Object.keys(additionals)
-  function keysToArr(collection: RawCollection) {
+  function keysToArr(collection: RawCollection = {}) {
     return Object.entries(collection).map(([k,v]) => {
       const cuent = globalTree.pushBase(fromId(ids_arr[parseInt(k)]))
       return new ConstituentStack(cuent, v * cuent.volume)

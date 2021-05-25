@@ -7455,6 +7455,52 @@
           }
         }
       ]
+    },
+    {
+      "output": [
+        {
+          "type": "fluidStack",
+          "content": {
+            "amount": 250,
+            "fluid": "rocketfuel"
+          }
+        }
+      ],
+      "input": [
+        {
+          "type": "fluidStack",
+          "content": {
+            "amount": 500,
+            "fluid": "oxygen"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "thermalfoundation:material",
+            "meta": 833
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "thermalfoundation:material",
+            "meta": 892
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "immersiveengineering:metal_multiblock",
+            "meta": 15
+          }
+        }
+      ]
     }
   ]
 }

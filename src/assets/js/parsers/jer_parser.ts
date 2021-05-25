@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { IndexedRawAdditionals, setField } from './additionals'
+import { IndexedRawAdditionals, setField, $, BH} from './additionals'
 const {min, max, round} = Math
 
 
@@ -51,9 +51,30 @@ const worldDifficulty:Record<DimensionDisplay, number> = {
   'KELT-6a (121)'      : 1.0,
   'Kepler 0118 (122)'  : 1.0,
   'Kepler 0119 (123)'  : 1.0,
+  'Emptiness (14676)'  : 1.0,
 }
 
+
+// Create dimension entering recipes
+$(dimToID('Nether'), 'minecraft:flint_and_steel', BH('minecraft:obsidian').amount(8))
+$(dimToID('The End'), BH('minecraft:ender_eye').amount(12))
+$(dimToID('Twilight Forest'), 'minecraft:diamond')
+$(dimToID('Deep Dark'), 'placeholder:Exploration' ,'extrautils2:teleporter:1')
+$(dimToID('Ratlantis'), 'rats:chunky_cheese_token')
+;([
+  ['advancedrocketry:rocketbuilder'  , ['Luna']],
+  ['advancedrocketry:stationbuilder' , ['Mercury','Venus','Mars','Io','Europa','Titan','Uranus','Neptune']],
+  ['advancedrocketry:warpmonitor'    , ['Proxima B','Terra Nova','Novus','Stella','KELT-2ab','KELT-3','KELT-4ab','KELT-6a','Kepler 0118','Kepler 0119']],
+  ['thaumicaugmentation:gauntlet:1'  , ['Emptiness']],
+] as any).forEach(([catl, arr]:[string, string[]]) =>
+  arr.forEach(dim => $(dimToID(dim), BH('fluid:rocketfuel').amount(10000), catl))
+)
+
 const EXPLORATION_MAX_COST = 10000
+
+function dimToID(name:string) {
+  return 'placeholder:Dim ' + name + ':0'
+}
 
 let initialized = false
 let ph_exploration:IndexedRawAdditionals
@@ -61,7 +82,7 @@ let ph_pick:IndexedRawAdditionals
 const dimensionPHs:Record<keyof typeof worldDifficulty, IndexedRawAdditionals> = {}
 function dimJERFieldToID(key: string) {
   const [_, name, id] = key.match(/(.*) \((-?\d+)\)/) as RegExpMatchArray
-  return {id:'placeholder:Dim ' + id + ':0', display: name}
+  return {id: dimToID(name), display: name}
 }
 
 
@@ -70,7 +91,7 @@ function initDims() {
   initialized = true
 
   ph_exploration = setField('placeholder:Exploration:0')
-  ph_pick        = setField('minecraft:iron_pickaxe:0')
+  ph_pick        = setField('minecraft:stone_pickaxe:0')
 
   Object.entries(worldDifficulty).forEach(
     ([key, value]) => {
