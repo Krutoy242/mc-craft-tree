@@ -167,7 +167,7 @@ class Highliter {
   private getLinksArray = (d: NodeDatum) => {
     return (this.towardsOutputs
       ? d.recipes.mainHolder?.inputs
-      : d.recipes.mainHolder?.outputs) as LinkDatum[] ?? []
+      : [...d.recipes.main?.links.values()??[]]) as LinkDatum[] ?? []
   }
 
   private getStyleFnc = () => {
@@ -244,7 +244,7 @@ class SingleLinks extends StraightLinks {
   public mouseover = (d: NodeDatum) => {
     const comboLinks = [
       ...d.recipes.mainHolder?.inputs??[],
-      ...d.recipes.mainHolder?.outputs??[]
+      ...d.recipes.main?.links.values()??[]
     ]
     this.sel = this.linkContainer
       .attr('stroke-width', 3)

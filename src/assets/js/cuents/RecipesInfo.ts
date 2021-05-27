@@ -1,13 +1,12 @@
-import { LinksHolder, Recipe, Ways } from '../recipes/recipes'
-import { UniqueKeys } from '../utils'
+import { Recipe, Ways } from '../recipes/recipes'
+import { LinksHolder } from '../recipes/LinksHolder'
 import { Constituent } from './Constituent'
 import * as _ from 'lodash'
 
 export class RecipesInfo {
+  isLooped = false
   main?: Recipe
   mainHolder?: LinksHolder
-  private catalystsKeys = new UniqueKeys<string, Constituent>()
-  private recipesKeys = new UniqueKeys<string, Recipe>()
   list = new Map<Recipe, LinksHolder>()
   private ways: {[key in Ways]: Set<Constituent>} = {
     requirments: new Set<Constituent>(),
@@ -21,7 +20,6 @@ export class RecipesInfo {
       .filter(o=>!block.has(o))
   }
 
-  isLooped = false
 
   pushIfUnique(recipe: Recipe, linksHolder: LinksHolder): boolean {
     if ([...this.list.keys()].some(r => Recipe.match(recipe, r)))
@@ -38,11 +36,17 @@ export class RecipesInfo {
     return true
   }
 
+  // static maxLog = 100
+  // static log(a:LinksHolder, b:LinksHolder) {
+  //   RecipesInfo.maxLog--
+  //   if(RecipesInfo.maxLog<0) return
+  //   console.log(...((_a,_b)=>[_a[0]+'\n'+_b[0], ..._a.slice(1), ..._b.slice(1)])(a.console(),b.console()))
+  // }
+
   pickMain(c:Constituent): boolean {
-    let isHoldersChanged = false
-    for(const lh of this.list.values()) {
-      isHoldersChanged ||= lh.calculate()
-    }
+    if(!this.list.size) return false // Has no recipes
+
+    this.list.forEach(lh=>lh.calculate())
 
     const typles = [...this.list].filter(([, lh]) => lh.complexity > 0)
 
@@ -51,53 +55,25 @@ export class RecipesInfo {
       return false
     }
 
-    const oldMainHolder = this.mainHolder
-    ;[[this.main, this.mainHolder]] = typles.sort(([, a], [, b]) => 
+    typles.sort(([, a], [, b]) => 
       b.purity - a.purity || a.complexity - b.complexity
-      // Math.log(a.complexity)/(a.purity**10+0.01) - Math.log(b.complexity)/(b.purity**10 +0.01)
     )
 
-    const sameMain = false//oldMainHolder === this.mainHolder
-    if(oldMainHolder && !sameMain) {
-      // Undo previous computations
-      for (const link of oldMainHolder.catalysts) {
-        link.from.popularity--
-        _.remove(link.from.popList, o=>o.cuent===c)
-      }
-      for (const link of oldMainHolder.inputs) {
-        link.from.outputsAmount--
-        _.remove(link.from.outsList, o=>o.cuent===c)
-      }
-    }
+    ;[[this.main, this.mainHolder]] = typles
 
     c.cost       = this.mainHolder.cost
     c.processing = this.mainHolder.processing
     c.complexity = this.mainHolder.complexity
     c.purity     = this.mainHolder.purity
-
-    //--------------------------------------
-    // When main recipe is changed
-    if(sameMain) return true
-
-    this.catalystsKeys.reset()
-    this.recipesKeys.reset()
-    this.recipesKeys.mergeKey(this.main.id, this.main)
-
-    for (const link of this.mainHolder.catalysts) {
-      this.catalystsKeys.mergeKey(link.from.id, link.from)
-      link.from.popularity++
-      link.from.popList.push(c.stack())
-    }
-
-    for (const link of this.mainHolder.inputs) {
-      this.catalystsKeys.mergeChain(link.from.recipes.catalystsKeys)
-      this.recipesKeys  .mergeChain(link.from.recipes.recipesKeys)
-      link.from.outputsAmount++
-      link.from.outsList.push(c.stack(this.main.outputs.find(cs=>cs.cuent===c)!.amount))
-    }
-
-    c.steps        = this.recipesKeys.count
-    c.inputsAmount = this.mainHolder.inputs.length
+    
+    // if(c.id.startsWith('tcomplement:scorched_casting')) {
+    //   RecipesInfo.maxLog--
+    //   if(RecipesInfo.maxLog>=0) {
+    //     console.group(c.display)
+    //     typles.forEach(([,t])=>console.log(...t.console()))
+    //     console.groupEnd()
+    //   }
+    // }
 
     return true
   }

@@ -1,6 +1,9 @@
 import { Constituent } from '../cuents/Constituent'
 
 
+/**
+* Link between two items in recipe
+**/
 export class RecipeLink {
   flipped!: RecipeLink
 

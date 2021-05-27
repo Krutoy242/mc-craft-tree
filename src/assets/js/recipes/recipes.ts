@@ -5,11 +5,12 @@ import { globalTree } from '../cuents/ConstituentTree'
 import { JEC_RootObject, JEC_Ingredient, JEC_Recipe } from '../JEC_Types'
 import { RecipeLink } from './RecipeLink'
 import { cleanupNbt, NumLimits, objToString } from '../utils'
+import { LinksHolder } from './LinksHolder'
 
-export type Ways = keyof RecipeHolder | 'requirments'
+export type Ways = 'outputs' | 'inputs' | 'catalysts' | 'requirments'
 
 const CRAFTING_TABLE_COST = 50.0
-function processingCostFromInputAmount(x: number) {
+export function processingCostFromInputAmount(x = 1) {
   x--
   return Math.floor(Math.max(0, Math.pow(1.055, x+100) - Math.pow(1.055, 101) + x*25 + CRAFTING_TABLE_COST/2))
 }
@@ -18,7 +19,7 @@ function amount_jec(raw: JEC_Ingredient) {
   return (raw.content.amount ?? 1.0) * (raw.content.percent ?? 100.0) / 100.0
 }
 
-function floatCut(n:number) { return Math.round((n + Number.EPSILON) * 100000) / 100000 }
+export function floatCut(n:number) { return Math.round((n + Number.EPSILON) * 100000) / 100000 }
 
 class RecipesStore {
   map = new Map<string, Recipe>()
@@ -166,59 +167,19 @@ function nextId(): string {
   return String(recipesCount)
 }
 
-export interface RecipeHolder {
-  outputs: any[]
-  inputs: any[]
-  catalysts: any[]
-}
+// export interface RecipeHolder {
+//   outputs: any[]
+//   inputs: any[]
+//   catalysts: any[]
+// }
 
-interface StacksHolder extends RecipeHolder {
-  outputs: ConstituentStack[]
-  inputs: ConstituentStack[]
-  catalysts: ConstituentStack[]
-}
+// interface StacksHolder extends RecipeHolder {
+//   outputs: ConstituentStack[]
+//   inputs: ConstituentStack[]
+//   catalysts: ConstituentStack[]
+// }
 
-export class LinksHolder implements RecipeHolder  {
-  outputs: RecipeLink[]
-  inputs: RecipeLink[]
-  catalysts: RecipeLink[]
-
-  cost = 0.0
-  processing = 0.0
-  complexity = 0.0
-  purity = 0.0
-
-  constructor(a: RecipeHolder) {
-    this.outputs   = a.outputs
-    this.inputs    = a.inputs
-    this.catalysts = a.catalysts
-  }
-
-  calculate() {
-    const oldComplexity = this.complexity
-    this.cost       = 0
-    this.processing = processingCostFromInputAmount(this.inputs.length)
-    let newPurity   = 0.0
-
-    for(const l of this.inputs)    {
-      this.cost       += (l.from.cost + l.from.steps) * l.weight
-      this.processing += l.from.steps
-      newPurity       += l.from.purity**(2 - 1 / (l.from.steps+1))
-    }
-
-    for(const l of this.catalysts) {
-      this.processing += l.from.complexity + l.from.steps
-      newPurity       *= l.from.purity*0.9+0.1
-    }
-    // if(!this.catalysts.length) newPurity++
-
-    this.purity = floatCut(newPurity / this.inputs.length)
-    this.complexity = floatCut(this.cost + this.processing)
-    return oldComplexity != this.complexity
-  }
-}
-
-export class Recipe implements StacksHolder {
+export class Recipe {
   requirments: ConstituentStack[]
   id: string
   links = new Map<ConstituentStack,LinksHolder>()
@@ -251,11 +212,12 @@ export class Recipe implements StacksHolder {
         )
       )
 
-      const linksHolder = new LinksHolder({
-        outputs  : inputLinks.map(inp => inp.flip()),
-        inputs   : inputLinks,
-        catalysts: catalLinks
-      })
+      const linksHolder = new LinksHolder(
+        outputStack,
+        inputLinks,
+        catalLinks,
+        this
+      )
 
       this.links.set(outputStack, linksHolder)
       outputStack.cuent.recipes.pushIfUnique(this, linksHolder)
@@ -273,7 +235,7 @@ export class Recipe implements StacksHolder {
   static match(r1: Recipe, r2: Recipe) {
     if(r1 === r2) return true
 
-    for (const name of (['outputs', 'inputs', 'catalysts'] as Array<keyof StacksHolder>)) {
+    for (const name of ['outputs', 'inputs', 'catalysts'] as const) {
       const arr1 = r1[name]
       const arr2 = r2[name]
       if(arr1.length != arr2.length) return false
@@ -297,8 +259,18 @@ export class Recipe implements StacksHolder {
   }
 
   display() {
-    return `[${this.inputs[0].cuent.display}]` 
-    + (this.catalysts[0] && `->[${this.catalysts[0].cuent.display}]`)
-    + `->[${this.outputs[0].cuent.display}]`
+    return `[${this.inputs.map(cs=>cs.cuent.asString()).join(', ')}]` 
+    + `->[${this.catalysts.map(cs=>cs.cuent.asString()).join(', ')}]`
+    + `->[${this.outputs.map(cs=>cs.cuent.asString()).join(', ')}]`
+  }
+
+  console() {
+    const cls = (['inputs', 'catalysts', 'outputs'] as const)
+      .map(s=>this[s].map(cs=>cs.cuent.console()))
+
+    const head = cls.map(group=>group.map(cuent=>cuent[0]).join('+')).join(']->[')
+    const tail = cls.map(group=>group.map(cuent=>cuent.slice(1)).flat()).flat()
+
+    return ['['+head+']', ...tail]
   }
 }

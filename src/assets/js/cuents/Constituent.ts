@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { Ways } from '../recipes/recipes'
-import { MapOfSets } from '../utils'
+import { cutNum, MapOfSets } from '../utils'
 import { ConstituentVisible, CuentArgs } from './ConstituentBase'
 import { ConstituentStack } from './ConstituentStack'
 import { listUU } from './listUU'
@@ -11,19 +11,18 @@ export class Constituent extends ConstituentVisible {
   complexity    = 0.0
   cost          = 0.0
   usability     = 0.0
-  popularity    = 0.0
-  outputsAmount = 0
   processing    = 0.0
-  steps         = 0
   purity        = 0.0
   recipes = new RecipesInfo()
 
+  public get steps() { return this.recipes.mainHolder?.steps ?? 0 }
+  public get inputsAmount() { return this.recipes.mainHolder?.inputs.length ?? 0 }
+  public get popularity() { return this.popList.length }
+  public get outputsAmount() { return this.outsList.length }
+
   outsList: ConstituentStack[] = []
   popList: ConstituentStack[] = []
-  inputsAmount = 0
   isNatural = false
-
-  protected calculated    = false
 
   public get id() : string { return this.base.id }
   public get nbt() : string { return this.base.nbt }
@@ -46,15 +45,19 @@ export class Constituent extends ConstituentVisible {
 
   match(o: this) { return this === o || this.base.match(o.base) }
   getRecipes() { return [...this.recipes.list.keys()] }
+  unknownCost() { this.cost = 100000.0; this.finishCalc() }
   finishCalc() { this.complexity = this.cost + this.processing }
-  spawnsNaturally() { this.cost = 100000.0 }
   stack(amount = 1) : ConstituentStack { return new ConstituentStack(this, amount) }
   getUUCost(factor: number) { return this.cost + this.processing / (factor + Math.sqrt(this.usability)) }
+  asString() { return `[${this.display}]:${cutNum(this.complexity)}(${cutNum(this.cost)}+${cutNum(this.processing)})` }
+  console() { return [
+    `[%c${this.display}%c %c${cutNum(this.complexity)}%c %c${cutNum(this.cost)}+${cutNum(this.processing)}%c]`,
+    'background: #333; color: #999', '', 'color: #fff', '', 'color: #555', ''
+  ] }
 
   calculate() {
     if(this.isNatural) return true
-    if(!this.recipes.pickMain(this)) this.spawnsNaturally()
-    // this.finishCalc()
+    if(!this.recipes.pickMain(this)) this.unknownCost()
     return true
   }
 
@@ -88,9 +91,11 @@ export class Constituent extends ConstituentVisible {
     const outAmount = main.outputs.find(o=>o.cuent === this)?.amount as number
     
     for (const cs of main.catalysts) {
+      cs.cuent.popList.push(this.stack())
+
       const required = cs.amount
       const have     = (inventory.get(cs.cuent) ?? 0)
-      const haveCtls =(haveCatalysts.get(cs.cuent) ?? 0)
+      const haveCtls = (haveCatalysts.get(cs.cuent) ?? 0)
       const needed   = required - have - haveCtls
       inventory.set(cs.cuent, Math.max(0, have - required))
       haveCatalysts.set(cs.cuent, Math.max(haveCtls, required))
@@ -100,6 +105,8 @@ export class Constituent extends ConstituentVisible {
     }
     
     for (const cs of main.inputs) {
+      cs.cuent.outsList.push(this.stack())
+      
       const required = count * cs.amount / outAmount
       const have     = inventory.get(cs.cuent) ?? 0
       const needed   = required - have
@@ -138,7 +145,7 @@ export class Constituent extends ConstituentVisible {
       }
       b.add(c)
 
-      if(route.length > 2000) {
+      if(route.length > 3000) {
         console.log('stack overflow')
         cb(this, deph, way)
         return

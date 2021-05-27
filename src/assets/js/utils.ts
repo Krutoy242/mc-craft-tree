@@ -1,3 +1,5 @@
+import numeral from 'numeral'
+
 export function cleanupNbt(o?: any): object|undefined {
   if (!o) return
 
@@ -72,11 +74,12 @@ export class UniqueKeys<T,U> {
   }
 
   mergeChain(chain?: UniqueKeys<T,U>, onUnique?: (value:U)=>void) {
-    if(!chain) return
+    if(!chain) return this
     for (const [key, value] of chain.ids.entries()) {
       if (this.mergeKey(key, value))
         onUnique?.(value)
     }
+    return this
   }
 
   values() {
@@ -108,6 +111,9 @@ export class MapOfSets<T> extends Map<T, Set<T>> {
     return b
   }
 }
+
+
+export const cutNum = (num:number) => numeral(num).format('0a')
 
 // exports.UniqueKeys = UniqueKeys
 // exports.NumLimits = NumLimits
