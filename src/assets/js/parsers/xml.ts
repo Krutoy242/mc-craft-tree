@@ -41,6 +41,20 @@ interface Text {
   text: string
 }
 
+const machinesBlocks:{[fileName:string]:string} = {
+  'Centrifuge' : 'advancedrocketry:centrifuge',
+  'ChemicalReactor' : 'advancedrocketry:chemicalreactor',
+  'Crystallizer' : 'advancedrocketry:crystallizer',
+  'CuttingMachine' : 'advancedrocketry:cuttingmachine',
+  'ElectricArcFurnace' : 'advancedrocketry:arcfurnace',
+  'Electrolyser' : 'advancedrocketry:electrolyser',
+  'Lathe' : 'advancedrocketry:lathe',
+  'PrecisionAssembler' : 'advancedrocketry:precisionassemblingmachine',
+  'PrecisionLaserEtcher' : 'advancedrocketry:precisionlaseretcher',
+  'RollingMachine' : 'advancedrocketry:rollingmachine',
+  'SmallPlatePress' : 'advancedrocketry:platepress',
+}
+
 export function initAdvRocketryXMLRecipe(fileName:string, content:string) {
   const obj = convert.xml2js(content) as RootObject
   
@@ -56,7 +70,7 @@ export function initAdvRocketryXMLRecipe(fileName:string, content:string) {
 }
 
 function parseRecipe(recipe:Recipe, fileName:string) {
-  $(getGroup(recipe, 'output'), getGroup(recipe, 'input'), 'placeholder:AdvRocketry '+fileName)
+  $(getGroup(recipe, 'output'), getGroup(recipe, 'input'), machinesBlocks[fileName] ?? 'placeholder:'+fileName)
 }
 
 function getGroup(recipe: Recipe, group: string): IIngredient[] {

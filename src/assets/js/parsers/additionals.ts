@@ -98,7 +98,7 @@ export class IIngredient {
   }
 
   amount(n: number) {
-    if (isNaN(n)) return this
+    if (isNaN(n) || this.count === n) return this
     this.count = n
     return this
   }
@@ -156,13 +156,16 @@ class IngredientList {
 
 export function BH(str: string) { return new IIngredient(str) }
 
+// Init Crafting Table as first item
+BH('minecraft:crafting_table')
+
 type RecipeParams = [outputs:AnyIngredients, inputs?:AnyIngredients, catalysts?:AnyIngredients]
 
 export function addRecipe(_recipName: null, ...params: RecipeParams) {
   const [outputs, inputs, catalysts] = params.map(o=>new IngredientList(o))
   
   if(outputs.futile) return
-  if([inputs, catalysts].every(il=>il.futile)) return
+  if(inputs.futile && (!catalysts || catalysts.futile)) return
 
   const ads = outputs.main.additionals
   ads.recipes = ads.recipes || []

@@ -7501,6 +7501,371 @@
           }
         }
       ]
+    },
+    {
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "tcomplement:materials",
+            "meta": 1
+          }
+        }
+      ],
+      "input": [
+        {
+          "type": "fluidStack",
+          "content": {
+            "amount": 18,
+            "fluid": "stone"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:brick"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "tconstruct:casting"
+          }
+        }
+      ]
+    },
+    {
+      "output": [
+        {
+          "type": "fluidStack",
+          "content": {
+            "amount": 72,
+            "fluid": "stone"
+          }
+        }
+      ],
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:cobblestone"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "tcomplement:melter"
+          }
+        }
+      ]
+    },
+    {
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:block_crystal"
+          }
+        }
+      ],
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:redstone_block"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:block_atomic_reconstructor"
+          }
+        }
+      ]
+    },
+    {
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:block_crystal",
+            "meta": 1
+          }
+        }
+      ],
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:lapis_block"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:block_atomic_reconstructor"
+          }
+        }
+      ]
+    },
+    {
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:block_crystal",
+            "meta": 2
+          }
+        }
+      ],
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:diamond_block"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:block_atomic_reconstructor"
+          }
+        }
+      ]
+    },
+    {
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:block_crystal",
+            "meta": 4
+          }
+        }
+      ],
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:emerald_block"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:block_atomic_reconstructor"
+          }
+        }
+      ]
+    },
+    {
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:block_crystal",
+            "meta": 3
+          }
+        }
+      ],
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:coal_block"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:block_atomic_reconstructor"
+          }
+        }
+      ]
+    },
+    {
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:block_crystal",
+            "meta": 5
+          }
+        }
+      ],
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:iron_block"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:block_atomic_reconstructor"
+          }
+        }
+      ]
+    },
+    {
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "nuclearcraft:gem",
+            "meta": 2
+          }
+        }
+      ],
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "biomesoplenty:gem",
+            "meta": 2
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:block_atomic_reconstructor"
+          }
+        }
+      ]
+    },
+    {
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "nuclearcraft:gem"
+          }
+        }
+      ],
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "biomesoplenty:gem",
+            "meta": 1
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:block_atomic_reconstructor"
+          }
+        }
+      ]
+    },
+    {
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "advgenerators:iron_tubing"
+          }
+        }
+      ],
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:item_misc",
+            "meta": 7
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:block_atomic_reconstructor"
+          }
+        }
+      ]
+    },
+    {
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:prismarine_shard"
+          }
+        }
+      ],
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:quartz"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "actuallyadditions:block_atomic_reconstructor"
+          }
+        }
+      ]
     }
   ]
 }

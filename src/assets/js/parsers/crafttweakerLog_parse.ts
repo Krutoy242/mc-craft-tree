@@ -71,22 +71,19 @@ export function parseCrafttweakerLog(crLog:string) {
   }
 }
 
-const itemRegex = /<(?<item>[^:]+?:[^:]+?(:(\d+|\*))?)>|(?<null>null)/
-
 function tryMatchRgx(zsLine:string) {
-  const mainMatch = zsLine.match(/recipes.addShape(d|less)\("[^"]+?", (<(?<output>[^:]+?:[^:]+?(:\d+)?)>( \* (?<amount>\d+))?|null), \[(?<input_array>.*)\]\);/)?.groups
+  const mainMatch = zsLine.match(/recipes.addShape(?<type>d|less)\("(?<name>[^"]+?)", (<(?<output>[^:]+?:[^:]+?(:\d+)?)>( \* (?<amount>\d+))?|null), \[(?<input_array>.*)\]\);/)?.groups
   if(!mainMatch) return
 
-  const {output, amount, input_array} = mainMatch
+  const {output, amount, input_array, name, type} = mainMatch
   if(!input_array || !output) return
 
-  const parsedArr = (input_array.startsWith('[')
-    ? parse2dArr
-    : parse1dArr
-  )(input_array)
+  const parsedArr = (input_array.startsWith('[') ? parse2dArr : parse1dArr)(input_array)
   if(!parsedArr) return
 
-  return `$(BH('${output}').amount(${amount||1}), [${parsedArr}])`
+  const count = parseInt(amount)||1
+  const result = `recipes.addShape${type}('${name.replace('\'', '\\\'')}', BH('${output}')${count > 1 ? '.amount('+count+')' : ''}, [${parsedArr}])`
+  return result
 }
 
 function parse2dArr(text:string) {
@@ -104,14 +101,12 @@ function parse2dArr(text:string) {
 
 function parse1dArr(text:string) {
   const acc:string[] = []
-  for (const m of text.matchAll(/<(?<item>[^:]+?:[^:]+?(:(\d+|\*))?)>|(?<null>null)/g)) {
+  for (const m of text.matchAll(/(?<! \| )<(?<item>[^:]+?:[^:]+?(:(\d+|\*))?)>|(?<null>null)/g)) {
     if(!m?.groups) return
-    if(m.groups.null) continue
-    acc.push(m.groups.item)
+    if(m.groups.null) acc.push('null')
+    else acc.push(`BH('${m.groups.item}')`)
   }
   if(!acc.length) return
 
-  return acc
-    .map(s=>`BH('${s}')`)
-    .join(', ')
+  return acc.join(', ')
 }
