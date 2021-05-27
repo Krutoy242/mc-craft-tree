@@ -92,7 +92,8 @@ export default {
     },
     whole(){
       const num = Math.floor(this.number)
-      return numeral(num).format('0,0')
+      const output = numeral(num).format('0,0')
+      return output === 'NaN' ? num : output
     },
     residueIsZero(){
       return this.number - Math.floor(this.number) === 0

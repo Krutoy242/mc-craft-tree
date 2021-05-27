@@ -77,7 +77,8 @@
         </div>
       </v-card>
     </template>
-    {{ node.id }}
+    {{ node.display }}
+    <big-number :number="node.complexity"/>
   </v-tooltip>
 </template>
 
