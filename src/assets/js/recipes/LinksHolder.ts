@@ -1,11 +1,11 @@
 import { Constituent } from '../cuents/Constituent'
 import { ConstituentStack } from '../cuents/ConstituentStack'
-import { cutNum, UniqueKeys } from '../utils'
+import { cutNum, limitedLog, UniqueKeys } from '../utils'
 import { RecipeLink } from './RecipeLink'
 import { processingCostFromInputAmount, floatCut, Recipe } from './recipes'
 import numeral from 'numeral'
 
-
+let IS_DEBUG = false
 /**
 * List of all links between 1 output and all requirments in single recipe
 * One item can have many recipes and many LinksHolders
@@ -18,7 +18,7 @@ export class LinksHolder {
   purity = 0.0
   steps = 0
   
-  private recipesKeys = new Set<Recipe>()
+  // private recipesKeys = new Set<Recipe>()
   private catalystsKeys = new Set<Constituent>()
 
   constructor(
@@ -36,35 +36,50 @@ export class LinksHolder {
     return [cls[0] + `%c(${cutNum(this.complexity)},${numeral(this.purity).format('0.00')},${cutNum(this.steps)})`, ...cls.slice(1), 'background: #132; color: #444']
   }
 
+  private isLooped():boolean {
+    return this.inputs.some(({from}) => from.recipes.mainHolder?.catalystsKeys.has(this.output.cuent))
+      || this.catalysts.some(({from}) => this.output.cuent === from)
+  }
+
+  private addCatalystKey(c:Constituent, processor = false):boolean {
+    if(this.catalystsKeys.has(c)) return false
+    this.catalystsKeys.add(c)
+    // const valToAdd = processor ? c.complexity : c.processing
+    const valToAdd = c.complexity
+    this.processing += valToAdd
+    if(IS_DEBUG) {
+      const clo = c.console()
+      limitedLog('adding: ', valToAdd + ' from: ' + clo[0], ...clo.slice(1))
+    }
+    return true
+  }
+
   calculate() {
     const oldComplexity = this.complexity
-    this.cost = processingCostFromInputAmount(this.inputs.length)
+    this.cost = 0.0
     this.processing = 0.0
-    let newPurity = 0.0
     this.steps = 1
-
-    const isDebug = this.output.cuent.id === 'tcomplement:scorched_casting:0'
+    let newPurity = 0.0
     this.catalystsKeys.clear()
-    const addCatal = (c:Constituent, processor = false) => {
-      if(this.catalystsKeys.has(c)) return
-      this.catalystsKeys.add(c)
-      this.processing += processor ? c.complexity : c.processing
-      if(isDebug) console.log('adding: ', processor ? c.complexity : c.processing, 'from:', c.display)
-    }
 
-    for (const {from, weight} of this.inputs) {
-      this.cost += (from.cost /*+  from.steps */) * weight
-      newPurity += from.purity ** (2 - 1 / (from.steps + 1))
-      this.steps += from.steps
-      // this.processing += from.steps
-      // this.processing += from.processing
-      from.recipes.mainHolder?.catalystsKeys.forEach(c=>addCatal(c))
-    }
+    // IS_DEBUG = this.output.cuent.display === 'Desert Myrmex Resin Chunk'
+    if(IS_DEBUG) limitedLog('> ', ...this.recipe.console())
+    
+    if(!this.isLooped()) {
+      // newPurity = 1.0
+      this.cost += processingCostFromInputAmount(this.inputs.length)
+      for (const {from, weight} of this.inputs) {
+        this.cost += (from.cost /*+  from.steps */) * weight
+        // newPurity += (from.purity ** (2 - 1 / (from.steps + 1)))// * 0.9 + 0.1
+        newPurity += from.purity / (from.steps + 1)
+        this.steps += from.steps
+        from.recipes.mainHolder?.catalystsKeys.forEach(c=>this.addCatalystKey(c))
+      }
 
-    for (const {from, weight} of this.catalysts) {
-      // this.processing += from.complexity// + from.steps
-      newPurity *= from.purity * 0.5 + 0.5
-      addCatal(from, true)
+      for (const {from} of this.catalysts) {
+        newPurity += from.purity// * 0.9 + 0.1
+        this.addCatalystKey(from, true)
+      }
     }
 
     // Recalculate steps
@@ -77,7 +92,7 @@ export class LinksHolder {
 
     // this.purity = floatCut(newPurity / (this.inputs.length || 1))
     // this.complexity = floatCut(this.cost + this.processing)
-    this.purity = newPurity / (this.inputs.length || 1)
+    this.purity = newPurity / ((this.inputs.length + this.catalysts.length) || 1)
     this.complexity = this.cost + this.processing
 
     // this.steps = this.recipesKeys.size

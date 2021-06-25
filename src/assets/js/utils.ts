@@ -19,6 +19,13 @@ export function cleanupNbt(o?: any): object|undefined {
   return o 
 }
 
+const limits = new Map<string, number>()
+export function limitedLog(name:string, ...args:any[]) {
+  const lim = (limits.get(name) ?? 0) + 1
+  if (lim > 1000) return
+  limits.set(name, lim)
+  return console.log(...args)
+}
 
 export function objToString(obj:any, ndeep = 1):string {
   const t:string = typeof obj

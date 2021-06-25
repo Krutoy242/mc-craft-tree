@@ -268,8 +268,8 @@ export class Recipe {
     const cls = (['inputs', 'catalysts', 'outputs'] as const)
       .map(s=>this[s].map(cs=>cs.cuent.console()))
 
-    const head = cls.map(group=>group.map(cuent=>cuent[0]).join('+')).join(']->[')
-    const tail = cls.map(group=>group.map(cuent=>cuent.slice(1)).flat()).flat()
+    const head = cls.map(group=>group.map(cuent=>cuent[0]).join('+')).join('] %c➧%c [')
+    const tail = cls.map((group,i)=>(i?['color: #2f1', '']:[]).concat(group.map(cuent=>cuent.slice(1)).flat())).flat(2)
 
     return ['['+head+']', ...tail]
   }

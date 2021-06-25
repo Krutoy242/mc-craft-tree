@@ -75,7 +75,7 @@ function parseRecipe(recipe:Recipe, fileName:string) {
 
 function getGroup(recipe: Recipe, group: string): IIngredient[] {
   return recipe.elements.filter(item=>item.name===group)
-    .map(g=>g.elements.map(parseItem)).flat()
+    .map(g=>g.elements.filter(elem=>elem.elements).map(parseItem)).flat()
 }
 
 function parseItemStack(text: string):IIngredient {
