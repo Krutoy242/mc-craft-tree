@@ -5,7 +5,6 @@ export const listUU: Record<string, number> = {
   'placeholder:Mana'                               : 0.04,    // [placeholder:Mana]
   'placeholder:RF'                                 : 1,       // [placeholder:RF]
   'placeholder:Exploration'                        : 1,       //
-  'placeholder:Life Essence'                       : 0.02,    //
   'placeholder:Time'                               : 0.02,    //
   'placeholder:Bees'                               : 10,      // 
   'placeholder:Seconds'                            : 20,      // [placeholder:Seconds]

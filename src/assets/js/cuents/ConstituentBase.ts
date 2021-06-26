@@ -157,7 +157,9 @@ export class ConstituentVisible extends ConstituentAdditionals {
     if(base.type === 'placeholder') {
       if      (base.entry == 'Ticks') this.volume = 0.01
       else if (base.entry == 'Mana') this.volume = 0.01
-      else if (base.entry == 'RF') this.volume = 0.001
+      else if (base.entry == 'Exploration') this.volume = 0.01
+      else if (base.entry == 'Grid Power')  this.volume = 0.01
+      else if (base.entry == 'RF') this.volume = 0.000001
     } else 
     if (base.type === 'fluidStack') {
       this.volume = 0.001

@@ -1,7 +1,7 @@
 <template>
   <div style="position: relative; height: 100%">
     <div style="position: absolute;" class="ma-4">
-      <tree-entry v-if="selectedNode" :node="selectedNode" size="64"/>
+      <tree-entry v-if="selectedNode" :node="selectedNode" size="64" details="big"/>
     </div>
     <svg id="viz" style="width: 100%; height: 100%"></svg>
     <v-system-bar

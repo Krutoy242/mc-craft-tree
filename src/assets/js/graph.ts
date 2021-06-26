@@ -1,7 +1,5 @@
 import * as d3 from 'd3'
-import { D3ZoomEvent, EnterElement, SimulationLinkDatum, SimulationNodeDatum } from 'd3'
-import * as Vue from 'vue/types/umd'
-import { CombinedVueInstance } from 'vue/types/vue'
+import { D3ZoomEvent } from 'd3'
 import { Constituent } from './cuents/Constituent.js'
 import { RecipeLink } from './recipes/RecipeLink.js'
 import { GraphPile } from './cuents/Pile.js'

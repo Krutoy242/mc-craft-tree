@@ -76,9 +76,9 @@ export class ConstituentTree {
 
   public makePileFrom(id: string) { return this.makePile(id, true) }
   public makePileTo  (id: string) { return this.makePile(id, false) }
-  public makePile(arg: Constituent, toOutputs: boolean): GraphPile
-  public makePile(arg: string, toOutputs: boolean): GraphPile
-  public makePile(arg: Constituent | string, toOutputs: boolean): GraphPile {
+  public makePile(arg: Constituent, toOutputs: boolean, filter?:(c:Constituent)=>boolean): GraphPile
+  public makePile(arg: string, toOutputs: boolean, filter?:(c:Constituent)=>boolean): GraphPile
+  public makePile(arg: Constituent | string, toOutputs: boolean, filter?:(c:Constituent)=>boolean): GraphPile {
     let c: Constituent | undefined
     if(typeof arg === 'string') c = this.getById(arg)
     else c = arg
@@ -90,7 +90,7 @@ export class ConstituentTree {
     } else {
       pile = new GraphPile()
 
-      c.purchase((c)=>pile.merge(c))
+      c.purchase(c=>!filter || filter(c) ? pile.merge(c) : null)
       // c.dive(toOutputs ? 'outputs' : 'requirments', 
       //   (c)=>pile.merge(c)
       // )

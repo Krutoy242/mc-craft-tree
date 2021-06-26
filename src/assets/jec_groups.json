@@ -8255,14 +8255,10 @@
     {
       "input": [
         {
-          "type": "itemStack",
+          "type": "placeholder",
           "content": {
-            "amount": 1,
-            "meta": 4,
-            "item": "iceandfire:myrmex_desert_egg",
-            "cap": {
-              "astralsorcery:cap_item_amulet_holder": {}
-            }
+            "amount": 10000,
+            "name": "Ticks"
           }
         }
       ],
@@ -8272,6 +8268,17 @@
           "content": {
             "amount": 1,
             "item": "enderio:item_soul_vial"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "meta": 4,
+            "item": "iceandfire:myrmex_desert_egg",
+            "cap": {
+              "astralsorcery:cap_item_amulet_holder": {}
+            }
           }
         }
       ],
@@ -8288,14 +8295,10 @@
     {
       "input": [
         {
-          "type": "itemStack",
+          "type": "placeholder",
           "content": {
-            "amount": 1,
-            "meta": 4,
-            "item": "iceandfire:myrmex_jungle_egg",
-            "cap": {
-              "astralsorcery:cap_item_amulet_holder": {}
-            }
+            "amount": 10000,
+            "name": "Ticks"
           }
         }
       ],
@@ -8305,6 +8308,17 @@
           "content": {
             "amount": 1,
             "item": "enderio:item_soul_vial"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "meta": 4,
+            "item": "iceandfire:myrmex_jungle_egg",
+            "cap": {
+              "astralsorcery:cap_item_amulet_holder": {}
+            }
           }
         }
       ],

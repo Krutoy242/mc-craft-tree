@@ -31,9 +31,8 @@ export function makeGraphTree(
 ) {
 
   //  ❓❓❓ To filter or not to filter
-  const maxCuents = 2000
   console.log('arguments :>> ', svg, vue, query)
-  const pile = globalTree.makePile(query.id, query.isRightClick)
+  const pile = globalTree.makePile(query.id, query.isRightClick, c=>c.usability>0)
   const graphNodes = pile.list as NodeDatum[]
 
   let links: CurvedLinks | StraightLinks
@@ -127,7 +126,7 @@ export function makeGraphTree(
 
 class Highliter {
   private timeoutID?: number
-  private current!: NodeDatum[]
+  private current: NodeDatum[] = []
   private all = new Set<LinkDatum>()
   private currDeph = 0
   private towardsOutputs = false
@@ -135,11 +134,12 @@ class Highliter {
   constructor(private stylesCallbacks: StyleCallbacks) {}
 
   private nextStep = (center: NodeDatum) => {
-    this.current ??= [center]
+    if(!this.current.length) this.current.push(center)
     this.currDeph++
 
     const newSet = new Set<NodeDatum>()
     for(const d of this.current) {
+      if(!d) continue
       for(const l of this.getLinksArray(d)) {
         if(!l.d3node || this.all.has(l)) continue
         newSet.add(l.from as NodeDatum)
@@ -219,7 +219,7 @@ class StraightLinks {
     this.sel.each(function(ld) {
       const d3node = d3.select(this) as any
       ld.d3node = d3node
-      ;(ld.flipped as LinkDatum).d3node = d3node
+      // ;(ld.flipped as LinkDatum).d3node = d3node
     })
   }
 

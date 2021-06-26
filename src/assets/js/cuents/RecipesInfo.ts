@@ -10,7 +10,8 @@ function SORT_PURITY_FIRST(a:LinksHolder, b:LinksHolder) {
 
 const epsilon = 0.000000000001
 function SORT_COMPLEXY_AND_PURITY(a:LinksHolder, b:LinksHolder) {
-  return a.complexity / (a.purity * (1-epsilon) + epsilon) - b.complexity / (b.purity * (1-epsilon) + epsilon)
+  return  a.complexity / ((a.purity ** 1) * (1-epsilon) + epsilon)
+        - b.complexity / ((b.purity ** 1) * (1-epsilon) + epsilon)
 }
 
 export class RecipesInfo {

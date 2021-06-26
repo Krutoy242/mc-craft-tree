@@ -13,7 +13,6 @@
         <tree-entry 
           :node="outCS.cuent"
           :amount="outCS.amount"
-          dense
         />
         <div class="text--secondary text-caption d-flex justify-center ma-0">
           <pured-value :purity="recipe.getLinksHolderFor(outCS).purity">
@@ -26,22 +25,30 @@
     <v-divider></v-divider>
 
     <v-list>
-      <v-list-item
-        v-for="(listName, i) in ['Inputs','Catalysts']"
-        :key="i"
-      >
-        <v-list-item-content v-if="list(listName).length>0">
-          <v-divider v-if="i!=0"/>
-          <v-list-item-title :class="i===0 ? 'green--text' : 'teal--text'">
-            {{ listName }}:
+      <v-list-item>
+        <v-list-item-content v-if="list('Inputs').length>0">
+          <v-list-item-title :class="'green--text'">
+            Inputs:
+          </v-list-item-title>
+          <entry-tree-map :entryList="list('Inputs')" />
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+
+    <v-divider></v-divider>
+
+    <v-list>
+      <v-list-item>
+        <v-list-item-content v-if="list('Catalysts').length>0">
+          <v-list-item-title :class="'teal--text'">
+            Catalysts:
           </v-list-item-title>
           <v-list-item-subtitle class="d-flex flex-wrap"> 
             <tree-entry 
-              v-for="(cs, i) in list(listName)"
+              v-for="(cs, i) in list('Catalysts')"
               :key="i"
               :node="cs.cuent"
               :amount="cs.amount"
-              dense
             />
           </v-list-item-subtitle>
         </v-list-item-content>
@@ -51,7 +58,9 @@
 </template>
 
 <script>
+import EntryTreeMap from './EntryTreeMap.vue'
 export default {
+  components: { EntryTreeMap },
   props: {
     recipe: {
       type: Object,

@@ -1,15 +1,21 @@
 <template>
+  <div>
   <v-tooltip right class="ma-0" transition="slide-x-reverse-transition">
     <template v-slot:activator="{ on, attrs }">
       <v-card
-        :width="dense ? '': (size|0 + 32*9) + 'px'"
-        :class="'d-inline-block text-truncate ' +  isBigSmall('glassed', '')"
+        :width="getWidth"
+        :height="design.resized ? height : undefined"
+        :class="'d-inline-block text-truncate ' + design.resized ? '' :'glassed'"
         v-bind="attrs"
         v-on="on"
         :to="'graph?q=' + node.id"
+        style="overflow: hidden;"
       >
+        <!-- Wide and shortened -->
         <v-list class="pa-0 transparent">
           <v-list-item class="pa-0">
+
+            <!-- Icon -->
             <v-list-item-icon class="ma-2">
               <v-badge
                 bottom
@@ -18,31 +24,35 @@
                 :value="amount>1"
                 :content="amount"
               >
-                <v-badge dot color="yellow" :value="node.recipes.isLooped">
+                <v-badge
+                  dot
+                  color="yellow"
+                  :value="node.recipes.isLooped"
+                >
                   <svg
                     :viewBox="node.viewBox"
-                    :width="size + 'px'"
-                    :height="size + 'px'"
-                    class="justify-center"
+                    :width="iconSize"
+                    :height="iconSize"
                   >
                     <image
                       :xlink:href="require('@/assets/spritesheet.png')"
                       image-rendering="pixelated"
                     ></image>
                   </svg>
-                  <!-- <span width="2em">{{ entryIcon }} </span> -->
                 </v-badge>
               </v-badge>
             </v-list-item-icon>
-            <v-list-item-content class="pa-0" v-if="!dense">
-              <v-card-text class="pa-0 pl-1 text-subtitle-1">
-                {{ display }}
-                </v-card-text>
+
+            <!-- Name and ID -->
+            <v-list-item-content class="pa-0" v-if="design.name">
+              <v-card-text class="pa-0 pl-1 text-subtitle-1">{{ display }}</v-card-text>
               <tree-entry-name :node="node"/>
             </v-list-item-content>
           </v-list-item>
         </v-list>
-        <div v-if="parseInt(size) > 32">
+
+        <!-- Big Description -->
+        <div v-if="design.big">
           <v-container class="pt-3 pb-5">
             <v-row no-gutters>
               <v-col>
@@ -80,6 +90,7 @@
     {{ node.display }}
     <big-number :number="node.complexity"/>
   </v-tooltip>
+  </div>
 </template>
 
 <script>
@@ -88,12 +99,10 @@ export default {
     node: {
       type: Object,
     },
-    size: { default: 32},
     amount: { default: 1},
-    dense: {
-      type: Boolean,
-      default: false,
-    }
+    width: { default: 32},
+    height: { default: 32},
+    details: { default: ''}
   },
   data() {
     return {
@@ -105,6 +114,30 @@ export default {
     }
   },
   computed: {
+    getWidth() {
+      return this.design.resized 
+        ? this.width
+        : this.design.wide ? this.size + 32*9 : undefined
+    },
+    getStyleSize() {
+      const w = this.getWidth
+      const h = this.design.resized ? this.height : undefined
+      return  (w ? 'width:' +w+'px;' : '') +
+              (h ? 'height:'+h+'px;' : '')
+    },
+    design() {
+      const des = this.details
+        .split(' ')
+        .reduce((r,v)=>(r[v]=true,r),{})
+      
+      if(des.big) des.wide=true
+      if(des.wide) des.name=true
+      return des
+    },
+    size() {
+      return Math.min(this.width, this.height) | 0
+    },
+    iconSize() { return this.design.resized ? (Math.max(this.width, this.height) | 0) : this.size},
     display() {
       return this.node.display
     },
@@ -113,12 +146,6 @@ export default {
     },
   },
   methods: {
-    isBigSmall(a, b) {
-      if (this.size > 32)
-        return a
-      else
-        return b
-    }
   },
 }
 </script>
@@ -126,5 +153,9 @@ export default {
 <style scoped>
 .glassed {
   background-color: rgba(44, 44, 44, 0.637)!important;
+}
+
+.absolute {
+  position: absolute;
 }
 </style>

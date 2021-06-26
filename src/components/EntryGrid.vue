@@ -17,7 +17,6 @@
               v-if="!in_cuentStack.over"
               :node="in_cuentStack.cuent"
               :amount="in_cuentStack.amount"
-              dense
             />
             <span v-else class="text-h3"> ...</span>
           </v-col>
