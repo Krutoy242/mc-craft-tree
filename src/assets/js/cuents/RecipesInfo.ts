@@ -3,6 +3,16 @@ import { LinksHolder } from '../recipes/LinksHolder'
 import { Constituent } from './Constituent'
 import * as _ from 'lodash'
 
+
+function SORT_PURITY_FIRST(a:LinksHolder, b:LinksHolder) {
+  return b.purity - a.purity || a.complexity - b.complexity
+}
+
+const epsilon = 0.000000000001
+function SORT_COMPLEXY_AND_PURITY(a:LinksHolder, b:LinksHolder) {
+  return a.complexity / (a.purity * (1-epsilon) + epsilon) - b.complexity / (b.purity * (1-epsilon) + epsilon)
+}
+
 export class RecipesInfo {
   isLooped = false
   main?: Recipe
@@ -55,8 +65,8 @@ export class RecipesInfo {
       return false
     }
 
-    typles.sort(([, a], [, b]) => 
-      b.purity - a.purity || a.complexity - b.complexity
+    typles.sort(([, a], [, b]) =>
+      SORT_COMPLEXY_AND_PURITY(a,b)
     )
 
     ;[[this.main, this.mainHolder]] = typles
