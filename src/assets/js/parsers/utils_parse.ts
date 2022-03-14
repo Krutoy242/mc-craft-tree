@@ -6,7 +6,7 @@ export function serializeNameMeta(ctName:string) {
   const haveMeta = match.length > 2
   if (!haveMeta) 
     if     ([  'ore'].includes(match[0])) return match[1]
-    else if(['fluid'].includes(match[0])) return ctName
+    else if(['fluid','liquid'].includes(match[0])) return ctName
     else return ctName + ':0'
   else
   if(ctName.slice(-1) === '*') return ctName.slice(0, -1) + '0'

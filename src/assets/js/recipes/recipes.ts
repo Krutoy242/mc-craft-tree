@@ -71,6 +71,7 @@ function fromId(id: string): CuentBase {
     const switchers: {[key: string]:Function} = {
       'placeholder':()=>'placeholder',
       'fluid'      :()=>'fluidStack',
+      'liquid'     :()=>'fluidStack',
       'default'    :()=>'itemStack',
     }
     args = {
