@@ -1,1 +1,5 @@
 - [ ] If recipe have many amount of one item as output, usability of inputs should be at least 1 (not less then 1.0)
+- [ ] Account Thaumcraft's aspects cost
+- [ ] Check why Lumium so pricy
+- [ ] UU Forbid ME drives to be replicable
+- [ ] UU Silicon Wafer cant be seen in UU
