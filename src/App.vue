@@ -3,14 +3,14 @@
     <v-app-bar app clipped-left>
       <v-tabs>
 
-        <v-tab link to="graph">
-          <v-icon>mdi-graph</v-icon>
-          <span class="ma-3">Graph</span>
-        </v-tab>
-        
-        <v-tab link to="table">
-          <v-icon>mdi-table</v-icon>
-          <span class="ma-3">Table</span>
+        <v-tab
+          link
+          v-for="([name,icon], i) in tabs"
+          :key="i"
+          :to="name.toLowerCase()"
+        >
+          <v-icon>{{icon}}</v-icon>
+          <span class="ma-3">{{name}}</span>
         </v-tab>
         
       </v-tabs>
@@ -135,6 +135,12 @@ export default Vue.extend({
     showLoadOverlay = true
     progressIndeterminate = true
     progressValue = 0
+
+    tabs = [
+      ['Graph', 'mdi-graph'],
+      ['Table', 'mdi-table'],
+      ['History', 'mdi-graph'],
+    ]
   }),
   computed: {
     listLoops() {return this.pile?.listLoops ?? new Set()},

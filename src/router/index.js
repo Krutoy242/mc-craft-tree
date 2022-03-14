@@ -19,6 +19,13 @@ const routes = [
       import(/* webpackChunkName: "graph" */ '../views/Graph.vue')
   },
   {
+    path: '/history',
+    name: 'history',
+    props: true,
+    component: () =>
+      import(/* webpackChunkName: "history" */ '../views/History.vue')
+  },
+  {
     path: '*',
     redirect: '/graph'
   }

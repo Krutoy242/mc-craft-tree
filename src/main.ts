@@ -1,3 +1,5 @@
+import './router/componentHooks.ts'
+
 
 Object.defineProperty(String.prototype, 'hashCode', {
   value: function() {
