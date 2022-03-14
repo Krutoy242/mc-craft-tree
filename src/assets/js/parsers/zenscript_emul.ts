@@ -5,13 +5,23 @@ const {sqrt, max, ceil, floor} = Math
 function ⵢ(n: number) { if(n) return BH('placeholder:RF').amount(n) }
 function t(n: any) { if(n) return BH('placeholder:Time').amount(n) }
 
+function shapedCatalyst(input2d: any[]) {
+  return max(input2d.length, input2d.reduce((x: number,y: string | any[])=>max(x, y.length), 0)) > 2 ? [BH('minecraft:crafting_table')] : undefined
+}
 
+function shapelessCatalyst(input1d: string | any[]) {
+  return input1d.length>4 ? [BH('minecraft:crafting_table')] : undefined
+}
+
+function isInputsNonEmpty(inputs:string | any[]) {
+  return [inputs].flat(2).filter(a=>a).length
+}
 
 /*=====  EVAL functions ======*/
 // eslint-disable-next-line no-unused-vars
 export const recipes = {
-  addShaped:    (recipName: any, output: any, input2d: any[]) => addRecipe(recipName, output, input2d, max(input2d.length, input2d.reduce((x: number,y: string | any[])=>max(x, y.length), 0)) > 2 ? [BH('minecraft:crafting_table')] : undefined),
-  addShapeless: (recipName: any, output: any, input1d: string | any[]) => addRecipe(recipName, output, [input1d], input1d.length>4 ? [BH('minecraft:crafting_table')] : undefined)
+  addShaped:    (recipName: any, output: any, input2d: any[])          => isInputsNonEmpty(input2d) && addRecipe(recipName, output, input2d, shapedCatalyst(input2d)),
+  addShapeless: (recipName: any, output: any, input1d: string | any[]) => isInputsNonEmpty(input1d) && addRecipe(recipName, output, [input1d], shapelessCatalyst(input1d))
 }
 // eslint-disable-next-line no-unused-vars
 export const furnace = {
