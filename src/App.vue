@@ -131,7 +131,7 @@ export default Vue.extend({
     recipesStoreCount = 0
 
     // Progress bar
-    progressText = "Loading..."
+    progressText = 'Loading...'
     showLoadOverlay = true
     progressIndeterminate = true
     progressValue = 0
@@ -163,7 +163,7 @@ export default Vue.extend({
         this.pile = pile as GlobalPile
         this.recipesStoreCount = recipesStore.count
       }, 1)
-    }, 1);
+    }, 1)
   },
 })
 </script>

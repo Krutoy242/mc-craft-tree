@@ -5,7 +5,7 @@ import { RecipeLink } from './RecipeLink'
 import { processingCostFromInputAmount, floatCut, Recipe } from './recipes'
 import numeral from 'numeral'
 
-let IS_DEBUG = false
+const IS_DEBUG = false
 /**
 * List of all links between 1 output and all requirments in single recipe
 * One item can have many recipes and many LinksHolders

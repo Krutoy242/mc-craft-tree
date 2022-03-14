@@ -3,6 +3,7 @@ import { D3ZoomEvent } from 'd3'
 import { Constituent } from './cuents/Constituent.js'
 import { RecipeLink } from './recipes/RecipeLink.js'
 import { GraphPile } from './cuents/Pile.js'
+import { CombinedVueInstance } from 'vue/types/vue'
 
 export interface NodeDatum extends d3.SimulationNodeDatum, Constituent {
   x: number;
@@ -25,7 +26,7 @@ export type AnySelection = d3.Selection<any, unknown, any, unknown>
 // let axisContainer : AnySelection
 // let simulation    : d3.Simulation<NodeDatum, LinkDatum>
 
-let vue: any
+let vue: CombinedVueInstance<Vue, unknown, unknown, unknown, Readonly<Record<any, any>>>
 let navig: Function
 
 export function initGraph(_vue: any, _navig: Function) {

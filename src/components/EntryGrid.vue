@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import _ from 'lodash'
 const { floor, ceil, sqrt } = Math
 
 export default {
