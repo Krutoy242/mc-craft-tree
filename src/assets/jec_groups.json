@@ -8383,6 +8383,403 @@
           }
         }
       ]
+    },
+    {
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:coal"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "extrautils2:resonator"
+          }
+        },
+        {
+          "type": "placeholder",
+          "content": {
+            "amount": 16,
+            "name": "Grid Power"
+          }
+        }
+      ],
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "meta": 4,
+            "item": "extrautils2:ingredients"
+          }
+        }
+      ]
+    },
+    {
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:emerald_ore"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "thaumcraft:crucible"
+          }
+        }
+      ],
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "jaopca:item_clusteremerald"
+          }
+        }
+      ]
+    },
+    {
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 256,
+            "item": "minecraft:cobblestone"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "appliedenergistics2:condenser"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "meta": 35,
+            "item": "appliedenergistics2:material"
+          }
+        }
+      ],
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "meta": 6,
+            "item": "appliedenergistics2:material"
+          }
+        }
+      ]
+    },
+    {
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:lapis_ore"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "thaumcraft:crucible"
+          }
+        }
+      ],
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "jaopca:item_clusterlapis"
+          }
+        }
+      ]
+    },
+    {
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "bloodmagic:blood_orb"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 2,
+            "item": "minecraft:wheat"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "meta": 15,
+            "item": "minecraft:dye"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "bloodmagic:alchemy_table"
+          }
+        }
+      ],
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "meta": 22,
+            "item": "bloodmagic:component"
+          }
+        }
+      ]
+    },
+    {
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "bloodmagic:blood_orb"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "meta": 22,
+            "item": "bloodmagic:component"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:gold_nugget"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:wheat"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:sugar"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:brown_mushroom"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:red_mushroom"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "bloodmagic:alchemy_table"
+          }
+        }
+      ],
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 2,
+            "meta": 26,
+            "item": "bloodmagic:component"
+          }
+        }
+      ]
+    },
+    {
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "bloodmagic:blood_orb"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "meta": 3,
+            "item": "minecraft:fish"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "bloodmagic:alchemy_table"
+          }
+        }
+      ],
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "meta": 25,
+            "item": "bloodmagic:component"
+          }
+        }
+      ]
+    },
+    {
+      "input": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:glass_bottle"
+          }
+        },
+        {
+          "type": "fluidStack",
+          "content": {
+            "amount": 333,
+            "fluid": "water"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "enderio:block_tank",
+            "fMeta": 1
+          }
+        }
+      ],
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "minecraft:potion",
+            "nbt": {
+              "Potion": "minecraft:water"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "input": [
+        {
+          "type": "placeholder",
+          "content": {
+            "amount": 40000,
+            "name": "Ticks"
+          }
+        }
+      ],
+      "catalyst": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "bloodmagic:ritual_controller"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 20,
+            "item": "bloodmagic:ritual_stone"
+          }
+        }
+      ],
+      "output": [
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "item": "bloodmagic:item_demon_crystal"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "meta": 1,
+            "item": "bloodmagic:item_demon_crystal"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "meta": 2,
+            "item": "bloodmagic:item_demon_crystal"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "meta": 3,
+            "item": "bloodmagic:item_demon_crystal"
+          }
+        },
+        {
+          "type": "itemStack",
+          "content": {
+            "amount": 1,
+            "meta": 4,
+            "item": "bloodmagic:item_demon_crystal"
+          }
+        }
+      ]
     }
   ]
 }
