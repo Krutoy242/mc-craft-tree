@@ -11,6 +11,7 @@ export const listUU: Record<string, number> = {
   'placeholder:BossFight'                          : 200,     // [placeholder:BossFight]
   'placeholder:Grid Power'                         : 10,      //
   'placeholder:Starlight'                          : 10,      //
+  'placeholder:Anything'                           : 100,     //
 
   'actuallyadditions:item_misc:5'                  : 240,     // Black Quartz
   'actuallyadditions:item_hairy_ball'              : 5000,
@@ -80,7 +81,6 @@ export const listUU: Record<string, number> = {
   'minecraft:blaze_rod'                            : 1000,    // Blaze Rod
   'minecraft:bone'                                 : 60,      // Bone
   'minecraft:brown_mushroom'                       : 80,      // Mushroom
-  'minecraft:bucket'                               : 400,     // Bucket
   'minecraft:chorus_flower'                        : 17000,   // Chorus Flower
   'minecraft:chorus_fruit'                         : 3600,    // Chorus Fruit
   'minecraft:coal'                                 : 15,      // Coal
@@ -91,7 +91,6 @@ export const listUU: Record<string, number> = {
   'minecraft:dye:1'                                : 40,      // Rose Red
   'minecraft:dye:2'                                : 40,      // Cactus Green
   'minecraft:dye:3'                                : 40,      // 
-  'minecraft:dye:4'                                : 160,     // Lapis Lazuli
   'minecraft:dye:5'                                : 40,      // 
   'minecraft:dye:6'                                : 40,      // Cyan Dye
   'minecraft:dye:7'                                : 40,      // 
@@ -250,6 +249,7 @@ export const listUU: Record<string, number> = {
   'randomthings:ingredient:2'                      : 5000,
   'minecraft:dragon_breath' : 16000,
   'quark:soul_bead' : 10000,
+  'scalinghealth:crystalshard' : 5000,
 
   'animania:friesian_cheese_wheel'                 : 400,
   'animania:holstein_cheese_wheel'                 : 400,
