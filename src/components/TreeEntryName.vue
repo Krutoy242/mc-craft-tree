@@ -1,7 +1,7 @@
 <template>
   <div>
     <kbd
-      ><span :style="{ 'color' : `hsl(${h}, 60%, 40%)` }">{{
+      ><span :style="{ color: `hsl(${h}, 60%, 40%)` }">{{
         node.base.source
       }}</span
       >:<span class="blue--text text--lighten-3">{{ node.base.entry
@@ -12,18 +12,6 @@
 </template>
 
 <script>
-
-Object.defineProperty(String.prototype, 'hashCode', {
-  value: function() {
-    let hash = 0, i, chr
-    for (i = 0; i < this.length; i++) {
-      chr   = this.charCodeAt(i)
-      hash  = ((hash << 5) - hash) + chr
-      hash |= 0 // Convert to 32bit integer
-    }
-    return hash
-  }
-})
 
 export default {
   props: {
