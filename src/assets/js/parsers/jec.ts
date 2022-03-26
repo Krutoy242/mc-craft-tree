@@ -11,7 +11,6 @@ export function parseJECgroups(jecGroupsRaw_text:string) {
 
   /*=====  Remove type letters (like 2L or 0b)  ======*/ 
   const groupsJsonText = jecGroupsRaw_text
-    // .replace(/(\W\d+)[LBbsfd](\W)/gi, '$1$2')
     .replace(/\[\w;/g, '[') // Remove list types
     .replace(/([[, ]-?\d+(?:\.\d+)?)[ILBbsfd](?=\W)/gi, '$1') // Remove value types
     // .replace(/("SideCache".*)\[.*\]/gi, '$1"DataRemoved"')

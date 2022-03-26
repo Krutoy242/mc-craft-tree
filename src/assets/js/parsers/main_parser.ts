@@ -8,16 +8,13 @@ Lunch with NodeJS
 =============================================*/
 import fs from 'fs'
 import path from 'path'
-import glob from 'glob'
 
-import { cleanupAdditionals } from './additionals'
-import { parseJECgroups } from './jec_parse'
-import { parse_JER } from './jer_parser'
-import { parseSpritesheet } from './spritesheet_parse'
-import { initCustomRecipes } from './zenscript_custom'
-import { parseCrafttweakerLog, parseCrafttweakerLog_raw } from './crafttweakerLog_parse'
-import { initAdvRocketryXMLRecipe } from './xml'
-import { fileNameFromPath } from './utils_parse'
+import { exportAdditionals } from './additionals'
+import { parseJECgroups } from './jec'
+import { parse_JER } from './jer'
+import { parseSpritesheet } from './spritesheet'
+import { parseCrafttweakerLog_raw } from './crafttweakerLog_parse'
+import { applyOreDictionary } from './oredict'
 
 /*=============================================
 =                   Helpers                   =
@@ -48,32 +45,18 @@ parseSpritesheet(loadJson('../../raw/spritesheet.json'))
 =            world-gen.json
 =============================================*/
 const realMCPath = 'D:/mc_client/Instances/Enigmatica2Expert - Extended/'
-const worldgenPath = realMCPath + 'config/jeresources/world-gen.json'
-parse_JER(loadJson(worldgenPath))
-
-/*=============================================
-=            XML files
-=============================================*/
-glob.sync(realMCPath+'config/advRocketry/*.xml').forEach(filePath=>{
-  initAdvRocketryXMLRecipe(fileNameFromPath(filePath), loadText(filePath))
-})
+parse_JER(loadJson(realMCPath + 'config/jeresources/world-gen.json'))
 
 /*=============================================
 =            crafttweaker.log
 =============================================*/
+const crafttweakerLogTxt = realMCPath+'/crafttweaker.log'
+applyOreDictionary(loadText(crafttweakerLogTxt))
 parseCrafttweakerLog_raw(loadText(realMCPath+'/crafttweaker_raw.log'))
-parseCrafttweakerLog    (loadText(realMCPath+'/crafttweaker.log'))
-
-
-/*=============================================
-=            Custom
-=============================================*/
-initCustomRecipes()
-
 
 /*=====  Save parsed data ======*/
 // Remove technical data
-saveObjAsJson(cleanupAdditionals(), '../../default_additionals.json')
+saveObjAsJson(exportAdditionals(), '../../default_additionals.json')
 
 
 /*=============================================
