@@ -1,6 +1,6 @@
 import _ from 'lodash'
-import { IndexedRawAdditionals, setField} from './additionals'
-import { addRecipe, BH } from './primal_recipes'
+import { IndexedRawAdditionals, setField} from '../additionalsStore'
+import { addRecipe, BH } from '../primal_recipes'
 const {min, max, round} = Math
 
 

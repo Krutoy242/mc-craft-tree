@@ -1,4 +1,4 @@
-import { setField } from './additionals'
+import { setField } from '../additionalsStore'
 
 export function applyOreDictionary(crafttweakerLogTxt:string) {
   const oreEntriesRgx = /^Ore entries for <ore:([\w]+)> :[\n\r]+-<([^:>]+:[^:>]+):?([^:>]+)?/gm

@@ -1,6 +1,6 @@
-import { JEC_Ingredient, JEC_Recipe, JEC_RootObject } from '../JEC_Types'
-import { cleanupNbt } from '../utils'
-import { additionals } from './additionals'
+import { JEC_Ingredient, JEC_Recipe, JEC_RootObject } from '../../JEC_Types'
+import { cleanupNbt } from '../../utils'
+import { additionals } from '../additionalsStore'
 
 
 // ====================================================

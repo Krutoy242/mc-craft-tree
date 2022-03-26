@@ -9,12 +9,12 @@ Lunch with NodeJS
 import fs from 'fs'
 import path from 'path'
 
-import { exportAdditionals } from './additionals'
-import { parseJECgroups } from './jec'
-import { parse_JER } from './jer'
-import { parseSpritesheet } from './spritesheet'
-import { parseCrafttweakerLog_raw } from './crafttweakerLog_parse'
-import { applyOreDictionary } from './oredict'
+import { exportAdditionals } from './additionalsStore'
+import { parseJECgroups } from './from/jec'
+import { parse_JER } from './from/jer'
+import { parseSpritesheet } from './from/spritesheet'
+import { parseCrafttweakerLog_raw } from './from/crafttweaker_raw_log'
+import { applyOreDictionary } from './from/crafttweaker_log'
 
 /*=============================================
 =                   Helpers                   =
@@ -50,8 +50,8 @@ parse_JER(loadJson(realMCPath + 'config/jeresources/world-gen.json'))
 /*=============================================
 =            crafttweaker.log
 =============================================*/
-const crafttweakerLogTxt = realMCPath+'/crafttweaker.log'
-applyOreDictionary(loadText(crafttweakerLogTxt))
+const crafttweakerLogTxt = loadText(realMCPath+'/crafttweaker.log')
+applyOreDictionary(crafttweakerLogTxt)
 parseCrafttweakerLog_raw(loadText(realMCPath+'/crafttweaker_raw.log'))
 
 /*=====  Save parsed data ======*/

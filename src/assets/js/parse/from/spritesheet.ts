@@ -1,4 +1,4 @@
-import { setField } from './additionals'
+import { setField } from '../additionalsStore'
 
 /**
  * Write viewboxes into additionals from spritesheet.json

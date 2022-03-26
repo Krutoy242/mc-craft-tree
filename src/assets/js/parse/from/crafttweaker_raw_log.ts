@@ -1,4 +1,4 @@
-import { setField } from './additionals'
+import { setField } from '../additionalsStore'
 
 type CrlogRawType = { [mod:string]: [display:string, definition:string, snbt:string, burntime:number][] }
 
