@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 export const listUU: Record<string, number> = {
   'placeholder:Dim Overworld'                      : 1.0,     //
 

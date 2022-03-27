@@ -1,4 +1,3 @@
-  
 <template>
   <div :style="`position:relative; width:${width}px; height:${height}px;`">
     <tree-entry
@@ -41,13 +40,15 @@ export default Vue.extend({
         top: 20,
         right: 0,
         bottom: 0,
-        left: 0
+        left: 0,
       },
     }
   },
 
   computed: {
-    listLen() { return (this.entryList as Array<ConstituentStack>).length || 0},
+    listLen() {
+      return (this.entryList as Array<ConstituentStack>).length || 0
+    },
     width() {
       return Math.min(350, (this as any).listLen * 50)
     },
@@ -57,16 +58,27 @@ export default Vue.extend({
     rootNode() {
       const cuentsAsTreeMap = {
         value: 0,
-        children: this.entryList.map(cs => ({ cs:cs, value: Math.log(cs.cuent.complexity * cs.amount) * 10 + 10 } as TreemapDatum))
+        children: this.entryList.map(
+          (cs) =>
+            ({
+              cs: cs,
+              value: Math.log(cs.cuent.complexity * cs.amount) * 10 + 10,
+            } as TreemapDatum)
+        ),
       }
-      return d3.treemap<typeof cuentsAsTreeMap>()
-        // .tile(d3.treemapBinary)
-        .size([(this as any).width, (this as any).height])
-        .round(true)
-        .padding(2)(d3.hierarchy(cuentsAsTreeMap)
-          .sum(d => d.value)
-          .sort((a, b) => (b.value ?? 0) - (a.value ?? 0))
+      return (
+        d3
+          .treemap<typeof cuentsAsTreeMap>()
+          // .tile(d3.treemapBinary)
+          .size([(this as any).width, (this as any).height])
+          .round(true)
+          .padding(2)(
+          d3
+            .hierarchy(cuentsAsTreeMap)
+            .sum((d) => d.value)
+            .sort((a, b) => (b.value ?? 0) - (a.value ?? 0))
         )
+      )
     },
   },
 })

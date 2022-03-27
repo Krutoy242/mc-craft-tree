@@ -3,13 +3,11 @@ const WorkerPlugin = require('worker-plugin')
 module.exports = {
   transpileDependencies: ['vuetify'],
   lintOnSave: false,
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config.plugin('worker').use(WorkerPlugin)
   },
   configureWebpack: {
-    devtool: 'source-map'
+    devtool: 'source-map',
   },
-  publicPath: process.env.NODE_ENV === 'production'
-    ? '/CraftTreeVisualizer/'
-    : '/'
+  publicPath: process.env.NODE_ENV === 'production' ? '/CraftTreeVisualizer/' : '/',
 }

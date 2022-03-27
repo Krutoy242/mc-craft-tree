@@ -19,19 +19,19 @@ import { applyOreDictionary } from './from/crafttweaker_log'
 /*=============================================
 =                   Helpers                   =
 =============================================*/
-function loadText(filename:string): string {
+function loadText(filename: string): string {
   return fs.readFileSync(path.resolve(__dirname, filename), 'utf8')
 }
 
-function loadJson(filename:string) {
+function loadJson(filename: string) {
   return JSON.parse(loadText(filename))
 }
 
-function saveText(txt:string, filename:string) {
+function saveText(txt: string, filename: string) {
   fs.writeFileSync(path.resolve(__dirname, filename), txt)
 }
 
-function saveObjAsJson(obj:any, filename:string) {
+function saveObjAsJson(obj: any, filename: string) {
   saveText(JSON.stringify(obj, null, 2), filename)
 }
 
@@ -39,7 +39,6 @@ function saveObjAsJson(obj:any, filename:string) {
 =            Spritesheet
 =============================================*/
 parseSpritesheet(loadJson('../../raw/spritesheet.json'))
-
 
 /*=============================================
 =            world-gen.json
@@ -50,16 +49,18 @@ parse_JER(loadJson(realMCPath + 'config/jeresources/world-gen.json'))
 /*=============================================
 =            crafttweaker.log
 =============================================*/
-const crafttweakerLogTxt = loadText(realMCPath+'/crafttweaker.log')
+const crafttweakerLogTxt = loadText(realMCPath + '/crafttweaker.log')
 applyOreDictionary(crafttweakerLogTxt)
-parseCrafttweakerLog_raw(loadText(realMCPath+'/crafttweaker_raw.log'))
+parseCrafttweakerLog_raw(loadText(realMCPath + '/crafttweaker_raw.log'))
 
 /*=====  Save parsed data ======*/
 // Remove technical data
 saveObjAsJson(exportAdditionals(), '../../default_additionals.json')
 
-
 /*=============================================
 =      Prepare JEC groups.json
 =============================================*/
-saveObjAsJson(parseJECgroups(loadText(realMCPath+'/config/JustEnoughCalculation/data/groups.json')), '../../jec_groups.json')
+saveObjAsJson(
+  parseJECgroups(loadText(realMCPath + '/config/JustEnoughCalculation/data/groups.json')),
+  '../../jec_groups.json'
+)

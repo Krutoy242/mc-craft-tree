@@ -1,31 +1,28 @@
 <template>
-<div>
-  <v-card 
-    v-if="number > 0"
-    class="neon d-inline-block textarea float-right"
-    style="font-size: medium;"
-    :is="bordered ? 'v-card' : 'div'"
-  >
-    <v-row no-gutters style="flex-wrap: nowrap;" :style="highlited ? 'background-color: rgba(27, 94, 32, 0.1);' : ''">
-      <v-col 
-        :class='"px-1" + compClass'
-        :data-text="whole"
-      >
-        {{ short ? compNumber : whole }}
-      </v-col>
-      <!-- <span class="gradient"></span> -->
-      <!-- <span class="spotlight"></span>  -->
-      <v-col 
-        v-if="!short"
-        class="flex-grow-0 flex-shrink-0 brown--text pr-1"
-        :class="residueIsZero ? 'text--darken-3' : ''"
-      >
-        {{ residue }}
-      </v-col>
-    </v-row>
-  </v-card>
-  <span v-else>-</span>
-</div>
+  <div>
+    <v-card
+      :is="bordered ? 'v-card' : 'div'"
+      v-if="number > 0"
+      class="neon d-inline-block textarea float-right"
+      style="font-size: medium"
+    >
+      <v-row no-gutters style="flex-wrap: nowrap" :style="highlited ? 'background-color: rgba(27, 94, 32, 0.1);' : ''">
+        <v-col :class="'px-1' + compClass" :data-text="whole">
+          {{ short ? compNumber : whole }}
+        </v-col>
+        <!-- <span class="gradient"></span> -->
+        <!-- <span class="spotlight"></span>  -->
+        <v-col
+          v-if="!short"
+          class="flex-grow-0 flex-shrink-0 brown--text pr-1"
+          :class="residueIsZero ? 'text--darken-3' : ''"
+        >
+          {{ residue }}
+        </v-col>
+      </v-row>
+    </v-card>
+    <span v-else>-</span>
+  </div>
 </template>
 
 <script>
@@ -33,16 +30,16 @@ import numeral from 'numeral'
 
 let SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E']
 
-function abbreviateNumber(num){
+function abbreviateNumber(num) {
   num = Math.round(num * 1000) / 1000.0
-  
-  if(num <= 1) return num
+
+  if (num <= 1) return num
 
   // what tier? (determines SI symbol)
-  let tier = Math.log10(num) / 3 | 0
+  let tier = (Math.log10(num) / 3) | 0
 
   // if zero, we don't need a suffix
-  if(tier == 0) return num
+  if (tier == 0) return num
 
   // get suffix and determine scale
   let suffix = SI_SYMBOL[tier]
@@ -55,19 +52,14 @@ function abbreviateNumber(num){
   return scaled.toFixed(1) + suffix
 }
 
-const tierClasses = [
-  'grey--text text--lighten-1',
-  'grey--text text--lighten-2',
-  'enchanted',
-  'glow'
-]
+const tierClasses = ['grey--text text--lighten-1', 'grey--text text--lighten-2', 'enchanted', 'glow']
 
 export default {
   props: {
     number: {},
-    bordered:  { type: Boolean, default: false },
+    bordered: { type: Boolean, default: false },
     highlited: { type: Boolean, default: false },
-    short:     { type: Boolean, default: false },
+    short: { type: Boolean, default: false },
   },
   computed: {
     compNumber() {
@@ -83,32 +75,31 @@ export default {
       // return num | numeral("0,0.[000]");
     },
     compClass() {
-      const tier = Math.log10(this.number + 1) / 3 | 0
+      const tier = (Math.log10(this.number + 1) / 3) | 0
       const clss = tierClasses[tier]
-      if (clss)
-        return ' ' + clss
-      else
-        return ' ' + tierClasses[tierClasses.length - 1]
+      if (clss) return ' ' + clss
+      else return ' ' + tierClasses[tierClasses.length - 1]
     },
-    whole(){
+    whole() {
       const num = Math.floor(this.number)
       const output = numeral(num).format('0,0')
       return output === 'NaN' ? num : output
     },
-    residueIsZero(){
+    residueIsZero() {
       return this.number - Math.floor(this.number) === 0
     },
-    residue(){
+    residue() {
       const num = this.number - Math.floor(this.number)
       return numeral(num).format('.000')
-    }
+    },
   },
 }
 </script>
 
 <style scoped>
 .textarea {
-  font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace;
+  font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono,
+    Courier New, monospace;
 }
 
 .glow {
@@ -135,13 +126,12 @@ export default {
   }
 }
 
-
 .enchanted {
   text-shadow: 0 0 3px rgba(255, 255, 255, 0.2), 0 0 8px #e67b0044;
 
   /* Fallback: Set a background color. */
   /* background-color: #fff; */
-  
+
   /* Create the gradient. */
   /* background-image: linear-gradient(45deg,rgba(255,255,255,1) 0%, rgba(205,255,245,1) 10%, rgba(203,227,255,1) 20%, rgba(203,216,255,1) 35%, rgba(220,203,255,1) 50%, rgba(239,219,255,1) 70%, rgba(255,229,246,1) 90%, rgba(255,255,255,1) 100%); */
   /* Set the background size and repeat properties. */
@@ -162,16 +152,28 @@ export default {
 /* Move the background and make it smaller. */
 /* Animation shown when entering the page and after the hover animation. */
 @keyframes rainbow-text-simple-animation-rev {
-  0% { background-position: 0 0; }
-  80% { background-position: 0 0; }
-  100% { background-position: 100% 0; }
+  0% {
+    background-position: 0 0;
+  }
+  80% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
 }
 
 /* Move the background and make it larger. */
 /* Animation shown when hovering over the text. */
 @keyframes rainbow-text-simple-animation {
-  0% { background-position: 0 0; }
-  80% { background-position: 0 0; }
-  100% { background-position: 100% 0; }
+  0% {
+    background-position: 0 0;
+  }
+  80% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
 }
 </style>

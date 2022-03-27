@@ -1,6 +1,6 @@
 import numeral from 'numeral'
 
-export function cleanupNbt(o?: any): object|undefined {
+export function cleanupNbt(o?: any): object | undefined {
   if (!o) return
 
   for (const k in o) {
@@ -15,37 +15,40 @@ export function cleanupNbt(o?: any): object|undefined {
     }
   }
 
-  if(!Object.keys(o).length) return undefined // Return undefined if object is empty
-  return o 
+  if (!Object.keys(o).length) return undefined // Return undefined if object is empty
+  return o
 }
 
 const limits = new Map<string, number>()
-export function limitedLog(name:string, ...args:any[]) {
+export function limitedLog(name: string, ...args: any[]) {
   const lim = (limits.get(name) ?? 0) + 1
   if (lim > 1000) return
   limits.set(name, lim)
   return console.log(...args)
 }
 
-export function objToString(obj:any, ndeep = 1):string {
-  const t:string = typeof obj
-  if (t=== 'string')   return '"' + obj + '"'
-  if (t=== 'function') return obj.name || obj.toString()
-  if (t=== 'object') {
+export function objToString(obj: any, ndeep = 1): string {
+  const t: string = typeof obj
+  if (t === 'string') return '"' + obj + '"'
+  if (t === 'function') return obj.name || obj.toString()
+  if (t === 'object') {
     const indent = Array(ndeep).join('\t')
     const isArray = Array.isArray(obj)
     return (
-      '{['[+isArray] + Object.keys(obj)
+      '{['[+isArray] +
+      Object.keys(obj)
         .map(function (key) {
           const quoted = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(key) ? key : `"${key}"`
           return '\n\t' + indent + (isArray ? '' : quoted + ': ') + objToString(obj[key], ndeep + 1)
         })
-        .join(',') + '\n' + indent + '}]'[+isArray]
-    )
-      .replace(/[\s\t\n]+(?=(?:[^'"]*['"][^'"]*['"])*[^'"]*$)/g, '')
+        .join(',') +
+      '\n' +
+      indent +
+      '}]'[+isArray]
+    ).replace(/[\s\t\n]+(?=(?:[^'"]*['"][^'"]*['"])*[^'"]*$)/g, '')
   }
-  
-  return obj!=null ? obj.toString() : ''
+
+  return obj != null ? obj.toString() : ''
 }
 
 export class NumLimits {
@@ -62,29 +65,27 @@ export class NumLimits {
   }
 }
 
-
-export class UniqueKeys<T,U> {
+export class UniqueKeys<T, U> {
   ids = new Map<T, U>()
-  count =  0
+  count = 0
 
   reset() {
     this.ids = new Map<T, U>()
-    this.count =  0
+    this.count = 0
   }
 
-  mergeKey(key: T, val: U):boolean {
-    if(!key || !val || this.ids.has(key)) return false
-    
+  mergeKey(key: T, val: U): boolean {
+    if (!key || !val || this.ids.has(key)) return false
+
     this.ids.set(key, val)
     this.count++
     return true
   }
 
-  mergeChain(chain?: UniqueKeys<T,U>, onUnique?: (value:U)=>void) {
-    if(!chain) return this
+  mergeChain(chain?: UniqueKeys<T, U>, onUnique?: (value: U) => void) {
+    if (!chain) return this
     for (const [key, value] of chain.ids.entries()) {
-      if (this.mergeKey(key, value))
-        onUnique?.(value)
+      if (this.mergeKey(key, value)) onUnique?.(value)
     }
     return this
   }
@@ -92,14 +93,13 @@ export class UniqueKeys<T,U> {
   values() {
     return this.ids.values()
   }
-  
 }
 
 export class SetEx<T> extends Set<T> {
-  merge(set: Set<T>, cb?: (t:T)=>void) {
+  merge(set: Set<T>, cb?: (t: T) => void) {
     let somethingAdded = false
     for (const t of set) {
-      if(!this.has(t)) {
+      if (!this.has(t)) {
         this.add(t)
         cb?.(t)
         somethingAdded = true
@@ -109,9 +109,9 @@ export class SetEx<T> extends Set<T> {
   }
 }
 export class MapOfSets<T> extends Map<T, Set<T>> {
-  getForSure(key:T): Set<T> {
+  getForSure(key: T): Set<T> {
     let b = this.get(key)
-    if(!b) {
+    if (!b) {
       b = new Set<T>()
       this.set(key, b)
     }
@@ -119,8 +119,7 @@ export class MapOfSets<T> extends Map<T, Set<T>> {
   }
 }
 
-
-export const cutNum = (num:number) => numeral(num).format('0a')
+export const cutNum = (num: number) => numeral(num).format('0a')
 
 // exports.UniqueKeys = UniqueKeys
 // exports.NumLimits = NumLimits

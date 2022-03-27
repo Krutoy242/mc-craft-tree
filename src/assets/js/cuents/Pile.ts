@@ -3,7 +3,7 @@ import { NumLimits } from '../utils'
 
 function sort_n(o: Constituent) {
   let diff = 0
-  for (const v of Object.values(o)) if (v) diff ++
+  for (const v of Object.values(o)) if (v) diff++
   return diff - (o.isNoIcon ? 100 : 0)
 }
 
@@ -11,9 +11,9 @@ export class GraphPile {
   list = [] as Constituent[]
   info = {
     cLimits: new NumLimits(),
-    uLimits: new NumLimits()
+    uLimits: new NumLimits(),
   }
-  
+
   merge(c: Constituent) {
     this.info.cLimits.update(c.complexity)
     this.info.uLimits.update(c.usability)
@@ -32,7 +32,7 @@ export class GlobalPile extends GraphPile {
 
   merge(c: Constituent) {
     super.merge(c)
-    
+
     if (c.recipes.isLooped) this.listLoops.add(c)
     if (c.isNoIcon) this.noIcon.push(c)
   }

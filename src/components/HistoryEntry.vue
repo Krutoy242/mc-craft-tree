@@ -1,10 +1,6 @@
 <template>
   <div style="width: 100%" class="ma-1">
-    <v-card
-      :width="width + '%'"
-      :style="{ 'margin-left': from + '%' }"
-      :color="`hsla(${h}, 60%, 40%, 0.1)`"
-    >
+    <v-card :width="width + '%'" :style="{ 'margin-left': from + '%' }" :color="`hsla(${h}, 60%, 40%, 0.1)`">
       <v-overlay absolute class="mt-2">
         <canvas ref="ctx"></canvas>
       </v-overlay>
@@ -14,7 +10,6 @@
     </v-card>
   </div>
 </template>
-
 
 <script lang="ts">
 import * as d3 from 'd3'
@@ -26,12 +21,10 @@ const scaleLog = scaleRange.base(2) //.nice()
 const getSX = (v: number) => Math.max(0, scaleLog(v))
 const setSX = (v: number) => scaleLog.invert(v)
 
-function drawGradient(ctx: CanvasRenderingContext2D | undefined, list:CuentHistorical[]) {
-  if(!ctx) return
+function drawGradient(ctx: CanvasRenderingContext2D | undefined, list: CuentHistorical[]) {
+  if (!ctx) return
 
-  list.forEach(({pos,power,width}) => {
-
-  })
+  list.forEach(({ pos, power, width }) => {})
   // Create gradient
   var grd = ctx.createLinearGradient(0, 0, 200, 0)
   grd.addColorStop(0, 'red')
@@ -41,7 +34,6 @@ function drawGradient(ctx: CanvasRenderingContext2D | undefined, list:CuentHisto
   ctx.fillStyle = grd
   ctx.fillRect(10, 10, 150, 80)
 }
-
 
 @Component
 export default class HistoryEntry extends Vue {
@@ -74,7 +66,7 @@ export default class HistoryEntry extends Vue {
   }
   setCanvasSize() {
     const c = this.canvas
-    if(!c) return
+    if (!c) return
     var rect = (c.parentNode as any).parentNode.getBoundingClientRect()
     c.width = rect.width
     c.height = rect.height
@@ -83,11 +75,11 @@ export default class HistoryEntry extends Vue {
   }
 
   mounted() {
-    this.$nextTick(()=>{
-      console.log('REF>> ',this.$refs.ctx)
+    this.$nextTick(() => {
+      console.log('REF>> ', this.$refs.ctx)
       this.canvas = this.$refs.ctx as HTMLCanvasElement
       const ctx = this.canvas.getContext('2d')
-      if(ctx) this.ctx = ctx
+      if (ctx) this.ctx = ctx
       this.setCanvasSize()
     })
   }

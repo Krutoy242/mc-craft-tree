@@ -8,19 +8,19 @@ import { IndexedRawAdditionals, setField } from './additionalsStore'
 =           Recipes
 =============================================*/
 const clearableTags = [
-  /\{"RSControl":\d+,"Facing":\d+,"Energy":\d+,"SideCache":\[\d+,\d+,\d+,\d+,\d+,\d+\],"Level":0\}/
+  /\{"RSControl":\d+,"Facing":\d+,"Energy":\d+,"SideCache":\[\d+,\d+,\d+,\d+,\d+,\d+\],"Level":0\}/,
 ]
 function clearableTag(tag: object) {
-  return clearableTags.some(rgx => rgx.test(JSON.stringify(tag)))
+  return clearableTags.some((rgx) => rgx.test(JSON.stringify(tag)))
 }
 export class IIngredient {
-  public name: any;
-  public count: any;
-  public _weight: any;
-  public tag: any;
-  public futile: any;
-  public strId: any;
-  public additionals!: IndexedRawAdditionals;
+  public name: any
+  public count: any
+  public _weight: any
+  public tag: any
+  public futile: any
+  public strId: any
+  public additionals!: IndexedRawAdditionals
 
   constructor(str: any) {
     this.name = str
@@ -30,8 +30,7 @@ export class IIngredient {
   }
 
   withTag(tag: object) {
-    if (!tag || Object.keys(tag).length === 0 || clearableTag(tag))
-      return this
+    if (!tag || Object.keys(tag).length === 0 || clearableTag(tag)) return this
 
     const n = new IIngredient(this.name)
     n.count = this.count
@@ -45,25 +44,28 @@ export class IIngredient {
   }
 
   weight(n: number) {
-    if (isNaN(n))
-      return this
+    if (isNaN(n)) return this
     this._weight = n || 1
     return this
   }
 
   amount(n: number) {
-    if (isNaN(n) || this.count === n)
-      return this
+    if (isNaN(n) || this.count === n) return this
     this.count = n
     return this
   }
 
-  asString() { return serializeNameMeta(this.name) + serializeNbt(cleanupNbt(this.tag)) }
+  asString() {
+    return serializeNameMeta(this.name) + serializeNbt(cleanupNbt(this.tag))
+  }
   update() {
     // Blacklist recipes that content this items
     // as inputs or outputs
-    if ((this.tag && this.tag.ncRadiationResistance) /*  ||
-        /^conarm:(helmet|chestplate|leggins|boots)$/.test(this.name) */) {
+    if (
+      this.tag &&
+      this.tag.ncRadiationResistance /*  ||
+        /^conarm:(helmet|chestplate|leggins|boots)$/.test(this.name) */
+    ) {
       this.futile = true
       return
     }
@@ -72,19 +74,21 @@ export class IIngredient {
     this.additionals = setField(this.strId)
   }
 
-  or() { return this }
+  or() {
+    return this
+  }
 }
-type AnyIngredients = IIngredient | string | undefined | AnyIngredients[];
+type AnyIngredients = IIngredient | string | undefined | AnyIngredients[]
 class IngredientList {
-  main: IIngredient;
-  list: Array<IIngredient>;
-  keys: RawCollection;
-  futile: Boolean;
-  count: Number;
+  main: IIngredient
+  list: Array<IIngredient>
+  keys: RawCollection
+  futile: boolean
+  count: number
 
   constructor(arg: AnyIngredients) {
     this.list = _.flattenDeep([arg])
-      .map(g => (_.isString(g) ? BH(g) : g))
+      .map((g) => (_.isString(g) ? BH(g) : g))
       .filter((i): i is IIngredient => i != null && !i.futile)
 
     this.futile = !this.list.length
@@ -92,8 +96,7 @@ class IngredientList {
     this.keys = this.list.reduce((acc, i) => {
       const index = i.additionals.index
       acc[index] = (acc[index] || 0) + i.quantity()
-      if (!acc[index])
-        throw new Error()
+      if (!acc[index]) throw new Error()
       return acc
     }, {} as RawCollection)
 
@@ -106,50 +109,45 @@ class IngredientList {
   }
 }
 
-export function BH(str: string) { return new IIngredient(str) }
+export function BH(str: string) {
+  return new IIngredient(str)
+}
 
 // Init Crafting Table as first item
 BH('minecraft:crafting_table')
 
-type RecipeParams = [outputs: AnyIngredients, inputs?: AnyIngredients, catalysts?: AnyIngredients];
+type RecipeParams = [outputs: AnyIngredients, inputs?: AnyIngredients, catalysts?: AnyIngredients]
 
 export function addRecipe(...params: RecipeParams) {
-  const [outputs, inputs, catalysts] = params.map(o => new IngredientList(o))
+  const [outputs, inputs, catalysts] = params.map((o) => new IngredientList(o))
 
-  if (outputs.futile)
-    return
-  if (inputs.futile && (!catalysts || catalysts.futile))
-    return
+  if (outputs.futile) return
+  if (inputs.futile && (!catalysts || catalysts.futile)) return
 
   const ads = outputs.main.additionals
   ads.recipes = ads.recipes || []
   ads.recipes.push({
-    out: outputs.count > 1
-      ? outputs.keys
-      : outputs.main.quantity() !== 1
-        ? outputs.main.quantity()
-        : undefined,
+    out: outputs.count > 1 ? outputs.keys : outputs.main.quantity() !== 1 ? outputs.main.quantity() : undefined,
     ins: inputs.toObj(),
-    ctl: catalysts?.toObj()
+    ctl: catalysts?.toObj(),
   })
 }
 
-export function serializeNameMeta(ctName:string) {
+export function serializeNameMeta(ctName: string) {
   const match = ctName.split(':')
   const haveMeta = match.length > 2
-  if (!haveMeta) 
-    if     ([  'ore'].includes(match[0])) return match[1]
-    else if(['fluid','liquid'].includes(match[0])) return ctName
+  if (!haveMeta)
+    if (['ore'].includes(match[0])) return match[1]
+    else if (['fluid', 'liquid'].includes(match[0])) return ctName
     else return ctName + ':0'
-  else
-  if(ctName.slice(-1) === '*') return ctName.slice(0, -1) + '0'
+  else if (ctName.slice(-1) === '*') return ctName.slice(0, -1) + '0'
 
   return ctName
 }
 
-export function serializeNbt(nbt?: string|object) {
-  if(!nbt) return ''
-  if(typeof nbt === 'object') return objToString(nbt)
+export function serializeNbt(nbt?: string | object) {
+  if (!nbt) return ''
+  if (typeof nbt === 'object') return objToString(nbt)
   return nbt
     .replace(/ as \w+/g, '')
     .replace(/, /g, ',')

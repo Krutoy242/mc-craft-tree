@@ -1,6 +1,5 @@
 <template>
   <v-tabs>
-
     <v-tab>
       <v-icon left>mdi-border-none-variant</v-icon>
       No icons
@@ -22,7 +21,7 @@
         </v-card-text>
       </v-card> -->
       <v-data-table
-        :headers="[{text: 'Item', value: 'display'}]"
+        :headers="[{ text: 'Item', value: 'display' }]"
         :items="sortedNoIcon"
         hide-default-header
         class="elevation-1"
@@ -45,7 +44,7 @@
         </v-card-text>
       </v-card> -->
       <v-data-table
-        :headers="[{text: 'Item', value: 'display'}]"
+        :headers="[{ text: 'Item', value: 'display' }]"
         :items="[...listLoop]"
         hide-default-header
         class="elevation-1"
@@ -53,7 +52,6 @@
         <template #item.display="{ item }"><tree-entry :node="item" class="pa-2" /></template>
       </v-data-table>
     </v-tab-item>
-
   </v-tabs>
 </template>
 
@@ -61,23 +59,22 @@
 export default {
   props: {
     debugInfo: {
-      type: Object
+      type: Object,
     },
   },
-  
+
   computed: {
-    sortedNoIcon(){
+    sortedNoIcon() {
       if (this.debugInfo?.noIcon)
-        return this.debugInfo.noIcon.slice(0).sort(function (a, b) {   
+        return this.debugInfo.noIcon.slice(0).sort(function (a, b) {
           return ('' + a.base.name).localeCompare(b.base.name)
         })
       return undefined
     },
     listLoop() {
       return [...(this.debugInfo?.listLoops.values() ?? [])]
-    }
+    },
   },
-
 }
 </script>
 

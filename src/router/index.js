@@ -8,27 +8,24 @@ const routes = [
     path: '/table',
     name: 'table',
     props: true,
-    component: () =>
-      import(/* webpackChunkName: "table" */ '../views/Table.vue')
+    component: () => import(/* webpackChunkName: "table" */ '../views/Table.vue'),
   },
   {
     path: '/graph',
     name: 'graph',
     props: true,
-    component: () =>
-      import(/* webpackChunkName: "graph" */ '../views/Graph.vue')
+    component: () => import(/* webpackChunkName: "graph" */ '../views/Graph.vue'),
   },
   {
     path: '/history',
     name: 'history',
     props: true,
-    component: () =>
-      import(/* webpackChunkName: "history" */ '../views/History.vue')
+    component: () => import(/* webpackChunkName: "history" */ '../views/History.vue'),
   },
   {
     path: '*',
-    redirect: '/graph'
-  }
+    redirect: '/graph',
+  },
 ]
 
 const router = new VueRouter({

@@ -5,17 +5,17 @@
       class="pa-0"
       :style="`position: relative; z-index: 1; left: 0; bottom: 0; right: 0; top: 0px;`"
     >
-      <v-flex >
-        {{ number || "-" }}
+      <v-flex>
+        {{ number || '-' }}
       </v-flex>
     </v-container>
 
     <v-container :class="'pa-0 inner ' + (inverted ? 'flipped' : '')">
       <curve-text
-        :class="(inverted ? 'shifted-flipped smaller' : 'shifted smaller')"
-        :width="inverted?45:55"
-        :height="inverted?40:50"
-        :r="inverted?30:35"
+        :class="inverted ? 'shifted-flipped smaller' : 'shifted smaller'"
+        :width="inverted ? 45 : 55"
+        :height="inverted ? 40 : 50"
+        :r="inverted ? 30 : 35"
         :color="inverted ? 'teal' : 'green'"
       >
         {{ getArrows(number, 0) }}
@@ -24,11 +24,11 @@
 
     <v-container :class="'pa-0 inner ' + (inverted ? 'flipped' : '')">
       <curve-text
-        :class="(inverted ? 'shifted-flipped mediumer' : 'shifted mediumer')"
         v-if="number > 10"
-        :width="inverted?55:55"
-        :height="inverted?40:50"
-        :r="inverted?30:35"
+        :class="inverted ? 'shifted-flipped mediumer' : 'shifted mediumer'"
+        :width="inverted ? 55 : 55"
+        :height="inverted ? 40 : 50"
+        :r="inverted ? 30 : 35"
         :color="inverted ? 'teal' : 'green'"
       >
         {{ getArrows(number, 10) }}
@@ -38,48 +38,47 @@
 </template>
 
 <script>
-const arrows         = ['⭣','🠯','🠳','🡇','🢃']
-const arrowsInverted = ['🠥','🠭','🠱','🡅','🢁']
+const arrows = ['⭣', '🠯', '🠳', '🡇', '🢃']
+const arrowsInverted = ['🠥', '🠭', '🠱', '🡅', '🢁']
 
 export default {
-
   props: {
     number: {
-      default: ''
+      default: '',
     },
     inverted: {
-      default: false
-    }
+      default: false,
+    },
   },
-  
+
   methods: {
-    getArrows(n, offset){
-      if(isNaN(n)) return '???'
+    getArrows(n, offset) {
+      if (isNaN(n)) return '???'
       let arr = []
       const r = this.inverted ? arrowsInverted : arrows
 
-      if ((n > 9 + offset) && (offset===0))arr.unshift(r[4])
-      if ( n > 8 + offset) arr.push   (r[4])
-      if ( n > 7 + offset) arr.unshift(r[2])
-      if ( n > 6 + offset) arr.push   (r[2])
-      if ( n > 5 + offset) arr.unshift(r[1])
-      if ( n > 4 + offset) arr.push   (r[1])
-      if ( n > 3 + offset) arr.unshift(r[0])
-      if ( n > 2 + offset) arr.push   (r[0])
-      if ( n > 1 + offset) arr.unshift(r[0])
-      if ( n > 0 + offset) arr.push   (r[0])
-        
+      if (n > 9 + offset && offset === 0) arr.unshift(r[4])
+      if (n > 8 + offset) arr.push(r[4])
+      if (n > 7 + offset) arr.unshift(r[2])
+      if (n > 6 + offset) arr.push(r[2])
+      if (n > 5 + offset) arr.unshift(r[1])
+      if (n > 4 + offset) arr.push(r[1])
+      if (n > 3 + offset) arr.unshift(r[0])
+      if (n > 2 + offset) arr.push(r[0])
+      if (n > 1 + offset) arr.unshift(r[0])
+      if (n > 0 + offset) arr.push(r[0])
+
       return arr.join('')
-    }
+    },
   },
 }
 </script>
 
 <style scoped>
 .outer {
-    position: relative; /* or absolute */
-    width: 60px;
-    height: 40px;
+  position: relative; /* or absolute */
+  width: 60px;
+  height: 40px;
 }
 
 .flipped {
@@ -95,11 +94,15 @@ export default {
 }
 
 .shifted {
-  position: relative; left: -50%; top: -70%;
+  position: relative;
+  left: -50%;
+  top: -70%;
 }
 
 .shifted-flipped {
-  position: relative; left: 50%; top: 50%;
+  position: relative;
+  left: 50%;
+  top: 50%;
 }
 
 .inner {
