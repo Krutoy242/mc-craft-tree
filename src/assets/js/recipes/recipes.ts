@@ -2,9 +2,9 @@ import { Constituent } from '../cuents/Constituent'
 import { ConstituentStack } from '../cuents/ConstituentStack'
 import { CuentBase, CuentArgs, RawAdditionalsStore, RawCollection } from '../cuents/ConstituentBase'
 import { globalTree } from '../cuents/ConstituentTree'
-import { JEC_RootObject, JEC_Ingredient, JEC_Recipe, JEC_Types } from '../JEC_Types'
+import { JEC_Types } from '../parse/jec_types'
 import { RecipeLink } from './RecipeLink'
-import { cleanupNbt, NumLimits, objToString } from '../utils'
+import { NumLimits, objToString } from '../utils'
 import { LinksHolder } from './LinksHolder'
 
 export type Ways = 'outputs' | 'inputs' | 'catalysts' | 'requirments'
@@ -13,10 +13,6 @@ const CRAFTING_TABLE_COST = 50.0
 export function processingCostFromInputAmount(x = 1) {
   x--
   return Math.floor(Math.max(0, Math.pow(1.055, x + 100) - Math.pow(1.055, 101) + x * 25 + CRAFTING_TABLE_COST / 2))
-}
-
-function amount_jec(raw: JEC_Ingredient) {
-  return ((raw.content.amount ?? 1.0) * (raw.content.percent ?? 100.0)) / 100.0
 }
 
 export function floatCut(n: number) {
@@ -41,26 +37,6 @@ function appendRecipe(recipe: Recipe) {
   recipesStore.info.outputsAmount.update(recipe.outputs.length)
   recipesStore.info.inputsAmount.update(recipe.inputs.length)
   recipesStore.info.catalystsAmount.update(recipe.catalysts.length)
-}
-
-function fromJEC(raw: JEC_Ingredient): CuentBase {
-  type Triple = [string, string, number?]
-  const [source, entry, meta] = (
-    {
-      itemStack: (): Triple => [...(raw.content?.item?.split(':') as [string, string]), raw.content.meta ?? 0],
-      fluidStack: (): Triple => ['fluid', raw.content.fluid as string],
-      oreDict: (): Triple => ['ore', raw.content.name as string],
-      placeholder: (): Triple => ['placeholder', raw.content.name as string],
-    } as Record<string, () => Triple>
-  )[raw.type]()
-
-  return new CuentBase({
-    source,
-    entry,
-    meta: raw.content.fMeta ? undefined : meta,
-    nbt: raw.content.fNbt ? undefined : objToString(cleanupNbt(raw.content.nbt)),
-    type: raw.type,
-  })
 }
 
 function fromId(id: string): CuentBase {
@@ -110,21 +86,6 @@ function fromId(id: string): CuentBase {
   }
 
   return new CuentBase(args)
-}
-
-export function mergeJECGroups(jec_groups: JEC_RootObject) {
-  jec_groups.Default.forEach((jec_recipe) => {
-    const recipeArrs = ['output', 'input', 'catalyst'] as Array<keyof JEC_Recipe>
-    const recipe = new Recipe(
-      ...(recipeArrs.map((arrName) =>
-        jec_recipe[arrName].map((raw) => {
-          const cuent = globalTree.pushBase(fromJEC(raw))
-          return cuent.stack(amount_jec(raw) * cuent.volume)
-        })
-      ) as ConstructorParameters<typeof Recipe>)
-    )
-    appendRecipe(recipe)
-  })
 }
 
 export function mergeDefaultAdditionals(

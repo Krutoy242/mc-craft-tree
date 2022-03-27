@@ -1,4 +1,4 @@
-/* 
+/*
 Helper script to prepare several files for fast acces
 Lunch with NodeJS
 */
@@ -35,16 +35,12 @@ function saveObjAsJson(obj: any, filename: string) {
   saveText(JSON.stringify(obj, null, 2), filename)
 }
 
+const realMCPath = 'D:/mc_client/Instances/Enigmatica2Expert - Extended/'
+
 /*=============================================
 =            Spritesheet
 =============================================*/
 parseSpritesheet(loadJson('../../raw/spritesheet.json'))
-
-/*=============================================
-=            world-gen.json
-=============================================*/
-const realMCPath = 'D:/mc_client/Instances/Enigmatica2Expert - Extended/'
-parse_JER(loadJson(realMCPath + 'config/jeresources/world-gen.json'))
 
 /*=============================================
 =            crafttweaker.log
@@ -53,14 +49,16 @@ const crafttweakerLogTxt = loadText(realMCPath + '/crafttweaker.log')
 applyOreDictionary(crafttweakerLogTxt)
 parseCrafttweakerLog_raw(loadText(realMCPath + '/crafttweaker_raw.log'))
 
-/*=====  Save parsed data ======*/
-// Remove technical data
-saveObjAsJson(exportAdditionals(), '../../default_additionals.json')
+/*=============================================
+=            world-gen.json
+=============================================*/
+parse_JER(loadJson(realMCPath + 'config/jeresources/world-gen.json'))
 
 /*=============================================
 =      Prepare JEC groups.json
 =============================================*/
-saveObjAsJson(
-  parseJECgroups(loadText(realMCPath + '/config/JustEnoughCalculation/data/groups.json')),
-  '../../jec_groups.json'
-)
+parseJECgroups(loadText(realMCPath + '/config/JustEnoughCalculation/data/groups.json'))
+
+/*=====  Save parsed data ======*/
+// Remove technical data
+saveObjAsJson(exportAdditionals(), '../../default_additionals.json')

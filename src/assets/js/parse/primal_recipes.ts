@@ -10,30 +10,34 @@ import { IndexedRawAdditionals, setField } from './additionalsStore'
 const clearableTags = [
   /\{"RSControl":\d+,"Facing":\d+,"Energy":\d+,"SideCache":\[\d+,\d+,\d+,\d+,\d+,\d+\],"Level":0\}/,
 ]
-function clearableTag(tag: object) {
+function clearableTag(tag: any) {
   return clearableTags.some((rgx) => rgx.test(JSON.stringify(tag)))
 }
 export class IIngredient {
-  public name: any
-  public count: any
-  public _weight: any
-  public tag: any
-  public futile: any
-  public strId: any
+  public name: string
+  public count = 1
+  public _weight = 1.0
+  public tag?: any
+  public futile?: boolean
+  public strId?: string
   public additionals!: IndexedRawAdditionals
 
-  constructor(str: any) {
+  constructor(str: string) {
     this.name = str
-    this.count = 1
-    this._weight = 1.0
     this.update()
   }
 
-  withTag(tag: object) {
-    if (!tag || Object.keys(tag).length === 0 || clearableTag(tag)) return this
-
+  private copy(): IIngredient {
     const n = new IIngredient(this.name)
     n.count = this.count
+    n.tag = this.tag
+    return n
+  }
+
+  withTag(tag: any): IIngredient {
+    if (!tag || Object.keys(tag).length === 0 || clearableTag(tag)) return this
+
+    const n = this.copy()
     n.tag = tag
     n.update()
     return n
@@ -49,10 +53,12 @@ export class IIngredient {
     return this
   }
 
-  amount(n: number) {
-    if (isNaN(n) || this.count === n) return this
-    this.count = n
-    return this
+  amount(newAmount: number) {
+    if (isNaN(newAmount) || this.count === newAmount) return this
+    const n = this.copy()
+    n.count = newAmount
+    n.update()
+    return n
   }
 
   asString() {
