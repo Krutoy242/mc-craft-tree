@@ -1,24 +1,5 @@
 import numeral from 'numeral'
 
-export function cleanupNbt(o?: any): object | undefined {
-  if (!o) return
-
-  for (const k in o) {
-    if (!o[k] || typeof o[k] !== 'object') {
-      continue // If null or not an object, skip to the next iteration
-    }
-
-    // The property is an object
-    cleanupNbt(o[k]) // <-- Make a recursive call on the nested object
-    if (Object.keys(o[k]).length === 0) {
-      delete o[k] // The object had no properties, so delete that property
-    }
-  }
-
-  if (!Object.keys(o).length) return undefined // Return undefined if object is empty
-  return o
-}
-
 const limits = new Map<string, number>()
 export function limitedLog(name: string, ...args: any[]) {
   const lim = (limits.get(name) ?? 0) + 1
@@ -120,8 +101,3 @@ export class MapOfSets<T> extends Map<T, Set<T>> {
 }
 
 export const cutNum = (num: number) => numeral(num).format('0a')
-
-// exports.UniqueKeys = UniqueKeys
-// exports.NumLimits = NumLimits
-// exports.cleanupNbt = cleanupNbt
-// exports.objToString = objToString

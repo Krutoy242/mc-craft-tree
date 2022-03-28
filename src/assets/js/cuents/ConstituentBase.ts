@@ -1,4 +1,4 @@
-import { JEC_Types } from '../parse/jec_types'
+import { JEC_Types } from 'mc-gatherer'
 
 export interface CuentArgs {
   readonly source: string
@@ -47,14 +47,6 @@ export class CuentBase implements CuentArgs {
     if (this.nbt != o.nbt) return false
     return true
   }
-}
-
-export type RawCollection = { [key: string]: number }
-
-interface RawRecipe {
-  out?: RawCollection | number
-  ins?: RawCollection
-  ctl?: RawCollection
 }
 
 function customRender(ads: ConstituentAdditionals, base: CuentBase): [viewBox?: string, display?: string] {
@@ -130,14 +122,6 @@ export class ConstituentAdditionals {
 
 export type AdditionalsStore = {
   [key: string]: ConstituentAdditionals
-}
-
-export interface RawAdditionals extends ConstituentAdditionals {
-  recipes?: RawRecipe[]
-}
-
-export type RawAdditionalsStore = {
-  [key: string]: RawAdditionals
 }
 
 export class ConstituentVisible extends ConstituentAdditionals {
