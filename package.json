@@ -74,19 +74,48 @@
     "vuetify-loader": "^1.7.3",
     "worker-plugin": "^5.0.1"
   },
+  "babel": {
+    "presets": [
+      "@vue/cli-plugin-babel/preset"
+    ]
+  },
   "eslintConfig": {
     "root": true,
+    "parserOptions": {
+      "parser": "@typescript-eslint/parser"
+    },
     "env": {
       "node": true
     },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended"
+    "ignorePatterns": [
+      "node_modules",
+      "build",
+      "coverage"
     ],
-    "parserOptions": {
-      "parser": "babel-eslint"
+    "plugins": [
+      "prettier"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:vue/recommended",
+      "@vue/typescript",
+      "@vue/prettier",
+      "prettier"
+    ],
+    "globals": {
+      "BigInt": true,
+      "console": true,
+      "WebAssembly": true
     },
-    "rules": {}
+    "rules": {
+      "@typescript-eslint/no-explicit-any": [
+        "off"
+      ],
+      "@typescript-eslint/no-unused-vars": [
+        "off"
+      ]
+    }
   },
   "browserslist": [
     "> 1%",
