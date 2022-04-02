@@ -1,4 +1,4 @@
-import { Constituent } from './Constituent'
+import Constituent from './Constituent'
 import { NumLimits } from '../utils'
 
 function sort_n(o: Constituent) {

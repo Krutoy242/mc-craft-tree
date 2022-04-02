@@ -5,7 +5,37 @@ export interface CuentArgs {
   readonly entry?: string
   readonly meta?: number
   readonly type?: JEC_Types
-  nbt?: string
+  readonly nbt?: string
+}
+
+export function idToCuentArgs(key: string): CuentArgs {
+  const groups =
+    key.match(/^(?<source>[^:{]+)(?::(?<entry>[^:{]+))?(?::(?<meta>[^:{]+))?(?<tag>\{.*\})?$/)?.groups ?? {}
+
+  const switchers: { [key: string]: () => JEC_Types } = {
+    placeholder: () => 'placeholder',
+    fluid: () => 'fluidStack',
+    liquid: () => 'fluidStack',
+    ore: () => 'oreDict',
+    default: () => 'itemStack',
+  }
+  const args: CuentArgs = {
+    source: groups.source,
+    entry: groups.entry,
+    meta: parseInt(groups.meta) || 0,
+    type: (switchers[groups.source] ?? switchers['default'])(),
+    nbt: groups.tag,
+  }
+
+  // if (groups.tag) {
+  //   try {
+  //     args.nbt = objToString(eval(`(${groups.tag})`))
+  //   } catch (error: any) {
+  //     console.error('nbtEvaluationError :>> ', groups.tag, 'Error: ', error.message)
+  //   }
+  // }
+
+  return args
 }
 
 export class CuentBase implements CuentArgs {
@@ -49,43 +79,8 @@ export class CuentBase implements CuentArgs {
   }
 }
 
-function customRender(ads: ConstituentAdditionals, base: CuentBase): [viewBox?: string, display?: string] {
-  const additionals = ConstituentAdditionals.additionals
-
-  if (base.source === 'aspect') {
-    const a = additionals[`thaumcraft:crystal_essence:0{Aspects:[{amount:1,key:"${base.entry.toLowerCase()}"}]}`]
-    return [a.viewBox, 'Aspect: ' + base.entry]
-  }
-
-  if (base.source === 'placeholder') {
-    if (base.entry === 'RF') {
-      return [additionals['thermalfoundation:meter:0'].viewBox, '{' + base.entry + '}']
-    }
-    if (base.entry === 'Exploration') {
-      return [additionals['botania:tinyplanet:0'].viewBox, '{' + base.entry + '}']
-    }
-    const a = additionals['openblocks:tank:0{tank:{FluidName:"betterquesting.placeholder",Amount:16000}}']
-    return [a.viewBox, '{' + base.entry + '}']
-  }
-
-  if (base.shortand === 'thaumcraft:infernal_furnace') {
-    const a = additionals['minecraft:nether_brick:0']
-    return [a.viewBox]
-  }
-
-  return []
-}
-
 export class ConstituentAdditionals {
   static additionals: AdditionalsStore
-
-  static setAdditionals(additionals: AdditionalsStore) {
-    this.additionals = additionals
-  }
-
-  item?: string // Oredict alias
-  meta?: number // Oredict alias
-
   readonly viewBox?: string
   readonly display?: string
   readonly isNoIcon?: boolean = false
@@ -102,7 +97,7 @@ export class ConstituentAdditionals {
     }
 
     if (!this.viewBox || !this.display) {
-      const o = customRender(this, base)
+      const o = ConstituentAdditionals.customRender(base)
       this.viewBox ??= o[0]
       this.display ??= o[1]
     }
@@ -117,6 +112,32 @@ export class ConstituentAdditionals {
     }
 
     this.viewBox += ' 32 32'
+  }
+
+  private static customRender(base: CuentBase): [viewBox?: string, display?: string] {
+    const ads = ConstituentAdditionals.additionals
+    if (base.source === 'aspect') {
+      const a = ads[`thaumcraft:crystal_essence:0{Aspects:[{amount:1,key:"${base.entry.toLowerCase()}"}]}`]
+      return [a.viewBox, 'Aspect: ' + base.entry]
+    }
+
+    if (base.source === 'placeholder') {
+      if (base.entry === 'RF') {
+        return [ads['thermalfoundation:meter:0'].viewBox, '{' + base.entry + '}']
+      }
+      if (base.entry === 'Exploration') {
+        return [ads['botania:tinyplanet:0'].viewBox, '{' + base.entry + '}']
+      }
+      const a = ads['openblocks:tank:0{tank:{FluidName:"betterquesting.placeholder",Amount:16000}}']
+      return [a.viewBox, '{' + base.entry + '}']
+    }
+
+    if (base.shortand === 'thaumcraft:infernal_furnace') {
+      const a = ads['minecraft:nether_brick:0']
+      return [a.viewBox]
+    }
+
+    return []
   }
 }
 

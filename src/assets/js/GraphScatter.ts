@@ -1,9 +1,9 @@
 import * as d3 from 'd3'
-import { Constituent } from './cuents/Constituent'
-import { globalTree } from './cuents/ConstituentTree'
+import Constituent from './cuents/Constituent'
+import ConstituentTree from './cuents/ConstituentTree'
 import { AnySelection, makeGraph, NodeDatum } from './graph'
 
-export function makeScatter(svg: AnySelection) {
+export function makeScatter(svg: AnySelection, globalTree: ConstituentTree) {
   // Scatter functions
   const scaleRange = d3.scaleLog().domain([0.1, 1e12]).range([0, 10000])
   const scaleLog = scaleRange.base(10).nice()

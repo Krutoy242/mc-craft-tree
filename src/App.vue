@@ -34,15 +34,13 @@
 
     <!-- <v-footer app> -->
 
-    <template>
-      <div class="text-center">
-        <v-bottom-sheet v-model="isMoreInfo">
-          <v-sheet class="text-center" height="300px">
-            <div class="py-3">This is a bottom sheet using the controlled by v-model instead of activator</div>
-          </v-sheet>
-        </v-bottom-sheet>
-      </div>
-    </template>
+    <div class="text-center">
+      <v-bottom-sheet v-model="isMoreInfo">
+        <v-sheet class="text-center" height="300px">
+          <div class="py-3">This is a bottom sheet using the controlled by v-model instead of activator</div>
+        </v-sheet>
+      </v-bottom-sheet>
+    </div>
 
     <v-system-bar>
       Unique Items: {{ uniqueItems }} Recipes Registered:
@@ -80,19 +78,21 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { globalTree } from './assets/js/cuents/ConstituentTree'
-import { recipesStore, Recipe } from './assets/js/recipes/recipes'
-
 import { EventBus } from './assets/js/lib/event-bus'
-import { GlobalPile } from './assets/js/cuents/Pile'
-import { gatherData } from './assets/js/gatherer'
+import { GraphPile } from './assets/js/cuents/Pile'
+import Recipe from './assets/js/recipes/Recipe'
+import ConstituentTree from './assets/js/cuents/ConstituentTree'
+import RecipesStore from './assets/js/recipes/recipes'
+import { RawAdditionalsStore } from 'mc-gatherer'
+import { ConstituentAdditionals } from './assets/js/cuents/ConstituentBase'
 
 export default Vue.extend({
   data: () =>
     new (class {
       drawer = null
       isMoreInfo = false
-      pile?: GlobalPile = {} as GlobalPile
+      pile?: GraphPile
+      globalTree?: ConstituentTree
 
       recipeInfoList?: Recipe[] = undefined
       showRecipesDialog = false
@@ -107,15 +107,15 @@ export default Vue.extend({
       tabs = [
         ['Graph', 'mdi-graph'],
         ['Table', 'mdi-table'],
-        ['History', 'mdi-graph'],
+        ['History', 'mdi-segment'],
       ]
     })(),
   computed: {
     listLoops() {
-      return this.pile?.listLoops ?? new Set()
+      return (this.pile as any)?.listLoops ?? new Set()
     },
     noIcons() {
-      return this.pile?.noIcon ?? []
+      return (this.pile as any)?.noIcon ?? []
     },
     uniqueItems() {
       return this.pile?.list?.length
@@ -133,19 +133,24 @@ export default Vue.extend({
       this.showRecipesDialog = true
     })
 
-    setTimeout(() => {
-      gatherData()
-      setTimeout(() => {
-        this.showLoadOverlay = false
+    void (import('./assets/data.json') as unknown as Promise<RawAdditionalsStore>)
+      .then((data) => {
+        ConstituentAdditionals.additionals = data
 
-        const pile = globalTree.makePileTo('storagedrawers:upgrade_creative:1')
+        this.globalTree = new ConstituentTree()
+        const recipesStore = new RecipesStore(this.globalTree)
+        return recipesStore.appendAdditionals(data)
+      })
+      .then((recipesStore) => {
+        const pile = this.globalTree!.makePileTo('storagedrawers:upgrade_creative:1')
         for (const key in pile) {
           ;(Vue as any).nonreactive((pile as any)[key])
         }
-        this.pile = pile as GlobalPile
+        this.pile = pile
+
         this.recipesStoreCount = recipesStore.count
-      }, 1)
-    }, 1)
+        this.showLoadOverlay = false
+      })
   },
 })
 </script>

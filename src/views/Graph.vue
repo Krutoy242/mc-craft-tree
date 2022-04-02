@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import { initGraph } from '../assets/js/graph.ts'
-import { makeGraphTree } from '../assets/js/GraphSimulation.ts'
+import { initGraph } from '../assets/js/graph'
+import { makeGraphTree } from '../assets/js/GraphSimulation'
 import * as d3 from 'd3'
 
 export default {
-  name: 'Graph',
+  name: 'GraphView',
 
   beforeRouteUpdate(to, from, next) {
     this.updateGraph(to.query)
@@ -31,6 +31,10 @@ export default {
   },
   props: {
     pile: {
+      type: Object,
+      required: true,
+    },
+    globalTree: {
       type: Object,
       required: true,
     },
@@ -49,14 +53,21 @@ export default {
     updateGraph(toQuery) {
       if (typeof this.pile == 'object') {
         initGraph(this, (d, isRightClick) =>
-          this.$router.push({ path: 'graph', query: { id: d.id, isRightClick } }).catch((_err) => {})
+          this.$router.push({ path: 'graph', query: { id: d.id, isRightClick } }).catch((_err) => {
+            //
+          })
         )
 
         const q = toQuery ?? this.$route.query
-        makeGraphTree(d3.select('#viz'), this, {
-          id: q.id ?? 'storagedrawers:upgrade_creative:1',
-          isRightClick: q.isRightClick ?? false,
-        })
+        makeGraphTree(
+          d3.select('#viz'),
+          this,
+          {
+            id: q.id ?? 'storagedrawers:upgrade_creative:1',
+            isRightClick: q.isRightClick ?? false,
+          },
+          this.globalTree
+        )
       }
     },
   },

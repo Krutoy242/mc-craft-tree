@@ -1,16 +1,26 @@
-import { Constituent } from '../cuents/Constituent'
-import { ConstituentStack } from '../cuents/ConstituentStack'
+import Constituent from '../cuents/Constituent'
+import ConstituentStack from '../cuents/ConstituentStack'
 import { cutNum, limitedLog, UniqueKeys } from '../utils'
-import { RecipeLink } from './RecipeLink'
-import { processingCostFromInputAmount, floatCut, Recipe } from './recipes'
+import RecipeLink from './RecipeLink'
+import Recipe from './Recipe'
 import numeral from 'numeral'
+
+function floatCut(n: number) {
+  return Math.round((n + Number.EPSILON) * 100000) / 100000
+}
+
+const CRAFTING_TABLE_COST = 50.0
+export function processingCostFromInputAmount(x = 1) {
+  x--
+  return Math.floor(Math.max(0, Math.pow(1.055, x + 100) - Math.pow(1.055, 101) + x * 25 + CRAFTING_TABLE_COST / 2))
+}
 
 const IS_DEBUG = false
 /**
  * List of all links between 1 output and all requirments in single recipe
  * One item can have many recipes and many LinksHolders
  **/
-export class LinksHolder {
+export default class LinksHolder {
   cost = 0.0
   processing = 0.0
   complexity = 0.0

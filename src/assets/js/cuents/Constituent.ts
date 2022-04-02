@@ -2,11 +2,11 @@ import _ from 'lodash'
 import { Ways } from '../recipes/recipes'
 import { cutNum, MapOfSets } from '../utils'
 import { ConstituentVisible, CuentArgs } from './ConstituentBase'
-import { ConstituentStack } from './ConstituentStack'
-import { listUU } from './listUU'
-import { RecipesInfo } from './RecipesInfo'
+import ConstituentStack from './ConstituentStack'
+import listUU from '../../listUU'
+import RecipesInfo from './RecipesInfo'
 
-export class Constituent extends ConstituentVisible {
+export default class Constituent extends ConstituentVisible {
   complexity = 0.0
   cost = 0.0
   usability = 0.0

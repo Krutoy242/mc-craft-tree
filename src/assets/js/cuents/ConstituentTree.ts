@@ -1,15 +1,14 @@
-import { Constituent } from './Constituent'
-import { NumLimits } from '../utils'
-import * as _ from 'lodash'
+import Constituent from './Constituent'
+import _ from 'lodash'
 import { CuentBase } from './ConstituentBase'
-import { GlobalPile, GraphPile } from './Pile'
+import { GraphPile } from './Pile'
 
-export class ConstituentTree {
+export default class ConstituentTree {
   // source -> entry -> meta -> []
   private tree = {} as {
-    [key: string]: {
-      [key: string]: {
-        [key: number]: Constituent[]
+    [source: string]: {
+      [entry: string]: {
+        [meta: number]: Constituent[]
       }
     }
   }
@@ -54,7 +53,7 @@ export class ConstituentTree {
   }
 
   private getById(id: string): Constituent | undefined {
-    const [s, e, m] = id.split(':') as [string, string, number]
+    const [s, e, m] = id.split(':') as [string, string, number?]
     return _.get(this.tree, [s, e, m ?? 0])?.find((n) => n.id === id)
   }
 
@@ -97,5 +96,3 @@ export class ConstituentTree {
     return pile.sort()
   }
 }
-
-export const globalTree = new ConstituentTree()

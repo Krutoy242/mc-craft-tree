@@ -1,9 +1,9 @@
-import { Constituent } from '../cuents/Constituent'
+import Constituent from '../cuents/Constituent'
 
 /**
  * Link between two items in recipe
  **/
-export class RecipeLink {
+export default class RecipeLink {
   flipped!: RecipeLink
 
   constructor(public from: Constituent, public to: Constituent, public weight: number, public id: string) {}

@@ -7,9 +7,9 @@
 </template>
 
 <script lang="ts">
+import ConstituentTree from '@/assets/js/cuents/ConstituentTree'
 import _ from 'lodash'
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { globalTree } from '../assets/js/cuents/ConstituentTree'
 import { GlobalPile, GraphPile } from '../assets/js/cuents/Pile'
 import HistoryEntry from '../components/HistoryEntry.vue'
 
@@ -45,7 +45,7 @@ export default class History extends Vue {
 
   updateGraph(toQuery?: any): void {
     const q = toQuery ?? (this as any).$route.query
-    const pile = globalTree.makePile(
+    const pile = ((this as any).$tree as ConstituentTree).makePile(
       q.id ?? 'storagedrawers:upgrade_creative:1',
       q.isRightClick ?? false,
       (c) => c.usability > 0 && c.complexity > 0

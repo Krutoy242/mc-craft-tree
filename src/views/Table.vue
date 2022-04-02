@@ -20,7 +20,7 @@
 
     <v-data-table
       :headers="selectedHeaders"
-      :items="pile.list"
+      :items="pileList"
       class="elevation-1"
       :search="search"
       :custom-filter="filter"
@@ -89,8 +89,9 @@
 </template>
 
 <script>
-const _ = require('lodash')
-import { EventBus } from '../assets/js/lib/event-bus.ts'
+import _ from 'lodash'
+import { EventBus } from '@/assets/js/lib/event-bus.ts'
+import { GlobalPile } from '@/assets/js/cuents/Pile'
 
 function emit(data) {
   EventBus.$emit('show-recipes-dialog', data)
@@ -147,6 +148,9 @@ export default {
   computed: {
     trueHeaders() {
       return this.headers.filter((head) => head.text !== '')
+    },
+    pileList() {
+      return this.pile?.list ?? []
     },
   },
 

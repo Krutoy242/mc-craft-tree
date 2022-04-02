@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-export const listUU: Record<string, number> = {
+const listUU: Record<string, number> = {
   'placeholder:Dim Overworld'                      : 1.0,     //
 
   'placeholder:Ticks'                              : 0.1,     // [placeholder:Ticks]
@@ -294,3 +294,4 @@ export const listUU: Record<string, number> = {
   'fluid:liquidethene'                             : 2.5,
 
 }
+export default listUU;

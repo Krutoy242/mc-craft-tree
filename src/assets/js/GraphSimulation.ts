@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import { globalTree } from './cuents/ConstituentTree'
+import ConstituentTree from './cuents/ConstituentTree'
 import { AnySelection, LinkDatum, makeGraph, NodeDatum } from './graph'
 
 let simulation: d3.Simulation<NodeDatum, LinkDatum>
@@ -27,7 +27,8 @@ function forceUpdate() {
 export function makeGraphTree(
   svg: AnySelection,
   vue: { selectedNode: NodeDatum },
-  query: { id: string; isRightClick: boolean }
+  query: { id: string; isRightClick: boolean },
+  globalTree: ConstituentTree
 ) {
   //  ❓❓❓ To filter or not to filter
   console.log('arguments :>> ', svg, vue, query)

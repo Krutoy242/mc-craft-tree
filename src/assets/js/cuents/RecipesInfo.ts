@@ -1,20 +1,21 @@
-import { Recipe, Ways } from '../recipes/recipes'
-import { LinksHolder } from '../recipes/LinksHolder'
-import { Constituent } from './Constituent'
-import * as _ from 'lodash'
+import { Ways } from '../recipes/recipes'
+import Recipe from '../recipes/Recipe'
+import LinksHolder from '../recipes/LinksHolder'
+import Constituent from './Constituent'
+import _ from 'lodash'
 
 function SORT_PURITY_FIRST(a: LinksHolder, b: LinksHolder) {
   return b.purity - a.purity || a.complexity - b.complexity
 }
 
-const epsilon = 0.000000000001
+const epsilon = 1e-12
 function SORT_COMPLEXY_AND_PURITY(a: LinksHolder, b: LinksHolder) {
   return (
     a.complexity / (a.purity ** 1 * (1 - epsilon) + epsilon) - b.complexity / (b.purity ** 1 * (1 - epsilon) + epsilon)
   )
 }
 
-export class RecipesInfo {
+export default class RecipesInfo {
   isLooped = false
   main?: Recipe
   mainHolder?: LinksHolder

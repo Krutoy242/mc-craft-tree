@@ -15,17 +15,15 @@
 </template>
 
 <script lang="ts">
+import ConstituentStack from '@/assets/js/cuents/ConstituentStack'
 import * as d3 from 'd3'
 import Vue from 'vue'
-import { ConstituentStack } from '../assets/js/cuents/ConstituentStack'
 
 interface TreemapDatum {
   value: number
 }
 
 export default Vue.extend({
-  name: 'Treemap',
-
   props: {
     entryList: {
       type: Array as () => Array<ConstituentStack>,
