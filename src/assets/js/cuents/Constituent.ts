@@ -21,14 +21,14 @@ export default class Constituent extends ConstituentVisible {
     return this.recipes.mainHolder?.inputs.length ?? 0
   }
   public get popularity() {
-    return this.popList.length
+    return this.popList.size
   }
   public get outputsAmount() {
-    return this.outsList.length
+    return this.outsList.size
   }
 
-  outsList: ConstituentStack[] = []
-  popList: ConstituentStack[] = []
+  outsList = new Set<Constituent>()
+  popList = new Set<Constituent>()
   isNatural = false
 
   public get id(): string {
@@ -128,7 +128,7 @@ export default class Constituent extends ConstituentVisible {
     const outAmount = main.outputs.find((o) => o.cuent === this)?.amount as number
 
     for (const cs of main.catalysts) {
-      cs.cuent.popList.push(this.stack())
+      cs.cuent.popList.add(this)
 
       const required = cs.amount
       const have = inventory.get(cs.cuent) ?? 0
@@ -142,7 +142,7 @@ export default class Constituent extends ConstituentVisible {
     }
 
     for (const cs of main.inputs) {
-      cs.cuent.outsList.push(this.stack())
+      cs.cuent.outsList.add(this)
 
       const required = (count * cs.amount) / outAmount
       const have = inventory.get(cs.cuent) ?? 0

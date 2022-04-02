@@ -48,7 +48,7 @@
       </template>
 
       <template #item.popularity="{ item }">
-        <entry-grid :cuent-stack-array="item.popList" @click.native="showAsCatalysts(item)">
+        <entry-grid :cuent-stack-array="toStackArr(item.popList)" @click.native="showAsCatalysts(item)">
           <popularity :number="item.popularity" />
         </entry-grid>
       </template>
@@ -71,7 +71,7 @@
       </template>
 
       <template #item.outputsAmount="{ item }">
-        <entry-grid :cuent-stack-array="item.outsList" @click.native="showAsOutput(item)">
+        <entry-grid :cuent-stack-array="toStackArr(item.outsList)" @click.native="showAsOutput(item)">
           <hedgehog :number="item.outputsAmount" inverted="true" />
         </entry-grid>
       </template>
@@ -177,10 +177,13 @@ export default {
       emit(cuent.getRecipes().map((r) => ({ it: r, selected: r == cuent.recipes.main })))
     },
     showAsCatalysts(cuent) {
-      emit(extractFromCSList(cuent.popList, (r) => r.catalysts.some((cs) => cs.cuent === cuent)))
+      emit(extractFromCSList([...cuent.popList], (r) => r.catalysts.some((cs) => cs.cuent === cuent)))
     },
     showAsOutput(cuent) {
-      emit(extractFromCSList(cuent.outsList, (r) => r.inputs.some((cs) => cs.cuent === cuent)))
+      emit(extractFromCSList([...cuent.outsList], (r) => r.inputs.some((cs) => cs.cuent === cuent)))
+    },
+    toStackArr(cuentSet) {
+      return [...cuentSet].map((c) => c.stack())
     },
   },
 }
