@@ -8,17 +8,17 @@ export interface CuentArgs {
   readonly nbt?: string
 }
 
+const switchers: { [key: string]: () => JEC_Types } = {
+  placeholder: () => 'placeholder',
+  fluid: () => 'fluidStack',
+  liquid: () => 'fluidStack',
+  ore: () => 'oreDict',
+  default: () => 'itemStack',
+}
+
 export function idToCuentArgs(key: string): CuentArgs {
   const groups =
     key.match(/^(?<source>[^:{]+)(?::(?<entry>[^:{]+))?(?::(?<meta>[^:{]+))?(?<tag>\{.*\})?$/)?.groups ?? {}
-
-  const switchers: { [key: string]: () => JEC_Types } = {
-    placeholder: () => 'placeholder',
-    fluid: () => 'fluidStack',
-    liquid: () => 'fluidStack',
-    ore: () => 'oreDict',
-    default: () => 'itemStack',
-  }
   const args: CuentArgs = {
     source: groups.source,
     entry: groups.entry,

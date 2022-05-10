@@ -4,7 +4,6 @@ import { CuentBase } from './ConstituentBase'
 import { GraphPile } from './Pile'
 
 export default class ConstituentTree {
-  // source -> entry -> meta -> []
   private tree = {} as {
     [source: string]: {
       [entry: string]: {
@@ -23,6 +22,19 @@ export default class ConstituentTree {
         }
       }
     }
+  }
+
+  /**
+   * Calculate every cuent stored in tree
+   */
+  calculate() {
+    this.forEach((c) => {
+      this.propagate(c)
+    })
+  }
+
+  propagate(c: Constituent) {
+    c.recipes.getCuentsForWay('outputs')
   }
 
   private _wholePile?: GraphPile
@@ -75,24 +87,28 @@ export default class ConstituentTree {
   public makePile(arg: Constituent, toOutputs: boolean, filter?: (c: Constituent) => boolean): GraphPile
   public makePile(arg: string, toOutputs: boolean, filter?: (c: Constituent) => boolean): GraphPile
   public makePile(arg: Constituent | string, toOutputs: boolean, filter?: (c: Constituent) => boolean): GraphPile {
-    let c: Constituent | undefined
-    if (typeof arg === 'string') c = this.getById(arg)
-    else c = arg
+    let cuent: Constituent | undefined
+    if (typeof arg === 'string') cuent = this.getById(arg)
+    else cuent = arg
 
     let pile: GraphPile
 
-    if (!c) {
+    if (!cuent) {
       pile = this.getWholePile()
     } else {
       pile = new GraphPile()
 
-      c.purchase((c) => (!filter || filter(c) ? pile.merge(c) : null))
+      cuent.purchase((c) => {
+        if (!filter || filter(c)) {
+          pile.merge(c)
+        }
+      })
       // c.dive(toOutputs ? 'outputs' : 'requirments',
       //   (c)=>pile.merge(c)
       // )
     }
 
-    console.log(`tree ${toOutputs ? 'from' : 'to'} ${c?.id}:>> `, this.tree)
+    console.log(`tree ${toOutputs ? 'from' : 'to'} ${cuent?.id}:>> `, this.tree)
     return pile.sort()
   }
 }

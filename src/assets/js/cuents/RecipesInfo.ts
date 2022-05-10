@@ -27,10 +27,9 @@ export default class RecipesInfo {
     catalysts: new Set<Constituent>(),
   }
 
-  getCuentsForWay(way: Ways, block: Set<Constituent>, onlyMain = false) {
-    return (onlyMain ? this.main?.requirments.map((cs) => cs.cuent) ?? [] : [...this.ways[way]]).filter(
-      (o) => !block.has(o)
-    )
+  getCuentsForWay(way: Ways, block?: Set<Constituent>, onlyMain = false) {
+    const arr = onlyMain ? this.main?.requirments.map((cs) => cs.cuent) ?? [] : [...this.ways[way]]
+    return block ? arr.filter((o) => !block.has(o)) : arr
   }
 
   pushIfUnique(recipe: Recipe, linksHolder: LinksHolder): boolean {
