@@ -45,11 +45,11 @@
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.16.7",
-    "@babel/plugin-proposal-optional-chaining": "^7.16.7",
     "@babel/core": "^7.17.10",
     "@babel/eslint-parser": "^7.17.0",
     "@babel/node": "^7.17.10",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.16.7",
+    "@babel/plugin-proposal-optional-chaining": "^7.16.7",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
     "@vue/cli-plugin-babel": "^5.0.4",
@@ -61,7 +61,11 @@
     "@vue/eslint-config-typescript": "^10.0.0",
     "babel-eslint": "^10.1.0",
     "eslint": "^8.15.0",
+    "eslint-config-alloy": "^4.5.1",
     "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-eslint-comments": "^3.2.0",
+    "eslint-plugin-functional": "^4.2.1",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.7.1",
     "prettier": "^2.6.2",
@@ -83,7 +87,9 @@
   },
   "eslintConfig": {
     "root": true,
+    "parser": "@typescript-eslint/parser",
     "parserOptions": {
+      "extraFileExtensions":true,
       "ecmaVersion": 2020,
       "project": [
         "tsconfig.json"
@@ -91,7 +97,7 @@
       "sourceType": "module"
     },
     "env": {
-      "node": true
+      "es6": true
     },
     "ignorePatterns": [
       "node_modules",
@@ -99,15 +105,13 @@
       "coverage"
     ],
     "plugins": [
-      "prettier"
+      "import",
+      "eslint-comments",
+      "functional"
     ],
     "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:vue/recommended",
-      "@vue/typescript",
-      "@vue/prettier",
-      "prettier"
+      "alloy",
+      "alloy/typescript"
     ],
     "globals": {
       "BigInt": true,
@@ -115,25 +119,56 @@
       "WebAssembly": true
     },
     "rules": {
-      "@typescript-eslint/no-explicit-any": [
-        "off"
+      "guard-for-in": "off",
+      "max-nested-callbacks": "off",
+      "no-sequences": "off",
+      "@typescript-eslint/explicit-member-accessibility": 0,
+      "@typescript-eslint/no-parameter-properties": 0,
+      "max-params": "off",
+      "no-return-assign": "off",
+      "no-unused-expressions": "error",
+      "no-else-return": 2,
+      "no-template-curly-in-string": 2,
+      "require-atomic-updates": 2,
+      "no-duplicate-imports": 2,
+      "no-promise-executor-return": 2,
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/no-explicit-any": 0,
+      "eslint-comments/disable-enable-pair": [
+        "error",
+        {
+          "allowWholeFile": true
+        }
       ],
-      "@typescript-eslint/no-unused-vars": [
-        "off"
+      "eslint-comments/no-unused-disable": "error",
+      "import/order": [
+        "error",
+        {
+          "newlines-between": "always",
+          "alphabetize": {
+            "order": "asc"
+          }
+        }
       ],
-      "@typescript-eslint/no-floating-promises": 2
+      "sort-imports": [
+        "error",
+        {
+          "ignoreDeclarationSort": true,
+          "ignoreCase": true
+        }
+      ]
     }
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not dead"
-  ],
   "prettier": {
     "semi": false,
     "trailingComma": "es5",
     "singleQuote": true,
-    "printWidth": 120,
-    "htmlWhitespaceSensitivity": "ignore"
+    "printWidth": 80,
+    "htmlWhitespaceSensitivity": "ignore",
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "rangeStart": 0,
+    "proseWrap": "preserve",
+    "embeddedLanguageFormatting": "auto"
   }
 }

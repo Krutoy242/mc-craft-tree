@@ -26,7 +26,9 @@
         hide-default-header
         class="elevation-1"
       >
-        <template #item.display="{ item }"><tree-entry :node="item" class="pa-2" /></template>
+        <template #item.display="{ item }">
+          <tree-entry :node="item" class="pa-2" />
+        </template>
       </v-data-table>
     </v-tab-item>
 
@@ -49,7 +51,9 @@
         hide-default-header
         class="elevation-1"
       >
-        <template #item.display="{ item }"><tree-entry :node="item" class="pa-2" /></template>
+        <template #item.display="{ item }">
+          <tree-entry :node="item" class="pa-2" />
+        </template>
       </v-data-table>
     </v-tab-item>
   </v-tabs>

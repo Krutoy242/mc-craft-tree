@@ -1,7 +1,12 @@
 <template>
   <div style="position: relative; height: 100%">
     <div style="position: absolute" class="ma-4">
-      <tree-entry v-if="selectedNode" :node="selectedNode" size="64" details="big" />
+      <tree-entry
+        v-if="selectedNode"
+        :node="selectedNode"
+        size="64"
+        details="big"
+      />
     </div>
     <svg id="viz" style="width: 100%; height: 100%"></svg>
     <v-system-bar color="indigo darken-2">
@@ -53,9 +58,11 @@ export default {
     updateGraph(toQuery) {
       if (typeof this.pile == 'object') {
         initGraph(this, (d, isRightClick) =>
-          this.$router.push({ path: 'graph', query: { id: d.id, isRightClick } }).catch((_err) => {
-            //
-          })
+          this.$router
+            .push({ path: 'graph', query: { id: d.id, isRightClick } })
+            .catch((_err) => {
+              //
+            })
         )
 
         const q = toQuery ?? this.$route.query

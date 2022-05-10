@@ -6,7 +6,11 @@
       class="neon d-inline-block textarea float-right"
       style="font-size: medium"
     >
-      <v-row no-gutters style="flex-wrap: nowrap" :style="highlited ? 'background-color: rgba(27, 94, 32, 0.1);' : ''">
+      <v-row
+        no-gutters
+        style="flex-wrap: nowrap"
+        :style="highlited ? 'background-color: rgba(27, 94, 32, 0.1);' : ''"
+      >
         <v-col :class="'px-1' + compClass" :data-text="whole">
           {{ short ? compNumber : whole }}
         </v-col>
@@ -52,7 +56,12 @@ function abbreviateNumber(num) {
   return scaled.toFixed(1) + suffix
 }
 
-const tierClasses = ['grey--text text--lighten-1', 'grey--text text--lighten-2', 'enchanted', 'glow']
+const tierClasses = [
+  'grey--text text--lighten-1',
+  'grey--text text--lighten-2',
+  'enchanted',
+  'glow',
+]
 
 export default {
   props: {
@@ -98,8 +107,8 @@ export default {
 
 <style scoped>
 .textarea {
-  font-family: Consolas, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono,
-    Courier New, monospace;
+  font-family: Consolas, Monaco, Lucida Console, Liberation Mono,
+    DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
 }
 
 .glow {
@@ -110,19 +119,23 @@ export default {
 
 @-webkit-keyframes glow {
   from {
-    text-shadow: 0 0 3px rgba(255, 255, 255, 0.4), 0 0 8px #e67b0066, 0 0 10px#e67b0066, 0 0 18px#e67b0066;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.4), 0 0 8px #e67b0066,
+      0 0 10px#e67b0066, 0 0 18px#e67b0066;
   }
   to {
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 10px #ffad1566, 0 0 13px #ffad1566, 0 0 20px #ffad1566;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 10px #ffad1566,
+      0 0 13px #ffad1566, 0 0 20px #ffad1566;
   }
 }
 
 @keyframes glow {
   0% {
-    text-shadow: 0 0 3px rgba(255, 255, 255, 0.4), 0 0 8px #e67b0066, 0 0 10px#e67b0066, 0 0 18px#e67b0066;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.4), 0 0 8px #e67b0066,
+      0 0 10px#e67b0066, 0 0 18px#e67b0066;
   }
   100% {
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 10px #ffad1566, 0 0 13px #ffad1566, 0 0 20px #ffad1566;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.4), 0 0 10px #ffad1566,
+      0 0 13px #ffad1566, 0 0 20px #ffad1566;
   }
 }
 

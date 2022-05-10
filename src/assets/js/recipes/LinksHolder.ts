@@ -1,9 +1,11 @@
+import numeral from 'numeral'
+
 import Constituent from '../cuents/Constituent'
 import ConstituentStack from '../cuents/ConstituentStack'
 import { cutNum, limitedLog, UniqueKeys } from '../utils'
-import RecipeLink from './RecipeLink'
+
 import Recipe from './Recipe'
-import numeral from 'numeral'
+import RecipeLink from './RecipeLink'
 
 function floatCut(n: number) {
   return Math.round((n + Number.EPSILON) * 100000) / 100000
@@ -11,8 +13,16 @@ function floatCut(n: number) {
 
 const CRAFTING_TABLE_COST = 50.0
 export function processingCostFromInputAmount(x = 1) {
-  x--
-  return Math.floor(Math.max(0, Math.pow(1.055, x + 100) - Math.pow(1.055, 101) + x * 25 + CRAFTING_TABLE_COST / 2))
+  const k = x - 1
+  return Math.floor(
+    Math.max(
+      0,
+      Math.pow(1.055, k + 100) -
+        Math.pow(1.055, 101) +
+        k * 25 +
+        CRAFTING_TABLE_COST / 2
+    )
+  )
 }
 
 const IS_DEBUG = false
@@ -39,37 +49,20 @@ export default class LinksHolder {
 
   // asString() { return `output:${this.output.cuent.asString()} (complexity:${this.complexity}, purity:${this.purity}, steps:${this.steps})`}
   asString() {
-    return `${this.recipe.display()} (complexity:${cutNum(this.complexity)}, purity:${cutNum(
-      this.purity
-    )}, steps:${cutNum(this.steps)})`
+    return `${this.recipe.display()} (complexity:${cutNum(
+      this.complexity
+    )}, purity:${cutNum(this.purity)}, steps:${cutNum(this.steps)})`
   }
   console(): string[] {
     const cls = this.recipe.console()
     return [
-      cls[0] + `%c(${cutNum(this.complexity)},${numeral(this.purity).format('0.00')},${cutNum(this.steps)})`,
+      cls[0] +
+        `%c(${cutNum(this.complexity)},${numeral(this.purity).format(
+          '0.00'
+        )},${cutNum(this.steps)})`,
       ...cls.slice(1),
       'background: #132; color: #444',
     ]
-  }
-
-  private isLooped(): boolean {
-    return (
-      this.inputs.some(({ from }) => from.recipes.mainHolder?.catalystsKeys.has(this.output.cuent)) ||
-      this.catalysts.some(({ from }) => this.output.cuent === from)
-    )
-  }
-
-  private addCatalystKey(c: Constituent, processor = false): boolean {
-    if (this.catalystsKeys.has(c)) return false
-    this.catalystsKeys.add(c)
-    // const valToAdd = processor ? c.complexity : c.processing
-    const valToAdd = c.complexity
-    this.processing += valToAdd
-    if (IS_DEBUG) {
-      const clo = c.console()
-      limitedLog('adding: ', valToAdd + ' from: ' + clo[0], ...clo.slice(1))
-    }
-    return true
   }
 
   calculate() {
@@ -87,11 +80,13 @@ export default class LinksHolder {
       // newPurity = 1.0
       this.cost += processingCostFromInputAmount(this.inputs.length)
       for (const { from, weight } of this.inputs) {
-        this.cost += from.cost /*+  from.steps */ * weight
+        this.cost += from.cost /* +  from.steps */ * weight
         // newPurity += (from.purity ** (2 - 1 / (from.steps + 1)))// * 0.9 + 0.1
         newPurity += from.purity / (from.steps + 1)
         this.steps += from.steps
-        from.recipes.mainHolder?.catalystsKeys.forEach((c) => this.addCatalystKey(c))
+        from.recipes.mainHolder?.catalystsKeys.forEach((c) =>
+          this.addCatalystKey(c)
+        )
       }
 
       for (const { from } of this.catalysts) {
@@ -118,5 +113,26 @@ export default class LinksHolder {
     // if(this.output.cuent.id.startsWith('minecraft:diamond')) console.log([...this.recipesKeys.values()].map(r=>r.display()).join('\n'))
 
     return oldComplexity !== this.complexity
+  }
+
+  private isLooped(): boolean {
+    return (
+      this.inputs.some(({ from }) =>
+        from.recipes.mainHolder?.catalystsKeys.has(this.output.cuent)
+      ) || this.catalysts.some(({ from }) => this.output.cuent === from)
+    )
+  }
+
+  private addCatalystKey(c: Constituent, processor = false): boolean {
+    if (this.catalystsKeys.has(c)) return false
+    this.catalystsKeys.add(c)
+    // const valToAdd = processor ? c.complexity : c.processing
+    const valToAdd = c.complexity
+    this.processing += valToAdd
+    if (IS_DEBUG) {
+      const clo = c.console()
+      limitedLog('adding: ', valToAdd + ' from: ' + clo[0], ...clo.slice(1))
+    }
+    return true
   }
 }

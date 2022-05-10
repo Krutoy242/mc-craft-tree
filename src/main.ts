@@ -2,9 +2,9 @@ import './router/componentHooks.ts'
 
 Object.defineProperty(String.prototype, 'hashCode', {
   value: function () {
-    let hash = 0,
-      i,
-      chr
+    let hash = 0
+    let i
+    let chr
     for (i = 0; i < this.length; i++) {
       chr = this.charCodeAt(i)
       hash = (hash << 5) - hash + chr
@@ -14,26 +14,23 @@ Object.defineProperty(String.prototype, 'hashCode', {
   },
 })
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-//@ts-ignore
-
+import vueCurveText from '@inotom/vue-curve-text'
+import { paramCase } from 'change-case'
+import numeral from 'numeral'
 import Vue from 'vue'
+import VueCookies from 'vue-cookies'
+import numFormat from 'vue-filter-number-format'
+import VueNonreactive from 'vue-nonreactive'
+import WrappedComponent from 'vue-wrapped-component'
+import { ThisTypedComponentOptionsWithArrayProps } from 'vue/types/options'
+
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import router from './router'
-import numeral from 'numeral'
-import numFormat from 'vue-filter-number-format'
-import { paramCase } from 'change-case'
-import VueCookies from 'vue-cookies'
-
-import WrappedComponent from 'vue-wrapped-component'
 Vue.use(WrappedComponent)
 
-import VueNonreactive from 'vue-nonreactive'
 Vue.use(VueNonreactive)
 
-import vueCurveText from '@inotom/vue-curve-text'
-import { ThisTypedComponentOptionsWithArrayProps } from 'vue/types/options'
 Vue.component('CurveText', vueCurveText)
 
 const requireComponent = require.context(
@@ -81,4 +78,6 @@ new Vue({
     }
   },
   render: (h) => h(App),
-} as ThisTypedComponentOptionsWithArrayProps<Vue, object, object, object, never>).$mount('#app')
+} as ThisTypedComponentOptionsWithArrayProps<Vue, object, object, object, never>).$mount(
+  '#app'
+)

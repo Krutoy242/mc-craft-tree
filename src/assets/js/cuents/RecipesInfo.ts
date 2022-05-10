@@ -1,8 +1,10 @@
-import { Ways } from '../recipes/recipes'
-import Recipe from '../recipes/Recipe'
-import LinksHolder from '../recipes/LinksHolder'
-import Constituent from './Constituent'
 import _ from 'lodash'
+
+import LinksHolder from '../recipes/LinksHolder'
+import Recipe from '../recipes/Recipe'
+import { Ways } from '../recipes/recipes'
+
+import Constituent from './Constituent'
 
 function SORT_PURITY_FIRST(a: LinksHolder, b: LinksHolder) {
   return b.purity - a.purity || a.complexity - b.complexity
@@ -11,7 +13,8 @@ function SORT_PURITY_FIRST(a: LinksHolder, b: LinksHolder) {
 const epsilon = 1e-12
 function SORT_COMPLEXY_AND_PURITY(a: LinksHolder, b: LinksHolder) {
   return (
-    a.complexity / (a.purity ** 1 * (1 - epsilon) + epsilon) - b.complexity / (b.purity ** 1 * (1 - epsilon) + epsilon)
+    a.complexity / (a.purity ** 1 * (1 - epsilon) + epsilon) -
+    b.complexity / (b.purity ** 1 * (1 - epsilon) + epsilon)
   )
 }
 
@@ -28,7 +31,9 @@ export default class RecipesInfo {
   }
 
   getCuentsForWay(way: Ways, block?: Set<Constituent>, onlyMain = false) {
-    const arr = onlyMain ? this.main?.requirments.map((cs) => cs.cuent) ?? [] : [...this.ways[way]]
+    const arr = onlyMain
+      ? this.main?.requirments.map((cs) => cs.cuent) ?? []
+      : [...this.ways[way]]
     return block ? arr.filter((o) => !block.has(o)) : arr
   }
 
@@ -39,7 +44,8 @@ export default class RecipesInfo {
     for (const way of ['inputs', 'outputs', 'catalysts'] as const) {
       for (const cs of recipe[way]) {
         this.ways[way].add(cs.cuent)
-        if (way === 'inputs' || way === 'catalysts') this.ways.requirments.add(cs.cuent)
+        if (way === 'inputs' || way === 'catalysts')
+          this.ways.requirments.add(cs.cuent)
       }
     }
     return true

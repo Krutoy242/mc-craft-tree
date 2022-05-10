@@ -1,7 +1,11 @@
 <template>
   <div>
     <kbd>
-      <span :style="{ color: `hsl(${h}, 60%, 40%)` }">{{ node.base.source }}</span>:<span class="blue--text text--lighten-3">{{ node.base.entry }}</span>
+      <span :style="{ color: `hsl(${h}, 60%, 40%)` }">
+        {{ node.base.source }}
+      </span>
+      :
+      <span class="blue--text text--lighten-3">{{ node.base.entry }}</span>
       <span v-if="node.base.meta">:{{ node.base.meta }}</span>
     </kbd>
   </div>

@@ -16,20 +16,27 @@ export function objToString(obj: any, ndeep = 1): string {
     const indent = Array(ndeep).join('\t')
     const isArray = Array.isArray(obj)
     return (
-      '{['[+isArray] +
+      '{['[Number(isArray)] +
       Object.keys(obj)
-        .map(function (key) {
-          const quoted = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(key) ? key : `"${key}"`
-          return '\n\t' + indent + (isArray ? '' : quoted + ': ') + objToString(obj[key], ndeep + 1)
+        .map((key) => {
+          const quoted = /^[a-zA-Z_$][a-zA-Z_$0-9]*$/.test(key)
+            ? key
+            : `"${key}"`
+          return (
+            '\n\t' +
+            indent +
+            (isArray ? '' : quoted + ': ') +
+            objToString(obj[key], ndeep + 1)
+          )
         })
         .join(',') +
       '\n' +
       indent +
-      '}]'[+isArray]
+      '}]'[Number(isArray)]
     ).replace(/[\s\t\n]+(?=(?:[^'"]*['"][^'"]*['"])*[^'"]*$)/g, '')
   }
 
-  return obj != null ? obj.toString() : ''
+  return obj !== undefined && obj !== null ? obj.toString() : ''
 }
 
 export class NumLimits {

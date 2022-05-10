@@ -1,9 +1,11 @@
+import { RawAdditionalsStore, RawCollection } from 'mc-gatherer'
+
+import { CuentBase, idToCuentArgs } from '../cuents/ConstituentBase'
 import ConstituentStack from '../cuents/ConstituentStack'
 import ConstituentTree from '../cuents/ConstituentTree'
-import { RawAdditionalsStore, RawCollection } from 'mc-gatherer'
 import { NumLimits } from '../utils'
+
 import Recipe from './Recipe'
-import { CuentBase, idToCuentArgs } from '../cuents/ConstituentBase'
 
 export type Ways = 'outputs' | 'inputs' | 'catalysts' | 'requirments'
 
@@ -19,15 +21,8 @@ export default class RecipesStore {
   private getCuent
 
   constructor(tree: ConstituentTree) {
-    this.getCuent = (strItemId: string) => tree.pushBase(new CuentBase(idToCuentArgs(strItemId)))
-  }
-
-  private appendRecipe(recipe: Recipe) {
-    this.map.set(recipe.id, recipe)
-    this.count++
-    this.info.outputsAmount.update(recipe.outputs.length)
-    this.info.inputsAmount.update(recipe.inputs.length)
-    this.info.catalystsAmount.update(recipe.catalysts.length)
+    this.getCuent = (strItemId: string) =>
+      tree.pushBase(new CuentBase(idToCuentArgs(strItemId)))
   }
 
   async appendAdditionals(
@@ -38,13 +33,13 @@ export default class RecipesStore {
 
     const keysToArr = (collection: RawCollection = {}): ConstituentStack[] =>
       Object.entries(collection).map(([k, v]) => {
-        const cuent = this.getCuent(ids_arr[parseInt(k)])
+        const cuent = this.getCuent(ids_arr[Number(k)])
         return new ConstituentStack(cuent, v * cuent.volume)
       })
 
     const chunkSize = ids_arr.length / 300
     for (let i = 0; i < ids_arr.length; i++) {
-      if (i % chunkSize == 0) await progressCb?.(i, ids_arr.length)
+      if (i % chunkSize === 0) await progressCb?.(i, ids_arr.length)
 
       const keyOut = ids_arr[i]
       const ads = additionals[keyOut]
@@ -66,5 +61,13 @@ export default class RecipesStore {
       }
     }
     return this
+  }
+
+  private appendRecipe(recipe: Recipe) {
+    this.map.set(recipe.id, recipe)
+    this.count++
+    this.info.outputsAmount.update(recipe.outputs.length)
+    this.info.inputsAmount.update(recipe.inputs.length)
+    this.info.catalystsAmount.update(recipe.catalysts.length)
   }
 }

@@ -1,9 +1,11 @@
 import _ from 'lodash'
+
+import listUU from '../../listUU'
 import { Ways } from '../recipes/recipes'
 import { cutNum, MapOfSets } from '../utils'
+
 import { ConstituentVisible, CuentArgs } from './ConstituentBase'
 import ConstituentStack from './ConstituentStack'
-import listUU from '../../listUU'
 import RecipesInfo from './RecipesInfo'
 
 export default class Constituent extends ConstituentVisible {
@@ -78,11 +80,15 @@ export default class Constituent extends ConstituentVisible {
     return this.cost + this.processing / (factor + Math.sqrt(this.usability))
   }
   asString() {
-    return `[${this.display}]:${cutNum(this.complexity)}(${cutNum(this.cost)}+${cutNum(this.processing)})`
+    return `[${this.display}]:${cutNum(this.complexity)}(${cutNum(
+      this.cost
+    )}+${cutNum(this.processing)})`
   }
   console() {
     return [
-      `[%c${this.display}%c %c${cutNum(this.complexity)}%c %c${cutNum(this.cost)}+${cutNum(this.processing)}%c]`,
+      `[%c${this.display}%c %c${cutNum(this.complexity)}%c %c${cutNum(
+        this.cost
+      )}+${cutNum(this.processing)}%c]`,
       'background: #333; color: #999',
       '',
       'color: #fff',
@@ -105,7 +111,7 @@ export default class Constituent extends ConstituentVisible {
       c.calculate()
       if (!once.has(c)) {
         once.add(c)
-        callback && callback(c)
+        callback?.(c)
       }
     })
 
@@ -125,7 +131,8 @@ export default class Constituent extends ConstituentVisible {
 
     const main = this.recipes.main
     if (!main) return
-    const outAmount = main.outputs.find((o) => o.cuent === this)?.amount as number
+    const outAmount = main.outputs.find((o) => o.cuent === this)
+      ?.amount as number
 
     for (const cs of main.catalysts) {
       cs.cuent.popList.add(this)
@@ -164,7 +171,7 @@ export default class Constituent extends ConstituentVisible {
     route = [] as Constituent[]
   ): void {
     if (deph < 1) return
-    if (this.id == 'minecraft:crafting_table:0') return cb(this, deph, way)
+    if (this.id === 'minecraft:crafting_table:0') return cb(this, deph, way)
     route.push(this)
 
     const b = block.getForSure(this)
@@ -203,12 +210,13 @@ function unblockRouteByBlock(
   c: Constituent
 ) {
   const _route = _(route)
-  let from: number, to: number
+  let from: number
+  let to: number
   if (
     ((from = _route.findLastIndex((o) => c === o)), from > -1) &&
     ((to = _route.slice(from).findLastIndex((o) => alts.has(o))), to > -1)
   ) {
-    //TODO: This magic number means length of loop to skip
+    // TODO: This magic number means length of loop to skip
     // resolve long loops
     if (to > 100) {
       /* console.log('skipped long loop'); */ return

@@ -5,7 +5,11 @@
         <v-btn v-bind="attrs" small v-on="on">Extra</v-btn>
       </template>
       <v-list>
-        <v-list-item v-for="(item, i) in items" :key="i" @click="item.action(graph)">
+        <v-list-item
+          v-for="(item, i) in items"
+          :key="i"
+          @click="item.action(graph)"
+        >
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -73,12 +77,20 @@ function naturalSort(array) {
 function saveListUU(graph) {
   const listUU_string = []
   prepareRawListUU(graph).forEach((l) => {
-    listUU_string.push(`{uu: ${l.uu.toString().padEnd(9)}, name: "${(l.name + '"').padEnd(43)}},// ${l.display}`)
+    listUU_string.push(
+      `{uu: ${l.uu.toString().padEnd(9)}, name: "${(l.name + '"').padEnd(
+        43
+      )}},// ${l.display}`
+    )
   })
 
   naturalSort(listUU_string)
 
-  download(`export const listUU = [\n${listUU_string.join('\n')}\n];`, 'listUU.json', 'text/plain')
+  download(
+    `export const listUU = [\n${listUU_string.join('\n')}\n];`,
+    'listUU.json',
+    'text/plain'
+  )
 }
 
 // ----------------------------
@@ -115,7 +127,12 @@ function saveIC2ini(graph) {
     // Work only with Itemstacks
     // Items without NBT
     // Items that didnt added to defined list yet
-    if (n.type !== 'itemStack' || n.nbt || prepared.find((x) => x.name === n.name)) return
+    if (
+      n.type !== 'itemStack' ||
+      n.nbt ||
+      prepared.find((x) => x.name === n.name)
+    )
+      return
 
     const icName = `${n.definition}` + (n.meta ? '@' + n.meta : '')
     const display = n.display && n.display !== '' ? '; ' + n.display : ''
@@ -128,7 +145,9 @@ function saveIC2ini(graph) {
     listComputed_string.push(addString)
   })
 
-  listUU_string.sort((a, b) => a.match(/= (.*).*$/)[1] - b.match(/= (.*).*$/)[1])
+  listUU_string.sort(
+    (a, b) => a.match(/= (.*).*$/)[1] - b.match(/= (.*).*$/)[1]
+  )
 
   listComputed_string.sort(function (a, b) {
     return a.match(/= (.*);.*/)[1] - b.match(/= (.*);.*/)[1]
@@ -143,7 +162,11 @@ function saveIC2ini(graph) {
   // ------------
   // const listUU_string = predefList;
 
-  download(listUU_string.concat(listComputed_string).join('\n'), 'ic2.ini', 'text/plain')
+  download(
+    listUU_string.concat(listComputed_string).join('\n'),
+    'ic2.ini',
+    'text/plain'
+  )
 }
 
 export default {

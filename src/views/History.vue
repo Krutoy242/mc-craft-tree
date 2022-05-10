@@ -1,7 +1,11 @@
 <template>
   <div class="ma-0">
     <div>
-      <history-entry v-for="(historyEntry, i) in history" :key="i" :history-entry="historyEntry" />
+      <history-entry
+        v-for="(historyEntry, i) in history"
+        :key="i"
+        :history-entry="historyEntry"
+      />
     </div>
   </div>
 </template>

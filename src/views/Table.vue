@@ -1,7 +1,12 @@
 <template>
   <v-card>
     <v-card-title>
-      <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" hide-details></v-text-field>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        hide-details
+      ></v-text-field>
 
       <v-spacer />
 
@@ -38,17 +43,32 @@
         {{ header.text.toUpperCase() }}
       </template> -->
 
-      <template #item.display="{ item }"><tree-entry :node="item" class="pa-2" details="wide" /></template>
-      <template #item.complexity="{ item }"><big-number :number="item.complexity" bordered /></template>
-      <template #item.usability="{ item }"><big-number :number="item.usability" /></template>
-      <template #item.cost="{ item }"><big-number :number="item.cost" :highlited="item.isNatural" /></template>
-      <template #item.processing="{ item }"><big-number :number="item.processing" /></template>
+      <template #item.display="{ item }">
+        <tree-entry :node="item" class="pa-2" details="wide" />
+      </template>
+      <template #item.complexity="{ item }">
+        <big-number :number="item.complexity" bordered />
+      </template>
+      <template #item.usability="{ item }">
+        <big-number :number="item.usability" />
+      </template>
+      <template #item.cost="{ item }">
+        <big-number :number="item.cost" :highlited="item.isNatural" />
+      </template>
+      <template #item.processing="{ item }">
+        <big-number :number="item.processing" />
+      </template>
       <template #item.purity="{ item }">
-        <pured-value :purity="item.purity"><big-number :number="item.purity" /></pured-value>
+        <pured-value :purity="item.purity">
+          <big-number :number="item.purity" />
+        </pured-value>
       </template>
 
       <template #item.popularity="{ item }">
-        <entry-grid :cuent-stack-array="toStackArr(item.popList)" @click.native="showAsCatalysts(item)">
+        <entry-grid
+          :cuent-stack-array="toStackArr(item.popList)"
+          @click.native="showAsCatalysts(item)"
+        >
           <popularity :number="item.popularity" />
         </entry-grid>
       </template>
@@ -59,10 +79,14 @@
           bordered
           color="green darken-4"
           :value="item.recipes.list.size > 1"
-          :content="`${item.recipes.list.size === 2 ? '+' : '+' + item.recipes.list.size}`"
+          :content="`${
+            item.recipes.list.size === 2 ? '+' : '+' + item.recipes.list.size
+          }`"
         >
           <entry-grid
-            :cuent-stack-array="item.recipes.main ? item.recipes.main.inputs : undefined"
+            :cuent-stack-array="
+              item.recipes.main ? item.recipes.main.inputs : undefined
+            "
             @click.native="showInputs(item)"
           >
             <hedgehog :number="item.recipes.main ? item.inputsAmount : '!'" />
@@ -71,12 +95,17 @@
       </template>
 
       <template #item.outputsAmount="{ item }">
-        <entry-grid :cuent-stack-array="toStackArr(item.outsList)" @click.native="showAsOutput(item)">
+        <entry-grid
+          :cuent-stack-array="toStackArr(item.outsList)"
+          @click.native="showAsOutput(item)"
+        >
           <hedgehog :number="item.outputsAmount" inverted="true" />
         </entry-grid>
       </template>
 
-      <template #item.steps="{ item }"><processing-steps :number="item.steps" /></template>
+      <template #item.steps="{ item }">
+        <processing-steps :number="item.steps" />
+      </template>
       <!-- <template #item.recipesLength="{ item }"><popularity :number="item.recipes.length" color="#101404">mdi-buffer</popularity></template> -->
 
       <!-- <template #expanded-item="{ headers, item }">
@@ -174,13 +203,25 @@ export default {
       )
     },
     showInputs(cuent) {
-      emit(cuent.getRecipes().map((r) => ({ it: r, selected: r == cuent.recipes.main })))
+      emit(
+        cuent
+          .getRecipes()
+          .map((r) => ({ it: r, selected: r == cuent.recipes.main }))
+      )
     },
     showAsCatalysts(cuent) {
-      emit(extractFromCSList([...cuent.popList], (r) => r.catalysts.some((cs) => cs.cuent === cuent)))
+      emit(
+        extractFromCSList([...cuent.popList], (r) =>
+          r.catalysts.some((cs) => cs.cuent === cuent)
+        )
+      )
     },
     showAsOutput(cuent) {
-      emit(extractFromCSList([...cuent.outsList], (r) => r.inputs.some((cs) => cs.cuent === cuent)))
+      emit(
+        extractFromCSList([...cuent.outsList], (r) =>
+          r.inputs.some((cs) => cs.cuent === cuent)
+        )
+      )
     },
     toStackArr(cuentSet) {
       return [...cuentSet].map((c) => c.stack())

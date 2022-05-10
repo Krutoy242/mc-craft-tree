@@ -1,6 +1,10 @@
 <template>
   <div>
-    <v-tooltip v-if="cuentStackArray && cuentStackArray.length > 0" left transition="slide-x-transition">
+    <v-tooltip
+      v-if="cuentStackArray && cuentStackArray.length > 0"
+      left
+      transition="slide-x-transition"
+    >
       <template #activator="{ on, attrs }">
         <v-card outlined v-bind="attrs" v-on="on">
           <slot />
@@ -9,7 +13,11 @@
       <!-- <v-card elevation="2" outlined shaped> -->
       <v-row v-for="(cuentStacks, i) in spliceInputs()" :key="i" no-gutters>
         <v-col v-for="(in_cuentStack, j) in cuentStacks" :key="j" no-gutters>
-          <tree-entry v-if="!in_cuentStack.over" :node="in_cuentStack.cuent" :amount="in_cuentStack.amount" />
+          <tree-entry
+            v-if="!in_cuentStack.over"
+            :node="in_cuentStack.cuent"
+            :amount="in_cuentStack.amount"
+          />
           <span v-else class="text-h3">...</span>
         </v-col>
       </v-row>
@@ -37,7 +45,9 @@ export default {
   methods: {
     spliceInputs() {
       if (!this.cuentStackArray) return []
-      const sliced = this.cuentStackArray.slice(0, 81).sort((a, b) => a.cuent.id.localeCompare(b.cuent.id))
+      const sliced = this.cuentStackArray
+        .slice(0, 81)
+        .sort((a, b) => a.cuent.id.localeCompare(b.cuent.id))
       if (sliced.length < this.cuentStackArray.length) {
         this.oversized = true
         sliced.push({ over: true })

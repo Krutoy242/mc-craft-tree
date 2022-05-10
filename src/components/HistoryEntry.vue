@@ -1,6 +1,10 @@
 <template>
   <div style="width: 100%" class="ma-1">
-    <v-card :width="width + '%'" :style="{ 'margin-left': from + '%' }" :color="`hsla(${h}, 60%, 40%, 0.1)`">
+    <v-card
+      :width="width + '%'"
+      :style="{ 'margin-left': from + '%' }"
+      :color="`hsla(${h}, 60%, 40%, 0.1)`"
+    >
       <v-overlay absolute class="mt-2">
         <canvas ref="ctx"></canvas>
       </v-overlay>
@@ -21,7 +25,10 @@ const scaleLog = scaleRange.base(2) //.nice()
 const getSX = (v: number) => Math.max(0, scaleLog(v))
 const setSX = (v: number) => scaleLog.invert(v)
 
-function drawGradient(ctx: CanvasRenderingContext2D | undefined, list: CuentHistorical[]) {
+function drawGradient(
+  ctx: CanvasRenderingContext2D | undefined,
+  list: CuentHistorical[]
+) {
   if (!ctx) return
 
   list.forEach(({ pos, power, width }) => {})

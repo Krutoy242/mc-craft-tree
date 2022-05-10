@@ -9,7 +9,10 @@
     <template #default="{ items }">
       <v-row>
         <v-col v-for="recipeInfo in items" :key="recipeInfo.it.id">
-          <recipe :recipe="recipeInfo.it" :class="recipeInfo.selected ? 'selected-recipe' : ''" />
+          <recipe
+            :recipe="recipeInfo.it"
+            :class="recipeInfo.selected ? 'selected-recipe' : ''"
+          />
         </v-col>
       </v-row>
     </template>

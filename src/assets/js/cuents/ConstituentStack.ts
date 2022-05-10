@@ -1,7 +1,8 @@
 import Constituent from './Constituent'
 
 export default class ConstituentStack {
-  static sort = (a: ConstituentStack, b: ConstituentStack) => a.cuent.id.localeCompare(b.cuent.id)
+  static sort = (a: ConstituentStack, b: ConstituentStack) =>
+    a.cuent.id.localeCompare(b.cuent.id)
 
   constructor(public cuent: Constituent, public amount: number) {}
 

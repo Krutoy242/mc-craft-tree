@@ -5,7 +5,9 @@
         <v-card
           :width="getWidth"
           :height="design.resized ? height : undefined"
-          :class="'d-inline-block text-truncate ' + design.resized ? '' : 'glassed'"
+          :class="
+            'd-inline-block text-truncate ' + design.resized ? '' : 'glassed'
+          "
           v-bind="attrs"
           :to="'graph?q=' + node.id"
           style="overflow: hidden"
@@ -16,10 +18,23 @@
             <v-list-item class="pa-0">
               <!-- Icon -->
               <v-list-item-icon class="ma-2">
-                <v-badge bottom overlap bordered :value="amount > 1" :content="amount">
+                <v-badge
+                  bottom
+                  overlap
+                  bordered
+                  :value="amount > 1"
+                  :content="amount"
+                >
                   <v-badge dot color="yellow" :value="node.recipes.isLooped">
-                    <svg :viewBox="node.viewBox" :width="iconSize" :height="iconSize">
-                      <image :xlink:href="require('@/assets/spritesheet.png')" image-rendering="pixelated"></image>
+                    <svg
+                      :viewBox="node.viewBox"
+                      :width="iconSize"
+                      :height="iconSize"
+                    >
+                      <image
+                        :xlink:href="require('@/assets/spritesheet.png')"
+                        image-rendering="pixelated"
+                      ></image>
                     </svg>
                   </v-badge>
                 </v-badge>
@@ -27,7 +42,9 @@
 
               <!-- Name and ID -->
               <v-list-item-content v-if="design.name" class="pa-0">
-                <v-card-text class="pa-0 pl-1 text-subtitle-1">{{ display }}</v-card-text>
+                <v-card-text class="pa-0 pl-1 text-subtitle-1">
+                  {{ display }}
+                </v-card-text>
                 <tree-entry-name :node="node" />
               </v-list-item-content>
             </v-list-item>
@@ -95,7 +112,11 @@ export default {
   },
   computed: {
     getWidth() {
-      return this.design.resized ? this.width : this.design.wide ? this.size + 32 * 9 : undefined
+      return this.design.resized
+        ? this.width
+        : this.design.wide
+        ? this.size + 32 * 9
+        : undefined
     },
     getStyleSize() {
       const w = this.getWidth
@@ -103,7 +124,9 @@ export default {
       return (w ? 'width:' + w + 'px;' : '') + (h ? 'height:' + h + 'px;' : '')
     },
     design() {
-      const des = this.details.split(' ').reduce((r, v) => ((r[v] = true), r), {})
+      const des = this.details
+        .split(' ')
+        .reduce((r, v) => ((r[v] = true), r), {})
 
       if (des.big) des.wide = true
       if (des.wide) des.name = true
@@ -113,7 +136,9 @@ export default {
       return Math.min(this.width, this.height) | 0
     },
     iconSize() {
-      return this.design.resized ? Math.max(this.width, this.height) | 0 : this.size
+      return this.design.resized
+        ? Math.max(this.width, this.height) | 0
+        : this.size
     },
     display() {
       return this.node.display

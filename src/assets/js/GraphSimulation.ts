@@ -1,4 +1,5 @@
 import * as d3 from 'd3'
+
 import ConstituentTree from './cuents/ConstituentTree'
 import { AnySelection, LinkDatum, makeGraph, NodeDatum } from './graph'
 
@@ -22,7 +23,7 @@ function forceUpdate() {
   }
 }
 
-//! const forceManyBodyReuse = (d3 as any).forceManyBodyReuse().update(forceUpdate)
+// ! const forceManyBodyReuse = (d3 as any).forceManyBodyReuse().update(forceUpdate)
 
 export function makeGraphTree(
   svg: AnySelection,
@@ -32,7 +33,11 @@ export function makeGraphTree(
 ) {
   //  ❓❓❓ To filter or not to filter
   console.log('arguments :>> ', svg, vue, query)
-  const pile = globalTree.makePile(query.id, query.isRightClick, (c) => c.usability > 0)
+  const pile = globalTree.makePile(
+    query.id,
+    query.isRightClick,
+    (c) => c.usability > 0
+  )
   const graphNodes = pile.list as NodeDatum[]
 
   let links: CurvedLinks | StraightLinks
@@ -54,7 +59,9 @@ export function makeGraphTree(
   })
   const { fX, fSize, fUsab, vizHeight, diffSize, fStroke } = selectors
 
-  const linkContainer = selectors.container.append('g').attr('class', 'linksLayer')
+  const linkContainer = selectors.container
+    .append('g')
+    .attr('class', 'linksLayer')
 
   // Dispose previous
   if (simulation) {
@@ -85,7 +92,7 @@ export function makeGraphTree(
   // ====================================================
   simulation = d3
     .forceSimulation(graphNodes)
-    //! .force('charge', (opts.useReuse ? forceManyBodyReuse : d3.forceManyBody()).strength(-2000))
+    // ! .force('charge', (opts.useReuse ? forceManyBodyReuse : d3.forceManyBody()).strength(-2000))
     .force('charge', d3.forceManyBody().strength(-2000))
     .force('x', d3.forceX(fX).strength(1))
     .force(
@@ -149,6 +156,20 @@ class Highliter {
 
   constructor(private stylesCallbacks: StyleCallbacks) {}
 
+  highlite = (d: NodeDatum) => {
+    this.reset()
+    this.timeoutID = setInterval(this.nextStep, 100, d) as unknown as number
+  }
+
+  reset = () => {
+    this.currDeph = 0
+    for (const l of this.all) {
+      this.stylesCallbacks.defaultLink(l)
+    }
+    this.all.clear()
+    clearInterval(this.timeoutID as any)
+  }
+
   private nextStep = (center: NodeDatum) => {
     if (!this.current.length) this.current.push(center)
     this.currDeph++
@@ -187,21 +208,9 @@ class Highliter {
   }
 
   private getStyleFnc = () => {
-    return this.towardsOutputs ? this.stylesCallbacks.outputLink : this.stylesCallbacks.inputLink
-  }
-
-  highlite = (d: NodeDatum) => {
-    this.reset()
-    this.timeoutID = setInterval(this.nextStep, 100, d) as unknown as number
-  }
-
-  reset = () => {
-    this.currDeph = 0
-    for (const l of this.all) {
-      this.stylesCallbacks.defaultLink(l)
-    }
-    this.all.clear()
-    clearInterval(this.timeoutID as any)
+    return this.towardsOutputs
+      ? this.stylesCallbacks.outputLink
+      : this.stylesCallbacks.inputLink
   }
 }
 
@@ -209,27 +218,13 @@ class StraightLinks {
   sel!: d3.Selection<any, LinkDatum, any, any>
   highliter: Highliter
 
-  constructor(protected linkContainer: AnySelection, stylesCallbacks: StyleCallbacks, graphLinks?: LinkDatum[]) {
+  constructor(
+    protected linkContainer: AnySelection,
+    stylesCallbacks: StyleCallbacks,
+    graphLinks?: LinkDatum[]
+  ) {
     if (graphLinks) this.init(graphLinks)
     this.highliter = new Highliter(stylesCallbacks)
-  }
-
-  protected init = (links: LinkDatum[]) => {
-    this.sel = this.linkContainer
-      .attr('stroke', '#555')
-      .attr('stroke-width', 1)
-      .selectAll('line')
-      .data(links)
-      .join('line') as any
-    this.createBackRefs()
-  }
-
-  protected createBackRefs = () => {
-    this.sel.each(function (ld) {
-      const d3node = d3.select(this) as any
-      ld.d3node = d3node
-      // ;(ld.flipped as LinkDatum).d3node = d3node
-    })
   }
 
   public ticked = () => {
@@ -247,12 +242,38 @@ class StraightLinks {
   public mouseout = (d: NodeDatum) => {
     this.highliter.reset()
   }
+
+  protected init = (links: LinkDatum[]) => {
+    this.sel = this.linkContainer
+      .attr('stroke', '#555')
+      .attr('stroke-width', 1)
+      .selectAll('line')
+      .data(links)
+      .join('line') as any
+    this.createBackRefs()
+  }
+
+  protected createBackRefs = () => {
+    this.sel.each(function (ld) {
+      // eslint-disable-next-line @typescript-eslint/no-invalid-this
+      const d3node = d3.select(this) as any
+      ld.d3node = d3node
+      // ;(ld.flipped as LinkDatum).d3node = d3node
+    })
+  }
 }
 
 class SingleLinks extends StraightLinks {
   public mouseover = (d: NodeDatum) => {
-    const comboLinks = [...(d.recipes.mainHolder?.inputs ?? []), ...(d.recipes.main?.links.values() ?? [])]
-    this.sel = this.linkContainer.attr('stroke-width', 3).selectAll('line').data(comboLinks).join('line') as any
+    const comboLinks = [
+      ...(d.recipes.mainHolder?.inputs ?? []),
+      ...(d.recipes.main?.links.values() ?? []),
+    ]
+    this.sel = this.linkContainer
+      .attr('stroke-width', 3)
+      .selectAll('line')
+      .data(comboLinks)
+      .join('line') as any
 
     this.createBackRefs()
     this.highliter.highlite(d)
@@ -260,6 +281,18 @@ class SingleLinks extends StraightLinks {
 }
 
 class CurvedLinks extends StraightLinks {
+  static linkArc = (d: LinkDatum) => {
+    const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y)
+    return `
+      M${d.source.x},${d.source.y}
+      A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
+      `
+  }
+
+  public ticked = () => {
+    this.sel.attr('d', CurvedLinks.linkArc)
+  }
+
   protected init = (links: LinkDatum[]) => {
     this.sel = this.linkContainer
       .attr('fill', 'none')
@@ -269,17 +302,5 @@ class CurvedLinks extends StraightLinks {
       .attr('stroke-width', 1)
       .attr('stroke', '#555')
     this.createBackRefs()
-  }
-
-  public ticked = () => {
-    this.sel.attr('d', CurvedLinks.linkArc)
-  }
-
-  static linkArc = (d: LinkDatum) => {
-    const r = Math.hypot(d.target.x - d.source.x, d.target.y - d.source.y)
-    return `
-      M${d.source.x},${d.source.y}
-      A${r},${r} 0 0,1 ${d.target.x},${d.target.y}
-      `
   }
 }

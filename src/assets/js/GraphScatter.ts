@@ -1,4 +1,5 @@
 import * as d3 from 'd3'
+
 import Constituent from './cuents/Constituent'
 import ConstituentTree from './cuents/ConstituentTree'
 import { AnySelection, makeGraph, NodeDatum } from './graph'
@@ -43,7 +44,10 @@ export function makeScatter(svg: AnySelection, globalTree: ConstituentTree) {
       d.x = e.x
       d.y = e.y
       d.complexity = d.cost = setSX(d.x)
-      d.d3node.attr('transform', `translate(${d.x},${d.y})scale(${globalScale})`)
+      d.d3node.attr(
+        'transform',
+        `translate(${d.x},${d.y})scale(${globalScale})`
+      )
     },
   })
 

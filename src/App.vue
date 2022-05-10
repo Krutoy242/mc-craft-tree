@@ -2,7 +2,12 @@
   <v-app id="inspire">
     <v-app-bar app clipped-left>
       <v-tabs>
-        <v-tab v-for="([name, icon], i) in tabs" :key="i" link :to="name.toLowerCase()">
+        <v-tab
+          v-for="([name, icon], i) in tabs"
+          :key="i"
+          link
+          :to="name.toLowerCase()"
+        >
           <v-icon>{{ icon }}</v-icon>
           <span class="ma-3">{{ name }}</span>
         </v-tab>
@@ -10,10 +15,25 @@
       <v-spacer />
 
       <!-- Debug Button -->
-      <v-dialog scrollable width="auto " :fullscreen="$vuetify.breakpoint.xsOnly">
+      <v-dialog
+        scrollable
+        width="auto "
+        :fullscreen="$vuetify.breakpoint.xsOnly"
+      >
         <template #activator="{ on, attrs }">
-          <v-badge :value="listLoops" :content="'💫' + listLoops.size" type="info" left>
-            <v-badge :value="noIcons" :content="'🔲' + noIcons.length" type="info" left bottom>
+          <v-badge
+            :value="listLoops"
+            :content="'💫' + listLoops.size"
+            type="info"
+            left
+          >
+            <v-badge
+              :value="noIcons"
+              :content="'🔲' + noIcons.length"
+              type="info"
+              left
+              bottom
+            >
               <v-btn small v-bind="attrs" v-on="on">Debug info</v-btn>
             </v-badge>
           </v-badge>
@@ -37,7 +57,10 @@
     <div class="text-center">
       <v-bottom-sheet v-model="isMoreInfo">
         <v-sheet class="text-center" height="300px">
-          <div class="py-3">This is a bottom sheet using the controlled by v-model instead of activator</div>
+          <div class="py-3">
+            This is a bottom sheet using the controlled by v-model instead of
+            activator
+          </div>
         </v-sheet>
       </v-bottom-sheet>
     </div>
@@ -48,17 +71,31 @@
       <v-spacer></v-spacer>
       <!-- <v-btn class="mx-1" x-small color="info" @click="isMoreInfo=!isMoreInfo">Show more info</v-btn> -->
       <v-spacer></v-spacer>
-      <v-btn class="mx-1" x-small color="secondary" href="https://github.com/Krutoy242/CraftTreeVisualizer">
+      <v-btn
+        class="mx-1"
+        x-small
+        color="secondary"
+        href="https://github.com/Krutoy242/CraftTreeVisualizer"
+      >
         GutHub
       </v-btn>
-      <v-btn class="mx-1" x-small color="secondary" href="https://github.com/Krutoy242/Enigmatica2Expert-Extended">
+      <v-btn
+        class="mx-1"
+        x-small
+        color="secondary"
+        href="https://github.com/Krutoy242/Enigmatica2Expert-Extended"
+      >
         Recipes from E2:E - Extended
       </v-btn>
     </v-system-bar>
     <!-- </v-footer> -->
 
     <!-- OVERLAYS -->
-    <v-dialog v-model="showRecipesDialog" width="auto " :fullscreen="$vuetify.breakpoint.xsOnly">
+    <v-dialog
+      v-model="showRecipesDialog"
+      width="auto "
+      :fullscreen="$vuetify.breakpoint.xsOnly"
+    >
       <recipes :recipe-info-list="recipeInfoList" style="overflow-x: hidden" />
     </v-dialog>
 
@@ -133,7 +170,9 @@ export default Vue.extend({
       this.showRecipesDialog = true
     })
 
-    void (import('./assets/data.json') as unknown as Promise<RawAdditionalsStore>)
+    void (
+      import('./assets/data.json') as unknown as Promise<RawAdditionalsStore>
+    )
       .then((data) => {
         ConstituentAdditionals.additionals = data
 
@@ -142,7 +181,9 @@ export default Vue.extend({
         return recipesStore.appendAdditionals(data)
       })
       .then((recipesStore) => {
-        const pile = this.globalTree!.makePileTo('storagedrawers:upgrade_creative:1')
+        const pile = this.globalTree!.makePileTo(
+          'storagedrawers:upgrade_creative:1'
+        )
         for (const key in pile) {
           ;(Vue as any).nonreactive((pile as any)[key])
         }

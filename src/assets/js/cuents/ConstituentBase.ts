@@ -18,11 +18,13 @@ const switchers: { [key: string]: () => JEC_Types } = {
 
 export function idToCuentArgs(key: string): CuentArgs {
   const groups =
-    key.match(/^(?<source>[^:{]+)(?::(?<entry>[^:{]+))?(?::(?<meta>[^:{]+))?(?<tag>\{.*\})?$/)?.groups ?? {}
+    key.match(
+      /^(?<source>[^:{]+)(?::(?<entry>[^:{]+))?(?::(?<meta>[^:{]+))?(?<tag>\{.*\})?$/
+    )?.groups ?? {}
   const args: CuentArgs = {
     source: groups.source,
     entry: groups.entry,
-    meta: parseInt(groups.meta) || 0,
+    meta: Number(groups.meta) || 0,
     type: (switchers[groups.source] ?? switchers['default'])(),
     nbt: groups.tag,
   }
@@ -67,14 +69,12 @@ export class CuentBase implements CuentArgs {
     this.id = this.mandatory + this.nbt
 
     // this.path = [this.source, this.entry, this.meta]
-
-    return this
   }
 
   match(o: CuentBase): boolean {
-    if (this.definition != o.definition) return false
-    if (this.meta != o.meta) return false
-    if (this.nbt != o.nbt) return false
+    if (this.definition !== o.definition) return false
+    if (this.meta !== o.meta) return false
+    if (this.nbt !== o.nbt) return false
     return true
   }
 }
@@ -88,7 +88,8 @@ export class ConstituentAdditionals {
   constructor(base?: CuentBase) {
     if (!base) return
 
-    const { viewBox, display } = ConstituentAdditionals.additionals[base.id] ?? {}
+    const { viewBox, display } =
+      ConstituentAdditionals.additionals[base.id] ?? {}
     this.viewBox ??= viewBox
     this.display ??= display ?? `[${base.id}]`
 
@@ -100,7 +101,7 @@ export class ConstituentAdditionals {
   }
 }
 
-export type AdditionalsStore = {
+export interface AdditionalsStore {
   [key: string]: ConstituentAdditionals
 }
 
@@ -109,18 +110,20 @@ export class ConstituentVisible extends ConstituentAdditionals {
   volume: number
 
   constructor(args: CuentArgs | CuentBase) {
-    const base = (args as CuentBase).id ? (args as CuentBase) : new CuentBase(args)
+    const base = (args as CuentBase).id
+      ? (args as CuentBase)
+      : new CuentBase(args)
 
     super(base)
 
     this.base = base
 
     if (base.type === 'placeholder') {
-      if (base.entry == 'Ticks') this.volume = 0.01
-      else if (base.entry == 'Mana') this.volume = 0.01
-      else if (base.entry == 'Exploration') this.volume = 0.01
-      else if (base.entry == 'Grid Power') this.volume = 0.01
-      else if (base.entry == 'RF') this.volume = 0.000001
+      if (base.entry === 'Ticks') this.volume = 0.01
+      else if (base.entry === 'Mana') this.volume = 0.01
+      else if (base.entry === 'Exploration') this.volume = 0.01
+      else if (base.entry === 'Grid Power') this.volume = 0.01
+      else if (base.entry === 'RF') this.volume = 0.000001
     } else if (base.type === 'fluidStack') {
       this.volume = 0.001
     }

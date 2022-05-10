@@ -1,9 +1,10 @@
 import * as d3 from 'd3'
 import { D3ZoomEvent } from 'd3'
-import Constituent from './cuents/Constituent.js'
-import RecipeLink from './recipes/RecipeLink.js'
-import { GraphPile } from './cuents/Pile.js'
 import { CombinedVueInstance } from 'vue/types/vue'
+
+import Constituent from './cuents/Constituent.js'
+import { GraphPile } from './cuents/Pile.js'
+import RecipeLink from './recipes/RecipeLink.js'
 
 export interface NodeDatum extends d3.SimulationNodeDatum, Constituent {
   x: number
@@ -11,7 +12,9 @@ export interface NodeDatum extends d3.SimulationNodeDatum, Constituent {
   isGhost: boolean
   d3node: d3.Selection<d3.BaseType, unknown, null, undefined>
 }
-export interface LinkDatum extends d3.SimulationLinkDatum<NodeDatum>, RecipeLink {
+export interface LinkDatum
+  extends d3.SimulationLinkDatum<NodeDatum>,
+    RecipeLink {
   source: NodeDatum
   target: NodeDatum
   d3node: d3.Selection<d3.EnterElement, unknown, null, undefined>
@@ -26,7 +29,13 @@ export type AnySelection = d3.Selection<any, unknown, any, unknown>
 // let axisContainer : AnySelection
 // let simulation    : d3.Simulation<NodeDatum, LinkDatum>
 
-let vue: CombinedVueInstance<Vue, unknown, unknown, unknown, Readonly<Record<any, any>>>
+let vue: CombinedVueInstance<
+  Vue,
+  unknown,
+  unknown,
+  unknown,
+  Readonly<Record<any, any>>
+>
 
 type NavigDatumFnc = (d: NodeDatum, isRightClick: boolean) => void
 let navig: NavigDatumFnc
@@ -66,9 +75,12 @@ export function makeGraph(
 
   const fNonlinear = Math.sqrt
   const fStroke = (c: LinkDatum) => fNonlinear(fNonlinear(c.weight))
-  const fComp = (c: NodeDatum) => fNonlinear(pile.info.cLimits.importancy(c.complexity))
-  const fUsab = (c: NodeDatum) => fNonlinear(pile.info.uLimits.importancy(c.usability))
-  const fX = (d: NodeDatum) => vizWidth / 2 + fComp(d) * diffSize * 20 - fUsab(d) * diffSize * 20
+  const fComp = (c: NodeDatum) =>
+    fNonlinear(pile.info.cLimits.importancy(c.complexity))
+  const fUsab = (c: NodeDatum) =>
+    fNonlinear(pile.info.uLimits.importancy(c.usability))
+  const fX = (d: NodeDatum) =>
+    vizWidth / 2 + fComp(d) * diffSize * 20 - fUsab(d) * diffSize * 20
   const fSize = (c: NodeDatum) => {
     const size = ((fComp(c) + fUsab(c)) / 2) * maxSize + minSize
     const result = Math.max(minSize, Math.min(maxSize, size))
@@ -78,7 +90,11 @@ export function makeGraph(
   // ====================================================
   // Nodes
   // ====================================================
-  const nodes = container.append('g').selectAll('g').data(graphNodes).join(appendNode, updateNode)
+  const nodes = container
+    .append('g')
+    .selectAll('g')
+    .data(graphNodes)
+    .join(appendNode, updateNode)
 
   function appendNode(d3Selection: any) {
     return updateNode(
@@ -132,7 +148,7 @@ export function makeGraph(
   const zoom = d3
     .zoom()
     .scaleExtent([0.01, 10])
-    .on('zoom', function (e) {
+    .on('zoom', (e) => {
       container.attr('transform', e.transform)
       cb.zoom?.(e)
     })
@@ -156,7 +172,13 @@ export function makeGraph(
       cb.mouseover?.(d, e)
     })
     .on('mouseout', (e, d) => cb.mouseout?.(d, e))
-    .call(d3.drag<any, NodeDatum>().on('start', dragstarted).on('drag', dragged).on('end', dragended))
+    .call(
+      d3
+        .drag<any, NodeDatum>()
+        .on('start', dragstarted)
+        .on('drag', dragged)
+        .on('end', dragended)
+    )
 
   function dragstarted(e: any, d: NodeDatum) {
     e.sourceEvent.stopPropagation()
