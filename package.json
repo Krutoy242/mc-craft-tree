@@ -25,7 +25,6 @@
     "deep-equal": "^2.0.5",
     "deep-sort-object": "^1.0.2",
     "js-to-ts-converter": "^0.18.2",
-    "konva": "^8.3.8",
     "mc-gatherer": "^1.0.0",
     "numeral": "^2.0.6",
     "ohm-js": "^16.3.4",
@@ -34,7 +33,6 @@
     "vue-class-component": "^7.2.6",
     "vue-cookies": "^1.8.1",
     "vue-filter-number-format": "^3.0.1",
-    "vue-konva": "^3.0.0",
     "vue-nonreactive": "^0.1.0",
     "vue-property-decorator": "^9.1.2",
     "vue-router": "^3.5.3",
@@ -89,7 +87,7 @@
     "root": true,
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
-      "extraFileExtensions":true,
+      "extraFileExtensions": "*.vue",
       "ecmaVersion": 2020,
       "project": [
         "tsconfig.json"
@@ -111,7 +109,8 @@
     ],
     "extends": [
       "alloy",
-      "alloy/typescript"
+      "alloy/typescript",
+      "plugin:vue/vue3-recommended"
     ],
     "globals": {
       "BigInt": true,
@@ -119,44 +118,25 @@
       "WebAssembly": true
     },
     "rules": {
-      "guard-for-in": "off",
-      "max-nested-callbacks": "off",
-      "no-sequences": "off",
       "@typescript-eslint/explicit-member-accessibility": 0,
-      "@typescript-eslint/no-parameter-properties": 0,
-      "max-params": "off",
-      "no-return-assign": "off",
-      "no-unused-expressions": "error",
-      "no-else-return": 2,
-      "no-template-curly-in-string": 2,
-      "require-atomic-updates": 2,
-      "no-duplicate-imports": 2,
-      "no-promise-executor-return": 2,
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/no-explicit-any": 0,
-      "eslint-comments/disable-enable-pair": [
-        "error",
-        {
-          "allowWholeFile": true
-        }
-      ],
+      "@typescript-eslint/no-parameter-properties": 0,
+      "eslint-comments/disable-enable-pair": ["error",{"allowWholeFile": true}],
       "eslint-comments/no-unused-disable": "error",
-      "import/order": [
-        "error",
-        {
-          "newlines-between": "always",
-          "alphabetize": {
-            "order": "asc"
-          }
-        }
-      ],
-      "sort-imports": [
-        "error",
-        {
-          "ignoreDeclarationSort": true,
-          "ignoreCase": true
-        }
-      ]
+      "guard-for-in": "off",
+      "import/order": ["error",{"newlines-between":"always","alphabetize":{"order": "asc"}}],
+      "max-nested-callbacks": "off",
+      "max-params": "off",
+      "no-duplicate-imports": 2,
+      "no-else-return": 2,
+      "no-promise-executor-return": 2,
+      "no-return-assign": "off",
+      "no-sequences": "off",
+      "no-template-curly-in-string": 2,
+      "no-unused-expressions": "error",
+      "require-atomic-updates": 2,
+      "sort-imports": ["error",{"ignoreDeclarationSort":true,"ignoreCase":true}]
     }
   },
   "prettier": {
