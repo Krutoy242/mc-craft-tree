@@ -1,154 +1,57 @@
 {
-  "name": "vuecrafttree",
-  "version": "0.3.0",
   "private": true,
+  "packageManager": "pnpm@7.0.0",
   "scripts": {
-    "serve": "vue-cli-service serve --open",
-    "build": "vue-cli-service build --modern",
-    "lint": "vue-cli-service lint",
-    "mc-gatherer": "npx mc-gatherer@latest --mc=\"D:/mc_client/Instances/Enigmatica2Expert - Extended/\" --output=\"src/assets/data.json\"",
-    "show-unused-exports": "ts-prune"
+    "build": "vite build",
+    "dev": "vite --port 3333 --open",
+    "lint": "eslint .",
+    "typecheck": "vue-tsc --noEmit",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@inotom/vue-curve-text": "^2.0.0",
-    "@types/d3": "^7.1.0",
-    "@types/lodash": "^4.14.182",
-    "@types/numeral": "^2.0.2",
-    "@vue/cli-plugin-typescript": "^5.0.4",
-    "@vue/eslint-config-typescript": "^10.0.0",
-    "change-case": "^4.1.2",
-    "core-js": "^3.22.5",
+    "@vueuse/core": "^8.4.2",
+    "csv-parse": "^5.1.0",
     "d3": "^7.4.4",
-    "d3-force-reuse": "^1.0.1",
-    "d3-quadtree": "^3.0.1",
-    "d3-zoom": "^3.0.0",
-    "deep-equal": "^2.0.5",
-    "deep-sort-object": "^1.0.2",
-    "js-to-ts-converter": "^0.18.2",
-    "mc-gatherer": "^1.0.0",
+    "d3-format": "^3.1.0",
     "numeral": "^2.0.6",
-    "ohm-js": "^16.3.4",
+    "pinia": "^2.0.14",
+    "primeflex": "^3.2.1",
+    "primeicons": "^5.0.0",
+    "primevue": "^3.12.6",
+    "roboto-fontface": "*",
     "tinygradient": "^1.1.5",
-    "vue": "^2.6.14",
-    "vue-class-component": "^7.2.6",
-    "vue-cookies": "^1.8.1",
-    "vue-filter-number-format": "^3.0.1",
-    "vue-nonreactive": "^0.1.0",
-    "vue-property-decorator": "^9.1.2",
-    "vue-router": "^3.5.3",
-    "vue-static": "^0.0.5",
-    "vue-worker": "^1.2.1",
-    "vue-wrapped-component": "^1.0.0",
-    "vuetify": "^2.6.5",
-    "xml-js": "^1.6.11"
+    "vue": "^3.2.33",
+    "vue-router": "^4.0.15"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.10",
-    "@babel/eslint-parser": "^7.17.0",
-    "@babel/node": "^7.17.10",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.16.7",
-    "@babel/plugin-proposal-optional-chaining": "^7.16.7",
-    "@typescript-eslint/eslint-plugin": "^5.23.0",
-    "@typescript-eslint/parser": "^5.23.0",
-    "@vue/cli-plugin-babel": "^5.0.4",
-    "@vue/cli-plugin-eslint": "~5.0.4",
-    "@vue/cli-plugin-router": "^5.0.4",
-    "@vue/cli-plugin-typescript": "^5.0.4",
-    "@vue/cli-service": "~5.0.4",
-    "@vue/eslint-config-prettier": "^7.0.0",
-    "@vue/eslint-config-typescript": "^10.0.0",
-    "babel-eslint": "^10.1.0",
+    "@antfu/eslint-config": "^0.23.0",
+    "@iconify-json/mdi": "^1.1.19",
+    "@types/d3": "^7.4.0",
+    "@types/d3-format": "^3.0.1",
+    "@types/lodash": "^4.14.182",
+    "@types/node": "^17.0.32",
+    "@types/numeral": "^2.0.2",
+    "@unocss/reset": "^0.33.2",
+    "@vitejs/plugin-vue": "^2.3.2",
     "eslint": "^8.15.0",
-    "eslint-config-alloy": "^4.5.1",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-functional": "^4.2.1",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-vue": "^8.7.1",
-    "prettier": "^2.6.2",
-    "raw-loader": "^4.0.2",
-    "sass": "^1.51.0",
-    "sass-loader": "^12.6.0",
-    "ts-loader": "^9.3.0",
-    "ts-prune": "^0.10.3",
+    "pnpm": "^7.0.1",
     "typescript": "^4.6.4",
-    "vue-cli-plugin-vuetify": "^2.4.8",
-    "vue-template-compiler": "^2.6.14",
-    "vuetify-loader": "^1.7.3",
-    "worker-plugin": "^5.0.1"
-  },
-  "babel": {
-    "presets": [
-      "@vue/cli-plugin-babel/preset"
-    ]
+    "unocss": "^0.33.2",
+    "unplugin-auto-import": "^0.7.1",
+    "unplugin-vue-components": "^0.19.5",
+    "vite": "^2.9.8",
+    "vite-plugin-pages": "^0.23.0",
+    "vue-tsc": "^0.34.12"
   },
   "eslintConfig": {
-    "root": true,
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "extraFileExtensions": "*.vue",
-      "ecmaVersion": 2020,
-      "project": [
-        "tsconfig.json"
-      ],
-      "sourceType": "module"
-    },
-    "env": {
-      "es6": true
-    },
-    "ignorePatterns": [
-      "node_modules",
-      "build",
-      "coverage"
-    ],
-    "plugins": [
-      "import",
-      "eslint-comments",
-      "functional"
-    ],
-    "extends": [
-      "alloy",
-      "alloy/typescript",
-      "plugin:vue/vue3-recommended"
-    ],
-    "globals": {
-      "BigInt": true,
-      "console": true,
-      "WebAssembly": true
-    },
+    "extends": "@antfu",
     "rules": {
-      "@typescript-eslint/explicit-member-accessibility": 0,
-      "@typescript-eslint/explicit-module-boundary-types": "off",
-      "@typescript-eslint/no-explicit-any": 0,
-      "@typescript-eslint/no-parameter-properties": 0,
-      "eslint-comments/disable-enable-pair": ["error",{"allowWholeFile": true}],
-      "eslint-comments/no-unused-disable": "error",
-      "guard-for-in": "off",
-      "import/order": ["error",{"newlines-between":"always","alphabetize":{"order": "asc"}}],
-      "max-nested-callbacks": "off",
-      "max-params": "off",
-      "no-duplicate-imports": 2,
-      "no-else-return": 2,
-      "no-promise-executor-return": 2,
-      "no-return-assign": "off",
-      "no-sequences": "off",
-      "no-template-curly-in-string": 2,
-      "no-unused-expressions": "error",
-      "require-atomic-updates": 2,
-      "sort-imports": ["error",{"ignoreDeclarationSort":true,"ignoreCase":true}]
+      "key-spacing": [
+        "error",
+        {
+          "align": "colon"
+        }
+      ]
     }
-  },
-  "prettier": {
-    "semi": false,
-    "trailingComma": "es5",
-    "singleQuote": true,
-    "printWidth": 80,
-    "htmlWhitespaceSensitivity": "ignore",
-    "bracketSpacing": true,
-    "arrowParens": "always",
-    "rangeStart": 0,
-    "proseWrap": "preserve",
-    "embeddedLanguageFormatting": "auto"
   }
 }

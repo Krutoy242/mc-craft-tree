@@ -1,40 +1,25 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "esnext",
-    "incremental": true,
-
-    "sourceMap": true,
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "moduleResolution": "node",
-    "importHelpers": true,
-
-    "types": ["webpack-env"],
-    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+    "module": "ESNext",
+    "target": "es2016",
+    "lib": ["DOM", "ESNext"],
     "strict": true,
+    "jsx": "preserve",
     "esModuleInterop": true,
-    "resolveJsonModule": true /* Include modules imported with .json extension. */,
     "skipLibCheck": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "noUnusedLocals": true,
+    "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    
-    /* Additional Checks */
-    "noImplicitReturns": true, /* Report error when not all code paths in function return a value. */
-    "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */
+    "types": [
+      "vite/client",
+      "vite-plugin-pages/client"
+    ],
+    "paths": {
+      "~/*": ["src/*"]
+    }
   },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "types/**/*.ts",
-    "tests/**/*.ts",
-    "tests/**/*.tsx"
-  ],
-  "exclude": ["node_modules"],
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "Recommended"
+  "exclude": ["dist", "node_modules"]
 }

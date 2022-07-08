@@ -1,0 +1,42 @@
+<script setup lang="ts">
+import _ from 'lodash'
+import type { Item } from '~/assets/items/Item'
+import usePileStore from '~/stores/pile'
+
+type ModBarTyple = [modName:string, items:Item[]]
+
+// const modsList = ref<ModBarTyple[]>()
+const pile = usePileStore()
+const modsList = computed(() => pile.allItems ? getModBars(pile.allItems) : undefined)
+const offset = ref<number>(0)
+
+function getModBars(items: Item[]): ModBarTyple[] {
+  let minimum = Number.MAX_SAFE_INTEGER
+  const result = _(items)
+    .groupBy('source')
+    .entries()
+    .sortBy(([,list]) => {
+      const min = Math.min(...list.map(o => o.complexity))
+      minimum = Math.min(minimum, min)
+      return min
+    })
+    .value()
+
+  offset.value = minimum
+  return result
+}
+</script>
+
+<template>
+  <div class="m-0">
+    <div>
+      <ModBar
+        v-for="([name, items], i) in modsList"
+        :key="i"
+        :name="name"
+        :items="items"
+        :offset="offset"
+      />
+    </div>
+  </div>
+</template>
