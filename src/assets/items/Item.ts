@@ -9,10 +9,13 @@ export interface Link {
 export interface Item extends BaseItem {}
 export class Item {
   /** How many items you need to craft */
-  usability = 0
+  public get usability() { return 0 }
 
-  public get inputsAmount(): number { throw new Error('Getter unimplemented') }
-  public get outputsAmount(): number { throw new Error('Getter unimplemented') }
+  /** How many times used as catalyst */
+  public get popularity() { return 0 }
+
+  public get inputsAmount() { return 0 }
+  public get outputsAmount() { return 0 }
   public get mainInputs(): Link[] { throw new Error('Getter unimplemented') }
   public get mainOutputs(): Link[] { throw new Error('Getter unimplemented') }
 

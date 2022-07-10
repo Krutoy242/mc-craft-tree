@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { FilterMatchMode, FilterOperator } from 'primevue/api'
+import { copy } from 'copy-anything'
 import usePileStore from '~/stores/pile'
+import { capitalizeFirstLetter } from '~/assets/lib/utils'
+import type { Item } from '~/assets/items/Item'
 
 const { allItems } = usePileStore()
 
-const filters1 = ref({
+const filtersOpts = {
   'global'        : { value: undefined, matchMode: FilterMatchMode.CONTAINS },
   'display'       : { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
   'country.name'  : { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
@@ -14,50 +17,30 @@ const filters1 = ref({
   'status'        : { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
   'activity'      : { value: null, matchMode: FilterMatchMode.BETWEEN },
   'verified'      : { value: null, matchMode: FilterMatchMode.EQUALS },
-})
-
-const initFilters1 = () => {
-  filters1.value = {
-    'global'        : { value: undefined, matchMode: FilterMatchMode.CONTAINS },
-    'display'       : { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-    'country.name'  : { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-    'representative': { value: null, matchMode: FilterMatchMode.IN },
-    'date'          : { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
-    'balance'       : { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-    'status'        : { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-    'activity'      : { value: null, matchMode: FilterMatchMode.BETWEEN },
-    'verified'      : { value: null, matchMode: FilterMatchMode.EQUALS },
-  }
 }
 
+const filters1 = ref(copy(filtersOpts))
+
 const clearFilter1 = () => {
-  initFilters1()
+  filters1.value = copy(filtersOpts)
 }
 
 const loading1 = ref(false)
 
-const columns = ref([
-  {
-    field : 'complexity',
-    header: 'Complexity',
-    is    : 'BigNumber',
-  },
-  {
-    field : 'cost',
-    header: 'Cost',
-    is    : 'BigNumber',
-  },
-  {
-    field : 'processing',
-    header: 'Processing',
-    is    : 'BigNumber',
-  },
-  {
-    field : 'steps',
-    header: 'Steps',
-    is    : 'EmoteNumber',
-  },
-])
+const columns = ref<{
+  field: keyof Item
+  is?: string
+  header?: string
+  get?: (v: any) => number
+}[]>([
+      { field: 'complexity' },
+      { field: 'cost' },
+      { field: 'processing' },
+      { field: 'usability', is: 'GearedNumber' },
+      { field: 'inputsAmount', header: 'Inputs', is: 'Hedgehog' },
+      { field: 'outputsAmount', header: 'Outputs', is: 'Hedgehog', get: v => -v },
+      { field: 'steps', is: 'EmoteNumber' },
+    ])
 const selectedColumns = ref(columns.value)
 const onToggle = (val: typeof columns.value) => {
   selectedColumns.value = columns.value.filter(col => val.includes(col))
@@ -108,11 +91,11 @@ const onToggle = (val: typeof columns.value) => {
     </template>
 
     <template #empty>
-      No customers found.
+      No items found.
     </template>
 
     <template #loading>
-      Loading customers data. Please wait.
+      Loading items data. Please wait.
     </template>
 
     <Column field="display" header="Name" style="min-width:12rem" :sortable="true">
@@ -124,39 +107,18 @@ const onToggle = (val: typeof columns.value) => {
       </template>
     </Column>
 
-    <Column field="display" header="Gear" :sortable="true">
-      <template #body="{ data }">
-        <GearedNumber :value="Math.round((data.display.length - 15))" inverted />
-      </template>
-    </Column>
-
-    <Column field="display" header="Hedgehogs" :sortable="true">
-      <template #body="{ data }">
-        <Hedgehog
-          :value="Math.abs(Math.round((data.display.length - 25)))"
-          :inverted="(data.display.length - 25) < 0"
-        />
-      </template>
-    </Column>
-
-    <Column field="processing" header="Purity" :sortable="true">
-      <template #body="{ data }">
-        <PuredValue :purity="Math.min(1.0, Number(data.processing) / 1000000.0)">
-          {{ data.recipes?.length }}
-        </PuredValue>
-      </template>
-    </Column>
-
     <Column
       v-for="(col, index) of selectedColumns"
       :key="`${col.field}_${index}`"
       :field="col.field"
-      :header="col.header"
+      :header="col.header ?? capitalizeFirstLetter(col.field)"
       :sortable="true"
     >
       <template #body="{ data, field }">
-        <BigNumber v-if="col.is === 'BigNumber'" :number="Number(data[field])" />
-        <EmoteNumber v-else :number="Number(data[field])" />
+        <BigNumber v-if="!col.is || col.is === 'BigNumber'" :number="col.get?.(data[field]) ?? Number(data[field])" />
+        <EmoteNumber v-if="col.is === 'EmoteNumber'" :number="col.get?.(data[field]) ?? Number(data[field])" />
+        <GearedNumber v-if="col.is === 'GearedNumber'" :value="col.get?.(data[field]) ?? Number(data[field])" />
+        <Hedgehog v-if="col.is === 'Hedgehog'" :value="col.get?.(data[field]) ?? Number(data[field])" />
       </template>
     </Column>
   </DataTable>

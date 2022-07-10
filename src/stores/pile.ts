@@ -5,6 +5,8 @@ import type { IngredientStack } from '~/assets/items/Stack'
 import type { CsvRecipe } from 'E:/dev/mc-gatherer/src/api'
 import { IngredientStore, Stack, Tree, loadDataCSV } from 'E:/dev/mc-gatherer/src/api'
 
+const sleep = (ms?: number) => new Promise(resolve => setTimeout(resolve, ms))
+
 const usePileStore = defineStore('pile', () => {
   // 𝑳𝒐𝒄𝒂𝒍𝒔
   let tree: Tree<Item>
@@ -32,9 +34,12 @@ const usePileStore = defineStore('pile', () => {
           tree = new Tree(() => new Item())
           ingredientStore = new IngredientStore(tree.getById)
           Promise.all(data.map(
-            async b => tree
-              .getBased(b.source, b.entry, String(b.meta), b.sNbt)
-              .init(b),
+            async (b) => {
+              // await sleep()
+              return tree
+                .getBased(b.source, b.entry, String(b.meta), b.sNbt)
+                .init(b)
+            },
           )).then((items) => {
             tree.lock()
             allItems.value = items

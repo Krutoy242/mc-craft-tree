@@ -1,16 +1,19 @@
 <script setup lang="ts">
-const props = defineProps<{ value: number; inverted?: boolean }>()
+const props = defineProps<{ value: number }>()
 
 const arrows = [
   [...'⭣🠯🠳🡇🢃'],
   [...'🠥🠭🠱🡅🢁'],
 ]
 
+const number = computed(() => Math.abs(props.value))
+const isInverted = computed(() => props.value < 0)
+
 function getArrows(n: number, offset: number) {
   if (isNaN(n))
     return '???'
   const arr = []
-  const r = props.inverted ? arrows[1] : arrows[0]
+  const r = isInverted.value ? arrows[1] : arrows[0]
   const k = n - offset
 
   if (k > 9 && offset === 0)
@@ -40,22 +43,22 @@ function getArrows(n: number, offset: number) {
 
 <template>
   <div class="relative flex justify-content-center">
-    {{ value || '-' }}
+    {{ number || '-' }}
 
     <div
-      v-for="v, i in (new Array(value > 10 ? 2 : 1))"
+      v-for="v, i in (new Array(number > 10 ? 2 : 1))"
       :key="`${v}_${i}`"
-      :class="`absolute ${inverted ? 'flipped' : 'nonflipped'}`"
+      :class="`absolute ${isInverted ? 'flipped' : 'nonflipped'}`"
     >
       <CurveText
         :class="!i ? 'smaller' : ''"
-        :style="`top: ${inverted ? '-' : ''}50%;`"
+        :style="`top: ${isInverted ? '-' : ''}50%;`"
         :width="65"
         :height="50"
         :r="35"
-        :color="inverted ? 'teal' : 'green'"
+        :color="isInverted ? 'teal' : 'green'"
       >
-        {{ getArrows(value, i ? 10 : 0) }}
+        {{ getArrows(number, i ? 10 : 0) }}
       </CurveText>
     </div>
   </div>

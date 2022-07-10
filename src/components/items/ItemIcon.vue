@@ -16,8 +16,8 @@ function getImagePath(id: string) {
 
 <style scoped>
 img {
-  width: 64px;
-  height: 64px;
+  width: 32px;
+  height: 32px;
   image-rendering: pixelated;
 }
 </style>
