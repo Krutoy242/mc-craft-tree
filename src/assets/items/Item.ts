@@ -16,12 +16,12 @@ export class Item {
   public get mainInputs(): Link[] { throw new Error('Getter unimplemented') }
   public get mainOutputs(): Link[] { throw new Error('Getter unimplemented') }
 
-  href: string
+  href!: string
 
-  constructor(base: BaseItem) {
+  init(base: BaseItem) {
     Object.assign(this, base)
-
     this.href = getImagePath(this.id)
+    return this
   }
 }
 
