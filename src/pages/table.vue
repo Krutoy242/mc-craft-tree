@@ -28,17 +28,17 @@ const clearFilter1 = () => {
 const loading1 = ref(false)
 
 const columns = ref<{
-  field: keyof Item
+  field?: keyof Item
   is?: string
   header?: string
-  get?: (v: any) => number
+  get?: (obj: any, v: any) => number
 }[]>([
       { field: 'complexity' },
       { field: 'cost' },
       { field: 'processing' },
       { field: 'usability', is: 'GearedNumber' },
       { field: 'inputsAmount', header: 'Inputs', is: 'Hedgehog' },
-      { field: 'outputsAmount', header: 'Outputs', is: 'Hedgehog', get: v => -v },
+      { field: 'outputsAmount', header: 'Outputs', is: 'Hedgehog', get: (_, v) => -v },
       { field: 'steps', is: 'EmoteNumber' },
     ])
 const selectedColumns = ref(columns.value)
@@ -111,14 +111,14 @@ const onToggle = (val: typeof columns.value) => {
       v-for="(col, index) of selectedColumns"
       :key="`${col.field}_${index}`"
       :field="col.field"
-      :header="col.header ?? capitalizeFirstLetter(col.field)"
+      :header="col.header ?? capitalizeFirstLetter(col.field ?? 'unknown')"
       :sortable="true"
     >
       <template #body="{ data, field }">
-        <BigNumber v-if="!col.is || col.is === 'BigNumber'" :number="col.get?.(data[field]) ?? Number(data[field])" />
-        <EmoteNumber v-if="col.is === 'EmoteNumber'" :number="col.get?.(data[field]) ?? Number(data[field])" />
-        <GearedNumber v-if="col.is === 'GearedNumber'" :value="col.get?.(data[field]) ?? Number(data[field])" />
-        <Hedgehog v-if="col.is === 'Hedgehog'" :value="col.get?.(data[field]) ?? Number(data[field])" />
+        <BigNumber v-if="!col.is || col.is === 'BigNumber'" :number="col.get?.(data, data[field]) ?? Number(data[field])" />
+        <EmoteNumber v-if="col.is === 'EmoteNumber'" :number="col.get?.(data, data[field]) ?? Number(data[field])" />
+        <GearedNumber v-if="col.is === 'GearedNumber'" :value="col.get?.(data, data[field]) ?? Number(data[field])" />
+        <Hedgehog v-if="col.is === 'Hedgehog'" :value="col.get?.(data, data[field]) ?? Number(data[field])" />
       </template>
     </Column>
   </DataTable>

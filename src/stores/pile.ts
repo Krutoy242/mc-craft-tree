@@ -1,11 +1,12 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { Item } from '~/assets/items/Item'
+import { linkItemsAndRecipes } from '~/assets/items/Linker'
 import { Recipe } from '~/assets/items/Recipe'
 import type { IngredientStack } from '~/assets/items/Stack'
 import type { CsvRecipe } from 'E:/dev/mc-gatherer/src/api'
 import { IngredientStore, Stack, Tree, loadDataCSV } from 'E:/dev/mc-gatherer/src/api'
 
-const sleep = (ms?: number) => new Promise(resolve => setTimeout(resolve, ms))
+// const sleep = (ms?: number) => new Promise(resolve => setTimeout(resolve, ms))
 
 const usePileStore = defineStore('pile', () => {
   // 𝑳𝒐𝒄𝒂𝒍𝒔
@@ -41,19 +42,25 @@ const usePileStore = defineStore('pile', () => {
                 .init(b)
             },
           )).then((items) => {
-            tree.lock()
+            // tree.lock()
             allItems.value = items
           })
         })
     }
   }
 
-  computed(() => {
-    if (!allItems.value || !baseRecipes.value)
+  watch([allItems, baseRecipes], ([newItems, newRecipes]) => {
+    if (!newItems || !newRecipes)
       return
 
-    Promise.all(baseRecipes.value.map(processRecipe))
-      .then((recipes) => { allRecipes.value = recipes })
+    const promises = newRecipes.map(processRecipe)
+
+    Promise.all(promises)
+      .catch((err) => { throw err })
+      .then((recipes) => {
+        linkItemsAndRecipes(newItems, recipes)
+        allRecipes.value = recipes
+      })
   })
 
   async function processRecipe(csvBase: CsvRecipe) {
@@ -65,7 +72,10 @@ const usePileStore = defineStore('pile', () => {
   }
 
   return {
-    init, allItems, allRecipes, selectedItem,
+    init,
+    allItems,
+    allRecipes,
+    selectedItem,
   }
 })
 export default usePileStore
