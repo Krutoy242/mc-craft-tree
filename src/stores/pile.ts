@@ -24,7 +24,7 @@ const usePileStore = defineStore('pile', () => {
   function init() {
     if (!baseRecipes.value) {
       import('../assets/data_recipes.json').then(({ default: data }) => {
-        baseRecipes.value = data
+        baseRecipes.value = data as CsvRecipe[]
       })
     }
 
@@ -33,16 +33,17 @@ const usePileStore = defineStore('pile', () => {
         .then(module => loadDataCSV(module.default))
         .then((data) => {
           tree = new Tree(() => new Item())
+          tree.addOreDict({}) // TODO: Init oredict
           ingredientStore = new IngredientStore(tree.getById)
           Promise.all(data.map(
             async (b) => {
               // await sleep()
               return tree
-                .getBased(b.source, b.entry, String(b.meta), b.sNbt)
+                .getBased(b.source, b.entry, b.meta, b.sNbt)
                 .init(b)
             },
           )).then((items) => {
-            // tree.lock()
+            tree.lock()
             allItems.value = items
           })
         })
@@ -58,6 +59,11 @@ const usePileStore = defineStore('pile', () => {
     Promise.all(promises)
       .catch((err) => { throw err })
       .then((recipes) => {
+        for (const ingr of ingredientStore) {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const _ = [...tree.matchedBy(ingr)]
+        }
+
         linkItemsAndRecipes(newItems, recipes)
         allRecipes.value = recipes
       })

@@ -1,3 +1,4 @@
+import type { Recipe } from './Recipe'
 import type { BaseItem } from 'E:/dev/mc-gatherer/src/api'
 
 export interface Link {
@@ -19,6 +20,9 @@ export class Item {
 
   /** How many items used this one as input */
   outputsAmount = 0
+
+  recipes: Set<Recipe> | undefined
+  mainRecipe: Recipe | undefined
 
   public get mainInputs(): Link[] { throw new Error('Getter unimplemented') }
   public get mainOutputs(): Link[] { throw new Error('Getter unimplemented') }
