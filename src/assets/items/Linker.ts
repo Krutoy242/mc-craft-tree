@@ -5,6 +5,7 @@ export function linkItemsAndRecipes(items: Item[], recipes: Recipe[]): void {
   // Purge old values
   items.forEach((item) => {
     item.outputsAmount = 0
+    item.popularity = 0
   })
 
   items.forEach((item) => {
@@ -20,5 +21,19 @@ export function linkItemsAndRecipes(items: Item[], recipes: Recipe[]): void {
       return
 
     item.inputsAmount = mainRecipe.inputs?.length ?? 0
+  })
+
+  recipes.forEach((rec) => {
+    rec.inputs?.forEach((stack) => {
+      stack.it.items.forEach((item) => {
+        item.outputsAmount++
+      })
+    })
+
+    rec.catalysts?.forEach((stack) => {
+      stack.it.items.forEach((item) => {
+        item.popularity++
+      })
+    })
   })
 }

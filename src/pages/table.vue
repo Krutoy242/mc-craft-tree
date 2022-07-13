@@ -36,7 +36,8 @@ const columns = ref<{
       { field: 'complexity' },
       { field: 'cost' },
       { field: 'processing' },
-      { field: 'usability', is: 'GearedNumber' },
+      { field: 'usability' },
+      { field: 'popularity', is: 'GearedNumber' },
       { field: 'inputsAmount', header: 'Inputs', is: 'Hedgehog' },
       { field: 'outputsAmount', header: 'Outputs', is: 'Hedgehog', get: (_, v) => -v },
       { field: 'steps', is: 'EmoteNumber' },
@@ -48,12 +49,14 @@ const onToggle = (val: typeof columns.value) => {
 </script>
 
 <template>
+  <!-- filter-display="menu"
+  :global-filter-fields="['display']"
+  sort-mode="multiple"
+  removable-sort
+  v-model:filters="filters1" -->
   <DataTable
-    v-model:filters="filters1"
-    filter-display="menu"
     :loading="loading1"
     data-key="id"
-    :global-filter-fields="['display']"
 
     state-storage="local"
     state-key="dt-state-demo-local"
@@ -65,13 +68,11 @@ const onToggle = (val: typeof columns.value) => {
     :rows="10"
     :rows-per-page-options="[10, 20, 50]"
     current-page-report-template="Showing {first} to {last} of {totalRecords}"
-    sort-mode="multiple"
-    removable-sort
     responsive-layout="scroll"
 
     style="width: 100%;"
   >
-    <template #header>
+    <!-- <template #header>
       <div class="flex justify-content-between">
         <span class="p-input-icon-left">
           <i class="pi pi-search" />
@@ -88,7 +89,7 @@ const onToggle = (val: typeof columns.value) => {
           />
         </div>
       </div>
-    </template>
+    </template> -->
 
     <template #empty>
       No items found.
@@ -102,9 +103,9 @@ const onToggle = (val: typeof columns.value) => {
       <template #body="{ data }">
         <Item :item="data" />
       </template>
-      <template #filter="{ filterModel }">
+      <!-- <template #filter="{ filterModel }">
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" placeholder="Search by name" />
-      </template>
+      </template> -->
     </Column>
 
     <Column
