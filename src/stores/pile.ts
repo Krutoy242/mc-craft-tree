@@ -3,8 +3,9 @@ import { Item } from '~/assets/items/Item'
 import { linkItemsAndRecipes } from '~/assets/items/Linker'
 import { Recipe } from '~/assets/items/Recipe'
 import type { IngredientStack } from '~/assets/items/Stack'
-import type { CsvRecipe } from 'E:/dev/mc-gatherer/src/api'
-import { IngredientStore, Stack, Tree, loadDataCSV } from 'E:/dev/mc-gatherer/src/api'
+import type { BaseItem, CsvRecipe } from 'E:/dev/mc-gatherer/src/api'
+import { IngredientStore, Stack, Tree } from 'E:/dev/mc-gatherer/src/api'
+import loadDataCSV from 'E:/dev/mc-gatherer/src/api/csv-browser'
 
 // const sleep = (ms?: number) => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -13,15 +14,23 @@ const usePileStore = defineStore('pile', () => {
   let tree: Tree<Item>
   let ingredientStore: IngredientStore<Item>
   const baseRecipes = ref<CsvRecipe[]>()
+  const baseItems = ref<BaseItem[]>()
 
   // Storages
   const allItems = ref<Item[]>()
   const allRecipes = ref<Recipe[]>()
+  const oreDict = ref<Record<string, string[]>>()
 
   // Other
   const selectedItem = ref<Item>()
 
   function init() {
+    if (!oreDict.value) {
+      import('../assets/data_oredict.json').then(({ default: data }) => {
+        oreDict.value = data
+      })
+    }
+
     if (!baseRecipes.value) {
       import('../assets/data_recipes.json').then(({ default: data }) => {
         baseRecipes.value = data as CsvRecipe[]
@@ -32,23 +41,31 @@ const usePileStore = defineStore('pile', () => {
       import('../assets/data_items.csv?raw')
         .then(module => loadDataCSV(module.default))
         .then((data) => {
-          tree = new Tree(() => new Item())
-          tree.addOreDict({}) // TODO: Init oredict
-          ingredientStore = new IngredientStore(tree.getById)
-          Promise.all(data.map(
-            async (b) => {
-              // await sleep()
-              return tree
-                .getBased(b.source, b.entry, b.meta, b.sNbt)
-                .init(b)
-            },
-          )).then((items) => {
-            tree.lock()
-            allItems.value = items
-          })
+          baseItems.value = data
         })
     }
   }
+
+  watch([oreDict, baseItems], ([newDict, newItems]) => {
+    if (!newDict || !newItems)
+      return
+
+    tree = new Tree(() => new Item())
+    tree.addOreDict(newDict)
+
+    ingredientStore = new IngredientStore(tree.getById)
+    Promise.all(newItems.map(
+      async (b) => {
+        // await sleep()
+        return tree
+          .getBased(b.source, b.entry, b.meta, b.sNbt)
+          .init(b)
+      },
+    )).then((items) => {
+      tree.lock()
+      allItems.value = items
+    })
+  })
 
   watch([allItems, baseRecipes], ([newItems, newRecipes]) => {
     if (!newItems || !newRecipes)
