@@ -18,6 +18,7 @@ const canvas = ref<HTMLCanvasElement>()
 interface BarItem {
   pos: number
   width: number
+  hue: number
 }
 
 interface ModBar {
@@ -35,16 +36,19 @@ function getBar(items: Item[]): ModBar {
   const from = log(Math.min(...complList))
   const width = log(Math.max(...complList)) - from
 
-  const barItems = items.map(it => ({
+  const barItems: BarItem[] = items.map(it => ({
     pos  : log(it.complexity) - from,
-    width: 10, // Math.max(1, log(it.cost)),
-  } as BarItem))
+    width: Math.max(3, log(it.usability) / 50),
+    hue  : 1 / (1 + Math.log(it.popularity + 1)),
+  }))
 
-  return {
+  const result = {
     from : from - log(props.offset),
     width: Math.max(100, width),
     items: barItems,
   }
+
+  return result
 }
 
 onMounted(() => {
@@ -82,22 +86,28 @@ function drawGradient() {
 
     // Create gradient
     const grd = ctx.value.createLinearGradient(x1, 0, x2, 0)
-    genGradient(grd, 44)
+    genGradient(grd, b)
 
     // Fill with gradient
+    ctx.value.globalCompositeOperation = 'screen'
     ctx.value.fillStyle = grd
     ctx.value.fillRect(x1, 0, x2 - x1, h)
   })
 }
 
-function genGradient(grd: CanvasGradient, hue: number) {
+function genGradient(grd: CanvasGradient, bi: BarItem) {
   let i = 0.0
-  grd.addColorStop(0.5, `hsla(${hue}, 100%, 74%, ${1})`)
+  const step = 0.1
+  const alpha = 1
+  const saturation = 1
+  const value = 0.25
+  const defColor = `hsla(${(44 * bi.hue) % 255}, ${(100 * saturation) | 0}%, ${(100 * value) | 0}%,`
+  grd.addColorStop(0.5, `${defColor} ${1 * alpha})`)
   while (i < 0.5) {
     const a = Math.pow(i * 2.0, 0.3) / 2
-    grd.addColorStop(a, `hsla(${hue}, 100%, 74%, ${i * 2})`)
-    grd.addColorStop(1.0 - a, `hsla(${hue}, 100%, 74%, ${i * 2})`)
-    i += 0.15
+    grd.addColorStop(a, `${defColor} ${i * 2 * alpha})`)
+    grd.addColorStop(1.0 - a, `${defColor} ${i * 2 * alpha})`)
+    i += step
   }
 }
 </script>
