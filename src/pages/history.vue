@@ -6,8 +6,8 @@ import usePileStore from '~/stores/pile'
 type ModBarTyple = [modName:string, items:Item[]]
 
 // const modsList = ref<ModBarTyple[]>()
-const pile = usePileStore()
-const modsList = computed(() => pile.allItems ? getModBars(pile.allItems) : undefined)
+const { pickedItems } = usePileStore()
+const modsList = computed(() => pickedItems ? getModBars(pickedItems) : undefined)
 const offset = ref<number>(0)
 
 function getModBars(items: Item[]): ModBarTyple[] {

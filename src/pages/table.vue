@@ -5,7 +5,7 @@ import usePileStore from '~/stores/pile'
 import { capitalizeFirstLetter } from '~/assets/lib/utils'
 import type { Item } from '~/assets/items/Item'
 
-const { allItems } = usePileStore()
+const { pickedItems } = usePileStore()
 
 const filtersOpts = {
   'global'        : { value: undefined, matchMode: FilterMatchMode.CONTAINS },
@@ -61,7 +61,7 @@ const onToggle = (val: typeof columns.value) => {
     state-storage="local"
     state-key="dt-state-demo-local"
 
-    :value="allItems"
+    :value="pickedItems"
     :paginator="true"
     paginator-template="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
 

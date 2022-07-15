@@ -1,6 +1,6 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
 import { Item } from '~/assets/items/Item'
-import { linkItemsAndRecipes } from '~/assets/items/Linker'
+import { pickItems } from '~/assets/items/Linker'
 import { Recipe } from '~/assets/items/Recipe'
 import type { IngredientStack } from '~/assets/items/Stack'
 import type { BaseItem, CsvRecipe } from 'E:/dev/mc-gatherer/src/api'
@@ -15,11 +15,12 @@ const usePileStore = defineStore('pile', () => {
   let ingredientStore: IngredientStore<Item>
   const baseRecipes = ref<CsvRecipe[]>()
   const baseItems = ref<BaseItem[]>()
+  const allRecipes = ref<Recipe[]>()
+  const allItems = ref<Item[]>()
+  const oreDict = ref<Record<string, string[]>>()
 
   // Storages
-  const allItems = ref<Item[]>()
-  const allRecipes = ref<Recipe[]>()
-  const oreDict = ref<Record<string, string[]>>()
+  const pickedItems = ref<Item[]>()
 
   // Other
   const selectedItem = ref<Item>()
@@ -75,16 +76,21 @@ const usePileStore = defineStore('pile', () => {
 
     Promise.all(promises)
       .catch((err) => { throw err })
-      .then((recipes) => {
-        for (const ingr of ingredientStore) {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const _ = [...tree.matchedBy(ingr)]
-        }
-
-        linkItemsAndRecipes(newItems, recipes)
-        allRecipes.value = recipes
-      })
+      .then(onItemsOrRecipesChange)
   })
+
+  function onItemsOrRecipesChange(recipes: Recipe[]) {
+    if (!allItems.value)
+      return
+
+    for (const ingr of ingredientStore) {
+      const p = tree.matchedBy(ingr)
+      while (!p.next().done) {}// eslint-disable-line no-empty
+    }
+
+    pickedItems.value = pickItems(allItems.value, recipes)
+    allRecipes.value = recipes
+  }
 
   async function processRecipe(csvBase: CsvRecipe) {
     const { outputs, inputs, catalysts, ...base } = csvBase
@@ -96,8 +102,7 @@ const usePileStore = defineStore('pile', () => {
 
   return {
     init,
-    allItems,
-    allRecipes,
+    pickedItems,
     selectedItem,
   }
 })
