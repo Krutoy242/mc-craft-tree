@@ -18,6 +18,7 @@ const usePileStore = defineStore('pile', () => {
   let allItems = $shallowRef<Item[]>()
   let oreDict = $shallowRef<Record<string, string[]>>()
   let pickedItems = $shallowRef<Item[]>()
+  let selectedRecipes = $shallowRef<Recipe[]>([])
 
   function init() {
     if (!oreDict) {
@@ -83,9 +84,15 @@ const usePileStore = defineStore('pile', () => {
     ) as [IngredientStack[], IngredientStack[] | undefined, IngredientStack[] | undefined])
   }
 
+  function selectRecipes(recipes: Recipe[]) {
+    selectedRecipes = recipes
+  }
+
   return {
     init,
-    pickedItems: $$(pickedItems),
+    selectRecipes,
+    pickedItems    : $$(pickedItems),
+    selectedRecipes: $$(selectedRecipes),
   }
 })
 export default usePileStore

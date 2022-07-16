@@ -1,57 +1,48 @@
 <script setup lang="ts">
 import type { Recipe } from '~/assets/items/Recipe'
-defineProps<{ recipe: Recipe }>()
+
+const props = defineProps<{ recipe: Recipe }>()
+
+const recipeLists = computed(() => {
+  const names = ['OUT', 'INP', 'CTL']
+  const { outputs, inputs, catalysts } = props.recipe
+
+  return [outputs, inputs, catalysts].map((o, i) => ({
+    name  : names[i],
+    stacks: o?.map(s => ({
+      amount: s.amount && s.amount,
+      item  : s.it.matchedBy()[0],
+    })) ?? [],
+  }))
+})
 </script>
 
 <template>
-  <v-card max-width="400" outlined>
-    <v-card-title class="subheading font-weight-bold">
-      Outputs:
+  <div>
+    <div
+      v-for="(list, i) in recipeLists"
+      :key="i"
+    >
       <div
-        v-for="(outCS, i) in recipe.outputs"
-        :key="i"
-        class="px-1 inline-block"
+        v-if="list.stacks?.length"
+        class="flex flex-wrap relative justify-content-center bg-alpha-10"
+        :style="`background-color: hsla(${(3 - i) * 60}, 100%, 50%, 0.05)`"
       >
-        <tree-entry :node="outCS.cuent" :amount="outCS.amount" />
-        <div class="text--secondary text-caption d-flex justify-center ma-0">
-          <pured-value :purity="recipe.getLinksHolderFor(outCS).purity">
-            {{ recipe.getCuentStackCost(outCS) | numFormat('0.0a') }}
-          </pured-value>
+        <div
+          class="absolute text-2xl"
+          style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;"
+          :style="`color: hsla(${(3 - i) * 60}, 100%, 50%, 0.1)`"
+        >
+          {{ list.name }}
         </div>
+        <ItemIcon
+          v-for="(stack, j) in list.stacks"
+          :key="j"
+          :item="stack.item"
+          :amount="stack.amount"
+          class="m-1"
+        />
       </div>
-    </v-card-title>
-
-    <v-divider />
-
-    <v-list>
-      <v-list-item>
-        <v-list-item-content v-if="recipe.inputs?.length">
-          <v-list-item-title class="green--text">
-            Inputs:
-          </v-list-item-title>
-          <EntryTreeMap :entry-list="recipe.inputs" />
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
-
-    <v-divider />
-
-    <v-list>
-      <v-list-item>
-        <v-list-item-content v-if="recipe.catalysts?.length">
-          <v-list-item-title class="teal--text">
-            Catalysts:
-          </v-list-item-title>
-          <v-list-item-subtitle class="d-flex flex-wrap">
-            <tree-entry
-              v-for="(cs, i) in recipe.catalysts"
-              :key="i"
-              :node="cs.cuent"
-              :amount="cs.amount"
-            />
-          </v-list-item-subtitle>
-        </v-list-item-content>
-      </v-list-item>
-    </v-list>
-  </v-card>
+    </div>
+  </div>
 </template>

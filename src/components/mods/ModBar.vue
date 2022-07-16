@@ -3,6 +3,8 @@ import _ from 'lodash'
 import { scaleLog } from 'd3'
 import type { Item } from '~/assets/items/Item'
 import { getHue } from '~/assets/lib/hue'
+import usePileStore from '~/stores/pile'
+import type { Recipe } from '~/assets/items/Recipe'
 
 const props = defineProps<{
   name: string
@@ -12,13 +14,18 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (e: 'showitems', items: Item[]): void
+  (e: 'selectrecipes', recipes: Recipe[]): void
 }>()
+
+const { selectRecipes } = usePileStore()
 
 const bar = computed(() => getBar(props.items))
 const hue = computed(() => getHue(props.name))
 
 const ctx = shallowRef<CanvasRenderingContext2D>()
 const canvas = shallowRef<HTMLCanvasElement>()
+let itemsAround = $shallowRef<Item[]>()
+let itemsRecipes = $shallowRef<Recipe[]>()
 
 interface BarItem {
   item: Item
@@ -118,27 +125,38 @@ function genGradient(grd: CanvasGradient, bi: BarItem) {
   }
 }
 
-function mousemove(e: MouseEvent) {
-  if (!bar.value)
-    return
+function getItemsAround(x: number): Item[] {
+  if (!bar.value) return []
 
-  const itemsAround = _(bar.value.items)
-    .map(item => [Math.abs(e.offsetX - item.pos), item] as const)
+  return _(bar.value.items)
+    .map(item => [Math.abs(x - item.pos), item] as const)
     .sortBy(0)
-    .filter(([dist]) => dist < 20)
+    .filter(([dist, i]) => dist < i.width)
     .map(([,i]) => i.item)
+    .slice(0, 10)
     .value()
+}
 
-  emit('showitems', itemsAround)
+watch($$(itemsAround), () => emit('showitems', itemsAround))
+function mousemove(e: MouseEvent) {
+  itemsAround = getItemsAround(e.offsetX)
+  itemsRecipes = itemsAround
+    .map(i => i.mainRecipe)
+    .filter((r): r is Recipe => Boolean(r))
+}
+
+function click(e: MouseEvent) {
+  if (itemsRecipes.length) selectRecipes(itemsRecipes)
 }
 </script>
 
 <template>
   <div
-    :style="{ 'margin-left': `${bar.from}px`, 'width': `${bar.width}px` }"
+    :style="{ 'margin-left': `${bar.from}px`, 'width': `${bar.width}px`, 'cursor': `${itemsRecipes?.length ? 'pointer' : 'default'}` }"
     :color="`hsla(${hue}, 60%, 40%, 0.1)`"
     class="bar border-1 border-round-sm border-primary-900"
     @mousemove="mousemove"
+    @click="click"
   >
     <div class="absolute">
       <canvas ref="canvas" />

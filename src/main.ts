@@ -4,6 +4,10 @@ import routes from 'virtual:generated-pages'
 import { createPinia } from 'pinia'
 
 import PrimeVue from 'primevue/config'
+
+import Tooltip from 'primevue/tooltip'
+import BadgeDirective from 'primevue/badgedirective'
+
 import App from './App.vue'
 
 import '@unocss/reset/tailwind.css'
@@ -20,6 +24,10 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
 })
+
+app.directive('tooltip', Tooltip)
+app.directive('badge', BadgeDirective)
+
 app.use(router)
 app.use(createPinia())
 app.use(PrimeVue, { ripple: true })
