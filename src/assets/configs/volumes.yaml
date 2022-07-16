@@ -1,9 +1,0 @@
-# How much volume of this entry count as one
-placeholder:
-  Ticks: 100
-  Mana: 100
-  Exploration: 100
-  Grid Power: 100
-  RF: 1000000
-
-fluid: 1000
