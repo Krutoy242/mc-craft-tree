@@ -17,8 +17,8 @@ const emit = defineEmits<{
 const bar = computed(() => getBar(props.items))
 const hue = computed(() => getHue(props.name))
 
-const ctx = ref<CanvasRenderingContext2D>()
-const canvas = ref<HTMLCanvasElement>()
+const ctx = shallowRef<CanvasRenderingContext2D>()
+const canvas = shallowRef<HTMLCanvasElement>()
 
 interface BarItem {
   item: Item

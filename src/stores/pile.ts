@@ -13,49 +13,42 @@ const usePileStore = defineStore('pile', () => {
   // 𝑳𝒐𝒄𝒂𝒍𝒔
   let tree: Tree<Item>
   let ingredientStore: IngredientStore<Item>
-  const baseRecipes = ref<CsvRecipe[]>()
-  const baseItems = ref<BaseItem[]>()
-  const allRecipes = ref<Recipe[]>()
-  const allItems = ref<Item[]>()
-  const oreDict = ref<Record<string, string[]>>()
-
-  // Storages
-  const pickedItems = ref<Item[]>()
-
-  // Other
-  const selectedItem = ref<Item>()
+  let baseRecipes = $shallowRef<CsvRecipe[]>()
+  let baseItems = $shallowRef<BaseItem[]>()
+  let allItems = $shallowRef<Item[]>()
+  let oreDict = $shallowRef<Record<string, string[]>>()
+  let pickedItems = $shallowRef<Item[]>()
 
   function init() {
-    if (!oreDict.value) {
+    if (!oreDict) {
       import('../assets/data_oredict.json').then(({ default: data }) => {
-        oreDict.value = data
+        oreDict = data
       })
     }
 
-    if (!baseRecipes.value) {
+    if (!baseRecipes) {
       import('../assets/data_recipes.json').then(({ default: data }) => {
-        baseRecipes.value = data as CsvRecipe[]
+        baseRecipes = data as CsvRecipe[]
       })
     }
 
-    if (!allItems.value) {
+    if (!allItems) {
       import('../assets/data_items.csv?raw')
         .then(module => loadDataCSV(module.default))
         .then((data) => {
-          baseItems.value = data
+          baseItems = data
         })
     }
   }
 
-  watch([oreDict, baseItems], ([newDict, newItems]) => {
-    if (!newDict || !newItems)
-      return
+  watch([$$(oreDict), $$(baseItems)], () => {
+    if (!oreDict || !baseItems) return
 
     tree = new Tree(() => new Item())
-    tree.addOreDict(newDict)
+    tree.addOreDict(oreDict)
 
     ingredientStore = new IngredientStore(tree.getById)
-    Promise.all(newItems.map(
+    Promise.all(baseItems.map(
       async (b) => {
         // await sleep()
         return tree
@@ -64,33 +57,23 @@ const usePileStore = defineStore('pile', () => {
       },
     )).then((items) => {
       tree.lock()
-      allItems.value = items
+      allItems = items
     })
   })
 
-  watch([allItems, baseRecipes], ([newItems, newRecipes]) => {
-    if (!newItems || !newRecipes)
-      return
-
-    const promises = newRecipes.map(processRecipe)
-
-    Promise.all(promises)
+  watch([$$(allItems), $$(baseRecipes)], () => {
+    if (!allItems || !baseRecipes) return
+    Promise.all(baseRecipes.map(processRecipe))
       .catch((err) => { throw err })
-      .then(onItemsOrRecipesChange)
+      .then((recipes: Recipe[]) => {
+        for (const ingr of ingredientStore) {
+          const p = tree.matchedBy(ingr)
+          while (!p.next().done) {}// eslint-disable-line no-empty
+        }
+
+        pickedItems = pickItems(allItems, recipes)
+      })
   })
-
-  function onItemsOrRecipesChange(recipes: Recipe[]) {
-    if (!allItems.value)
-      return
-
-    for (const ingr of ingredientStore) {
-      const p = tree.matchedBy(ingr)
-      while (!p.next().done) {}// eslint-disable-line no-empty
-    }
-
-    pickedItems.value = pickItems(allItems.value, recipes)
-    allRecipes.value = recipes
-  }
 
   async function processRecipe(csvBase: CsvRecipe) {
     const { outputs, inputs, catalysts, ...base } = csvBase
@@ -102,8 +85,7 @@ const usePileStore = defineStore('pile', () => {
 
   return {
     init,
-    pickedItems,
-    selectedItem,
+    pickedItems: $$(pickedItems),
   }
 })
 export default usePileStore

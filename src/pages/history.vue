@@ -5,11 +5,11 @@ import usePileStore from '~/stores/pile'
 
 type ModBarTyple = [modName:string, items:Item[]]
 
-// const modsList = ref<ModBarTyple[]>()
+// const modsList = shallowRef<ModBarTyple[]>()
 const { pickedItems } = usePileStore()
 const modsList = computed(() => pickedItems ? getModBars(pickedItems) : undefined)
 const offset = ref<number>(0)
-const shownItems = ref<Item[]>()
+const shownItems = shallowRef<Item[]>()
 
 function getModBars(items: Item[]): ModBarTyple[] {
   let minimum = Number.MAX_SAFE_INTEGER
