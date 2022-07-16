@@ -7,9 +7,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BaseID: typeof import('./src/components/strings/BaseID.vue')['default']
     BigNumber: typeof import('./src/components/numbers/BigNumber.vue')['default']
-    Column: typeof import('primevue/column')['default']
     CurveText: typeof import('./src/components/CurveText.vue')['default']
-    DataTable: typeof import('primevue/datatable')['default']
     EmoteNumber: typeof import('./src/components/numbers/EmoteNumber.vue')['default']
     EntryGrid: typeof import('./src/components/items/EntryGrid.vue')['default']
     EntryTreeMap: typeof import('./src/components/items/EntryTreeMap.vue')['default']
@@ -17,6 +15,7 @@ declare module '@vue/runtime-core' {
     GearedNumber: typeof import('./src/components/numbers/GearedNumber.vue')['default']
     Hedgehog: typeof import('./src/components/numbers/Hedgehog.vue')['default']
     Item: typeof import('./src/components/items/Item.vue')['default']
+    ItemDetailed: typeof import('./src/components/items/ItemDetailed.vue')['default']
     ItemIcon: typeof import('./src/components/items/ItemIcon.vue')['default']
     MCFont: typeof import('./src/components/strings/MCFont.vue')['default']
     MCString: typeof import('./src/components/strings/MCString.vue')['default']

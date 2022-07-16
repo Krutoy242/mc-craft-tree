@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import _ from 'lodash'
 import { scaleLog } from 'd3'
 import type { Item } from '~/assets/items/Item'
 import { getHue } from '~/assets/lib/hue'
@@ -9,6 +10,10 @@ const props = defineProps<{
   offset: number
 }>()
 
+const emit = defineEmits<{
+  (e: 'showitems', items: Item[]): void
+}>()
+
 const bar = computed(() => getBar(props.items))
 const hue = computed(() => getHue(props.name))
 
@@ -16,6 +21,7 @@ const ctx = ref<CanvasRenderingContext2D>()
 const canvas = ref<HTMLCanvasElement>()
 
 interface BarItem {
+  item: Item
   pos: number
   width: number
   hue: number
@@ -37,6 +43,7 @@ function getBar(items: Item[]): ModBar {
   const width = log(Math.max(...complList)) - from
 
   const barItems: BarItem[] = items.map(it => ({
+    item : it,
     pos  : log(it.complexity) - from,
     width: Math.max(3, log(it.usability) / 50),
     hue  : 1 / (1 + Math.log(it.popularity + 1)),
@@ -110,6 +117,20 @@ function genGradient(grd: CanvasGradient, bi: BarItem) {
     i += step
   }
 }
+
+function mousemove(e: MouseEvent) {
+  if (!bar.value)
+    return
+
+  const itemsAround = _(bar.value.items)
+    .map(item => [Math.abs(e.offsetX - item.pos), item] as const)
+    .sortBy(0)
+    .filter(([dist]) => dist < 20)
+    .map(([,i]) => i.item)
+    .value()
+
+  emit('showitems', itemsAround)
+}
 </script>
 
 <template>
@@ -117,6 +138,7 @@ function genGradient(grd: CanvasGradient, bi: BarItem) {
     :style="{ 'margin-left': `${bar.from}px`, 'width': `${bar.width}px` }"
     :color="`hsla(${hue}, 60%, 40%, 0.1)`"
     class="bar border-1 border-round-sm border-primary-900"
+    @mousemove="mousemove"
   >
     <div class="absolute">
       <canvas ref="canvas" />

@@ -1,17 +1,10 @@
 <script setup lang="ts">
-defineProps<{ id: string }>()
-
-const imagePath = 'https://github.com/Krutoy242/E2E-E-icons/raw/main/x32'
-
-function getImagePath(id: string) {
-  return id.includes('{')
-    ? ''
-    : `${imagePath}/${id.replace(/:/g, '__')}.png`
-}
+import type { Item } from '~/assets/items/Item'
+defineProps<{ item: Item }>()
 </script>
 
 <template>
-  <img :src="getImagePath(id)">
+  <img :src="item.href">
 </template>
 
 <style scoped>

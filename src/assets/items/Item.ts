@@ -39,7 +39,5 @@ export class Item {
 const imagePath = 'https://github.com/Krutoy242/E2E-E-icons/raw/main/x32'
 
 function getImagePath(id: string) {
-  return id.includes('{')
-    ? ''
-    : `${imagePath}/${id.replace(/:/g, '__')}.png`
+  return `${imagePath}/${id.split(':', 3).join('__')}.png`
 }

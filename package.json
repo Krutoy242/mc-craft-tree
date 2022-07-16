@@ -52,7 +52,8 @@
         {
           "align": "colon"
         }
-      ]
+      ],
+      "antfu/if-newline": 0
     }
   }
 }

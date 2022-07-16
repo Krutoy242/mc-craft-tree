@@ -94,9 +94,9 @@ const main = computed(() => String(props.short ? compNumber.value : whole.value)
       >
         <div
           :class="compClass"
-          :title="compClass.includes('glitched') ? main : undefined"
+          :title="compClass?.includes('glitched') ? main : undefined"
         >
-          <div v-if="compClass.includes('animated-rainbow')">
+          <div v-if="compClass?.includes('animated-rainbow')">
             <span
               v-for="(c, i) in main"
               :key="i"
