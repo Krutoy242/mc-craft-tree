@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Item } from '~/assets/items/Item'
 import type { Recipe } from '~/assets/items/Recipe'
 
 const props = defineProps<{ recipe: Recipe }>()
@@ -11,14 +12,14 @@ const recipeLists = computed(() => {
     name  : names[i],
     stacks: o?.map(s => ({
       amount: s.amount && s.amount,
-      item  : s.it.matchedBy()[0],
+      item  : s.it.matchedBy()[0] as Item,
     })) ?? [],
   }))
 })
 </script>
 
 <template>
-  <div>
+  <div class="max-w-16rem">
     <div
       v-for="(list, i) in recipeLists"
       :key="i"

@@ -7,9 +7,7 @@ declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     BaseID: typeof import('./src/components/strings/BaseID.vue')['default']
     BigNumber: typeof import('./src/components/numbers/BigNumber.vue')['default']
-    Column: typeof import('primevue/column')['default']
     CurveText: typeof import('./src/components/CurveText.vue')['default']
-    DataTable: typeof import('primevue/datatable')['default']
     Dialog: typeof import('primevue/dialog')['default']
     EmoteNumber: typeof import('./src/components/numbers/EmoteNumber.vue')['default']
     EntryGrid: typeof import('./src/components/items/EntryGrid.vue')['default']

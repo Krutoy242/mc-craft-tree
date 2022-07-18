@@ -33,13 +33,12 @@ watch(selectedRecipes, () => {
 </script>
 
 <template>
-  <div class="flex flex-column">
+  <div class="flex flex-column h-full">
     <div flex>
       <TabMenu :model="tabs" />
     </div>
-    <div flex mg-y-auto>
-      <router-view />
-    </div>
+
+    <router-view class="h-full" />
     <!-- <div class="absolute bottom-0 bg-gray-900">
       <Footer />
     </div> -->

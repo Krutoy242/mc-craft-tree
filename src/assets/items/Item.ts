@@ -1,11 +1,6 @@
+import type { Link } from './Link'
 import type { Recipe } from './Recipe'
 import type { BaseItem } from 'E:/dev/mc-gatherer/src/api'
-
-export interface Link {
-  weight: number
-  source: Item
-  target: Item
-}
 
 export interface Item extends BaseItem {}
 export class Item {
@@ -24,8 +19,8 @@ export class Item {
   recipes: Set<Recipe> | undefined
   mainRecipe: Recipe | undefined
 
-  public get mainInputs(): Link[] { throw new Error('Getter unimplemented') }
-  public get mainOutputs(): Link[] { throw new Error('Getter unimplemented') }
+  mainInputs = new Set<Link<Item>>()
+  mainOutputs = new Set<Link<Item>>()
 
   href!: string
 

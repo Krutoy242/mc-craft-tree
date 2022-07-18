@@ -45,7 +45,6 @@ function getModBars(items: Item[]): ModBarTyple[] {
         v-for="item in shownItems"
         :key="item.id"
         :item="item"
-        class="m-2 bar border-1 border-round-sm border-primary-900 bg-primary-reverse"
       />
     </div>
   </div>

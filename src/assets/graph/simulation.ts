@@ -1,5 +1,4 @@
 import * as d3 from 'd3'
-import type { Item } from '../items/Item'
 import type { GraphCallbacks, LinkDatum, NodeDatum, SVGSelection } from '.'
 import { makeGraph } from '.'
 
@@ -14,10 +13,9 @@ interface StyleCallbacks {
 
 export function makeGraphTree(
   svg: SVGSelection,
-  items: Item[],
+  items: NodeDatum[],
   callbacks: GraphCallbacks = {},
 ) {
-  const graphNodes = items as NodeDatum[]
   let links: CurvedLinks | StraightLinks
 
   const moreCallbacks: GraphCallbacks = {
@@ -39,9 +37,9 @@ export function makeGraphTree(
   // selection.on(".drag", null);
 
   const opts = {
-    showLinks      : graphNodes.length < 500,
-    showCurvedLinks: graphNodes.length < 100,
-    useReuse       : graphNodes.length > 500,
+    showLinks      : items.length < 500,
+    showCurvedLinks: items.length < 100,
+    useReuse       : items.length > 500,
   }
 
   // ====================================================
@@ -49,8 +47,8 @@ export function makeGraphTree(
   // ====================================================
   // Connect graph nodes
   const graphLinks: LinkDatum[] = []
-  for (const c of graphNodes) {
-    for (const l of c.mainInputs as LinkDatum[])
+  for (const c of items) {
+    for (const l of c.mainInputs)
       graphLinks.push(l)
   }
 
@@ -58,19 +56,19 @@ export function makeGraphTree(
   // Layout
   // ====================================================
   simulation = d3
-    .forceSimulation(graphNodes)
+    .forceSimulation(items)
     // ! .force('charge', (opts.useReuse ? forceManyBodyReuse : d3.forceManyBody()).strength(-2000))
     .force('charge', d3.forceManyBody().strength(-2000))
     .force('x', d3.forceX(fX).strength(1))
     .force(
       'y',
-      d3.forceY(vizHeight / 2).strength(d => fUsab(d as any) + 1),
+      d3.forceY<NodeDatum>(vizHeight / 2).strength(d => fUsab(d) + 1),
     )
     .force(
       'collision',
       d3
-        .forceCollide()
-        .radius(fSize as any)
+        .forceCollide<NodeDatum>()
+        .radius(fSize)
         .strength(0.75),
     )
     .force(
@@ -80,7 +78,7 @@ export function makeGraphTree(
         .distance(diffSize / 2)
         .strength(1),
     )
-    .on('tick', ticked) as any
+    .on('tick', ticked)
 
   function highlitedLink(l: LinkDatum, deph: number) {
     l.d3node?.attr('stroke-width', (fStroke(l) * 3) / deph + 1)
@@ -145,11 +143,9 @@ class Highliter {
 
     const newSet = new Set<NodeDatum>()
     for (const d of this.current) {
-      if (!d)
-        continue
+      if (!d) continue
       for (const l of this.getLinksArray(d)) {
-        if (!l.d3node || this.all.has(l))
-          continue
+        if (!l.d3node || this.all.has(l)) continue
         newSet.add(l.source)
         this.all.add(l)
 
@@ -164,7 +160,7 @@ class Highliter {
         this.current = [center]
       }
       else {
-        clearInterval(this.timeoutID as any)
+        clearInterval(this.timeoutID)
       }
     }
     else {
@@ -172,7 +168,7 @@ class Highliter {
     }
   }
 
-  private getLinksArray = (d: NodeDatum): LinkDatum[] => {
+  private getLinksArray = (d: NodeDatum): Set<LinkDatum> => {
     return this.towardsOutputs
       ? d.mainInputs
       : d.mainOutputs
@@ -221,14 +217,14 @@ class StraightLinks {
       .attr('stroke-width', 1)
       .selectAll('line')
       .data(links)
-      .join('line') as any
+      .join('line')
     this.createBackRefs()
   }
 
   protected createBackRefs = () => {
     this.sel.each(function (ld) {
       // eslint-disable-next-line @typescript-eslint/no-invalid-this
-      const d3node = d3.select(this) as any
+      const d3node = d3.select(this)
       ld.d3node = d3node
       // ;(ld.flipped as LinkDatum).d3node = d3node
     })
@@ -245,7 +241,7 @@ class SingleLinks extends StraightLinks {
       .attr('stroke-width', 3)
       .selectAll('line')
       .data(comboLinks)
-      .join('line') as any
+      .join('line')
 
     this.createBackRefs()
     this.highliter.highlite(d)

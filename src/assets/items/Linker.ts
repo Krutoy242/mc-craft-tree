@@ -32,34 +32,52 @@ export function pickItems(items: Item[], recipes: Recipe[]): Item[] {
   })
 
   const pickedPile = solve(targetItem).getMerged().toArray()
+    .map(([item, amount]) => {
+      item.usability = amount
+      item.inputsAmount = item.mainRecipe?.inputs?.length ?? 0
 
-  // Add usability only for picked
-  pickedPile.forEach(([item, amount]) => {
-    item.usability = amount
-  })
+      // Add input links
+      item.mainRecipe?.inputsDef?.forEach(stack => item.mainInputs.add({
+        weight: stack.amount ?? 1,
+        source: stack.it,
+        target: item,
+      }))
 
-  const pickedRecipes = new Set<Recipe>()
-  pickedPile.forEach(([item]) => {
-    if (item.mainRecipe === undefined)
-      return
-    pickedRecipes.add(item.mainRecipe)
+      return item
+    })
 
-    item.inputsAmount = item.mainRecipe.inputs?.length ?? 0
-  })
+  // Find all main recipes
+  const pickedRecipes = new Set<Recipe>(
+    pickedPile.map(i => i.mainRecipe)
+      .filter((i): i is Recipe => !!i),
+  )
 
   pickedRecipes.forEach((rec) => {
+    // Add output links
+    rec.outputs.forEach((out) => {
+      rec.inputsDef?.forEach(({ it: itemIn }) => {
+        out.it.matchedBy().forEach((itemOut) => {
+          itemIn.mainOutputs.add({
+            weight: out.amount ?? 1,
+            source: itemIn,
+            target: itemOut,
+          })
+        })
+      })
+    })
+
     rec.inputs?.forEach((stack) => {
-      stack.it.items.forEach((item) => {
+      stack.it.matchedBy().forEach((item) => {
         item.outputsAmount++
       })
     })
 
     rec.catalysts?.forEach((stack) => {
-      stack.it.items.forEach((item) => {
+      stack.it.matchedBy().forEach((item) => {
         item.popularity++
       })
     })
   })
 
-  return pickedPile.map(([i]) => i)
+  return pickedPile
 }

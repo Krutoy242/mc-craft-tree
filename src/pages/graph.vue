@@ -1,33 +1,40 @@
 <script setup lang="ts">
 import * as d3 from 'd3'
+import { storeToRefs } from 'pinia'
 import { makeGraphTree } from '~/assets/graph/simulation'
+import type { Item } from '~/assets/items/Item'
 import usePileStore from '~/stores/pile'
 
 const pile = usePileStore()
+const { pickedItems } = storeToRefs(pile)
 
-onMounted(() => updateGraph())
+let hoveredItem = $ref<Item>()
+
+onMounted(updateGraph)
+watch(pickedItems, updateGraph)
 
 function updateGraph() {
-  if (!pile.allItems)
+  if (!pickedItems.value)
     return
 
   makeGraphTree(
     d3.select('#viz') as any,
-    pile.allItems,
+    pickedItems.value,
+    {
+      mouseover: d => hoveredItem = d,
+    },
   )
 }
 </script>
 
 <template>
-  <div style="position: relative; height: 100%">
-    <!-- <div style="position: absolute" class="ma-4">
-      <tree-entry
-        v-if="pile.selectedItem"
-        :node="pile.selectedItem"
-        size="64"
-        details="big"
-      />
-    </div> -->
-    <svg id="viz" style="width: 100%; height: 100%" />
+  <div
+    class="relative"
+  >
+    <div v-if="hoveredItem" class="fixed">
+      <ItemDetailed :item="hoveredItem" />
+      <Recipes v-if="hoveredItem?.mainRecipe" :recipes="[hoveredItem?.mainRecipe]" />
+    </div>
+    <svg id="viz" class="w-full h-full" />
   </div>
 </template>

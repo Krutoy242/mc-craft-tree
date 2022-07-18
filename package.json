@@ -21,6 +21,7 @@
     "primevue": "^3.12.6",
     "roboto-fontface": "*",
     "tinygradient": "^1.1.5",
+    "typescript-memoize": "^1.1.0",
     "vue": "^3.2.33",
     "vue-router": "^4.0.15"
   },

@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import type { Item } from '~/assets/items/Item'
 
-defineProps<{ item: Item }>()
+defineProps<{ item?: Item }>()
 </script>
 
 <template>
-  <div class="flex flex-column">
+  <div v-if="item" class="flex flex-column m-2 bar border-1 border-round-sm border-primary-900 bg-primary-reverse">
     <Item :item="item" />
     <div class="details flex monospace">
       <GearedNumber class="" :value="item.popularity" />

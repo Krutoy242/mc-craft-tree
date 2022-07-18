@@ -1,6 +1,7 @@
 import * as d3 from 'd3'
 import type { D3ZoomEvent } from 'd3'
-import type { Item, Link } from '../items/Item'
+import type { Item } from '../items/Item'
+import type { Link } from '../items/Link'
 
 export interface NodeDatum extends d3.SimulationNodeDatum, Item {
   isGhost?: boolean
@@ -9,7 +10,7 @@ export interface NodeDatum extends d3.SimulationNodeDatum, Item {
 
 export interface LinkDatum
   extends d3.SimulationLinkDatum<NodeDatum>,
-  Link {
+  Link<NodeDatum> {
   source: NodeDatum
   target: NodeDatum
   d3node?: d3.Selection<d3.EnterElement, unknown, null, undefined>
@@ -55,7 +56,7 @@ export function makeGraph(
   const importancyComp = getImportancy('complexity')
   const importancyUsab = getImportancy('usability')
 
-  const fNonlinear = Math.sqrt
+  const fNonlinear = (x: number) => Math.pow(x, 0.25)
   const fStroke = (c: LinkDatum) => fNonlinear(fNonlinear(c.weight))
   const fComp = (c: NodeDatum) => fNonlinear(importancyComp(c.complexity))
   const fUsab = (c: NodeDatum) => fNonlinear(importancyUsab(c.usability))

@@ -25,6 +25,7 @@ specifiers:
   roboto-fontface: '*'
   tinygradient: ^1.1.5
   typescript: ^4.6.4
+  typescript-memoize: ^1.1.0
   unocss: ^0.33.2
   unplugin-auto-import: ^0.7.1
   unplugin-vue-components: ^0.19.5
@@ -47,6 +48,7 @@ dependencies:
   primevue: 3.12.6_kiulhdu4pfcetuhjqa6z7mcfta
   roboto-fontface: 0.10.0
   tinygradient: 1.1.5
+  typescript-memoize: 1.1.0
   vue: 3.2.33
   vue-router: 4.0.15_vue@3.2.33
 
@@ -3706,6 +3708,10 @@ packages:
     resolution: {integrity: sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==}
     engines: {node: '>=8'}
     dev: true
+
+  /typescript-memoize/1.1.0:
+    resolution: {integrity: sha512-LQPKVXK8QrBBkL/zclE6YgSWn0I8ew5m0Lf+XL00IwMhlotqRLlzHV+BRrljVQIc+NohUAuQP7mg4HQwrx5Xbg==}
+    dev: false
 
   /typescript/4.6.4:
     resolution: {integrity: sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==}
