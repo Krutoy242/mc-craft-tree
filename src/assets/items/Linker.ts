@@ -28,7 +28,9 @@ export function pickItems(items: Item[], recipes: Recipe[]): Item[] {
     if (mainRecipeIndex === undefined)
       return
 
-    item.mainRecipe = recipes[mainRecipeIndex]
+    const mainRecipe = recipes[mainRecipeIndex] as Recipe
+    const mainAmount = mainRecipe?.outputs.find(s => s.it.matchedBy().includes(item))?.amount
+    item.setMainRecipe(mainRecipe, mainAmount)
   })
 
   const pickedPile = solve(targetItem).getMerged().toArray()

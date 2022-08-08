@@ -1,11 +1,23 @@
 import type { Link } from './Link'
 import type { Recipe } from './Recipe'
 import type { BaseItem } from 'E:/dev/mc-gatherer/src/api'
+import { getVolume } from 'E:/dev/mc-gatherer/src/api'
 
 export interface Item extends BaseItem {}
 export class Item {
   /** How many items you need to craft */
-  usability = 0
+  private _usability = 0
+  usability_s = '0?'
+
+  public get usability() {
+    return this._usability
+  }
+
+  public set usability(value) {
+    const [volume, units] = getVolume(this)
+    this._usability = value / volume
+    this.usability_s = `${this._usability}${units}`
+  }
 
   /** How many times used as catalyst */
   popularity = 0
@@ -17,7 +29,21 @@ export class Item {
   outputsAmount = 0
 
   recipes: Set<Recipe> | undefined
-  mainRecipe: Recipe | undefined
+
+  private _mainRecipe: Recipe | undefined
+  public get mainRecipe(): Recipe | undefined {
+    return this._mainRecipe
+  }
+
+  private _mainRecipeAmount: number | undefined
+  public get mainRecipeAmount(): number | undefined {
+    return this._mainRecipeAmount
+  }
+
+  setMainRecipe(recipe: Recipe, amount?: number) {
+    this._mainRecipe = recipe
+    this._mainRecipeAmount = amount
+  }
 
   mainInputs = new Set<Link<Item>>()
   mainOutputs = new Set<Link<Item>>()
