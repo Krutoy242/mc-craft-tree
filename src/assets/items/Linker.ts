@@ -10,6 +10,7 @@ export function pickItems(items: Item[], recipes: Recipe[]): Item[] {
 
   // Purge old values on ALL items
   items.forEach((item) => {
+    item.usedInRecipes.clear()
     item.outputsAmount = 0
     item.popularity = 0
     item.usability = 0
@@ -70,6 +71,7 @@ export function pickItems(items: Item[], recipes: Recipe[]): Item[] {
 
     rec.inputs?.forEach((stack) => {
       stack.it.matchedBy().forEach((item) => {
+        item.usedInRecipes.add(rec)
         item.outputsAmount++
       })
     })

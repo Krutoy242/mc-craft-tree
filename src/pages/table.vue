@@ -3,7 +3,6 @@ import { FilterMatchMode, FilterOperator } from 'primevue/api'
 import { copy } from 'copy-anything'
 import { capitalize } from 'lodash'
 import usePileStore from '~/stores/pile'
-import { capitalizeFirstLetter } from '~/assets/lib/utils'
 import type { Item } from '~/assets/items/Item'
 
 const pile = usePileStore()
@@ -26,8 +25,6 @@ const filters1 = ref(copy(filtersOpts))
 const clearFilter1 = () => {
   filters1.value = copy(filtersOpts)
 }
-
-const loading1 = ref(false)
 
 interface ColumnOpts {
   field: keyof Item
@@ -53,9 +50,9 @@ regColumn({ field: 'cost' })
 regColumn({ field: 'processing' })
 regColumn({ field: 'usability' })
 regColumn({ field: 'popularity', is: 'GearedNumber' })
-regColumn({ field: 'inputsAmount', header: 'Inputs', is: 'Hedgehog' })
-regColumn({ field: 'outputsAmount', header: 'Outputs', is: 'Hedgehog', get: (_, v) => -v })
-regColumn({ field: 'steps', is: 'EmoteNumber' })
+// regColumn({ field: 'inputsAmount', header: 'Inputs', is: 'Hedgehog' })
+// regColumn({ field: 'outputsAmount', header: 'Outputs', is: 'Hedgehog', get: (_, v) => -v })
+// regColumn({ field: 'steps', is: 'EmoteNumber' })
 
 let selectedColumns = $ref(columns)
 
@@ -68,10 +65,11 @@ const onToggle = (val: typeof columns) => {
   <!-- sort-mode="multiple" -->
   <DataTable
     v-model:filters="filters1"
+    class="p-datatable-sm"
     filter-display="menu"
     :global-filter-fields="['display']"
     removable-sort
-    :loading="loading1"
+    :loading="!pickedItems?.length"
     data-key="id"
 
     state-storage="local"
@@ -87,8 +85,6 @@ const onToggle = (val: typeof columns) => {
     responsive-layout="scroll"
 
     style="width: 100%;"
-
-    @row-click="(e) => selectRecipes([e.data.mainRecipe])"
   >
     <template #header>
       <div class="flex justify-content-between">
@@ -130,15 +126,53 @@ const onToggle = (val: typeof columns) => {
       v-for="(col, index) of selectedColumns"
       :key="`${col.field}_${index}`"
       :field="col.field"
-      :header="col.header ?? capitalizeFirstLetter(col.field ?? 'unknown')"
+      :header="col.header"
       :sortable="true"
     >
       <template #body="{ data, field }">
         <BigNumber v-if="col.is === 'BigNumber'" :number="col.get(data, data[field])" />
-        <EmoteNumber v-if="col.is === 'EmoteNumber'" :number="col.get(data, data[field])" />
-        <GearedNumber v-if="col.is === 'GearedNumber'" :value="col.get(data, data[field])" />
-        <Hedgehog v-if="col.is === 'Hedgehog'" :value="col.get(data, data[field])" />
+        <EmoteNumber v-else-if="col.is === 'EmoteNumber'" :number="col.get(data, data[field])" />
+        <GearedNumber v-else-if="col.is === 'GearedNumber'" :value="col.get(data, data[field])" />
+        <Hedgehog v-else-if="col.is === 'Hedgehog'" :value="col.get(data, data[field])" />
+      </template>
+    </Column>
+
+    <Column field="inputsAmount" header="Inputs" :sortable="true">
+      <template #body="{ data }">
+        <div class="flex justify-content-center">
+          <Button
+            class="p-button-raised p-button-text p-button-success px-4 py-2 m-0"
+            @click="(e) => selectRecipes([data.mainRecipe])"
+          >
+            <Hedgehog :value="data.inputsAmount" />
+          </Button>
+        </div>
+      </template>
+    </Column>
+
+    <Column field="outputsAmount" header="Outputs" :sortable="true">
+      <template #body="{ data }">
+        <div class="flex justify-content-center">
+          <Button
+            class="p-button-raised p-button-text p-button-info px-4 py-2 m-0"
+            @click="(e) => selectRecipes([...data.usedInRecipes])"
+          >
+            <Hedgehog :value="-data.outputsAmount" />
+          </Button>
+        </div>
+      </template>
+    </Column>
+
+    <Column field="steps" header="Steps" :sortable="true">
+      <template #body="{ data }">
+        <EmoteNumber :number="data.steps" />
       </template>
     </Column>
   </DataTable>
 </template>
+
+<style>
+.p-datatable .p-column-header-content {
+  justify-content: flex-end
+}
+</style>

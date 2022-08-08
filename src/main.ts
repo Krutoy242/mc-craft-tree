@@ -14,7 +14,7 @@ import '@unocss/reset/tailwind.css'
 import './styles/main.css'
 import 'uno.css'
 
-import 'primevue/resources/themes/bootstrap4-dark-blue/theme.css'
+import 'primevue/resources/themes/arya-blue/theme.css'
 import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'

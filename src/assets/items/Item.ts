@@ -28,6 +28,8 @@ export class Item {
   /** How many items used this one as input */
   outputsAmount = 0
 
+  usedInRecipes = new Set<Recipe>()
+
   recipes: Set<Recipe> | undefined
 
   private _mainRecipe: Recipe | undefined
