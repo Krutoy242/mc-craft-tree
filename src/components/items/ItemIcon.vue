@@ -4,9 +4,8 @@ defineProps<{ item: Item; amount?: number }>()
 </script>
 
 <template>
-  <div class="text-xs relative">
+  <div v-tooltip="item.display" class="text-xs relative">
     <img
-      v-tooltip="item.display"
       :src="item.href"
     >
     <div
