@@ -1,9 +1,10 @@
 import * as d3 from 'd3'
 import type { D3ZoomEvent } from 'd3'
-import type { Item } from '../items/Item'
 import type { Link } from '../items/Link'
+import type { Item } from '../items/Item'
 
 export interface NodeDatum extends d3.SimulationNodeDatum, Item {
+
   isGhost?: boolean
   d3node?: d3.Selection<d3.BaseType, unknown, null, undefined>
 }
@@ -30,7 +31,7 @@ export interface GraphCallbacks {
 }
 
 export function makeGraph(
-  items: Item[],
+  items: NodeDatum[],
   svg: SVGSelection,
   cb: GraphCallbacks,
 ) {
@@ -47,7 +48,7 @@ export function makeGraph(
   const vizWidth = svg.node()?.getBoundingClientRect().width ?? 400
   const vizHeight = svg.node()?.getBoundingClientRect().height ?? 200
 
-  const getImportancy = (field: keyof Item) => {
+  const getImportancy = (field: keyof NodeDatum) => {
     const r = items.map(i => i[field] as number)
     const min = Math.min(...r)
     const max = Math.max(1, ...r)
@@ -84,7 +85,7 @@ export function makeGraph(
         .style('cursor', d => (d.isGhost ? null : 'pointer'))
         .attr('opacity', d => (d.isGhost ? 0.1 : null))
         .call(s => s.append('circle'))
-        .call(s => s.append('svg').append('image')),
+        .call(s => s/* .append('svg') */.append('image')),
     )
   }
 
@@ -103,13 +104,13 @@ export function makeGraph(
       )
 
     d3Selection
-      .select('svg')
-      .attr('height', d => fSize(d) * 2 * 0.9)
-      .attr('width', d => fSize(d) * 2 * 0.9)
+      // .select('svg')
+      .select('image')
       .attr('x', d => -fSize(d) * 0.9)
       .attr('y', d => -fSize(d) * 0.9)
       // .attr('viewBox', d => d.viewBox ?? null)
-      .select('image')
+      .attr('height', d => fSize(d) * 2 * 0.9)
+      .attr('width', d => fSize(d) * 2 * 0.9)
       .attr('xlink:href', d => d.href)
       .attr('image-rendering', 'pixelated')
 

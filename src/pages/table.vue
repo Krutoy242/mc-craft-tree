@@ -5,7 +5,8 @@ import usePileStore from '~/stores/pile'
 import { capitalizeFirstLetter } from '~/assets/lib/utils'
 import type { Item } from '~/assets/items/Item'
 
-const { pickedItems } = usePileStore()
+const pile = usePileStore()
+const { pickedItems, selectRecipes } = pile
 
 const filtersOpts = {
   'global'        : { value: undefined, matchMode: FilterMatchMode.CONTAINS },
@@ -71,6 +72,8 @@ const onToggle = (val: typeof columns.value) => {
     responsive-layout="scroll"
 
     style="width: 100%;"
+
+    @row-click="(e) => selectRecipes([e.data.mainRecipe])"
   >
     <!-- <template #header>
       <div class="flex justify-content-between">

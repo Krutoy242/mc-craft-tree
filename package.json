@@ -4,7 +4,6 @@
   "scripts": {
     "build": "vite build",
     "dev": "vite --port 3333 --open",
-    "lint": "eslint .",
     "typecheck": "vue-tsc --noEmit",
     "preview": "vite preview"
   },
@@ -47,14 +46,6 @@
   },
   "eslintConfig": {
     "extends": "@antfu",
-    "rules": {
-      "key-spacing": [
-        "error",
-        {
-          "align": "colon"
-        }
-      ],
-      "antfu/if-newline": 0
-    }
+    "rules": { "key-spacing": [ "error", { "align": "colon" } ], "antfu/if-newline": 0 }
   }
 }

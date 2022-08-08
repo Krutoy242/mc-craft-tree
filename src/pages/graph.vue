@@ -8,7 +8,7 @@ import usePileStore from '~/stores/pile'
 const pile = usePileStore()
 const { pickedItems } = storeToRefs(pile)
 
-let hoveredItem = $ref<Item>()
+let hoveredItem = $shallowRef<Item>()
 
 onMounted(updateGraph)
 watch(pickedItems, updateGraph)
@@ -22,6 +22,7 @@ function updateGraph() {
     pickedItems.value,
     {
       mouseover: d => hoveredItem = d,
+      click    : d => console.log(d.mainOutputs),
     },
   )
 }
