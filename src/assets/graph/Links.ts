@@ -86,6 +86,7 @@ class Highliter {
   private currDeph = 0
   private outputIndex = 0
   private all: LinkDatum[] = []
+  private instant = true
 
   constructor(private stylesCallbacks: StyleCallbacks) {}
 
@@ -94,8 +95,13 @@ class Highliter {
     this.reset()
     this.all = [...new Set([...d.mainInputs, ...d.mainOutputs])]
     this.outputIndex = d.mainInputs.size
-    this.all.forEach(d => this.stylesCallbacks.defaultLink(d))
-    this.timeoutID = setInterval(this.nextStep, 50)
+    if (this.instant) {
+      this.all.forEach(d => this.styleSingle(d))
+    }
+    else {
+      this.all.forEach(d => this.stylesCallbacks.defaultLink(d))
+      this.timeoutID = setInterval(this.nextStep, 5)
+    }
   }
 
   /** Reset animation */
@@ -113,10 +119,13 @@ class Highliter {
       return
     }
 
+    this.styleSingle(currLink)
+  }
+
+  private styleSingle(currLink: LinkDatum) {
     const towardsOutputs = Number(this.currDeph >= this.outputIndex) as 0 | 1
     const styleFnc = ([this.stylesCallbacks.inputLink, this.stylesCallbacks.outputLink] as const)[towardsOutputs]
     styleFnc(currLink, this.currDeph)
-
     this.currDeph++
   }
 }

@@ -5,7 +5,7 @@ defineProps<{ item: Item }>()
 </script>
 
 <template>
-  <div class="flex">
+  <div class="flex overflow-hidden" style="max-width: 18rem;">
     <ItemIcon :item="item" class="flex-none flex m-2" />
     <div>
       <MCFont :value="item.display" style="white-space: nowrap; margin-right: 3rem;" />

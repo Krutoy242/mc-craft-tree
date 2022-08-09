@@ -82,7 +82,7 @@ export function makeGraphTree(
     .on('tick', ticked)
 
   function highlitedLink(l: LinkDatum, deph: number) {
-    l.d3node?.attr('stroke-width', (fStroke(l) * 3) / deph + 1)
+    l.d3node?.attr('stroke-width', (fStroke(l) * 3) / deph + 3)
   }
   const styleCallbacks: StyleCallbacks = {
     defaultLink: (l: LinkDatum) => {

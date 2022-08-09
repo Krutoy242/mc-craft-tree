@@ -45,7 +45,7 @@ function regColumn(opts: Partial<ColumnOpts>) {
   })
 }
 
-regColumn({ field: 'complexity' })
+// regColumn({ field: 'complexity' })
 regColumn({ field: 'cost' })
 regColumn({ field: 'processing' })
 regColumn({ field: 'usability' })
@@ -115,10 +115,16 @@ const onToggle = (val: typeof columns) => {
 
     <Column field="display" header="Name" style="min-width:12rem" :sortable="true">
       <template #body="{ data }">
-        <Item :item="data" />
+        <Item :item="data" class="shadow-3" />
       </template>
       <template #filter="{ filterModel }">
         <InputText v-model="filterModel.value" type="text" class="p-column-filter" placeholder="Search by name" />
+      </template>
+    </Column>
+
+    <Column field="complexity" header="Complexity" :sortable="true">
+      <template #body="{ data }">
+        <BigNumber :number="data.complexity" class="hard-shadow px-1 border-round" />
       </template>
     </Column>
 
@@ -174,5 +180,13 @@ const onToggle = (val: typeof columns) => {
 <style>
 .p-datatable .p-column-header-content {
   justify-content: flex-end
+}
+
+td:nth-child(2) {
+  border-width: 0 1px 1px 1px!important;
+}
+
+.hard-shadow {
+  box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.16), 0px 3px 4px rgba(0, 0, 0, 0.2), 0px 1px 4px -1px rgba(0, 0, 0, 0.2);
 }
 </style>

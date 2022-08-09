@@ -57,7 +57,7 @@ export function makeGraph(
   const importancyComp = getImportancy('complexity')
   const importancyUsab = getImportancy('usability')
 
-  const fNonlinear = (x: number) => Math.pow(x, 0.25)
+  const fNonlinear = (x: number) => Math.pow(x, 0.5)
   const fStroke = (c: LinkDatum) => fNonlinear(fNonlinear(c.weight))
   const fComp = (c: NodeDatum) => fNonlinear(importancyComp(c.complexity))
   const fUsab = (c: NodeDatum) => fNonlinear(importancyUsab(c.usability))
