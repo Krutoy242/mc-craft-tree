@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import type { Ref } from '@vue/reactivity'
 import { storeToRefs } from 'pinia'
+import type { Recipe } from './assets/items/Recipe'
 import usePileStore from '~/stores/pile'
 
 const pile = usePileStore()
-const { selectedRecipes } = storeToRefs(pile)
+const selectedRecipes = storeToRefs(pile).selectedRecipes as Ref<Recipe[]>
 
 const tabs = ref([
   {

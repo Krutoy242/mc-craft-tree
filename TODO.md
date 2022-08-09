@@ -1,12 +1,10 @@
-1. [x] Show table of items
-2. [x] Add icons to items in table
-3. [ ] Restore value formatting of table
-4. [ ] Add sorting and filtering to table
-5. [ ] Load table dynamically with Pinia
-6. [ ] Add recipes to store
+## Restore features:
 
-![Full item info](https://i.imgur.com/wqP6XNr.png)
+- [ ] Graph: Clicking on item shows subset
+- [ ] Graph: On subset view show input/output animation https://imgur.com/qxaLlUR
+
+## New features
+
+- [ ] Add sorting and filtering to table (for each row)
 
 ![Full view on table](https://i.imgur.com/jmx0fO1.png)
-
-![History tab](https://i.imgur.com/Y3fzK71.png)
