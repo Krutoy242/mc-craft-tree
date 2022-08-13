@@ -1,0 +1,3 @@
+[submodule "mc-gatherer"]
+	path = mc-gatherer
+	url = https://github.com/Krutoy242/node-mc-gatherer.git

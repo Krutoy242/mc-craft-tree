@@ -1,9 +1,9 @@
-import type { BaseItem } from 'mc-gatherer/build/main/api'
 import { getVolume } from 'mc-gatherer/build/main/api'
+import type { BaseItem, Solvable } from 'mc-gatherer/build/main/api'
 import type { Link } from './Link'
 import type { Recipe } from './Recipe'
 
-export interface Item extends BaseItem {}
+export interface Item extends Omit<BaseItem, keyof Solvable<any>>, Solvable<Item> {}
 export class Item {
   /** How many items you need to craft */
   private _usability = 0

@@ -1,17 +1,14 @@
-import type { BaseRecipe, Stack } from 'mc-gatherer/build/main/api'
+import type { BaseRecipe, SolvableRecipe } from 'mc-gatherer/build/main/api'
 import type { Item } from './Item'
 import type { IngredientStack } from './Stack'
 
-export interface Recipe extends BaseRecipe {}
+export interface Recipe extends BaseRecipe, SolvableRecipe<Item> {}
 export class Recipe {
-  catalystsDef: Stack<Item>[] | undefined
-  inputsDef: Stack<Item>[] | undefined
-
   constructor(
     base: BaseRecipe,
-    public outputs: IngredientStack[],
-    public inputs?: IngredientStack[],
-    public catalysts?: IngredientStack[],
+    public readonly outputs: IngredientStack[],
+    public readonly inputs?: IngredientStack[],
+    public readonly catalysts?: IngredientStack[],
   ) {
     Object.assign(this, base)
   }
