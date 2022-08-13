@@ -57,6 +57,20 @@ export class Item {
     this.href = getImagePath(this)
     return this
   }
+
+  // Purge all calculated values
+  clear() {
+    this._usability = 0
+    this.usability_s = '0?'
+    this.popularity = 0
+    this.inputsAmount = 0
+    this.outputsAmount = 0
+    this.usedInRecipes.clear()
+    this.recipes = undefined
+    this._mainRecipeAmount = undefined
+    this.mainInputs.clear()
+    this.mainOutputs.clear()
+  }
 }
 
 const imagePath = 'https://github.com/Krutoy242/mc-icons/raw/master/i/'

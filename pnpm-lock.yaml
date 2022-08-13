@@ -16,7 +16,7 @@ specifiers:
   d3: ^7.4.4
   d3-format: ^3.1.0
   eslint: ^8.15.0
-  mc-gatherer: ^1.3.0
+  mc-gatherer: ^1.3.1
   numeral: ^2.0.6
   pinia: ^2.0.14
   pnpm: ^7.0.1
@@ -42,7 +42,7 @@ dependencies:
   csv-parse: 5.1.0
   d3: 7.4.4
   d3-format: 3.1.0
-  mc-gatherer: 1.3.0
+  mc-gatherer: 1.3.1
   numeral: 2.0.6
   pinia: 2.0.14_ytvqwwdyss532bvoq2clv4ed5m
   primeflex: 3.2.1
@@ -4003,8 +4003,8 @@ packages:
       semver: 6.3.0
     dev: false
 
-  /mc-gatherer/1.3.0:
-    resolution: {integrity: sha512-5+U1smwn0YrZ7t2tvTMc25yjZ2jIYOT4Oo17iT8L50HS476HkKKPrHLnb0xbY9JKvpQ+JZIsWpw66jh27OECHw==}
+  /mc-gatherer/1.3.1:
+    resolution: {integrity: sha512-UjmT1t6s0EuQh0r8RDlcDcHWR7g9ffl4M3rznmsbobi6TOSercsIGe5b/dL4GBPqrBKzv5xtSGIglF+7vXWpcw==}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:

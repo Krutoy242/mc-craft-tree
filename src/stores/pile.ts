@@ -19,6 +19,9 @@ const usePileStore = defineStore('pile', () => {
   let oreDict = $shallowRef<Record<string, string[]>>()
   let pickedItems = $shallowRef<Item[]>()
   let selectedRecipes = $shallowRef<Recipe[]>([])
+  let allRecipes = $shallowRef<Recipe[]>()
+  let targetId = $shallowRef('storagedrawers:upgrade_creative:1')
+  let targetItem = $shallowRef<Item>()
 
   function init() {
     if (!oreDict) {
@@ -42,9 +45,14 @@ const usePileStore = defineStore('pile', () => {
     }
   }
 
-  watch([$$(oreDict), $$(baseItems)], () => {
-    if (!oreDict || !baseItems) return
+  function watchAll(array: any[], cb: () => void) {
+    watch(array, (newValues) => {
+      if (!newValues.every(Boolean)) return
+      cb()
+    })
+  }
 
+  watchAll([$$(oreDict), $$(baseItems)], () => {
     tree = new Tree(() => new Item())
     tree.addOreDict(oreDict)
 
@@ -62,8 +70,7 @@ const usePileStore = defineStore('pile', () => {
     })
   })
 
-  watch([$$(allItems), $$(baseRecipes)], () => {
-    if (!allItems || !baseRecipes) return
+  watchAll([$$(allItems), $$(baseRecipes)], () => {
     Promise.all(baseRecipes.map(processRecipe))
       .catch((err) => { throw err })
       .then((recipes: Recipe[]) => {
@@ -71,8 +78,7 @@ const usePileStore = defineStore('pile', () => {
           const p = tree.matchedBy(ingr)
           while (!p.next().done) {}// eslint-disable-line no-empty
         }
-
-        pickedItems = pickItems(allItems, recipes)
+        allRecipes = recipes
       })
   })
 
@@ -88,11 +94,30 @@ const usePileStore = defineStore('pile', () => {
     selectedRecipes = recipes
   }
 
+  function pileTo(item: string | Item) {
+    if (typeof item === 'string')
+      targetId = item
+    else targetItem = item
+  }
+
+  watchAll([$$(targetId), $$(allItems)], () => {
+    const found = allItems.find(it => it.id === targetId)
+    if (!found) throw new Error('Cannot find target item')
+    targetItem = found
+  })
+
+  watchAll([$$(targetItem), $$(allItems), $$(allRecipes)], () => {
+    pickedItems = pickItems(targetItem, allItems, allRecipes)
+  })
+
   return {
     init,
     selectRecipes,
     pickedItems    : $$(pickedItems),
     selectedRecipes: $$(selectedRecipes),
+    targetId       : $$(targetId),
+    targetItem     : $$(targetItem),
+    pileTo,
   }
 })
 export default usePileStore

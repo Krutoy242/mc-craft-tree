@@ -2,22 +2,13 @@ import { solve } from 'mc-gatherer/build/main/api'
 import type { Item } from './Item'
 import type { Recipe } from './Recipe'
 
-export function pickItems(items: Item[], recipes: Recipe[]): Item[] {
-  const targetItem = items.find(it => it.id === 'storagedrawers:upgrade_creative:1')
-
-  if (!targetItem)
-    throw new Error('Cannot find target item')
-
+export function pickItems(targetItem: Item, items: Item[], recipes: Recipe[]): Item[] {
   // Purge old values on ALL items
   items.forEach((item) => {
-    item.usedInRecipes.clear()
-    item.outputsAmount = 0
-    item.popularity = 0
-    item.usability = 0
+    item.clear()
 
     // Convert indexes into recipes
-    if (!item.recipeIndexes.length)
-      return
+    if (!item.recipeIndexes.length) return
 
     item.recipes = new Set(
       item.recipeIndexes
@@ -26,12 +17,15 @@ export function pickItems(items: Item[], recipes: Recipe[]): Item[] {
     )
 
     const mainRecipeIndex = item.recipeIndexes[0]
-    if (mainRecipeIndex === undefined)
-      return
+    if (mainRecipeIndex === undefined) return
 
-    const mainRecipe = recipes[mainRecipeIndex] as Recipe
-    const mainAmount = mainRecipe?.outputs.find(s => s.it.matchedBy().includes(item))?.amount
-    item.setMainRecipe(mainRecipe, mainAmount)
+    const mainRecipe = recipes[mainRecipeIndex]
+    if (!mainRecipe) throw new Error(`Recipe index ${mainRecipeIndex} cant be found. Seems like recipe list not malfunctioned.`)
+
+    const stack = mainRecipe.outputs.find(s => s.it.matchedBy().includes(item))
+    if (!stack) throw new Error(`Recipe for item ${item.id} exists, but without item itself in outputs. Source: ${mainRecipe.source}`)
+
+    item.setMainRecipe(mainRecipe, stack.amount)
   })
 
   const pickedPile = solve(targetItem).getMerged().toArray()

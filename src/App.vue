@@ -36,8 +36,14 @@ watch(selectedRecipes, () => {
 
 <template>
   <div class="flex flex-column h-full">
-    <div flex>
+    <div flex class="flex justify-content-between flex-wrap w-full surface-50">
       <TabMenu :model="tabs" />
+      <div class="flex shadow-6 align-items-center">
+        <span class="w-min text-right text-primary">
+          Target:
+        </span>
+        <Item v-if="pile.targetItem" :item="pile.targetItem" />
+      </div>
     </div>
 
     <router-view class="h-full" />

@@ -22,7 +22,7 @@ function updateGraph() {
     pickedItems.value,
     {
       mouseover: d => hoveredItem = d,
-      click    : d => console.log(d.mainOutputs),
+      click    : d => pile.pileTo(d),
     },
   )
 }
