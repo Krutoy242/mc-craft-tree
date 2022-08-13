@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import { getHue } from '~/assets/lib/hue'
 
-const props = defineProps({
-  value: { type: String, required: true },
+const props = defineProps<{ value: string }>()
+
+const base = computed(() => {
+  const [source, entry, meta] = props.value
+    .split(':') as [string, string, string]
+  return { source, entry, meta }
 })
 
-// const [source, entry, ...rest] = props.value
-const [source, entry, meta] = props.value
-  .split(':')
-  .map(s => ref<string>(s))
-
-const hue = computed(() => getHue(source.value))
-// const tail = computed(() => rest.map(r => r.value).join(':'))
+const hue = computed(() => getHue(base.value.source))
 </script>
 
 <template>
@@ -20,11 +18,11 @@ const hue = computed(() => getHue(source.value))
     style="font-size: 75%;"
   >
     <span :style="{ color: `hsl(${hue}, 60%, 40%)` }">
-      {{ source }}
+      {{ base.source }}
     </span>:<span
       class="text-color-secondary"
-    >{{ entry }}</span><div v-if="meta && meta !== '0'" class="inline-block">
-      :<span class="text-primary-800">{{ meta }}</span>
+    >{{ base.entry }}</span><div v-if="base.meta && base.meta !== '0'" class="inline-block">
+      :<span class="text-primary-800">{{ base.meta }}</span>
     </div>
     <!-- <span v-if="rest.length">:{{ tail }}</span> -->
   </div>
