@@ -1,6 +1,6 @@
+import type { BaseRecipe, Stack } from 'mc-gatherer/build/main/api'
 import type { Item } from './Item'
 import type { IngredientStack } from './Stack'
-import type { BaseRecipe, Stack } from 'E:/dev/mc-gatherer/src/api'
 
 export interface Recipe extends BaseRecipe {}
 export class Recipe {

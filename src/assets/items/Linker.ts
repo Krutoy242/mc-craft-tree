@@ -1,6 +1,6 @@
+import { solve } from 'mc-gatherer/build/main/api'
 import type { Item } from './Item'
 import type { Recipe } from './Recipe'
-import { solve } from 'E:/dev/mc-gatherer/src/api'
 
 export function pickItems(items: Item[], recipes: Recipe[]): Item[] {
   const targetItem = items.find(it => it.id === 'storagedrawers:upgrade_creative:1')

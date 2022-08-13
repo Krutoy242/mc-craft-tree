@@ -1,11 +1,11 @@
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import type { BaseItem, CsvRecipe } from 'mc-gatherer/build/main/api'
+import { IngredientStore, Stack, Tree } from 'mc-gatherer/build/main/api'
+import loadDataCSV from 'mc-gatherer/build/main/api/csv-browser'
 import { Item } from '~/assets/items/Item'
 import { pickItems } from '~/assets/items/Linker'
 import { Recipe } from '~/assets/items/Recipe'
 import type { IngredientStack } from '~/assets/items/Stack'
-import type { BaseItem, CsvRecipe } from 'E:/dev/mc-gatherer/src/api'
-import { IngredientStore, Stack, Tree } from 'E:/dev/mc-gatherer/src/api'
-import loadDataCSV from 'E:/dev/mc-gatherer/src/api/csv-browser'
 
 // const sleep = (ms?: number) => new Promise(resolve => setTimeout(resolve, ms))
 

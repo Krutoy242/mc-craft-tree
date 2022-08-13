@@ -1,7 +1,7 @@
+import type { BaseItem } from 'mc-gatherer/build/main/api'
+import { getVolume } from 'mc-gatherer/build/main/api'
 import type { Link } from './Link'
 import type { Recipe } from './Recipe'
-import type { BaseItem } from 'E:/dev/mc-gatherer/src/api'
-import { getVolume } from 'E:/dev/mc-gatherer/src/api'
 
 export interface Item extends BaseItem {}
 export class Item {
@@ -54,13 +54,13 @@ export class Item {
 
   init(base: BaseItem) {
     Object.assign(this, base)
-    this.href = getImagePath(this.id)
+    this.href = getImagePath(this)
     return this
   }
 }
 
-const imagePath = 'https://github.com/Krutoy242/E2E-E-icons/raw/main/x32'
+const imagePath = 'https://github.com/Krutoy242/mc-icons/raw/master/i/'
 
-function getImagePath(id: string) {
-  return `${imagePath}/${id.split(':', 3).join('__')}.png`
+function getImagePath(item: Item) {
+  return `${imagePath}${item.imgsrc}.png`
 }

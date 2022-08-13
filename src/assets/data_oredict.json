@@ -1016,10 +1016,6 @@
     "chisel:wool_yellow:1",
     "animania:wool:*"
   ],
-  "boneWither": [
-    "tconstruct:materials:17",
-    "iceandfire:witherbone:0"
-  ],
   "boneWithered": [
     "tconstruct:materials:17",
     "iceandfire:witherbone:0"
@@ -2529,17 +2525,17 @@
     "nuclearcraft:plutonium:12",
     "nuclearcraft:plutonium:13"
   ],
-  "ingotSilicon": [
-    "appliedenergistics2:material:5",
-    "libvulpes:productingot:3"
-  ],
-  "ingotSilver": [
+  "ingotPsioMetal": [
     "thermalfoundation:material:130",
     "immersiveengineering:metal:3",
     "ic2:ingot:4",
     "nuclearcraft:ingot:13",
     "exnihilocreatio:item_ore_silver:3",
     "iceandfire:silver_ingot:0"
+  ],
+  "ingotSilicon": [
+    "appliedenergistics2:material:5",
+    "libvulpes:productingot:3"
   ],
   "ingotSteel": [
     "thermalfoundation:material:160",
@@ -2571,12 +2567,6 @@
   "ingotUranium238": [
     "nuclearcraft:uranium:8",
     "nuclearcraft:uranium:9"
-  ],
-  "itemHeart": [
-    "bhc:blue_heart:0",
-    "bhc:green_heart:0",
-    "bhc:red_heart:0",
-    "bhc:yellow_heart:0"
   ],
   "itemIlluminatedPanel": [
     "appliedenergistics2:part:160",
