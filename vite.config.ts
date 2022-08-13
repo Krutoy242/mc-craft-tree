@@ -10,6 +10,7 @@ import {
 } from 'unplugin-vue-components/resolvers'
 
 export default defineConfig({
+  base   : '/tree/',
   resolve: {
     alias: {
       '~/': `${path.resolve(__dirname, 'src')}/`,
