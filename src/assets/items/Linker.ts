@@ -22,7 +22,7 @@ export function pickItems(targetItem: Item, items: Item[], recipes: Recipe[]): I
     const mainRecipe = recipes[mainRecipeIndex]
     if (!mainRecipe) throw new Error(`Recipe index ${mainRecipeIndex} cant be found. Seems like recipe list not malfunctioned.`)
 
-    const stack = mainRecipe.outputs.find(s => s.it.matchedBy().includes(item))
+    const stack = mainRecipe.outputs.find(s => (s.it.matchedBy() as Item[]).includes(item))
     if (!stack) throw new Error(`Recipe for item ${item.id} exists, but without item itself in outputs. Source: ${mainRecipe.source}`)
 
     item.setMainRecipe(mainRecipe, stack.amount)
@@ -34,11 +34,15 @@ export function pickItems(targetItem: Item, items: Item[], recipes: Recipe[]): I
       item.inputsAmount = item.mainRecipe?.inputs?.length ?? 0
 
       // Add input links
-      item.mainRecipe?.inputsDef?.forEach(stack => item.mainInputs.add({
-        weight: stack.amount ?? 1,
-        source: stack.it,
-        target: item,
-      }))
+      item.mainRecipe?.inputsDef?.forEach((stack) => {
+        const link = {
+          weight: stack.amount ?? 1,
+          source: stack.it,
+          target: item,
+        }
+        item.mainInputs.add(link)
+        stack.it.mainOutputs.add(link)
+      })
 
       return item
     })
@@ -50,19 +54,6 @@ export function pickItems(targetItem: Item, items: Item[], recipes: Recipe[]): I
   )
 
   pickedRecipes.forEach((rec) => {
-    // Add output links
-    rec.outputs.forEach((out) => {
-      rec.inputsDef?.forEach(({ it: itemIn }) => {
-        out.it.matchedBy().forEach((itemOut) => {
-          itemIn.mainOutputs.add({
-            weight: out.amount ?? 1,
-            source: itemIn,
-            target: itemOut,
-          })
-        })
-      })
-    })
-
     rec.inputs?.forEach((stack) => {
       stack.it.matchedBy().forEach((item) => {
         item.usedInRecipes.add(rec)

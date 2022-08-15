@@ -81,28 +81,25 @@ export function makeGraphTree(
     )
     .on('tick', ticked)
 
-  function highlitedLink(l: LinkDatum, deph: number) {
-    l.d3node?.attr('stroke-width', (fStroke(l) * 3) / deph + 3)
+  function highlitedLink(l: LinkDatum, deph: number, weight: number) {
+    l.d3node?.attr('stroke-width', (fStroke(weight) * 3) / (deph + 1) + 1)
   }
   const styleCallbacks: StyleCallbacks = {
     defaultLink: (l: LinkDatum) => {
       l.d3node?.attr('stroke-width', 1).attr('stroke', '#555')
     },
     inputLink: (l: LinkDatum, deph: number) => {
-      highlitedLink(l, deph)
+      highlitedLink(l, deph, l.weight)
       l.d3node?.attr('stroke', '#7f7')
     },
     outputLink: (l: LinkDatum, deph: number) => {
-      highlitedLink(l, deph)
+      highlitedLink(l, deph, 1 / l.weight)
       l.d3node?.attr('stroke', '#38f')
     },
   }
 
-  links = opts.showLinks
-    ? opts.showCurvedLinks
-      ? new CurvedLinks(linkContainer, styleCallbacks, graphLinks)
-      : new Links(linkContainer, styleCallbacks, graphLinks)
-    : new SingleLinks(linkContainer, styleCallbacks)
+  const LinkType = opts.showLinks ? opts.showCurvedLinks ? CurvedLinks : Links : SingleLinks
+  links = new LinkType(linkContainer, styleCallbacks, graphLinks)
 
   function ticked() {
     links?.ticked()

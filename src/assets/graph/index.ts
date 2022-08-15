@@ -58,7 +58,7 @@ export function makeGraph(
   const importancyUsab = getImportancy('usability')
 
   const fNonlinear = (x: number) => Math.pow(x, 0.5)
-  const fStroke = (c: LinkDatum) => fNonlinear(fNonlinear(c.weight))
+  const fStroke = (x: number) => fNonlinear(fNonlinear(x))
   const fComp = (c: NodeDatum) => fNonlinear(importancyComp(c.complexity))
   const fUsab = (c: NodeDatum) => fNonlinear(importancyUsab(c.usability))
   const fX = (d: NodeDatum) =>
@@ -94,7 +94,7 @@ export function makeGraph(
       .select('circle')
       .attr('r', fSize)
       .attr('stroke-width', d => fUsab(d) * 10 + 1)
-      .attr('stroke', '#fff')
+      .attr('stroke', d => d.popularity > 0 ? '#f90' : '#fff')
       .attr('fill', d =>
         d.inputsAmount === 0
           ? 'rgba(67, 113, 165, 0.3)'
