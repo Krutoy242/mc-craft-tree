@@ -3,11 +3,11 @@ defineProps<{ value: number }>()
 </script>
 
 <template>
-  <div class="relative flex justify-content-center">
-    <span class="outlined-2px z-1">
+  <div class="relative flex justify-content-center" style="height: 1.5rem;">
+    <div v-if="value > 0" class="absolute gear i-mdi-cog" />
+    <span class="absolute outlined-2px">
       {{ value || '-' }}
     </span>
-    <div v-if="value > 0" class="absolute gear i-mdi-cog" />
   </div>
 </template>
 

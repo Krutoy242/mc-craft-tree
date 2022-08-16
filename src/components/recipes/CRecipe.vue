@@ -2,11 +2,11 @@
 import type { Item } from '~/assets/items/Item'
 import type { Recipe } from '~/assets/items/Recipe'
 
-const props = defineProps<{ recipe: Recipe }>()
+const props = defineProps<{ recipe?: Recipe }>()
 
 const recipeLists = computed(() => {
   const names = ['OUT', 'INP', 'CTL']
-  const { outputs, inputs, catalysts } = props.recipe
+  const { outputs, inputs, catalysts } = props.recipe ?? {}
 
   return [outputs, inputs, catalysts].map((o, i) => ({
     name  : names[i],
@@ -19,7 +19,7 @@ const recipeLists = computed(() => {
 </script>
 
 <template>
-  <div class="max-w-16rem">
+  <div v-if="recipe" class="max-w-16rem">
     <div
       v-for="(list, i) in recipeLists"
       :key="i"

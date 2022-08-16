@@ -6,7 +6,7 @@ defineProps<{ recipes: Recipe[] }>()
 
 <template>
   <div class="flex">
-    <Recipe
+    <CRecipe
       v-for="rec in recipes"
       :key="rec.index"
       :recipe="rec"

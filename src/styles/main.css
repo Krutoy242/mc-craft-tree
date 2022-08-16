@@ -14,3 +14,48 @@ html.dark {
   font-family: Consolas, Monaco, Lucida Console, Liberation Mono,
     DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
 }
+
+.val-complexity {
+  --un-text-opacity: 1;
+  color: rgba(244, 114, 182, var(--un-text-opacity));
+}
+
+.val-cost {
+  --un-text-opacity: 1;
+  color: rgba(34, 211, 238, var(--un-text-opacity));
+}
+
+.val-processing {
+  --un-text-opacity: 1;
+  color: rgba(250, 204, 21, var(--un-text-opacity));
+}
+
+.val-usability {
+  --un-text-opacity: 1;
+  color: hsla(110, 100%, 50%, 1);
+}
+
+.val-input {
+  --un-text-opacity: 1;
+  color: hsla(180, 100%, 50%, 1);
+}
+
+.val-output {
+  --un-text-opacity: 1;
+  color: hsla(240, 100%, 50%, 1);
+}
+
+.val-catalyst {
+  --un-text-opacity: 1;
+  color: hsla(300, 100%, 50%, 1);
+}
+
+.val-step {
+  --un-text-opacity: 1;
+  color: hsla(340, 100%, 50%, 1);
+}
+
+.val-recipe {
+  --un-text-opacity: 1;
+  color: hsla(154, 69%, 50%, 1);
+}

@@ -66,7 +66,7 @@ watch(selectedRecipes, () => {
       :modal="true"
       @hide="selectedRecipes = []"
     >
-      <Recipes v-if="isSelectedRecipes" :recipes="selectedRecipes" />
+      <Recipes :recipes="selectedRecipes" />
     </Dialog>
   </div>
 </template>

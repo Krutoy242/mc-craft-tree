@@ -122,8 +122,8 @@ const usePileStore = defineStore('pile', () => {
     pickedItems    : $$(pickedItems),
     selectedRecipes: $$(selectedRecipes),
     targetItem     : $$(targetItem),
-    allItems,
-    allRecipes,
+    allItems       : $$(allItems),
+    allRecipes     : $$(allRecipes),
     pileTo,
   }
 })
