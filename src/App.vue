@@ -38,12 +38,17 @@ watch(selectedRecipes, () => {
   <div class="flex flex-column h-full">
     <div flex class="flex justify-content-between flex-wrap w-full surface-50">
       <TabMenu :model="tabs" />
-      <div class="flex shadow-6 align-items-center">
-        <span class="w-min text-right text-primary">
-          Target:
-        </span>
-        <Item v-if="pile.targetItem" :item="pile.targetItem" />
-      </div>
+      <Button
+        class="p-button-raised p-button-text p-button-plain p-0 m-0"
+        @click="(e) => pile.resetTopItem()"
+      >
+        <div class="flex shadow-6 align-items-center">
+          <span class="w-min text-right text-primary">
+            Target:
+          </span>
+          <Item v-if="pile.targetItem" :item="pile.targetItem" />
+        </div>
+      </Button>
     </div>
 
     <router-view class="h-full" />

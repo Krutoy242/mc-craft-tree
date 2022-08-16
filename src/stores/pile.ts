@@ -2,6 +2,7 @@ import { acceptHMRUpdate, defineStore } from 'pinia'
 import type { BaseItem, CsvRecipe } from 'mc-gatherer/build/main/api'
 import { IngredientStore, Stack, Tree } from 'mc-gatherer/build/main/api'
 import loadDataCSV from 'mc-gatherer/build/main/api/csv-browser'
+import _ from 'lodash'
 import { Item } from '~/assets/items/Item'
 import { pickItems } from '~/assets/items/Linker'
 import { Recipe } from '~/assets/items/Recipe'
@@ -20,7 +21,6 @@ const usePileStore = defineStore('pile', () => {
   let pickedItems = $shallowRef<Item[]>()
   let selectedRecipes = $shallowRef<Recipe[]>([])
   let allRecipes = $shallowRef<Recipe[]>()
-  let targetId = $shallowRef('storagedrawers:upgrade_creative:1')
   let targetItem = $shallowRef<Item>()
 
   function init() {
@@ -94,29 +94,36 @@ const usePileStore = defineStore('pile', () => {
     selectedRecipes = recipes
   }
 
-  function pileTo(item: string | Item) {
-    if (typeof item === 'string')
-      targetId = item
-    else targetItem = item
+  function resetTopItem() {
+    pileTo('storagedrawers:upgrade_creative:1')
   }
 
-  watchAll([$$(targetId), $$(allItems)], () => {
-    const found = allItems.find(it => it.id === targetId)
-    if (!found) throw new Error('Cannot find target item')
-    targetItem = found
-  })
+  function pileTo(item: string | Item) {
+    if (typeof item === 'string') {
+      const found = allItems?.find(it => it.id === item) ?? _.maxBy(allItems, it => it.steps)
+      if (!found) throw new Error('Cannot find target item')
+      targetItem = found
+    }
+    else {
+      targetItem = item
+    }
+  }
 
   watchAll([$$(targetItem), $$(allItems), $$(allRecipes)], () => {
     pickedItems = pickItems(targetItem, allItems, allRecipes)
   })
 
+  watch(allItems, resetTopItem)
+
   return {
     init,
     selectRecipes,
+    resetTopItem,
     pickedItems    : $$(pickedItems),
     selectedRecipes: $$(selectedRecipes),
-    targetId       : $$(targetId),
     targetItem     : $$(targetItem),
+    allItems,
+    allRecipes,
     pileTo,
   }
 })

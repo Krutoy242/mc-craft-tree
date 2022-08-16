@@ -2,11 +2,14 @@
 import { FilterMatchMode, FilterOperator } from 'primevue/api'
 import { copy } from 'copy-anything'
 import { capitalize } from 'lodash'
+import { storeToRefs } from 'pinia'
+import type { Ref } from '@vue/reactivity'
 import usePileStore from '~/stores/pile'
 import type { Item } from '~/assets/items/Item'
 
 const pile = usePileStore()
-const { pickedItems, selectRecipes } = pile
+const { selectRecipes } = pile
+const pickedItems = storeToRefs(pile).pickedItems as Ref<Item[]>
 
 const filtersOpts = {
   global : { value: undefined, matchMode: FilterMatchMode.CONTAINS },
@@ -45,136 +48,156 @@ function regColumn(opts: Partial<ColumnOpts>) {
   })
 }
 
-// regColumn({ field: 'complexity' })
 regColumn({ field: 'cost' })
 regColumn({ field: 'processing' })
 regColumn({ field: 'usability' })
 regColumn({ field: 'popularity', is: 'GearedNumber' })
-// regColumn({ field: 'inputsAmount', header: 'Inputs', is: 'Hedgehog' })
-// regColumn({ field: 'outputsAmount', header: 'Outputs', is: 'Hedgehog', get: (_, v) => -v })
-// regColumn({ field: 'steps', is: 'EmoteNumber' })
 
 let selectedColumns = $ref(columns)
 
 const onToggle = (val: typeof columns) => {
   selectedColumns = columns.filter(col => val.includes(col))
 }
+
+/*
+ ██████╗ ██████╗ ███╗   ██╗████████╗███████╗██╗  ██╗████████╗    ███╗   ███╗███████╗███╗   ██╗██╗   ██╗
+██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔════╝╚██╗██╔╝╚══██╔══╝    ████╗ ████║██╔════╝████╗  ██║██║   ██║
+██║     ██║   ██║██╔██╗ ██║   ██║   █████╗   ╚███╔╝    ██║       ██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║
+██║     ██║   ██║██║╚██╗██║   ██║   ██╔══╝   ██╔██╗    ██║       ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║
+╚██████╗╚██████╔╝██║ ╚████║   ██║   ███████╗██╔╝ ██╗   ██║       ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝
+ ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═╝   ╚═╝       ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝
+*/
+
+const cm = ref()
+const selectedRow = $shallowRef<Item>()
+const onRowContextMenu = (event: any) => cm.value.show(event.originalEvent)
+const menuModel = ref([
+  { label: 'Build tree to', icon: 'pi pi-sort-amount-up-alt', command: () => pile.pileTo(selectedRow) },
+])
 </script>
 
 <template>
   <!-- sort-mode="multiple" -->
-  <DataTable
-    v-model:filters="filters1"
-    class="p-datatable-sm"
-    filter-display="menu"
-    :global-filter-fields="['display']"
-    removable-sort
-    :loading="!pickedItems?.length"
-    data-key="id"
+  <div>
+    <DataTable
+      v-model:filters="filters1"
+      v-model:contextMenuSelection="selectedRow"
+      class="p-datatable-sm"
+      filter-display="menu"
+      :global-filter-fields="['display']"
+      removable-sort
+      :loading="!pickedItems?.length"
 
-    state-storage="local"
-    state-key="dt-state-demo-local"
+      data-key="id"
+      context-menu
+      state-storage="local"
+      state-key="dt-state-demo-local"
 
-    :value="pickedItems"
-    :paginator="true"
-    paginator-template="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+      :value="pickedItems"
+      :paginator="true"
+      paginator-template="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
 
-    :rows="10"
-    :rows-per-page-options="[10, 20, 50]"
-    current-page-report-template="Showing {first} to {last} of {totalRecords}"
-    responsive-layout="scroll"
+      :rows="10"
+      :rows-per-page-options="[10, 20, 50]"
+      current-page-report-template="Showing {first} to {last} of {totalRecords}"
+      responsive-layout="scroll"
 
-    style="width: 100%;"
-  >
-    <template #header>
-      <div class="flex justify-content-between">
-        <span class="p-input-icon-left">
-          <i class="pi pi-search" />
-          <InputText v-model="filters1.global.value" placeholder="Keyword Search" />
-        </span>
-        <Button type="button" icon="pi pi-filter-slash" label="Clear" class="p-button-outlined" @click="clearFilter1()" />
-        <div style="text-align:left">
-          <MultiSelect
-            :model-value="selectedColumns"
-            :options="columns"
-            option-label="header"
-            placeholder="Select Columns"
-            @update:model-value="onToggle"
-          />
-        </div>
-      </div>
-    </template>
+      style="width: 100%;"
 
-    <template #empty>
-      No items found.
-    </template>
-
-    <template #loading>
-      Loading items data. Please wait.
-    </template>
-
-    <Column field="display" header="Name" style="min-width:12rem" :sortable="true">
-      <template #body="{ data }">
-        <Item :item="data" class="shadow-3" />
-      </template>
-      <template #filter="{ filterModel }">
-        <InputText v-model="filterModel.value" type="text" class="p-column-filter" placeholder="Search by name" />
-      </template>
-    </Column>
-
-    <Column field="complexity" header="Complexity" :sortable="true">
-      <template #body="{ data }">
-        <BigNumber :number="data.complexity" class="hard-shadow px-1 border-round" />
-      </template>
-    </Column>
-
-    <Column
-      v-for="(col, index) of selectedColumns"
-      :key="`${col.field}_${index}`"
-      :field="col.field"
-      :header="col.header"
-      :sortable="true"
+      @row-contextmenu="onRowContextMenu"
     >
-      <template #body="{ data, field }">
-        <BigNumber v-if="col.is === 'BigNumber'" :number="col.get(data, data[field])" />
-        <EmoteNumber v-else-if="col.is === 'EmoteNumber'" :number="col.get(data, data[field])" />
-        <GearedNumber v-else-if="col.is === 'GearedNumber'" :value="col.get(data, data[field])" />
-        <Hedgehog v-else-if="col.is === 'Hedgehog'" :value="col.get(data, data[field])" />
-      </template>
-    </Column>
-
-    <Column field="inputsAmount" header="Inputs" :sortable="true">
-      <template #body="{ data }">
-        <div class="flex justify-content-center">
-          <Button
-            class="p-button-raised p-button-text p-button-success px-4 py-2 m-0"
-            @click="(e) => selectRecipes([data.mainRecipe])"
-          >
-            <Hedgehog :value="data.inputsAmount" />
-          </Button>
+      <template #header>
+        <div class="flex justify-content-between">
+          <span class="p-input-icon-left">
+            <i class="pi pi-search" />
+            <InputText v-model="filters1.global.value" placeholder="Keyword Search" />
+          </span>
+          <Button type="button" icon="pi pi-filter-slash" label="Clear" class="p-button-outlined" @click="clearFilter1()" />
+          <div style="text-align:left">
+            <MultiSelect
+              :model-value="selectedColumns"
+              :options="columns"
+              option-label="header"
+              placeholder="Select Columns"
+              @update:model-value="onToggle"
+            />
+          </div>
         </div>
       </template>
-    </Column>
 
-    <Column field="outputsAmount" header="Outputs" :sortable="true">
-      <template #body="{ data }">
-        <div class="flex justify-content-center">
-          <Button
-            class="p-button-raised p-button-text p-button-info px-4 py-2 m-0"
-            @click="(e) => selectRecipes([...data.usedInRecipes])"
-          >
-            <Hedgehog :value="-data.outputsAmount" />
-          </Button>
-        </div>
+      <template #empty>
+        No items found.
       </template>
-    </Column>
 
-    <Column field="steps" header="Steps" :sortable="true">
-      <template #body="{ data }">
-        <EmoteNumber :number="data.steps" />
+      <template #loading>
+        Loading items data. Please wait.
       </template>
-    </Column>
-  </DataTable>
+
+      <Column field="display" header="Name" style="min-width:12rem" :sortable="true">
+        <template #body="{ data }">
+          <Item :item="data" class="shadow-3" />
+        </template>
+        <template #filter="{ filterModel }">
+          <InputText v-model="filterModel.value" type="text" class="p-column-filter" placeholder="Search by name" />
+        </template>
+      </Column>
+
+      <Column field="complexity" header="Complexity" :sortable="true">
+        <template #body="{ data }">
+          <BigNumber :number="data.complexity" class="hard-shadow px-1 border-round" />
+        </template>
+      </Column>
+
+      <Column
+        v-for="(col, index) of selectedColumns"
+        :key="`${col.field}_${index}`"
+        :field="col.field"
+        :header="col.header"
+        :sortable="true"
+      >
+        <template #body="{ data, field }">
+          <BigNumber v-if="col.is === 'BigNumber'" :number="col.get(data, data[field])" />
+          <EmoteNumber v-else-if="col.is === 'EmoteNumber'" :number="col.get(data, data[field])" />
+          <GearedNumber v-else-if="col.is === 'GearedNumber'" :value="col.get(data, data[field])" />
+          <Hedgehog v-else-if="col.is === 'Hedgehog'" :value="col.get(data, data[field])" />
+        </template>
+      </Column>
+
+      <Column field="inputsAmount" header="Inputs" :sortable="true">
+        <template #body="{ data }">
+          <div class="flex justify-content-center">
+            <Button
+              class="p-button-raised p-button-text p-button-success px-4 py-2 m-0"
+              @click="(e) => selectRecipes([data.mainRecipe])"
+            >
+              <Hedgehog :value="data.inputsAmount" />
+            </Button>
+          </div>
+        </template>
+      </Column>
+
+      <Column field="outputsAmount" header="Outputs" :sortable="true">
+        <template #body="{ data }">
+          <div class="flex justify-content-center">
+            <Button
+              class="p-button-raised p-button-text p-button-info px-4 py-2 m-0"
+              @click="(e) => selectRecipes([...data.usedInRecipes])"
+            >
+              <Hedgehog :value="-data.outputsAmount" />
+            </Button>
+          </div>
+        </template>
+      </Column>
+
+      <Column field="steps" header="Steps" :sortable="true">
+        <template #body="{ data }">
+          <EmoteNumber :number="data.steps" />
+        </template>
+      </Column>
+    </DataTable>
+
+    <ContextMenu ref="cm" :model="menuModel" />
+  </div>
 </template>
 
 <style>

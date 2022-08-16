@@ -16,7 +16,7 @@ specifiers:
   d3: ^7.4.4
   d3-format: ^3.1.0
   eslint: ^8.15.0
-  mc-gatherer: ^1.3.3
+  mc-gatherer: ^1.3.7
   numeral: ^2.0.6
   pinia: ^2.0.14
   pnpm: ^7.0.1
@@ -42,7 +42,7 @@ dependencies:
   csv-parse: 5.1.0
   d3: 7.4.4
   d3-format: 3.1.0
-  mc-gatherer: 1.3.3
+  mc-gatherer: 1.3.7
   numeral: 2.0.6
   pinia: 2.0.14_ytvqwwdyss532bvoq2clv4ed5m
   primeflex: 3.2.1
@@ -3147,8 +3147,8 @@ packages:
       semver: 6.3.0
     dev: false
 
-  /mc-gatherer/1.3.3:
-    resolution: {integrity: sha512-2NConfOt9J5VG9FGfwTsLw9JzJkYbYUlHqH5cCPejkra59YB+9bIGeqnyZeka9gK9JQADesEpRg2VZXK5h10sw==}
+  /mc-gatherer/1.3.7:
+    resolution: {integrity: sha512-+ejF9CZjhbRj460GnOK9CwftJAQhF9JERFbePU7kb+S3V4g/uRPyZzp9i7rqn+hbcCJiA+JiYYxv+22i2uR9Mg==}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
@@ -3157,7 +3157,7 @@ packages:
       csv-parse: 5.1.0
       glob: 7.2.2
       lodash: 4.17.21
-      mc-icons: 1.1.4
+      mc-icons: 1.1.5
       numeral: 2.0.6
       reflect-metadata: 0.1.13
       terminal-kit: 2.5.1
@@ -3168,8 +3168,8 @@ packages:
       - supports-color
     dev: false
 
-  /mc-icons/1.1.4:
-    resolution: {integrity: sha512-y8p/VDRmLtQIp2wQWsHziQ7TNbCCtkdWUTjzK5xctDDVEcQeyfQNVF8lvCpy+lgm7fTpIiHPS2ayBUJOHaR+8w==}
+  /mc-icons/1.1.5:
+    resolution: {integrity: sha512-xKME0n02RKssMo/dBBo9LiDHqxcjYoNj0fo5E3BTdPKPbsKKRTMbBrmQTwfFJUccTLnWocx9CMlNBF2wzp21WA==}
     engines: {node: '>=14.16'}
     hasBin: true
     dependencies:
