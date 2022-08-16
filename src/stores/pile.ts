@@ -113,7 +113,7 @@ const usePileStore = defineStore('pile', () => {
     pickedItems = pickItems(targetItem, allItems, allRecipes)
   })
 
-  watch(allItems, resetTopItem)
+  watch($$(allItems), resetTopItem)
 
   return {
     init,

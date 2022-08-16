@@ -51,7 +51,6 @@ function regColumn(opts: Partial<ColumnOpts>) {
 regColumn({ field: 'cost' })
 regColumn({ field: 'processing' })
 regColumn({ field: 'usability' })
-regColumn({ field: 'popularity', is: 'GearedNumber' })
 
 let selectedColumns = $ref(columns)
 
@@ -163,15 +162,36 @@ const menuModel = ref([
         </template>
       </Column>
 
+      <Column field="popularity" header="Popularity" :sortable="true">
+        <template #body="{ data }">
+          <div class="flex justify-content-center">
+            <Button
+              v-if="data.popularity"
+              class="p-button-raised p-button-text p-button-warning px-4 py-2 m-0"
+              @click="(e) => selectRecipes([...data.popList])"
+            >
+              <GearedNumber :value="data.popularity" />
+            </Button>
+            <p v-else>
+              -
+            </p>
+          </div>
+        </template>
+      </Column>
+
       <Column field="inputsAmount" header="Inputs" :sortable="true">
         <template #body="{ data }">
           <div class="flex justify-content-center">
             <Button
+              v-if="data.inputsAmount"
               class="p-button-raised p-button-text p-button-success px-4 py-2 m-0"
               @click="(e) => selectRecipes([data.mainRecipe])"
             >
               <Hedgehog :value="data.inputsAmount" />
             </Button>
+            <p v-else>
+              -
+            </p>
           </div>
         </template>
       </Column>
@@ -180,11 +200,15 @@ const menuModel = ref([
         <template #body="{ data }">
           <div class="flex justify-content-center">
             <Button
+              v-if="data.outputsAmount"
               class="p-button-raised p-button-text p-button-info px-4 py-2 m-0"
               @click="(e) => selectRecipes([...data.usedInRecipes])"
             >
               <Hedgehog :value="-data.outputsAmount" />
             </Button>
+            <p v-else>
+              -
+            </p>
           </div>
         </template>
       </Column>

@@ -19,8 +19,12 @@ export class Item {
     this.usability_s = `${this._usability}${units}`
   }
 
+  popList = new Set<Recipe>()
+
   /** How many times used as catalyst */
-  popularity = 0
+  public get popularity(): number {
+    return this.popList.size
+  }
 
   /** Number of items in main recipe */
   inputsAmount = 0
@@ -62,9 +66,9 @@ export class Item {
   clear() {
     this._usability = 0
     this.usability_s = '0?'
-    this.popularity = 0
     this.inputsAmount = 0
     this.outputsAmount = 0
+    this.popList.clear()
     this.usedInRecipes.clear()
     this.recipes = undefined
     this._mainRecipeAmount = undefined
@@ -73,8 +77,6 @@ export class Item {
   }
 }
 
-const imagePath = 'https://github.com/Krutoy242/mc-icons/raw/master/i/'
-
 function getImagePath(item: Item) {
-  return `${imagePath}${item.imgsrc}.png`
+  return `https://github.com/Krutoy242/mc-icons/raw/master/i/${item.imgsrc || 'placenholder/null'}.png`
 }

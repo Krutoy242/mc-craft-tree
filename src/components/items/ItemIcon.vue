@@ -1,6 +1,10 @@
 <script setup lang="ts">
+import { format } from 'd3-format'
 import type { Item } from '~/assets/items/Item'
+
 defineProps<{ item: Item; amount?: number }>()
+
+const numFormat = format('.2~s')
 </script>
 
 <template>
@@ -12,7 +16,7 @@ defineProps<{ item: Item; amount?: number }>()
       v-if="amount && amount > 1"
       class="absolute bottom-0 right-0"
     >
-      <MCFont :value="String(amount)" />
+      <MCFont :value="numFormat(amount)" />
     </div>
   </div>
 </template>

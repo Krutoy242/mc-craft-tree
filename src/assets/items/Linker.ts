@@ -63,7 +63,7 @@ export function pickItems(targetItem: Item, items: Item[], recipes: Recipe[]): I
 
     rec.catalysts?.forEach((stack) => {
       stack.it.matchedBy().forEach((item) => {
-        item.popularity++
+        item.popList.add(rec)
       })
     })
   })

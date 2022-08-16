@@ -2,10 +2,12 @@
 import type { Ref } from '@vue/reactivity'
 import { storeToRefs } from 'pinia'
 import type { Recipe } from './assets/items/Recipe'
+import type { Item } from './assets/items/Item'
 import usePileStore from '~/stores/pile'
 
 const pile = usePileStore()
 const selectedRecipes = storeToRefs(pile).selectedRecipes as Ref<Recipe[]>
+const targetItem = storeToRefs(pile).targetItem as unknown as Ref<Item>
 
 const tabs = ref([
   {
@@ -46,7 +48,7 @@ watch(selectedRecipes, () => {
           <span class="w-min text-right text-primary">
             Target:
           </span>
-          <Item v-if="pile.targetItem" :item="pile.targetItem" />
+          <Item v-if="targetItem" :item="targetItem" />
         </div>
       </Button>
     </div>
