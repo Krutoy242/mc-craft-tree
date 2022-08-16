@@ -48,7 +48,7 @@ watch(selectedRecipes, () => {
           <span class="w-min text-right text-primary">
             Target:
           </span>
-          <Item v-if="targetItem" :item="targetItem" />
+          <ItemSimple v-if="targetItem" :item="targetItem" />
         </div>
       </Button>
     </div>

@@ -134,7 +134,7 @@ const menuModel = ref([
 
       <Column field="display" header="Name" style="min-width:12rem" :sortable="true">
         <template #body="{ data }">
-          <Item :item="data" class="shadow-3" />
+          <ItemSimple :item="data" class="shadow-3" />
         </template>
         <template #filter="{ filterModel }">
           <InputText v-model="filterModel.value" type="text" class="p-column-filter" placeholder="Search by name" />

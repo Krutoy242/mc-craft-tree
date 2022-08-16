@@ -16,7 +16,7 @@ export class Item {
   public set usability(value) {
     const [volume, units] = getVolume(this)
     this._usability = value / volume
-    this.usability_s = `${this._usability}${units}`
+    this.usability_s = `${this._usability}${units ?? ''}`
   }
 
   popList = new Set<Recipe>()

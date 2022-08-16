@@ -6,7 +6,7 @@ defineProps<{ item?: Item }>()
 
 <template>
   <div v-if="item" class="flex flex-column m-2 bar border-1 border-round-sm border-primary-900 bg-primary-reverse">
-    <Item :item="item" />
+    <ItemSimple :item="item" />
     <div class="details flex monospace">
       <GearedNumber class="" :value="item.popularity" />
       <Hedgehog class="p-1" :value="item.inputsAmount" />
