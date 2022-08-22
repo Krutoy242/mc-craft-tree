@@ -34,6 +34,8 @@ let isSelectedRecipes = $ref(false)
 watch(selectedRecipes, () => {
   isSelectedRecipes = !!selectedRecipes.value.length
 })
+
+const treeMapView = $ref(false)
 </script>
 
 <template>
@@ -66,7 +68,14 @@ watch(selectedRecipes, () => {
       :modal="true"
       @hide="selectedRecipes = []"
     >
-      <Recipes :recipes="selectedRecipes" />
+      <Recipes :recipes="selectedRecipes" :as-tree-map="treeMapView" />
+
+      <template #footer>
+        <div class="flex align-items-center">
+          Tree Map view
+          <InputSwitch v-model="treeMapView" class="mx-2" />
+        </div>
+      </template>
     </Dialog>
   </div>
 </template>

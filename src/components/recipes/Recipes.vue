@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Recipe } from '~/assets/items/Recipe'
 
-defineProps<{ recipes: Recipe[] }>()
+defineProps<{ recipes: Recipe[]; asTreeMap?: boolean }>()
 </script>
 
 <template>
@@ -10,6 +10,7 @@ defineProps<{ recipes: Recipe[] }>()
       v-for="rec in recipes"
       :key="rec.index"
       :recipe="rec"
+      :as-tree-map="asTreeMap"
       class="m-1 border-1 border-round-sm border-primary-900"
     />
   </div>

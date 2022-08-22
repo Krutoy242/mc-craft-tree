@@ -13,19 +13,17 @@ const SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E']
 function abbreviateNumber(num: number) {
   num = Math.round(num * 1000) / 1000.0
 
-  if (num <= 1)
-    return num
+  if (num <= 1) return num
 
   // what tier? (determines SI symbol)
   const tier = (Math.log10(num) / 3) | 0
 
   // if zero, we don't need a suffix
-  if (tier === 0)
-    return num
+  if (tier === 0) return num
 
   // get suffix and determine scale
   const suffix = SI_SYMBOL[tier]
-  const scale = Math.pow(10, tier * 3)
+  const scale = 10 ** (tier * 3)
 
   // scale the num
   const scaled = num / scale

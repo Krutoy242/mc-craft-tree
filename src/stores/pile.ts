@@ -3,6 +3,7 @@ import type { BaseItem, CsvRecipe } from 'mc-gatherer/build/main/api'
 import { IngredientStore, Stack, Tree } from 'mc-gatherer/build/main/api'
 import loadDataCSV from 'mc-gatherer/build/main/api/csv-browser'
 import _ from 'lodash'
+import type { Ref } from 'vue'
 import { Item } from '~/assets/items/Item'
 import { pickItems } from '~/assets/items/Linker'
 import { Recipe } from '~/assets/items/Recipe'
@@ -45,7 +46,7 @@ const usePileStore = defineStore('pile', () => {
     }
   }
 
-  function watchAll(array: any[], cb: () => void) {
+  function watchAll(array: Ref<any>[], cb: () => void) {
     watch(array, (newValues) => {
       if (!newValues.every(Boolean)) return
       cb()
@@ -109,7 +110,7 @@ const usePileStore = defineStore('pile', () => {
     }
   }
 
-  watchAll([$$(targetItem), $$(allItems), $$(allRecipes)], () => {
+  watchAll($$([targetItem, allItems, allRecipes]), () => {
     pickedItems = pickItems(targetItem, allItems, allRecipes)
   })
 
@@ -119,12 +120,14 @@ const usePileStore = defineStore('pile', () => {
     init,
     selectRecipes,
     resetTopItem,
-    pickedItems    : $$(pickedItems),
-    selectedRecipes: $$(selectedRecipes),
-    targetItem     : $$(targetItem),
-    allItems       : $$(allItems),
-    allRecipes     : $$(allRecipes),
     pileTo,
+    ...$$({
+      pickedItems,
+      selectedRecipes,
+      targetItem,
+      allItems,
+      allRecipes,
+    }),
   }
 })
 export default usePileStore

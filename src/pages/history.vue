@@ -6,16 +6,21 @@ import usePileStore from '~/stores/pile'
 type ModBarTyple = [modName:string, items:Item[]]
 
 // const modsList = shallowRef<ModBarTyple[]>()
-const { pickedItems } = usePileStore()
+const pickedItems = usePileStore().pickedItems as Item[]
 const modsList = computed(() => pickedItems ? getModBars(pickedItems) : undefined)
 const offset = ref<number>(0)
 const shownItems = shallowRef<Item[]>()
+
+const sourceBlacklist = [
+  'placeholder',
+]
 
 function getModBars(items: Item[]): ModBarTyple[] {
   let minimum = Number.MAX_SAFE_INTEGER
   const result = _(items)
     .groupBy('source')
     .entries()
+    .filter(([source]) => !sourceBlacklist.includes(source))
     .sortBy(([,list]) => {
       const min = Math.min(...list.map(o => o.complexity))
       minimum = Math.min(minimum, min)
