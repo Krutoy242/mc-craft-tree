@@ -74,6 +74,7 @@ const selectedRow = $shallowRef<Item>()
 const onRowContextMenu = (event: any) => cm.value.show(event.originalEvent)
 const menuModel = ref([
   { label: 'Build tree to', icon: 'pi pi-sort-amount-up-alt', command: () => pile.pileTo(selectedRow) },
+  { label: 'Show all recipes', icon: 'pi pi-database', command: () => selectedRow.recipes && pile.selectRecipes([...selectedRow.recipes]) },
 ])
 </script>
 

@@ -87,8 +87,12 @@ const main = computed(() => String(props.short ? compNumber.value : whole.value)
       :class="{ bordered }"
     >
       <div
-        class="flex flex-nowrap justify-content-end"
-        :class="{ highlited }"
+        class="flex flex-nowrap"
+        :class="{
+          highlited,
+          'justify-content-center': short,
+          'justify-content-end': !short,
+        }"
       >
         <div
           :class="compClass"

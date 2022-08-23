@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import type { Ref } from '@vue/reactivity'
 import { storeToRefs } from 'pinia'
-import type { Recipe } from './assets/items/Recipe'
-import type { Item } from './assets/items/Item'
+import type { Recipe } from '~/assets/items/Recipe'
+import type { Item } from '~/assets/items/Item'
 import usePileStore from '~/stores/pile'
+import { useOptions } from '~/composables/options'
 
 const pile = usePileStore()
 const selectedRecipes = storeToRefs(pile).selectedRecipes as Ref<Recipe[]>
 const targetItem = storeToRefs(pile).targetItem as unknown as Ref<Item>
+
+const options = useOptions()
 
 const tabs = ref([
   {
@@ -35,7 +38,7 @@ watch(selectedRecipes, () => {
   isSelectedRecipes = !!selectedRecipes.value.length
 })
 
-const treeMapView = $ref(false)
+const showRecipeOptions = $ref(false)
 </script>
 
 <template>
@@ -60,22 +63,58 @@ const treeMapView = $ref(false)
       <Footer />
     </div> -->
 
+    <!--
+    ██████╗ ███████╗ ██████╗██╗██████╗ ███████╗███████╗
+    ██╔══██╗██╔════╝██╔════╝██║██╔══██╗██╔════╝██╔════╝
+    ██████╔╝█████╗  ██║     ██║██████╔╝█████╗  ███████╗
+    ██╔══██╗██╔══╝  ██║     ██║██╔═══╝ ██╔══╝  ╚════██║
+    ██║  ██║███████╗╚██████╗██║██║     ███████╗███████║
+    ╚═╝  ╚═╝╚══════╝ ╚═════╝╚═╝╚═╝     ╚══════╝╚══════╝
+    -->
     <Dialog
       v-model:visible="isSelectedRecipes"
-      header="Recipes"
       :base-z-index="1"
-      :dismissable-mask="true"
-      :modal="true"
+      dismissable-mask
+      modal
       @hide="selectedRecipes = []"
     >
-      <Recipes :recipes="selectedRecipes" :as-tree-map="treeMapView" />
-
-      <template #footer>
+      <template #header>
         <div class="flex align-items-center">
-          Tree Map view
-          <InputSwitch v-model="treeMapView" class="mx-2" />
+          <Button
+            icon="pi pi-cog"
+            class="p-button-rounded p-button-plain p-button-xs"
+            @click="showRecipeOptions = !showRecipeOptions"
+          />
+          <span class="text-lg font-bold mx-3">Recipes</span>
         </div>
       </template>
+
+      <Recipes :recipes="selectedRecipes" :selected="selectedRecipe" :as-tree-map="options.recipe.treeMapView" />
+    </Dialog>
+
+    <Dialog v-model:visible="showRecipeOptions" position="topleft" dismissable-mask header="Recipe view options">
+      <div class="field-checkbox">
+        <InputSwitch v-model="options.recipe.treeMapView" input-id="treeMapView" />
+        <label for="treeMapView">Tree Map view</label>
+      </div>
+
+      <div class="field-checkbox">
+        <InputSwitch v-model="options.recipe.complexity" input-id="opt1" />
+        <label for="opt1">Show Complexity</label>
+      </div>
+
+      <div class="field-checkbox">
+        <InputSwitch v-model="options.recipe.cost" input-id="opt2" />
+        <label for="opt2">Show Cost</label>
+      </div>
     </Dialog>
   </div>
 </template>
+
+<style scoped>
+.option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+</style>
