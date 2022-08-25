@@ -27,7 +27,7 @@ export function makeGraphTree(
     mouseout(d) { links.mouseout(); links.ticked(); callbacks.mouseout?.(d) },
   }
   const selectors = makeGraph(items, svg, moreCallbacks)
-  const { fX, fSize, fUsab, vizHeight, diffSize, fStroke } = selectors
+  const { fX, fSize, fUsab, vizHeight, diffSize, fStroke, graphNodes } = selectors
 
   const linkContainer = selectors.container
     .insert('g', ':first-child')
@@ -38,9 +38,9 @@ export function makeGraphTree(
   // selection.on(".drag", null);
 
   const opts = {
-    showLinks      : items.length < 500,
-    showCurvedLinks: items.length < 100,
-    useReuse       : items.length > 500,
+    showLinks      : graphNodes.length < 500,
+    showCurvedLinks: graphNodes.length < 100,
+    useReuse       : graphNodes.length > 500,
   }
 
   // ====================================================
@@ -48,16 +48,16 @@ export function makeGraphTree(
   // ====================================================
   // Connect graph nodes
   const graphLinks: LinkDatum[] = []
-  for (const c of items) {
+  for (const c of graphNodes) {
     for (const l of c.mainInputs)
-      graphLinks.push(l)
+      if (graphNodes.includes(l.source) && graphNodes.includes(l.target)) graphLinks.push(l)
   }
 
   // ====================================================
   // Layout
   // ====================================================
   simulation = d3
-    .forceSimulation(items)
+    .forceSimulation(graphNodes)
     // ! .force('charge', (opts.useReuse ? forceManyBodyReuse : d3.forceManyBody()).strength(-2000))
     .force('charge', d3.forceManyBody().strength(-2000))
     .force('x', d3.forceX(fX).strength(1))

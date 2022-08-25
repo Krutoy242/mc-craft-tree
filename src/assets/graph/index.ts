@@ -37,7 +37,7 @@ export function makeGraph(
 ) {
   svg.selectAll('*').remove()
   const container = svg.append('g')
-  const graphNodes = items as NodeDatum[]
+  const graphNodes = items.filter(i => i.source !== 'placeholder')
 
   // ====================================================
   // Math functions
@@ -49,7 +49,7 @@ export function makeGraph(
   const vizHeight = svg.node()?.getBoundingClientRect().height ?? 200
 
   const getImportancy = (field: keyof NodeDatum) => {
-    const r = items.map(i => i[field] as number)
+    const r = graphNodes.map(i => i[field] as number)
     const min = Math.min(...r)
     const max = Math.max(1, ...r)
     return (v: number) => (v - min) / max
@@ -194,5 +194,6 @@ export function makeGraph(
     vizWidth,
     vizHeight,
     diffSize,
+    graphNodes,
   }
 }
