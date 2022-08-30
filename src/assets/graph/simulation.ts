@@ -48,10 +48,10 @@ export function makeGraphTree(
   // ====================================================
   // Connect graph nodes
   const graphLinks: LinkDatum[] = []
-  for (const c of graphNodes) {
-    for (const l of c.mainInputs)
-      if (graphNodes.includes(l.source) && graphNodes.includes(l.target)) graphLinks.push(l)
-  }
+  const addLink = (l: LinkDatum) => graphNodes.includes(l.source) && graphNodes.includes(l.target) && graphLinks.push(l)
+  for (const c of graphNodes)
+    c.mainInputs.forEach(addLink)
+    // c.mainOutputs.forEach(addLink)
 
   // ====================================================
   // Layout

@@ -11,5 +11,6 @@ export class Recipe {
     public readonly catalysts?: IngredientStack[],
   ) {
     Object.assign(this, base)
+    this.requirments = [...(inputs ?? []), ...(catalysts ?? [])]
   }
 }

@@ -21,8 +21,9 @@ const usePileStore = defineStore('pile', () => {
   let oreDict = $shallowRef<Record<string, string[]>>()
   let pickedItems = $shallowRef<Item[]>()
   let selectedRecipes = $shallowRef<Recipe[]>([])
+  let selectedRecipe = $shallowRef<Recipe | undefined>()
   let allRecipes = $shallowRef<Recipe[]>()
-  let targetItem = $shallowRef<Item>()
+  let target = $shallowRef<{ item?: Item; isTo?: boolean }>({})
 
   function init() {
     if (!oreDict) {
@@ -91,27 +92,31 @@ const usePileStore = defineStore('pile', () => {
     ) as [IngredientStack[], IngredientStack[] | undefined, IngredientStack[] | undefined])
   }
 
-  function selectRecipes(recipes: Recipe[]) {
+  function selectRecipes(recipes: Recipe[], select?: Recipe) {
     selectedRecipes = recipes
+    selectedRecipe = select
   }
 
   function resetTopItem() {
     pileTo('storagedrawers:upgrade_creative:1')
   }
 
-  function pileTo(item: string | Item) {
+  function pileToFrom(item: string | Item, isTo: boolean) {
     if (typeof item === 'string') {
       const found = allItems?.find(it => it.id === item) ?? _.maxBy(allItems, it => it.steps)
       if (!found) throw new Error('Cannot find target item')
-      targetItem = found
+      target = { item: found, isTo }
     }
     else {
-      targetItem = item
+      target = { item, isTo }
     }
   }
 
-  watchAll($$([targetItem, allItems, allRecipes]), () => {
-    pickedItems = pickItems(targetItem, allItems, allRecipes)
+  function pileTo(item: string | Item) { pileToFrom(item, true) }
+  function pileFrom(item: string | Item) { pileToFrom(item, false) }
+
+  watchAll($$([target, allItems, allRecipes]), () => {
+    pickedItems = pickItems(target as any, allItems, allRecipes)
   })
 
   watch($$(allItems), resetTopItem)
@@ -121,10 +126,12 @@ const usePileStore = defineStore('pile', () => {
     selectRecipes,
     resetTopItem,
     pileTo,
+    pileFrom,
     ...$$({
       pickedItems,
       selectedRecipes,
-      targetItem,
+      selectedRecipe,
+      target,
       allItems,
       allRecipes,
     }),

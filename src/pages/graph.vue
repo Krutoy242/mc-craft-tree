@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import * as d3 from 'd3'
 import { storeToRefs } from 'pinia'
+import type { Ref } from '@vue/reactivity'
 import { makeGraphTree } from '~/assets/graph/simulation'
 import type { Item } from '~/assets/items/Item'
 import usePileStore from '~/stores/pile'
 
 const pile = usePileStore()
-const { pickedItems } = storeToRefs(pile)
+const pickedItems = storeToRefs(pile).pickedItems as Ref<Item[]>
 
 let hoveredItem = $shallowRef<Item>()
 
@@ -22,7 +23,7 @@ function updateGraph() {
     pickedItems.value,
     {
       mouseover: d => hoveredItem = d,
-      click    : d => pile.pileTo(d),
+      click    : (d, isRight) => isRight ? pile.pileFrom(d) : pile.pileTo(d),
     },
   )
 }

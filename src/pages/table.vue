@@ -13,7 +13,7 @@ const pile = usePileStore()
 const { selectRecipes } = pile
 const pickedItems = storeToRefs(pile).pickedItems as Ref<Item[]>
 const allRecipes = storeToRefs(pile).allRecipes as Ref<Recipe[]>
-const targetItem = storeToRefs(pile).targetItem as Ref<Item>
+const target = storeToRefs(pile).target as Ref<{ item?: Item; isTo?: boolean }>
 
 const filtersOpts = {
   global : { value: undefined, matchMode: FilterMatchMode.CONTAINS },
@@ -74,7 +74,6 @@ const selectedRow = $shallowRef<Item>()
 const onRowContextMenu = (event: any) => cm.value.show(event.originalEvent)
 const menuModel = ref([
   { label: 'Build tree to', icon: 'pi pi-sort-amount-up-alt', command: () => pile.pileTo(selectedRow) },
-  { label: 'Show all recipes', icon: 'pi pi-database', command: () => selectedRow.recipes && pile.selectRecipes([...selectedRow.recipes]) },
 ])
 </script>
 
@@ -223,7 +222,7 @@ const menuModel = ref([
             <template #help>
               <p><strong class="val-usability">Usability</strong> is the total number of items you need to craft the <strong>target item</strong>.</p>
               <p>Currently <strong>target item</strong> is:</p>
-              <ItemSimple :item="targetItem" />
+              <ItemSimple :item="target.item" />
             </template>
           </QuestionMark>
         </template>
@@ -281,7 +280,7 @@ const menuModel = ref([
             <Button
               v-if="data.inputsAmount"
               class="p-button-raised p-button-text p-button-success px-4 py-2 m-0"
-              @click="(e) => selectRecipes([data.mainRecipe])"
+              @click="(e) => selectRecipes([...data.recipes], data.mainRecipe)"
             >
               <Hedgehog :value="data.inputsAmount" />
             </Button>
@@ -302,7 +301,7 @@ const menuModel = ref([
               <p>The number of recipes where this item is used as an <span class="val-input">input</span>.</p><br>
               <p>This lists only those recipes that are used in the tree before the <strong>target item</strong></p>
               <p>Currently <strong>target item</strong> is:</p>
-              <ItemSimple :item="targetItem" />
+              <ItemSimple :item="target.item" />
             </template>
           </QuestionMark>
         </template>

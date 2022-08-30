@@ -2,19 +2,26 @@ import { solve, toDefStacks } from 'mc-gatherer/api'
 import type { Item } from './Item'
 import type { Recipe } from './Recipe'
 
-export function pickItems(targetItem: Item, items: Item[], recipes: Recipe[]): Item[] {
+function indexesToSet<T>(indexes: number[], map: T[]): Set<T> {
+  return new Set(
+    indexes
+      .map(index => map[index])
+      .filter((i): i is T => !!i),
+  )
+}
+
+export function pickItems(target: { item: Item; isTo?: boolean }, items: Item[], recipes: Recipe[]): Item[] {
   // Purge old values on ALL items
   items.forEach((item) => {
     item.clear()
 
+    if (item.depIndexes.length)
+      item.dependencies = indexesToSet(item.depIndexes, recipes)
+
     // Convert indexes into recipes
     if (!item.recipeIndexes.length) return
 
-    item.recipes = new Set(
-      item.recipeIndexes
-        .map(index => recipes[index])
-        .filter((i): i is Recipe => !!i),
-    )
+    item.recipes = indexesToSet(item.recipeIndexes, recipes)
 
     const mainRecipeIndex = item.recipeIndexes[0]
     if (mainRecipeIndex === undefined) return
@@ -28,20 +35,22 @@ export function pickItems(targetItem: Item, items: Item[], recipes: Recipe[]): I
     item.setMainRecipe(mainRecipe, stack.amount)
   })
 
-  const pickedPile = solve(targetItem).getMerged().toArray()
+  const pickedPile = solve(target.item, !target.isTo).getMerged().toArray()
     .map(([item, amount]) => {
       item.usability = amount
       item.inputsAmount = item.mainRecipe?.inputs?.length ?? 0
 
-      // Add input links
-      item.mainRecipe?.inputsDef?.forEach((stack) => {
+      // Add links
+      // const list = target.isTo ? item.mainRecipe?.inputsDef : item.mainRecipe?.outputsDef
+      const list = item.mainRecipe?.inputsDef ?? toDefStacks(item.mainRecipe?.inputs)
+      list?.forEach((stack) => {
         const link = {
           weight: stack.amount ?? 1,
-          source: stack.it,
-          target: item,
+          source: target.isTo ? stack.it : item,
+          target: target.isTo ? item : stack.it,
         }
-        item.mainInputs.add(link)
-        stack.it.mainOutputs.add(link)
+        link.target.mainInputs.add(link)
+        link.source.mainOutputs.add(link)
       })
 
       return item

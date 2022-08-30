@@ -8,7 +8,8 @@ import { useOptions } from '~/composables/options'
 
 const pile = usePileStore()
 const selectedRecipes = storeToRefs(pile).selectedRecipes as Ref<Recipe[]>
-const targetItem = storeToRefs(pile).targetItem as unknown as Ref<Item>
+const selectedRecipe = storeToRefs(pile).selectedRecipe as Ref<Recipe>
+const target = storeToRefs(pile).target as unknown as Ref<{ item?: Item; isTo?: boolean }>
 
 const options = useOptions()
 
@@ -53,7 +54,7 @@ const showRecipeOptions = $ref(false)
           <span class="w-min text-right text-primary">
             Target:
           </span>
-          <ItemSimple v-if="targetItem" :item="targetItem" />
+          <ItemSimple v-if="target.item" :item="target.item" />
         </div>
       </Button>
     </div>
@@ -96,6 +97,11 @@ const showRecipeOptions = $ref(false)
       <div class="field-checkbox">
         <InputSwitch v-model="options.recipe.treeMapView" input-id="treeMapView" />
         <label for="treeMapView">Tree Map view</label>
+      </div>
+
+      <div class="field-checkbox">
+        <InputSwitch v-model="options.recipe.considerAmount" input-id="opt3" :disabled="!options.recipe.treeMapView" />
+        <label for="opt3">Consider Amount</label>
       </div>
 
       <div class="field-checkbox">
