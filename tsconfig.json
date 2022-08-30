@@ -20,7 +20,8 @@
       "vite-plugin-pages/client"
     ],
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": ["src/*"],
+      "mc-gatherer/*": ["mc-gatherer/src/*"],
     }
   },
   "exclude": ["dist", "node_modules"]

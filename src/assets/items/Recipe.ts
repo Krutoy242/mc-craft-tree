@@ -1,4 +1,4 @@
-import type { BaseRecipe, SolvableRecipe } from 'mc-gatherer/build/main/api'
+import type { BaseRecipe, SolvableRecipe } from 'mc-gatherer/api'
 import type { Item } from './Item'
 import type { IngredientStack } from './Stack'
 

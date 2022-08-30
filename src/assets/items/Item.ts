@@ -1,5 +1,5 @@
-import { getVolume } from 'mc-gatherer/build/main/api'
-import type { BaseItem, Solvable } from 'mc-gatherer/build/main/api'
+import { getVolume } from 'mc-gatherer/api'
+import type { BaseItem, Solvable } from 'mc-gatherer/api'
 import type { Link } from './Link'
 import type { Recipe } from './Recipe'
 

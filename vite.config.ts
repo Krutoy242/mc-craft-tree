@@ -10,10 +10,11 @@ import {
 } from 'unplugin-vue-components/resolvers'
 
 export default defineConfig({
-  base   : '/tree/',
+  // base   : '/tree/',
   resolve: {
     alias: {
-      '~/': `${path.resolve(__dirname, 'src')}/`,
+      '~/'          : `${path.resolve(__dirname, 'src')}/`,
+      'mc-gatherer/': `${path.resolve(__dirname, 'mc-gatherer/src')}/`,
     },
   },
   plugins: [

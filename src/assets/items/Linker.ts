@@ -1,4 +1,4 @@
-import { solve } from 'mc-gatherer/build/main/api'
+import { solve, toDefStacks } from 'mc-gatherer/api'
 import type { Item } from './Item'
 import type { Recipe } from './Recipe'
 
