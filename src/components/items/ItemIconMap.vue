@@ -9,7 +9,7 @@ interface Stack { amount?: number; item: Item }
 const props = defineProps<{ stacks: Stack[] }>()
 
 const width = $computed(() => Math.min(350, props.stacks.length * 50))
-const height = $computed(() => ((props.stacks.length / 7 + 1) | 0) * 50)
+const height = $computed(() => ((props.stacks.length / 5 + 1) | 0) * 42)
 
 const nonlinearFn = (n: number) => n ** 0.5 * 10
 const stackValue = (stack: Stack) => nonlinearFn(stack.item.complexity * (stack.amount ?? 1))

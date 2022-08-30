@@ -25,7 +25,7 @@ const numFormat = format('.2~s')
     }"
   >
     <div
-      v-if="amount && amount > 1"
+      v-if="amount && amount !== 1"
       class="absolute bottom-0 right-0"
     >
       <MCFont :value="numFormat(amount)" />
