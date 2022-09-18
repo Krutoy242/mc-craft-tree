@@ -67,7 +67,7 @@ const usePileStore = defineStore('pile', () => {
           .init(b)
       },
     )).then((items) => {
-      tree.lock()
+      tree.locked = true
       allItems = items
     })
   })

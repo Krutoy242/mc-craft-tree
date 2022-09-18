@@ -3,16 +3,20 @@
 <script setup lang="ts">
 import * as d3 from 'd3'
 import type { Item } from '~/assets/items/Item'
+import { useOptions } from '~/composables/options'
 
 interface Stack { amount?: number; item: Item }
 
 const props = defineProps<{ stacks: Stack[] }>()
+const options = useOptions()
 
 const width = $computed(() => Math.min(350, props.stacks.length * 50))
 const height = $computed(() => ((props.stacks.length / 5 + 1) | 0) * 42)
 
 const nonlinearFn = (n: number) => n ** 0.5 * 10
-const stackValue = (stack: Stack) => nonlinearFn(stack.item.complexity * (stack.amount ?? 1))
+const stackValue = $computed(() => (stack: Stack) => nonlinearFn(
+  stack.item.complexity * (options.recipe.considerAmount ? (stack.amount ?? 1) : 1),
+))
 const minSize = $computed(() => Math.max(...props.stacks.map(stackValue)))
 
 const rootNode = $computed(() => {
