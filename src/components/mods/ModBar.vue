@@ -57,7 +57,7 @@ function getBar(items: Item[]): ModBar {
   }))
 
   const result = {
-    from : from - log(props.offset),
+    from : from - log(props.offset + 1),
     width: Math.max(100, width),
     items: barItems,
   }
@@ -118,7 +118,7 @@ function genGradient(grd: CanvasGradient, bi: BarItem) {
   const defColor = `hsla(${(44 * bi.hue) % 255}, ${(100 * saturation) | 0}%, ${(100 * value) | 0}%,`
   grd.addColorStop(0.5, `${defColor} ${1 * alpha})`)
   while (i < 0.5) {
-    const a = Math.pow(i * 2.0, 0.3) / 2
+    const a = (i * 2.0) ** 0.3 / 2
     grd.addColorStop(a, `${defColor} ${i * 2 * alpha})`)
     grd.addColorStop(1.0 - a, `${defColor} ${i * 2 * alpha})`)
     i += step

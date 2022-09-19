@@ -103,7 +103,7 @@ const usePileStore = defineStore('pile', () => {
 
   function pileToFrom(item: string | Item, isTo: boolean) {
     if (typeof item === 'string') {
-      const found = allItems?.find(it => it.id === item) ?? _.maxBy(allItems, it => it.steps)
+      const found = allItems?.find(it => it.id === item && it.purity > 0) ?? _.maxBy(allItems, it => it.steps)
       if (!found) throw new Error('Cannot find target item')
       target = { item: found, isTo }
     }
