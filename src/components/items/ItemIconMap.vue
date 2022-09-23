@@ -3,12 +3,11 @@
 <script setup lang="ts">
 import * as d3 from 'd3'
 import type { Item } from '~/assets/items/Item'
-import { useOptions } from '~/composables/options'
+import { options } from '~/stores/options'
 
 interface Stack { amount?: number; item: Item }
 
 const props = defineProps<{ stacks: Stack[] }>()
-const options = useOptions()
 
 const width = $computed(() => Math.min(350, props.stacks.length * 50))
 const height = $computed(() => ((props.stacks.length / 5 + 1) | 0) * 42)

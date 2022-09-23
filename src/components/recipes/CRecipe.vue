@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import type { Item } from '~/assets/items/Item'
 import type { Recipe } from '~/assets/items/Recipe'
-import { useOptions } from '~/composables/options'
+import { options } from '~/stores/options'
 
 const props = defineProps<{ recipe?: Recipe; asTreeMap?: boolean }>()
-
-const options = useOptions()
 
 const recipeLists = computed(() => {
   const names = ['OUT', 'INP', 'CTL']

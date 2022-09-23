@@ -18,6 +18,7 @@ declare module '@vue/runtime-core' {
     CurveText: typeof import('./src/components/CurveText.vue')['default']
     DataTable: typeof import('primevue/datatable')['default']
     Dialog: typeof import('primevue/dialog')['default']
+    Dropdown: typeof import('primevue/dropdown')['default']
     EmoteNumber: typeof import('./src/components/numbers/EmoteNumber.vue')['default']
     EntryGrid: typeof import('./src/components/items/EntryGrid.vue')['default']
     Footer: typeof import('./src/components/unused/Footer.vue')['default']

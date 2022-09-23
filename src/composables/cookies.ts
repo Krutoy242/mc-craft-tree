@@ -4,7 +4,7 @@ const { cookies } = useCookies()
 
 export function cookieRef<T>(name: string, arg: T): Ref<T> {
   const cookie = cookies.get(name)
-  const r = cookie ? ref(JSON.parse(cookie)) : ref(arg)
+  const r = cookie !== undefined ? ref(JSON.parse(cookie)) : ref(arg)
   watch(r, (newValue) => {
     cookies.set(name, JSON.stringify(newValue))
   })

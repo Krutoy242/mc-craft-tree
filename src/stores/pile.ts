@@ -4,6 +4,7 @@ import type { Ref } from 'vue'
 import type { BaseItem, CsvRecipe } from 'mc-gatherer/api'
 import { IngredientStore, Stack, Tree } from 'mc-gatherer/api'
 import loadDataCSV from 'mc-gatherer/api/csv-browser'
+import { options } from './options'
 import { Item } from '~/assets/items/Item'
 import { pickItems } from '~/assets/items/Linker'
 import { Recipe } from '~/assets/items/Recipe'
@@ -23,28 +24,40 @@ const usePileStore = defineStore('pile', () => {
   let selectedRecipes = $shallowRef<Recipe[]>([])
   let selectedRecipe = $shallowRef<Recipe | undefined>()
   let allRecipes = $shallowRef<Recipe[]>()
-  let target = $shallowRef<{ item?: Item; isTo?: boolean }>({})
+  let target = $shallowRef<{ item?: Item; isTo?: boolean } | undefined>()
 
-  function init() {
-    if (!oreDict) {
-      import('../assets/data_oredict.json').then(({ default: data }) => {
-        oreDict = data
+  let initInProgress = 0
+  let currentModpack = ''
+  watch(options.app, (v) => { initModpack(v.modpack) })
+  function initModpack(modpack: string) {
+    if (currentModpack === modpack) return
+    if (initInProgress !== 0) return
+    initInProgress = 3
+    currentModpack = modpack
+
+    oreDict = undefined as any
+    baseRecipes = undefined as any
+    baseItems = undefined as any
+    allItems = undefined as any
+    target = undefined as any
+    allRecipes = undefined as any
+
+    import(`../assets/data/${modpack}/oredict.json`).then(({ default: data }) => {
+      initInProgress--
+      oreDict = data
+    })
+
+    import(`../assets/data/${modpack}/recipes.json`).then(({ default: data }) => {
+      initInProgress--
+      baseRecipes = data as CsvRecipe[]
+    })
+
+    import(`../assets/data/${modpack}/items.csv?raw`)
+      .then(module => loadDataCSV(module.default))
+      .then((data) => {
+        initInProgress--
+        baseItems = data
       })
-    }
-
-    if (!baseRecipes) {
-      import('../assets/data_recipes.json').then(({ default: data }) => {
-        baseRecipes = data as CsvRecipe[]
-      })
-    }
-
-    if (!allItems) {
-      import('../assets/data_items.csv?raw')
-        .then(module => loadDataCSV(module.default))
-        .then((data) => {
-          baseItems = data
-        })
-    }
   }
 
   function watchAll(array: Ref<any>[], cb: () => void) {
@@ -104,7 +117,7 @@ const usePileStore = defineStore('pile', () => {
   function pileToFrom(item: string | Item, isTo: boolean) {
     if (typeof item === 'string') {
       const found = allItems?.find(it => it.id === item && it.purity > 0) ?? _.maxBy(allItems, it => it.steps)
-      if (!found) throw new Error('Cannot find target item')
+      if (!found) return
       target = { item: found, isTo }
     }
     else {
@@ -122,7 +135,7 @@ const usePileStore = defineStore('pile', () => {
   watch($$(allItems), resetTopItem)
 
   return {
-    init,
+    initModpack,
     selectRecipes,
     resetTopItem,
     pileTo,

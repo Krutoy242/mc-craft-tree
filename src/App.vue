@@ -1,17 +1,15 @@
 <script setup lang="ts">
 import type { Ref } from '@vue/reactivity'
 import { storeToRefs } from 'pinia'
+import { options } from './stores/options'
 import type { Recipe } from '~/assets/items/Recipe'
 import type { Item } from '~/assets/items/Item'
 import usePileStore from '~/stores/pile'
-import { useOptions } from '~/composables/options'
 
 const pile = usePileStore()
 const selectedRecipes = storeToRefs(pile).selectedRecipes as Ref<Recipe[]>
 const selectedRecipe = storeToRefs(pile).selectedRecipe as Ref<Recipe>
-const target = storeToRefs(pile).target as unknown as Ref<{ item?: Item; isTo?: boolean }>
-
-const options = useOptions()
+const target = storeToRefs(pile).target as unknown as Ref<{ item?: Item; isTo?: boolean } | undefined>
 
 const tabs = ref([
   {
@@ -31,8 +29,9 @@ const tabs = ref([
   },
 ])
 
-onMounted(() => pile.init())
-onUpdated(() => pile.init())
+const init = () => pile.initModpack(options.app.modpack)
+onMounted(init)
+onUpdated(init)
 
 let isSelectedRecipes = $ref(false)
 watch(selectedRecipes, () => {
@@ -44,7 +43,7 @@ const showRecipeOptions = $ref(false)
 
 <template>
   <div class="flex flex-column h-full">
-    <div flex class="flex justify-content-between flex-wrap w-full surface-50">
+    <div class="flex justify-content-between flex-wrap w-full surface-50">
       <TabMenu :model="tabs" />
       <Button
         class="p-button-raised p-button-text p-button-plain p-0 m-0"
@@ -54,15 +53,19 @@ const showRecipeOptions = $ref(false)
           <span class="w-min text-right text-primary">
             Target:
           </span>
-          <ItemSimple v-if="target.item" :item="target.item" />
+          <ItemSimple v-if="target?.item" :item="target.item" />
         </div>
       </Button>
     </div>
 
     <router-view class="h-full" />
-    <!-- <div class="absolute bottom-0 bg-gray-900">
-      <Footer />
-    </div> -->
+    <div class="fixed bottom-0 right-0 border-round bg-gray-900">
+      <Dropdown
+        v-model="options.app.modpack"
+        :options="['e2ee', 'herodotus']"
+        @change="() => init()"
+      />
+    </div>
 
     <!--
     ██████╗ ███████╗ ██████╗██╗██████╗ ███████╗███████╗
