@@ -30,6 +30,7 @@ const usePileStore = defineStore('pile', () => {
   let currentModpack = ''
   watch(options.app, (v) => { initModpack(v.modpack) })
   function initModpack(modpack: string) {
+    if (!modpack || modpack === 'null') modpack = 'e2ee'
     if (currentModpack === modpack) return
     if (initInProgress !== 0) return
     initInProgress = 3
@@ -42,17 +43,17 @@ const usePileStore = defineStore('pile', () => {
     target = undefined as any
     allRecipes = undefined as any
 
-    import(`../assets/data/${modpack}/oredict.json`).then(({ default: data }) => {
+    import(`~/assets/data/${modpack}/oredict.json`).then(({ default: data }) => {
       initInProgress--
       oreDict = data
     })
 
-    import(`../assets/data/${modpack}/recipes.json`).then(({ default: data }) => {
+    import(`~/assets/data/${modpack}/recipes.json`).then(({ default: data }) => {
       initInProgress--
       baseRecipes = data as CsvRecipe[]
     })
 
-    import(`../assets/data/${modpack}/items.csv?raw`)
+    import(`~/assets/data/${modpack}/items.csv?raw`)
       .then(module => loadDataCSV(module.default))
       .then((data) => {
         initInProgress--
