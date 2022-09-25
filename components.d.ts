@@ -10,8 +10,6 @@ declare module '@vue/runtime-core' {
     BaseID: typeof import('./src/components/strings/BaseID.vue')['default']
     BigNumber: typeof import('./src/components/numbers/BigNumber.vue')['default']
     Button: typeof import('primevue/button')['default']
-    Carousel: typeof import('primevue/carousel')['default']
-    Checkbox: typeof import('primevue/checkbox')['default']
     Column: typeof import('primevue/column')['default']
     ContextMenu: typeof import('primevue/contextmenu')['default']
     CRecipe: typeof import('./src/components/recipes/CRecipe.vue')['default']
