@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { format } from 'd3-format'
 import type { Item } from '~/assets/items/Item'
+import usePileStore from '~/stores/pile'
 
 defineProps<{
   item: Item | undefined
@@ -8,6 +9,7 @@ defineProps<{
   width?: number
   height?: number
 }>()
+const pile = usePileStore()
 
 const numFormat = format('.2~s')
 </script>
@@ -22,7 +24,9 @@ const numFormat = format('.2~s')
       'background-image': `url(${item.href})`,
       'width': `${width ?? 32 + 2}px`,
       'height': `${height ?? 32 + 2}px`,
+      'cursor': `${item?.recipes?.size ? 'pointer' : 'default'}`,
     }"
+    @click="item?.recipes ? pile.selectRecipes([...item?.recipes], item?.mainRecipe) : undefined"
   >
     <div
       v-if="amount && amount !== 1"
