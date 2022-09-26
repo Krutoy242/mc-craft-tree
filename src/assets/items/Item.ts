@@ -78,5 +78,5 @@ export class Item {
 }
 
 function getImagePath(item: Item) {
-  return `https://github.com/Krutoy242/mc-icons/raw/master/i/${item.imgsrc || 'placenholder/null'}.png`
+  return `https://github.com/Krutoy242/mc-icons/raw/master/i/${item.imgsrc || 'placeholder/null'}.png`
 }
