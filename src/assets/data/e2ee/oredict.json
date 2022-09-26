@@ -2383,15 +2383,6 @@
     "iceandfire:fire_dragon_heart:0",
     "iceandfire:ice_dragon_heart:0"
   ],
-  "hippogryphEgg": [
-    "iceandfire:hippogryph_egg:0",
-    "iceandfire:hippogryph_egg:1",
-    "iceandfire:hippogryph_egg:2",
-    "iceandfire:hippogryph_egg:3",
-    "iceandfire:hippogryph_egg:4",
-    "iceandfire:hippogryph_egg:5",
-    "iceandfire:hippogryph_egg:6"
-  ],
   "ice": [
     "minecraft:ice:0",
     "chisel:ice:0",
@@ -3182,11 +3173,6 @@
     "harvestcraft:cookedtofurkeyitem:0",
     "harvestcraft:turkeycookeditem:0"
   ],
-  "listAllturkeyraw": [
-    "harvestcraft:groundturkeyitem:0",
-    "harvestcraft:rawtofurkeyitem:0",
-    "harvestcraft:turkeyrawitem:0"
-  ],
   "listAllveggie": [
     "minecraft:beetroot:0",
     "minecraft:carrot:0",
@@ -3807,22 +3793,6 @@
     "exnihilocreatio:item_pebble:2",
     "exnihilocreatio:item_pebble:3",
     "cyclicmagic:stone_pebble:0"
-  ],
-  "pelt": [
-    "betteranimalsplus:bear_skin_black:0",
-    "betteranimalsplus:bear_skin_brown:0",
-    "betteranimalsplus:bear_skin_kermode:0",
-    "betteranimalsplus:wolf_pelt_arctic:0",
-    "betteranimalsplus:wolf_pelt_black:0",
-    "betteranimalsplus:wolf_pelt_brown:0",
-    "betteranimalsplus:wolf_pelt_red:0",
-    "betteranimalsplus:wolf_pelt_snowy:0",
-    "betteranimalsplus:wolf_pelt_timber:0"
-  ],
-  "peltBear": [
-    "betteranimalsplus:bear_skin_black:0",
-    "betteranimalsplus:bear_skin_brown:0",
-    "betteranimalsplus:bear_skin_kermode:0"
   ],
   "pestleAndMortar": [
     "botania:pestleandmortar:0",
