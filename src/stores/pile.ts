@@ -23,6 +23,7 @@ const usePileStore = defineStore('pile', () => {
   let pickedItems = $shallowRef<Item[]>()
   let selectedRecipes = $shallowRef<Recipe[]>([])
   let selectedRecipe = $shallowRef<Recipe | undefined>()
+  const selectedRecipeHistory = $shallowRef<[Recipe[], Recipe | undefined][]>([])
   let allRecipes = $shallowRef<Recipe[]>()
   let target = $shallowRef<{ item?: Item; isTo?: boolean } | undefined>()
 
@@ -106,9 +107,16 @@ const usePileStore = defineStore('pile', () => {
     ) as [IngredientStack[], IngredientStack[] | undefined, IngredientStack[] | undefined])
   }
 
-  function selectRecipes(recipes: Recipe[], select?: Recipe) {
+  function selectRecipes(recipes: Recipe[], select?: Recipe, ignoreHistory?: boolean) {
+    if (!ignoreHistory && selectedRecipes?.length) selectedRecipeHistory.push([selectedRecipes, selectedRecipe])
     selectedRecipes = recipes
     selectedRecipe = select
+  }
+
+  function selectPreviousRecipes() {
+    if (!selectedRecipeHistory.length) return
+    const [recipes, select] = selectedRecipeHistory.pop() as any
+    selectRecipes(recipes, select, true)
   }
 
   function resetTopItem() {
@@ -138,6 +146,7 @@ const usePileStore = defineStore('pile', () => {
   return {
     initModpack,
     selectRecipes,
+    selectPreviousRecipes,
     resetTopItem,
     pileTo,
     pileFrom,
@@ -148,6 +157,7 @@ const usePileStore = defineStore('pile', () => {
       target,
       allItems,
       allRecipes,
+      selectedRecipeHistory,
     }),
   }
 })

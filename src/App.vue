@@ -90,6 +90,12 @@ const showRecipeOptions = $ref(false)
             @click="showRecipeOptions = !showRecipeOptions"
           />
           <span class="text-lg font-bold mx-3">Recipes</span>
+          <Button
+            v-if="pile.selectedRecipeHistory?.length"
+            icon="pi pi-arrow-circle-left"
+            class="p-button-rounded p-button-plain p-button-xs"
+            @click="pile.selectPreviousRecipes()"
+          />
         </div>
       </template>
 
