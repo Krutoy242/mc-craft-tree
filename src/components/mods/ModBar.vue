@@ -42,22 +42,22 @@ interface ModBar {
 
 const scaleRange = scaleLog().domain([0.1, 1e3]).range([0, 1000])
 const scale = scaleRange.base(2) // .nice()
-const log = (v: number) => Math.max(0, scale(v))
+const log_1 = (v: number) => scale(Math.max(0, v) + 0.1)
 
 function getBar(items: Item[]): ModBar {
   const complList = items.map(o => o.complexity)
-  const from = log(Math.min(...complList))
-  const width = log(Math.max(...complList)) - from
+  const from = log_1(Math.min(...complList))
+  const width = log_1(Math.max(...complList)) - from
 
   const barItems: BarItem[] = items.map(it => ({
     item : it,
-    pos  : log(it.complexity) - from,
-    width: Math.max(3, log(it.usability) / 50),
+    pos  : log_1(it.complexity) - from,
+    width: Math.max(3, log_1(it.usability) / 50),
     hue  : 1 / (1 + Math.log(it.popularity + 1)),
   }))
 
   const result = {
-    from : from - log(props.offset + 1),
+    from : from - log_1(props.offset),
     width: Math.max(100, width),
     items: barItems,
   }
