@@ -250,7 +250,7 @@ const menuModel = ref([
             <Button
               v-if="data.popularity"
               class="p-button-raised p-button-text p-button-warning px-4 py-2 m-0"
-              @click="(e) => selectRecipes([...data.popList])"
+              @click="() => selectRecipes([...data.popList])"
             >
               <GearedNumber :value="data.popularity" />
             </Button>
@@ -280,7 +280,7 @@ const menuModel = ref([
             <Button
               v-if="data.inputsAmount"
               class="p-button-raised p-button-text p-button-success px-4 py-2 m-0"
-              @click="(e) => selectRecipes([...data.recipes], data.mainRecipe)"
+              @click="() => selectRecipes([...data.recipes], data.mainRecipe)"
             >
               <Hedgehog :value="data.inputsAmount" />
             </Button>
@@ -310,7 +310,7 @@ const menuModel = ref([
             <Button
               v-if="data.outputsAmount"
               class="p-button-raised p-button-text p-button-info px-4 py-2 m-0"
-              @click="(e) => selectRecipes([...data.usedInRecipes])"
+              @click="() => selectRecipes([...data.usedInRecipes])"
             >
               <Hedgehog :value="-data.outputsAmount" />
             </Button>

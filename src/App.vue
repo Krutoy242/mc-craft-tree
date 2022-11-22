@@ -47,7 +47,7 @@ const showRecipeOptions = $ref(false)
       <TabMenu :model="tabs" />
       <Button
         class="p-button-raised p-button-text p-button-plain p-0 m-0"
-        @click="(e) => pile.resetTopItem()"
+        @click="() => pile.resetTopItem()"
       >
         <div class="flex shadow-6 align-items-center">
           <span class="w-min text-right text-primary">
