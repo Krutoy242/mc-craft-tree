@@ -56,6 +56,16 @@ const showRecipeOptions = $ref(false)
           <ItemSimple v-if="target?.item" :item="target.item" />
         </div>
       </Button>
+      <Button
+        class="p-button-raised p-button-text p-button-plain p-0 m-0"
+        @click="() => target = {}"
+      >
+        <div class="flex shadow-6 align-items-center">
+          <span class="w-min text-right text-primary">
+            Show<br>everything
+          </span>
+        </div>
+      </Button>
     </div>
 
     <router-view class="h-full" />

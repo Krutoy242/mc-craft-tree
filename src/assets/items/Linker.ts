@@ -10,7 +10,7 @@ function indexesToSet<T>(indexes: number[], map: T[]): Set<T> {
   )
 }
 
-export function pickItems(target: { item: Item; isTo?: boolean }, items: Item[], recipes: Recipe[]): Item[] {
+export function pickItems(target: { item?: Item; isTo?: boolean }, items: Item[], recipes: Recipe[]): Item[] {
   // Purge old values on ALL items
   items.forEach((item) => {
     item.clear()
@@ -35,7 +35,11 @@ export function pickItems(target: { item: Item; isTo?: boolean }, items: Item[],
     item.setMainRecipe(mainRecipe, stack.amount)
   })
 
-  const pickedPile = solve(target.item, !target.isTo).getMerged().toArray()
+  const solvedArray = target.item
+    ? solve(target.item, !target.isTo).getMerged().toArray()
+    : items.map(i => [i, 0] as const)
+
+  const pickedPile = solvedArray
     .map(([item, amount]) => {
       item.usability = amount
       item.inputsAmount = item.mainRecipe?.inputs?.length ?? 0
