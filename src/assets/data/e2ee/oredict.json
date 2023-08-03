@@ -893,6 +893,10 @@
     "chisel:redstone1:10",
     "chisel:redstone1:11"
   ],
+  "blockSeared": [
+    "tconstruct:seared:*",
+    "searedladder:seared_ladder:0"
+  ],
   "blockSilver": [
     "thermalfoundation:storage:2",
     "immersiveengineering:storage:3",
@@ -1346,30 +1350,17 @@
     "forestry:fruits:2",
     "harvestcraft:chestnutitem:0"
   ],
-  "cropChilipepper": [
-    "harvestcraft:chilipepperitem:0",
-    "rustic:chili_pepper:0"
-  ],
-  "cropCoffee": [
-    "actuallyadditions:item_coffee_beans:0",
-    "harvestcraft:coffeebeanitem:0"
-  ],
   "cropDate": [
     "forestry:fruits:5",
     "harvestcraft:dateitem:0"
   ],
   "cropGrape": [
-    "harvestcraft:grapeitem:0",
     "harvestcraft:greengrapeitem:0",
     "rustic:grapes:0"
   ],
   "cropLemon": [
     "forestry:fruits:3",
     "harvestcraft:lemonitem:0"
-  ],
-  "cropOlive": [
-    "harvestcraft:oliveitem:0",
-    "rustic:olives:0"
   ],
   "cropPapaya": [
     "forestry:fruits:6",
@@ -1395,10 +1386,6 @@
     "actuallyadditions:item_food:16",
     "biomesoplenty:plant_1:3",
     "harvestcraft:riceitem:0"
-  ],
-  "cropTomato": [
-    "harvestcraft:tomatoitem:0",
-    "rustic:tomato:0"
   ],
   "cropWalnut": [
     "forestry:fruits:1",
@@ -1916,6 +1903,7 @@
     "mysticalagriculture:aluminum_essence:0",
     "mysticalagriculture:apatite_essence:0",
     "mysticalagriculture:basalt_essence:0",
+    "mysticalagriculture:certus_quartz_essence:0",
     "mysticalagriculture:chicken_essence:0",
     "mysticalagriculture:coal_essence:0",
     "mysticalagriculture:copper_essence:0",
@@ -1938,7 +1926,6 @@
   "essenceTier3": [
     "mysticalagriculture:aquamarine_essence:0",
     "mysticalagriculture:black_quartz_essence:0",
-    "mysticalagriculture:certus_quartz_essence:0",
     "mysticalagriculture:creeper_essence:0",
     "mysticalagriculture:end_essence:0",
     "mysticalagriculture:glowstone_essence:0",
@@ -2383,6 +2370,15 @@
     "iceandfire:fire_dragon_heart:0",
     "iceandfire:ice_dragon_heart:0"
   ],
+  "hippogryphEgg": [
+    "iceandfire:hippogryph_egg:0",
+    "iceandfire:hippogryph_egg:1",
+    "iceandfire:hippogryph_egg:2",
+    "iceandfire:hippogryph_egg:3",
+    "iceandfire:hippogryph_egg:4",
+    "iceandfire:hippogryph_egg:5",
+    "iceandfire:hippogryph_egg:6"
+  ],
   "ice": [
     "minecraft:ice:0",
     "chisel:ice:0",
@@ -2752,7 +2748,6 @@
     "harvestcraft:figitem:0",
     "harvestcraft:gooseberryitem:0",
     "harvestcraft:grapefruititem:0",
-    "harvestcraft:grapeitem:0",
     "harvestcraft:greengrapeitem:0",
     "harvestcraft:guavaitem:0",
     "harvestcraft:huckleberryitem:0",
@@ -2980,7 +2975,6 @@
   ],
   "listAllpepper": [
     "harvestcraft:bellpepperitem:0",
-    "harvestcraft:chilipepperitem:0",
     "rustic:chili_pepper:0"
   ],
   "listAllporkcooked": [
@@ -3043,8 +3037,6 @@
     "harvestcraft:cauliflowerseeditem:0",
     "harvestcraft:celeryseeditem:0",
     "harvestcraft:chickpeaseeditem:0",
-    "harvestcraft:chilipepperseeditem:0",
-    "harvestcraft:coffeeseeditem:0",
     "harvestcraft:cornseeditem:0",
     "harvestcraft:cottonseeditem:0",
     "harvestcraft:cranberryseeditem:0",
@@ -3056,7 +3048,6 @@
     "harvestcraft:garlicseeditem:0",
     "harvestcraft:gigapickleseeditem:0",
     "harvestcraft:gingerseeditem:0",
-    "harvestcraft:grapeseeditem:0",
     "harvestcraft:greengrapeseeditem:0",
     "harvestcraft:huckleberryseeditem:0",
     "harvestcraft:jicamaseeditem:0",
@@ -3098,7 +3089,6 @@
     "harvestcraft:taroseeditem:0",
     "harvestcraft:teaseeditem:0",
     "harvestcraft:tomatilloseeditem:0",
-    "harvestcraft:tomatoseeditem:0",
     "harvestcraft:turnipseeditem:0",
     "harvestcraft:waterchestnutseeditem:0",
     "harvestcraft:whitemushroomseeditem:0",
@@ -3173,6 +3163,11 @@
     "harvestcraft:cookedtofurkeyitem:0",
     "harvestcraft:turkeycookeditem:0"
   ],
+  "listAllturkeyraw": [
+    "harvestcraft:groundturkeyitem:0",
+    "harvestcraft:rawtofurkeyitem:0",
+    "harvestcraft:turkeyrawitem:0"
+  ],
   "listAllveggie": [
     "minecraft:beetroot:0",
     "minecraft:carrot:0",
@@ -3216,7 +3211,6 @@
     "harvestcraft:tamarinditem:0",
     "harvestcraft:taroitem:0",
     "harvestcraft:tomatilloitem:0",
-    "harvestcraft:tomatoitem:0",
     "harvestcraft:turnipitem:0",
     "harvestcraft:waterchestnutitem:0",
     "harvestcraft:whitemushroomitem:0",
@@ -3278,6 +3272,7 @@
   "logWood": [
     "minecraft:log:*",
     "minecraft:log2:*",
+    "ic2:rubber_wood:0",
     "biomesoplenty:log_0:4",
     "biomesoplenty:log_0:5",
     "biomesoplenty:log_0:6",
@@ -3335,9 +3330,7 @@
     "minecraft:stone:0",
     "minecraft:stone:1",
     "minecraft:stone:3",
-    "minecraft:stone:5",
-    "quark:limestone:0",
-    "quark:marble:0"
+    "minecraft:stone:5"
   ],
   "mushroomAny": [
     "minecraft:brown_mushroom:0",
@@ -3464,8 +3457,7 @@
   ],
   "oreArdite": [
     "tconstruct:ore:1",
-    "netherendingores:ore_other_1:2",
-    "netherendingores:ore_other_1:3"
+    "netherendingores:ore_other_1:2"
   ],
   "oreCertusQuartz": [
     "appliedenergistics2:charged_quartz_ore:0",
@@ -3477,8 +3469,7 @@
   ],
   "oreCobalt": [
     "tconstruct:ore:0",
-    "netherendingores:ore_other_1:4",
-    "netherendingores:ore_other_1:5"
+    "netherendingores:ore_other_1:4"
   ],
   "oreDimensionalShard": [
     "rftools:dimensional_shard_ore:0",
@@ -3492,7 +3483,6 @@
   "oreQuartz": [
     "minecraft:quartz_ore:0",
     "netherendingores:ore_other_1:0",
-    "netherendingores:ore_other_1:1",
     "thaumcraft:ore_quartz:0"
   ],
   "paneGlass": [
@@ -3793,6 +3783,22 @@
     "exnihilocreatio:item_pebble:2",
     "exnihilocreatio:item_pebble:3",
     "cyclicmagic:stone_pebble:0"
+  ],
+  "pelt": [
+    "betteranimalsplus:bear_skin_black:0",
+    "betteranimalsplus:bear_skin_brown:0",
+    "betteranimalsplus:bear_skin_kermode:0",
+    "betteranimalsplus:wolf_pelt_arctic:0",
+    "betteranimalsplus:wolf_pelt_black:0",
+    "betteranimalsplus:wolf_pelt_brown:0",
+    "betteranimalsplus:wolf_pelt_red:0",
+    "betteranimalsplus:wolf_pelt_snowy:0",
+    "betteranimalsplus:wolf_pelt_timber:0"
+  ],
+  "peltBear": [
+    "betteranimalsplus:bear_skin_black:0",
+    "betteranimalsplus:bear_skin_brown:0",
+    "betteranimalsplus:bear_skin_kermode:0"
   ],
   "pestleAndMortar": [
     "botania:pestleandmortar:0",
@@ -4176,62 +4182,65 @@
     "rats:rat_nugget_ore:13:{OreItem:{id:\"minecraft:emerald_ore\",Count:1b,Damage:0s},IngotItem:{id:\"minecraft:emerald\",Count:1b,Damage:0s}}",
     "rats:rat_nugget_ore:14:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:0s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:4s}}",
     "rats:rat_nugget_ore:15:{OreItem:{id:\"netherendingores:ore_end_modded_2\",Count:1b,Damage:5s},IngotItem:{id:\"netherendingores:ore_other_1\",Count:2b,Damage:6s}}",
-    "rats:rat_nugget_ore:16:{OreItem:{id:\"netherendingores:ore_end_modded_2\",Count:1b,Damage:8s},IngotItem:{id:\"netherendingores:ore_other_1\",Count:2b,Damage:9s}}",
-    "rats:rat_nugget_ore:17:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:9s},IngotItem:{id:\"appliedenergistics2:quartz_ore\",Count:2b,Damage:0s}}",
-    "rats:rat_nugget_ore:18:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:10s},IngotItem:{id:\"appliedenergistics2:charged_quartz_ore\",Count:2b,Damage:0s}}",
-    "rats:rat_nugget_ore:19:{OreItem:{id:\"netherendingores:ore_end_vanilla\",Count:1b,Damage:0s},IngotItem:{id:\"minecraft:coal_ore\",Count:2b,Damage:0s}}",
-    "rats:rat_nugget_ore:20:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:1s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:0s}}",
-    "rats:rat_nugget_ore:21:{OreItem:{id:\"netherendingores:ore_end_vanilla\",Count:1b,Damage:1s},IngotItem:{id:\"minecraft:diamond_ore\",Count:2b,Damage:0s}}",
-    "rats:rat_nugget_ore:22:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:14s},IngotItem:{id:\"libvulpes:ore0\",Count:2b,Damage:0s}}",
-    "rats:rat_nugget_ore:23:{OreItem:{id:\"netherendingores:ore_end_vanilla\",Count:1b,Damage:2s},IngotItem:{id:\"minecraft:emerald_ore\",Count:2b,Damage:0s}}",
-    "rats:rat_nugget_ore:24:{OreItem:{id:\"netherendingores:ore_end_vanilla\",Count:1b,Damage:3s},IngotItem:{id:\"minecraft:gold_ore\",Count:2b,Damage:0s}}",
-    "rats:rat_nugget_ore:25:{OreItem:{id:\"netherendingores:ore_end_modded_2\",Count:1b,Damage:6s},IngotItem:{id:\"netherendingores:ore_other_1\",Count:2b,Damage:7s}}",
-    "rats:rat_nugget_ore:26:{OreItem:{id:\"netherendingores:ore_end_modded_2\",Count:1b,Damage:9s},IngotItem:{id:\"netherendingores:ore_other_1\",Count:2b,Damage:10s}}",
-    "rats:rat_nugget_ore:27:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:2s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:7s}}",
-    "rats:rat_nugget_ore:28:{OreItem:{id:\"netherendingores:ore_end_vanilla\",Count:1b,Damage:4s},IngotItem:{id:\"minecraft:iron_ore\",Count:2b,Damage:0s}}",
-    "rats:rat_nugget_ore:29:{OreItem:{id:\"netherendingores:ore_end_vanilla\",Count:1b,Damage:5s},IngotItem:{id:\"minecraft:lapis_ore\",Count:2b,Damage:0s}}",
-    "rats:rat_nugget_ore:30:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:3s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:3s}}",
-    "rats:rat_nugget_ore:31:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:4s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:8s}}",
-    "rats:rat_nugget_ore:32:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:5s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:5s}}",
-    "rats:rat_nugget_ore:33:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:11s},IngotItem:{id:\"mekanism:oreblock\",Count:2b,Damage:0s}}",
-    "rats:rat_nugget_ore:34:{OreItem:{id:\"netherendingores:ore_end_modded_2\",Count:1b,Damage:3s},IngotItem:{id:\"biomesoplenty:gem_ore\",Count:2b,Damage:2s}}",
-    "rats:rat_nugget_ore:35:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:6s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:6s}}",
-    "rats:rat_nugget_ore:36:{OreItem:{id:\"netherendingores:ore_end_vanilla\",Count:1b,Damage:6s},IngotItem:{id:\"minecraft:redstone_ore\",Count:2b,Damage:0s}}",
-    "rats:rat_nugget_ore:37:{OreItem:{id:\"netherendingores:ore_end_modded_2\",Count:1b,Damage:1s},IngotItem:{id:\"biomesoplenty:gem_ore\",Count:2b,Damage:1s}}",
-    "rats:rat_nugget_ore:38:{OreItem:{id:\"netherendingores:ore_end_modded_2\",Count:1b,Damage:2s},IngotItem:{id:\"biomesoplenty:gem_ore\",Count:2b,Damage:6s}}",
-    "rats:rat_nugget_ore:39:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:7s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:2s}}",
-    "rats:rat_nugget_ore:40:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:8s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:1s}}",
-    "rats:rat_nugget_ore:41:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:12s},IngotItem:{id:\"immersiveengineering:ore\",Count:2b,Damage:5s}}",
-    "rats:rat_nugget_ore:42:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:13s},IngotItem:{id:\"bigreactors:oreyellorite\",Count:2b,Damage:0s}}",
-    "rats:rat_nugget_ore:43:{OreItem:{id:\"netherendingores:ore_end_modded_2\",Count:1b,Damage:7s},IngotItem:{id:\"netherendingores:ore_other_1\",Count:2b,Damage:8s}}",
-    "rats:rat_nugget_ore:44:{OreItem:{id:\"biomesoplenty:gem_ore\",Count:1b,Damage:0s},IngotItem:{id:\"biomesoplenty:gem\",Count:1b,Damage:0s}}",
-    "rats:rat_nugget_ore:45:{OreItem:{id:\"minecraft:gold_ore\",Count:1b,Damage:0s},IngotItem:{id:\"minecraft:gold_ingot\",Count:1b,Damage:0s}}",
-    "rats:rat_nugget_ore:46:{OreItem:{id:\"thermalfoundation:ore\",Count:1b,Damage:7s},IngotItem:{id:\"thermalfoundation:material\",Count:1b,Damage:135s}}",
-    "rats:rat_nugget_ore:47:{OreItem:{id:\"minecraft:iron_ore\",Count:1b,Damage:0s},IngotItem:{id:\"minecraft:iron_ingot\",Count:1b,Damage:0s}}",
-    "rats:rat_nugget_ore:48:{OreItem:{id:\"minecraft:lapis_ore\",Count:1b,Damage:0s},IngotItem:{id:\"minecraft:dye\",Count:1b,Damage:4s}}",
-    "rats:rat_nugget_ore:49:{OreItem:{id:\"thermalfoundation:ore\",Count:1b,Damage:3s},IngotItem:{id:\"thermalfoundation:material\",Count:1b,Damage:131s}}",
-    "rats:rat_nugget_ore:50:{OreItem:{id:\"nuclearcraft:ore\",Count:1b,Damage:6s},IngotItem:{id:\"nuclearcraft:ingot\",Count:1b,Damage:6s}}",
-    "rats:rat_nugget_ore:51:{OreItem:{id:\"nuclearcraft:ore\",Count:1b,Damage:7s},IngotItem:{id:\"nuclearcraft:ingot\",Count:1b,Damage:7s}}",
-    "rats:rat_nugget_ore:52:{OreItem:{id:\"biomesoplenty:gem_ore\",Count:1b,Damage:5s},IngotItem:{id:\"biomesoplenty:gem\",Count:1b,Damage:5s}}",
-    "rats:rat_nugget_ore:53:{OreItem:{id:\"thermalfoundation:ore\",Count:1b,Damage:8s},IngotItem:{id:\"thermalfoundation:material\",Count:1b,Damage:136s}}",
-    "rats:rat_nugget_ore:76:{OreItem:{id:\"minecraft:quartz_ore\",Count:1b,Damage:0s},IngotItem:{id:\"minecraft:quartz\",Count:1b,Damage:0s}}",
-    "rats:rat_nugget_ore:85:{OreItem:{id:\"thermalfoundation:ore\",Count:1b,Damage:5s},IngotItem:{id:\"thermalfoundation:material\",Count:1b,Damage:133s}}",
-    "rats:rat_nugget_ore:86:{OreItem:{id:\"mekanism:oreblock\",Count:1b,Damage:0s},IngotItem:{id:\"mekanism:ingot\",Count:1b,Damage:1s}}",
-    "rats:rat_nugget_ore:87:{OreItem:{id:\"biomesoplenty:gem_ore\",Count:1b,Damage:2s},IngotItem:{id:\"biomesoplenty:gem\",Count:1b,Damage:2s}}",
-    "rats:rat_nugget_ore:88:{OreItem:{id:\"contenttweaker:ore_phosphor\",Count:1b,Damage:0s},IngotItem:{id:\"contenttweaker:nugget_phosphor\",Count:1b,Damage:0s}}",
-    "rats:rat_nugget_ore:89:{OreItem:{id:\"thermalfoundation:ore\",Count:1b,Damage:6s},IngotItem:{id:\"thermalfoundation:material\",Count:1b,Damage:134s}}",
-    "rats:rat_nugget_ore:90:{OreItem:{id:\"twilightforest:ironwood_raw\",Count:1b,Damage:0s},IngotItem:{id:\"twilightforest:ironwood_ingot\",Count:2b,Damage:0s}}",
-    "rats:rat_nugget_ore:91:{OreItem:{id:\"minecraft:redstone_ore\",Count:1b,Damage:0s},IngotItem:{id:\"minecraft:redstone\",Count:1b,Damage:0s}}",
-    "rats:rat_nugget_ore:92:{OreItem:{id:\"biomesoplenty:gem_ore\",Count:1b,Damage:1s},IngotItem:{id:\"biomesoplenty:gem\",Count:1b,Damage:1s}}",
-    "rats:rat_nugget_ore:93:{OreItem:{id:\"biomesoplenty:gem_ore\",Count:1b,Damage:6s},IngotItem:{id:\"biomesoplenty:gem\",Count:1b,Damage:6s}}",
-    "rats:rat_nugget_ore:94:{OreItem:{id:\"thermalfoundation:ore\",Count:1b,Damage:2s},IngotItem:{id:\"thermalfoundation:material\",Count:1b,Damage:130s}}",
-    "rats:rat_nugget_ore:95:{OreItem:{id:\"astralsorcery:blockcustomore\",Count:1b,Damage:1s},IngotItem:{id:\"astralsorcery:itemcraftingcomponent\",Count:1b,Damage:1s}}",
-    "rats:rat_nugget_ore:96:{OreItem:{id:\"biomesoplenty:gem_ore\",Count:1b,Damage:4s},IngotItem:{id:\"biomesoplenty:gem\",Count:1b,Damage:4s}}",
-    "rats:rat_nugget_ore:97:{OreItem:{id:\"nuclearcraft:ore\",Count:1b,Damage:3s},IngotItem:{id:\"nuclearcraft:ingot\",Count:1b,Damage:3s}}",
-    "rats:rat_nugget_ore:98:{OreItem:{id:\"thermalfoundation:ore\",Count:1b,Damage:1s},IngotItem:{id:\"thermalfoundation:material\",Count:1b,Damage:129s}}",
-    "rats:rat_nugget_ore:99:{OreItem:{id:\"biomesoplenty:gem_ore\",Count:1b,Damage:3s},IngotItem:{id:\"biomesoplenty:gem\",Count:1b,Damage:3s}}",
-    "rats:rat_nugget_ore:100:{OreItem:{id:\"endreborn:block_wolframium_ore\",Count:1b,Damage:0s},IngotItem:{id:\"endreborn:item_ingot_wolframium\",Count:1b,Damage:0s}}",
-    "rats:rat_nugget_ore:101:{OreItem:{id:\"immersiveengineering:ore\",Count:1b,Damage:5s},IngotItem:{id:\"immersiveengineering:metal\",Count:1b,Damage:5s}}",
+    "rats:rat_nugget_ore:16:{OreItem:{id:\"netherendingores:ore_other_1\",Count:1b,Damage:3s},IngotItem:{id:\"tconstruct:ore\",Count:2b,Damage:1s}}",
+    "rats:rat_nugget_ore:17:{OreItem:{id:\"netherendingores:ore_end_modded_2\",Count:1b,Damage:8s},IngotItem:{id:\"netherendingores:ore_other_1\",Count:2b,Damage:9s}}",
+    "rats:rat_nugget_ore:18:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:9s},IngotItem:{id:\"appliedenergistics2:quartz_ore\",Count:2b,Damage:0s}}",
+    "rats:rat_nugget_ore:19:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:10s},IngotItem:{id:\"appliedenergistics2:charged_quartz_ore\",Count:2b,Damage:0s}}",
+    "rats:rat_nugget_ore:20:{OreItem:{id:\"netherendingores:ore_end_vanilla\",Count:1b,Damage:0s},IngotItem:{id:\"minecraft:coal_ore\",Count:2b,Damage:0s}}",
+    "rats:rat_nugget_ore:21:{OreItem:{id:\"netherendingores:ore_other_1\",Count:1b,Damage:5s},IngotItem:{id:\"tconstruct:ore\",Count:2b,Damage:0s}}",
+    "rats:rat_nugget_ore:22:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:1s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:0s}}",
+    "rats:rat_nugget_ore:23:{OreItem:{id:\"netherendingores:ore_end_vanilla\",Count:1b,Damage:1s},IngotItem:{id:\"minecraft:diamond_ore\",Count:2b,Damage:0s}}",
+    "rats:rat_nugget_ore:24:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:14s},IngotItem:{id:\"libvulpes:ore0\",Count:2b,Damage:0s}}",
+    "rats:rat_nugget_ore:25:{OreItem:{id:\"netherendingores:ore_end_vanilla\",Count:1b,Damage:2s},IngotItem:{id:\"minecraft:emerald_ore\",Count:2b,Damage:0s}}",
+    "rats:rat_nugget_ore:26:{OreItem:{id:\"netherendingores:ore_end_vanilla\",Count:1b,Damage:3s},IngotItem:{id:\"minecraft:gold_ore\",Count:2b,Damage:0s}}",
+    "rats:rat_nugget_ore:27:{OreItem:{id:\"netherendingores:ore_end_modded_2\",Count:1b,Damage:6s},IngotItem:{id:\"netherendingores:ore_other_1\",Count:2b,Damage:7s}}",
+    "rats:rat_nugget_ore:28:{OreItem:{id:\"netherendingores:ore_end_modded_2\",Count:1b,Damage:9s},IngotItem:{id:\"netherendingores:ore_other_1\",Count:2b,Damage:10s}}",
+    "rats:rat_nugget_ore:29:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:2s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:7s}}",
+    "rats:rat_nugget_ore:30:{OreItem:{id:\"netherendingores:ore_end_vanilla\",Count:1b,Damage:4s},IngotItem:{id:\"minecraft:iron_ore\",Count:2b,Damage:0s}}",
+    "rats:rat_nugget_ore:31:{OreItem:{id:\"netherendingores:ore_end_vanilla\",Count:1b,Damage:5s},IngotItem:{id:\"minecraft:lapis_ore\",Count:2b,Damage:0s}}",
+    "rats:rat_nugget_ore:32:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:3s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:3s}}",
+    "rats:rat_nugget_ore:33:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:4s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:8s}}",
+    "rats:rat_nugget_ore:34:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:5s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:5s}}",
+    "rats:rat_nugget_ore:35:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:11s},IngotItem:{id:\"mekanism:oreblock\",Count:2b,Damage:0s}}",
+    "rats:rat_nugget_ore:36:{OreItem:{id:\"netherendingores:ore_end_modded_2\",Count:1b,Damage:3s},IngotItem:{id:\"biomesoplenty:gem_ore\",Count:2b,Damage:2s}}",
+    "rats:rat_nugget_ore:37:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:6s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:6s}}",
+    "rats:rat_nugget_ore:38:{OreItem:{id:\"netherendingores:ore_other_1\",Count:1b,Damage:1s},IngotItem:{id:\"minecraft:quartz_ore\",Count:2b,Damage:0s}}",
+    "rats:rat_nugget_ore:39:{OreItem:{id:\"netherendingores:ore_end_vanilla\",Count:1b,Damage:6s},IngotItem:{id:\"minecraft:redstone_ore\",Count:2b,Damage:0s}}",
+    "rats:rat_nugget_ore:40:{OreItem:{id:\"netherendingores:ore_end_modded_2\",Count:1b,Damage:1s},IngotItem:{id:\"biomesoplenty:gem_ore\",Count:2b,Damage:1s}}",
+    "rats:rat_nugget_ore:41:{OreItem:{id:\"netherendingores:ore_end_modded_2\",Count:1b,Damage:2s},IngotItem:{id:\"biomesoplenty:gem_ore\",Count:2b,Damage:6s}}",
+    "rats:rat_nugget_ore:42:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:7s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:2s}}",
+    "rats:rat_nugget_ore:43:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:8s},IngotItem:{id:\"thermalfoundation:ore\",Count:2b,Damage:1s}}",
+    "rats:rat_nugget_ore:44:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:12s},IngotItem:{id:\"immersiveengineering:ore\",Count:2b,Damage:5s}}",
+    "rats:rat_nugget_ore:45:{OreItem:{id:\"netherendingores:ore_end_modded_1\",Count:1b,Damage:13s},IngotItem:{id:\"bigreactors:oreyellorite\",Count:2b,Damage:0s}}",
+    "rats:rat_nugget_ore:46:{OreItem:{id:\"netherendingores:ore_end_modded_2\",Count:1b,Damage:7s},IngotItem:{id:\"netherendingores:ore_other_1\",Count:2b,Damage:8s}}",
+    "rats:rat_nugget_ore:47:{OreItem:{id:\"biomesoplenty:gem_ore\",Count:1b,Damage:0s},IngotItem:{id:\"biomesoplenty:gem\",Count:1b,Damage:0s}}",
+    "rats:rat_nugget_ore:48:{OreItem:{id:\"minecraft:gold_ore\",Count:1b,Damage:0s},IngotItem:{id:\"minecraft:gold_ingot\",Count:1b,Damage:0s}}",
+    "rats:rat_nugget_ore:49:{OreItem:{id:\"thermalfoundation:ore\",Count:1b,Damage:7s},IngotItem:{id:\"thermalfoundation:material\",Count:1b,Damage:135s}}",
+    "rats:rat_nugget_ore:50:{OreItem:{id:\"minecraft:iron_ore\",Count:1b,Damage:0s},IngotItem:{id:\"minecraft:iron_ingot\",Count:1b,Damage:0s}}",
+    "rats:rat_nugget_ore:51:{OreItem:{id:\"minecraft:lapis_ore\",Count:1b,Damage:0s},IngotItem:{id:\"minecraft:dye\",Count:1b,Damage:4s}}",
+    "rats:rat_nugget_ore:52:{OreItem:{id:\"thermalfoundation:ore\",Count:1b,Damage:3s},IngotItem:{id:\"thermalfoundation:material\",Count:1b,Damage:131s}}",
+    "rats:rat_nugget_ore:53:{OreItem:{id:\"nuclearcraft:ore\",Count:1b,Damage:6s},IngotItem:{id:\"nuclearcraft:ingot\",Count:1b,Damage:6s}}",
+    "rats:rat_nugget_ore:54:{OreItem:{id:\"nuclearcraft:ore\",Count:1b,Damage:7s},IngotItem:{id:\"nuclearcraft:ingot\",Count:1b,Damage:7s}}",
+    "rats:rat_nugget_ore:55:{OreItem:{id:\"biomesoplenty:gem_ore\",Count:1b,Damage:5s},IngotItem:{id:\"biomesoplenty:gem\",Count:1b,Damage:5s}}",
+    "rats:rat_nugget_ore:56:{OreItem:{id:\"thermalfoundation:ore\",Count:1b,Damage:8s},IngotItem:{id:\"thermalfoundation:material\",Count:1b,Damage:136s}}",
+    "rats:rat_nugget_ore:79:{OreItem:{id:\"minecraft:quartz_ore\",Count:1b,Damage:0s},IngotItem:{id:\"minecraft:quartz\",Count:1b,Damage:0s}}",
+    "rats:rat_nugget_ore:88:{OreItem:{id:\"thermalfoundation:ore\",Count:1b,Damage:5s},IngotItem:{id:\"thermalfoundation:material\",Count:1b,Damage:133s}}",
+    "rats:rat_nugget_ore:89:{OreItem:{id:\"mekanism:oreblock\",Count:1b,Damage:0s},IngotItem:{id:\"mekanism:ingot\",Count:1b,Damage:1s}}",
+    "rats:rat_nugget_ore:90:{OreItem:{id:\"biomesoplenty:gem_ore\",Count:1b,Damage:2s},IngotItem:{id:\"biomesoplenty:gem\",Count:1b,Damage:2s}}",
+    "rats:rat_nugget_ore:91:{OreItem:{id:\"contenttweaker:ore_phosphor\",Count:1b,Damage:0s},IngotItem:{id:\"contenttweaker:nugget_phosphor\",Count:1b,Damage:0s}}",
+    "rats:rat_nugget_ore:92:{OreItem:{id:\"thermalfoundation:ore\",Count:1b,Damage:6s},IngotItem:{id:\"thermalfoundation:material\",Count:1b,Damage:134s}}",
+    "rats:rat_nugget_ore:93:{OreItem:{id:\"twilightforest:ironwood_raw\",Count:1b,Damage:0s},IngotItem:{id:\"twilightforest:ironwood_ingot\",Count:2b,Damage:0s}}",
+    "rats:rat_nugget_ore:94:{OreItem:{id:\"minecraft:redstone_ore\",Count:1b,Damage:0s},IngotItem:{id:\"minecraft:redstone\",Count:1b,Damage:0s}}",
+    "rats:rat_nugget_ore:95:{OreItem:{id:\"biomesoplenty:gem_ore\",Count:1b,Damage:1s},IngotItem:{id:\"biomesoplenty:gem\",Count:1b,Damage:1s}}",
+    "rats:rat_nugget_ore:96:{OreItem:{id:\"biomesoplenty:gem_ore\",Count:1b,Damage:6s},IngotItem:{id:\"biomesoplenty:gem\",Count:1b,Damage:6s}}",
+    "rats:rat_nugget_ore:97:{OreItem:{id:\"thermalfoundation:ore\",Count:1b,Damage:2s},IngotItem:{id:\"thermalfoundation:material\",Count:1b,Damage:130s}}",
+    "rats:rat_nugget_ore:98:{OreItem:{id:\"astralsorcery:blockcustomore\",Count:1b,Damage:1s},IngotItem:{id:\"astralsorcery:itemcraftingcomponent\",Count:1b,Damage:1s}}",
+    "rats:rat_nugget_ore:99:{OreItem:{id:\"biomesoplenty:gem_ore\",Count:1b,Damage:4s},IngotItem:{id:\"biomesoplenty:gem\",Count:1b,Damage:4s}}",
+    "rats:rat_nugget_ore:100:{OreItem:{id:\"nuclearcraft:ore\",Count:1b,Damage:3s},IngotItem:{id:\"nuclearcraft:ingot\",Count:1b,Damage:3s}}",
+    "rats:rat_nugget_ore:101:{OreItem:{id:\"thermalfoundation:ore\",Count:1b,Damage:1s},IngotItem:{id:\"thermalfoundation:material\",Count:1b,Damage:129s}}",
+    "rats:rat_nugget_ore:102:{OreItem:{id:\"biomesoplenty:gem_ore\",Count:1b,Damage:3s},IngotItem:{id:\"biomesoplenty:gem\",Count:1b,Damage:3s}}",
+    "rats:rat_nugget_ore:103:{OreItem:{id:\"endreborn:block_wolframium_ore\",Count:1b,Damage:0s},IngotItem:{id:\"endreborn:item_ingot_wolframium\",Count:1b,Damage:0s}}",
+    "rats:rat_nugget_ore:104:{OreItem:{id:\"immersiveengineering:ore\",Count:1b,Damage:5s},IngotItem:{id:\"immersiveengineering:metal\",Count:1b,Damage:5s}}",
     "rats:rat_nugget:0"
   ],
   "ratTube": [
@@ -4409,10 +4418,6 @@
   "seedBeet": [
     "minecraft:beetroot_seeds:0",
     "harvestcraft:beetseeditem:0"
-  ],
-  "seedCoffee": [
-    "actuallyadditions:item_coffee_seed:0",
-    "harvestcraft:coffeeseeditem:0"
   ],
   "seedFlax": [
     "actuallyadditions:item_flax_seed:0",
@@ -5202,7 +5207,6 @@
     "harvestcraft:mango_sapling:0",
     "harvestcraft:maple_sapling:0",
     "harvestcraft:nutmeg_sapling:0",
-    "harvestcraft:olive_sapling:0",
     "harvestcraft:orange_sapling:0",
     "harvestcraft:papaya_sapling:0",
     "harvestcraft:paperbark_sapling:0",
