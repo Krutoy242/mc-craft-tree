@@ -14,7 +14,7 @@ This repo have predefined icons and crafting recipes for my *under development* 
 
 ## Preview
 
-## https://krutoy242.github.io/CraftTreeVisualizer
+## https://krutoy242.github.io
 
 What you can see:
 - All the items used in saved recipes
