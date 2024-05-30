@@ -1,6 +1,6 @@
 /* eslint-disable ts/no-unsafe-declaration-merging */
 import { getVolume } from 'mc-gatherer/api'
-import type { BaseItem, Solvable } from 'mc-gatherer/api'
+import type { BaseItem, IngrAmount, Solvable } from 'mc-gatherer/api'
 import type { Link } from './Link'
 import type { Recipe } from './Recipe'
 
@@ -35,15 +35,15 @@ export class Item {
 
   usedInRecipes = new Set<Recipe>()
 
-  recipes: Map<Recipe, number> | undefined
+  recipes: [Recipe, IngrAmount][] | undefined
 
   private _mainRecipe: Recipe | undefined
   public get mainRecipe(): Recipe | undefined {
     return this._mainRecipe
   }
 
-  private _mainRecipeAmount: number | undefined
-  public get mainRecipeAmount(): number | undefined {
+  private _mainRecipeAmount: IngrAmount
+  public get mainRecipeAmount(): IngrAmount {
     return this._mainRecipeAmount
   }
 

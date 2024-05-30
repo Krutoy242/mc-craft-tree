@@ -22,21 +22,15 @@ export function pickItems(target: { item?: Item, isTo?: boolean }, items: Item[]
     if (!item.recipeIndexes.length)
       return
 
-    item.recipes = new Map([...indexesToSet(item.recipeIndexes, recipes)].map(r => [r, 1]))
+    item.recipes = [...indexesToSet(item.recipeIndexes, recipes)].map((r) => {
+      const stack = r.outputs.find(s => (s.it.matchedBy() as Item[]).includes(item))
+      return [r, stack?.amount]
+    })
 
-    const mainRecipeIndex = item.recipeIndexes[0]
-    if (mainRecipeIndex === undefined)
+    if (!item.recipes.length)
       return
 
-    const mainRecipe = recipes[mainRecipeIndex]
-    if (!mainRecipe)
-      throw new Error(`Recipe index ${mainRecipeIndex} cant be found. Seems like recipe list not malfunctioned.`)
-
-    const stack = mainRecipe.outputs.find(s => (s.it.matchedBy() as Item[]).includes(item))
-    if (!stack)
-      throw new Error(`Recipe for item ${item.id} exists, but without item itself in outputs. Source: ${mainRecipe.source}`)
-
-    item.setMainRecipe(mainRecipe, stack.amount)
+    item.setMainRecipe(item.recipes[0]![0], item.recipes[0]![1])
   })
 
   const solvedArray = target.item

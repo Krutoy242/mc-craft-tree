@@ -24,9 +24,9 @@ const numFormat = format('.2~s')
       'background-image': `url(${item.href})`,
       'width': `${width ?? 32 + 2}px`,
       'height': `${height ?? 32 + 2}px`,
-      'cursor': `${item?.recipes?.size ? 'pointer' : 'default'}`,
+      'cursor': `${item?.recipes?.length ? 'pointer' : 'default'}`,
     }"
-    @click="item?.recipes ? pile.selectRecipes([...item?.recipes.keys()], item?.mainRecipe) : undefined"
+    @click="item?.recipes ? pile.selectRecipes(item?.recipes.map(([r]) => r), item?.mainRecipe) : undefined"
   >
     <div
       v-if="amount && amount !== 1"

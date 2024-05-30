@@ -280,7 +280,7 @@ const menuModel = ref([
             <Button
               v-if="data.inputsAmount"
               class="p-button-raised p-button-text p-button-success px-4 py-2 m-0"
-              @click="() => selectRecipes([...data.recipes.keys()], data.mainRecipe)"
+              @click="() => selectRecipes(data.recipes.map(([r]) => r), data.mainRecipe)"
             >
               <Hedgehog :value="data.inputsAmount" />
             </Button>
