@@ -1,6 +1,7 @@
 {
+  "type": "module",
   "private": true,
-  "packageManager": "pnpm@8.6.12",
+  "packageManager": "pnpm@8.15.5",
   "scripts": {
     "build": "node --max_old_space_size=16384 ./node_modules/vite/bin/vite.js build",
     "dev": "vite --port 3333 --open",
@@ -20,7 +21,7 @@
     "roboto-fontface": "*",
     "tinygradient": "^1.1.5",
     "typescript-memoize": "^1.1.1",
-    "vue": "^3.3.4",
+    "vue": "~3.3.13",
     "vue-router": "^4.2.4",
     "vue3-cookies": "^1.0.6"
   },
@@ -30,12 +31,12 @@
     "@types/d3": "^7.4.0",
     "@types/d3-format": "^3.0.1",
     "@types/lodash": "^4.14.196",
-    "@types/node": "^18.17.3",
+    "@types/node": "^20.11.30",
     "@types/numeral": "^2.0.2",
     "@unocss/reset": "^0.54.2",
     "@vitejs/plugin-vue": "^4.2.3",
     "eslint": "^8.57.0",
-    "typescript": "^5.1.6",
+    "typescript": "^5.4.3",
     "unocss": "^0.54.2",
     "unplugin-auto-import": "^0.16.6",
     "unplugin-vue-components": "^0.25.1",

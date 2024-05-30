@@ -35,7 +35,7 @@ export class Item {
 
   usedInRecipes = new Set<Recipe>()
 
-  recipes: Set<Recipe> | undefined
+  recipes: Map<Recipe, number> | undefined
 
   private _mainRecipe: Recipe | undefined
   public get mainRecipe(): Recipe | undefined {

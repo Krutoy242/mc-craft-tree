@@ -49,8 +49,7 @@ export function pickItems(target: { item?: Item, isTo?: boolean }, items: Item[]
       item.inputsAmount = item.mainRecipe?.inputs?.length ?? 0
 
       // Add links
-      // const list = target.isTo ? item.mainRecipe?.inputsDef : item.mainRecipe?.outputsDef
-      const list = item.mainRecipe?.inputsDef ?? toDefStacks(item.mainRecipe?.inputs)
+      const list = toDefStacks(1, item.mainRecipe?.inputs)
       list?.forEach((stack) => {
         const link = {
           weight: stack.amount ?? 1,
