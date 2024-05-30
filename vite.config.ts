@@ -1,4 +1,4 @@
-import path from 'path'
+import path from 'node:path'
 import { defineConfig } from 'vite'
 import Vue from '@vitejs/plugin-vue'
 import Pages from 'vite-plugin-pages'
@@ -13,7 +13,7 @@ export default defineConfig({
   // base   : '/tree/',
   resolve: {
     alias: {
-      '~/'          : `${path.resolve(__dirname, 'src')}/`,
+      '~/': `${path.resolve(__dirname, 'src')}/`,
       'mc-gatherer/': `${path.resolve(__dirname, 'mc-gatherer/src')}/`,
     },
   },
@@ -38,7 +38,7 @@ export default defineConfig({
 
     // https://github.com/antfu/vite-plugin-components
     Components({
-      dts      : true,
+      dts: true,
       resolvers: [PrimeVueResolver()],
     }),
 

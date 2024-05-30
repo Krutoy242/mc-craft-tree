@@ -100,8 +100,7 @@ export function makeGraph(
           ? 'rgba(67, 113, 165, 0.3)'
           : d.outputsAmount === 0
             ? 'rgba(0, 145, 7, 0.4)'
-            : '#111',
-      )
+            : '#111')
 
     d3Selection
       // .select('svg')

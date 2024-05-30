@@ -10,7 +10,7 @@ function indexesToSet<T>(indexes: number[], map: T[]): Set<T> {
   )
 }
 
-export function pickItems(target: { item?: Item; isTo?: boolean }, items: Item[], recipes: Recipe[]): Item[] {
+export function pickItems(target: { item?: Item, isTo?: boolean }, items: Item[], recipes: Recipe[]): Item[] {
   // Purge old values on ALL items
   items.forEach((item) => {
     item.clear()
@@ -19,18 +19,22 @@ export function pickItems(target: { item?: Item; isTo?: boolean }, items: Item[]
       item.dependencies = indexesToSet(item.depIndexes, recipes)
 
     // Convert indexes into recipes
-    if (!item.recipeIndexes.length) return
+    if (!item.recipeIndexes.length)
+      return
 
-    item.recipes = indexesToSet(item.recipeIndexes, recipes)
+    item.recipes = new Map([...indexesToSet(item.recipeIndexes, recipes)].map(r => [r, 1]))
 
     const mainRecipeIndex = item.recipeIndexes[0]
-    if (mainRecipeIndex === undefined) return
+    if (mainRecipeIndex === undefined)
+      return
 
     const mainRecipe = recipes[mainRecipeIndex]
-    if (!mainRecipe) throw new Error(`Recipe index ${mainRecipeIndex} cant be found. Seems like recipe list not malfunctioned.`)
+    if (!mainRecipe)
+      throw new Error(`Recipe index ${mainRecipeIndex} cant be found. Seems like recipe list not malfunctioned.`)
 
     const stack = mainRecipe.outputs.find(s => (s.it.matchedBy() as Item[]).includes(item))
-    if (!stack) throw new Error(`Recipe for item ${item.id} exists, but without item itself in outputs. Source: ${mainRecipe.source}`)
+    if (!stack)
+      throw new Error(`Recipe for item ${item.id} exists, but without item itself in outputs. Source: ${mainRecipe.source}`)
 
     item.setMainRecipe(mainRecipe, stack.amount)
   })

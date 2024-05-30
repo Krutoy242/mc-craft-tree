@@ -38,9 +38,9 @@ export function makeGraphTree(
   // selection.on(".drag", null);
 
   const opts = {
-    showLinks      : graphNodes.length < 500,
+    showLinks: graphNodes.length < 500,
     showCurvedLinks: graphNodes.length < 100,
-    useReuse       : graphNodes.length > 500,
+    useReuse: graphNodes.length > 500,
   }
 
   // ====================================================

@@ -25,15 +25,18 @@ const usePileStore = defineStore('pile', () => {
   let selectedRecipe = $shallowRef<Recipe | undefined>()
   const selectedRecipeHistory = $shallowRef<[Recipe[], Recipe | undefined][]>([])
   let allRecipes = $shallowRef<Recipe[]>()
-  let target = $shallowRef<{ item?: Item; isTo?: boolean } | undefined>()
+  let target = $shallowRef<{ item?: Item, isTo?: boolean } | undefined>()
 
   let initInProgress = 0
   let currentModpack = ''
   watch(options.app, (v) => { initModpack(v.modpack) })
   function initModpack(modpack: string) {
-    if (!modpack || modpack === 'null') modpack = 'e2ee'
-    if (currentModpack === modpack) return
-    if (initInProgress !== 0) return
+    if (!modpack || modpack === 'null')
+      modpack = 'e2ee'
+    if (currentModpack === modpack)
+      return
+    if (initInProgress !== 0)
+      return
     initInProgress = 3
     currentModpack = modpack
 
@@ -64,7 +67,8 @@ const usePileStore = defineStore('pile', () => {
 
   function watchAll(array: Ref<any>[], cb: () => void) {
     watch(array, (newValues) => {
-      if (!newValues.every(Boolean)) return
+      if (!newValues.every(Boolean))
+        return
       cb()
     })
   }
@@ -108,13 +112,15 @@ const usePileStore = defineStore('pile', () => {
   }
 
   function selectRecipes(recipes: Recipe[], select?: Recipe, ignoreHistory?: boolean) {
-    if (!ignoreHistory && selectedRecipes?.length) selectedRecipeHistory.push([selectedRecipes, selectedRecipe])
+    if (!ignoreHistory && selectedRecipes?.length)
+      selectedRecipeHistory.push([selectedRecipes, selectedRecipe])
     selectedRecipes = recipes
     selectedRecipe = select
   }
 
   function selectPreviousRecipes() {
-    if (!selectedRecipeHistory.length) return
+    if (!selectedRecipeHistory.length)
+      return
     const [recipes, select] = selectedRecipeHistory.pop() as any
     selectRecipes(recipes, select, true)
   }
@@ -126,7 +132,8 @@ const usePileStore = defineStore('pile', () => {
   function pileToFrom(item: string | Item, isTo: boolean) {
     if (typeof item === 'string') {
       const found = allItems?.find(it => it.id === item && it.purity > 0) ?? _.maxBy(allItems, it => it.steps)
-      if (!found) return
+      if (!found)
+        return
       target = { item: found, isTo }
     }
     else {
@@ -165,4 +172,3 @@ export default usePileStore
 
 if (import.meta.hot)
   import.meta.hot.accept(acceptHMRUpdate(usePileStore, import.meta.hot))
-

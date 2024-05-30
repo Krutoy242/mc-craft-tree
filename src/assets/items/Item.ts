@@ -1,3 +1,4 @@
+/* eslint-disable ts/no-unsafe-declaration-merging */
 import { getVolume } from 'mc-gatherer/api'
 import type { BaseItem, Solvable } from 'mc-gatherer/api'
 import type { Link } from './Link'

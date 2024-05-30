@@ -4,7 +4,7 @@
 import { FilterMatchMode, FilterOperator } from 'primevue/api'
 import { copy } from 'copy-anything'
 import { storeToRefs } from 'pinia'
-import type { Ref } from '@vue/reactivity'
+import type { Ref } from 'vue'
 import usePileStore from '~/stores/pile'
 import type { Item } from '~/assets/items/Item'
 import type { Recipe } from '~/assets/items/Recipe'
@@ -13,10 +13,10 @@ const pile = usePileStore()
 const { selectRecipes } = pile
 const pickedItems = storeToRefs(pile).pickedItems as Ref<Item[]>
 const allRecipes = storeToRefs(pile).allRecipes as Ref<Recipe[]>
-const target = storeToRefs(pile).target as Ref<{ item?: Item; isTo?: boolean } | undefined>
+const target = storeToRefs(pile).target as Ref<{ item?: Item, isTo?: boolean } | undefined>
 
 const filtersOpts = {
-  global : { value: undefined, matchMode: FilterMatchMode.CONTAINS },
+  global: { value: undefined, matchMode: FilterMatchMode.CONTAINS },
   display: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
   // 'country.name'  : { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
   // 'representative': { value: null, matchMode: FilterMatchMode.IN },
@@ -29,7 +29,7 @@ const filtersOpts = {
 
 const filters1 = ref(copy(filtersOpts))
 
-const clearFilter1 = () => {
+function clearFilter1() {
   filters1.value = copy(filtersOpts)
 }
 
@@ -46,7 +46,7 @@ const columns = $ref([
 ])
 let selectedColumns = $ref(columns)
 
-const onToggle = (val: typeof columns) => {
+function onToggle(val: typeof columns) {
   selectedColumns = columns.filter(col => val.includes(col))
 }
 

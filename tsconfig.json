@@ -1,28 +1,28 @@
 {
   "compilerOptions": {
+    "target": "es2020",
+    "jsx": "preserve",
+    "lib": ["DOM", "ESNext"],
+    "experimentalDecorators": true,
     "baseUrl": ".",
     "module": "ESNext",
-    "target": "es2020",
-    "lib": ["DOM", "ESNext"],
-    "strict": true,
-    "jsx": "preserve",
-    "esModuleInterop": true,
-    "skipLibCheck": true,
     "moduleResolution": "node",
+    "paths": {
+      "~/*": ["src/*"],
+      "mc-gatherer/*": ["mc-gatherer/src/*"]
+    },
     "resolveJsonModule": true,
-    "noUnusedLocals": true,
-    "strictNullChecks": true,
-    "forceConsistentCasingInFileNames": true,
-    "noUncheckedIndexedAccess": true,
-    "experimentalDecorators": true,
     "types": [
       "vite/client",
       "vite-plugin-pages/client"
     ],
-    "paths": {
-      "~/*": ["src/*"],
-      "mc-gatherer/*": ["mc-gatherer/src/*"],
-    }
+    "strict": true,
+    "strictNullChecks": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true
   },
   "exclude": ["dist", "node_modules"]
 }
