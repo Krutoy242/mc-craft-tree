@@ -1,0 +1,86 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "mc-gatherer/logs"
+		},
+		{
+			"path": "mc-gatherer"
+		}
+	],
+	"settings": {
+		// Disable the default formatter, use eslint instead
+		"prettier.enable": false,
+		"editor.formatOnSave": false,
+	
+		// Auto fix
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": "explicit",
+			"source.organizeImports": "never"
+		},
+	
+		// Silent the stylistic rules in you IDE, but still auto fix them
+		"eslint.rules.customizations": [
+			{ "rule": "style/*", "severity": "off", "fixable": true },
+			{ "rule": "format/*", "severity": "off", "fixable": true },
+			{ "rule": "*-indent", "severity": "off", "fixable": true },
+			{ "rule": "*-spacing", "severity": "off", "fixable": true },
+			{ "rule": "*-spaces", "severity": "off", "fixable": true },
+			{ "rule": "*-order", "severity": "off", "fixable": true },
+			{ "rule": "*-dangle", "severity": "off", "fixable": true },
+			{ "rule": "*-newline", "severity": "off", "fixable": true },
+			{ "rule": "*quotes", "severity": "off", "fixable": true },
+			{ "rule": "*semi", "severity": "off", "fixable": true }
+		],
+	
+		// Enable eslint for all supported languages
+		"eslint.validate": [
+			"javascript",
+			"javascriptreact",
+			"typescript",
+			"typescriptreact",
+			"vue",
+			"html",
+			"markdown",
+			"json",
+			"jsonc",
+			"yaml",
+			"toml",
+			"xml",
+			"gql",
+			"graphql",
+			"astro",
+			"svelte",
+			"css",
+			"less",
+			"scss",
+			"pcss",
+			"postcss"
+		]
+	},
+	"launch": {
+		"version": "0.2.0",
+		"configurations": [
+			{
+				"type": "node",
+				"request": "launch",
+				"name": "Gather E2EE",
+				"runtimeExecutable": "tsx",  // This tells VSCode to use esno instead of Node.js
+				"runtimeArgs": [
+					"src/cli.ts"  // Path to your TypeScript file
+				],
+				"args": [
+					"--mc=D:/mc_client/Instances/E2E-E",  // Your mc argument
+					"--output=../src/assets/data/e2ee"    // Your output argument
+				],
+				// "sourceMaps": true,                     // To enable TypeScript source mapping for better debugging
+				"cwd": "${workspaceFolder}/mc-gatherer", // Changing to ./mc-gatherer directory before running
+				"skipFiles": ["<node_internals>/**"],
+				"console": "integratedTerminal",        // Run in the integrated terminal to see logs
+				"internalConsoleOptions": "neverOpen"   // Keep the internal console closed, use the terminal
+			}
+		]
+	}
+}
