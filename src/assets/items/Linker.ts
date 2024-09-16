@@ -32,31 +32,33 @@ export function pickItems(target: { item?: Item, isTo?: boolean }, items: Item[]
     ? solve(target.item, !target.isTo).getMerged().toArray()
     : items.map(i => [i, 0] as const)
 
+  // All main recipes
+  const pickedRecipes = new Set<Recipe>()
+
   const pickedPile = solvedArray
     .map(([item, amount]) => {
       item.usability = amount
-      item.inputsAmount = item.bestRecipe()?.[0]?.inputs?.length ?? 0
+      const recipe = item.bestRecipe(amount)?.[0]
+      if (recipe) {
+        item.inputsAmount = recipe.inputs?.length ?? 0
 
-      // Add links
-      const list = toDefStacks(1, item.bestRecipe()?.[0]?.inputs)
-      list?.forEach((stack) => {
-        const link = {
-          weight: stack.amount ?? 1,
-          source: target.isTo ? stack.it : item,
-          target: target.isTo ? item : stack.it,
-        }
-        link.target.mainInputs.add(link)
-        link.source.mainOutputs.add(link)
-      })
+        // Add links
+        const inputDefs = toDefStacks(amount, recipe.inputs)
+        inputDefs?.forEach((stack) => {
+          const link = {
+            weight: stack.amount ?? 1,
+            source: target.isTo ? stack.it : item,
+            target: target.isTo ? item : stack.it,
+          }
+          link.target.mainInputs.add(link)
+          link.source.mainOutputs.add(link)
+        })
+
+        pickedRecipes.add(recipe)
+      }
 
       return item
     })
-
-  // Find all main recipes
-  const pickedRecipes = new Set<Recipe>(
-    pickedPile.map(i => i.bestRecipe()?.[0])
-      .filter((i): i is Recipe => !!i),
-  )
 
   pickedRecipes.forEach((rec) => {
     rec.inputs?.forEach((stack) => {
