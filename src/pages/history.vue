@@ -3,10 +3,10 @@ import _ from 'lodash'
 import type { Item } from '~/assets/items/Item'
 import usePileStore from '~/stores/pile'
 
-type ModBarTyple = [modName:string, items:Item[]]
+type ModBarTyple = [modName: string, items: Item[]]
 
 // const modsList = shallowRef<ModBarTyple[]>()
-const pickedItems = usePileStore().pickedItems as Item[]
+const pickedItems = usePileStore().pickedItems as unknown as Item[]
 const modsList = computed(() => pickedItems ? getModBars(pickedItems) : undefined)
 const offset = ref<number>(0)
 const shownItems = shallowRef<Item[]>()

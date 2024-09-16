@@ -1,7 +1,7 @@
 {
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@8.15.5",
+  "packageManager": "pnpm@9.10.0",
   "scripts": {
     "build": "node --max_old_space_size=16384 ./node_modules/vite/bin/vite.js build",
     "dev": "vite --port 3333 --open",
@@ -10,15 +10,15 @@
   "dependencies": {
     "@vueuse/core": "^10.3.0",
     "copy-anything": "^3.0.5",
-    "csv-parse": "^5.4.0",
-    "d3": "^7.8.5",
+    "csv-parse": "^5.5.6",
+    "d3": "^7.9.0",
     "d3-format": "^3.1.0",
     "numeral": "^2.0.6",
     "pinia": "^2.1.6",
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
     "primevue": "^3.31.0",
-    "roboto-fontface": "*",
+    "roboto-fontface": "^0.10.0",
     "tinygradient": "^1.1.5",
     "typescript-memoize": "^1.1.1",
     "vue": "~3.3.13",
@@ -26,22 +26,21 @@
     "vue3-cookies": "^1.0.6"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.9.0",
+    "@antfu/eslint-config": "^3.6.0",
     "@iconify-json/mdi": "^1.1.54",
-    "@types/d3": "^7.4.0",
-    "@types/d3-format": "^3.0.1",
-    "@types/lodash": "^4.14.196",
-    "@types/node": "^20.11.30",
-    "@types/numeral": "^2.0.2",
-    "@unocss/reset": "^0.54.2",
+    "@types/d3": "^7.4.3",
+    "@types/d3-format": "^3.0.4",
+    "@types/lodash": "^4.17.7",
+    "@types/node": "^20.16.5",
+    "@types/numeral": "^2.0.5",
+    "@unocss/reset": "^0.54.3",
     "@vitejs/plugin-vue": "^4.2.3",
-    "eslint": "^8.57.0",
-    "typescript": "^5.4.3",
+    "eslint": "^9.10.0",
+    "typescript": "^5.6.2",
     "unocss": "^0.54.2",
-    "unplugin-auto-import": "^0.16.6",
-    "unplugin-vue-components": "^0.25.1",
+    "unplugin-auto-import": "^0.16.7",
+    "unplugin-vue-components": "^0.25.2",
     "vite": "^4.5.3",
-    "vite-plugin-pages": "^0.31.0",
-    "vue-tsc": "^1.8.8"
+    "vite-plugin-pages": "^0.31.0"
   }
 }

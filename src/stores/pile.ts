@@ -1,14 +1,16 @@
-import { acceptHMRUpdate, defineStore } from 'pinia'
-import _ from 'lodash'
-import type { Ref } from 'vue'
 import type { BaseItem, CsvRecipe } from 'mc-gatherer/api'
-import { IngredientStore, Stack, Tree } from 'mc-gatherer/api'
+import type { Ref } from 'vue'
+import _ from 'lodash'
 import loadDataCSV from 'mc-gatherer/api/csv-browser'
-import { options } from './options'
+import { IngredientStore } from 'mc-gatherer/api/IngredientStore'
+import { Stack } from 'mc-gatherer/api/Stack'
+import { Tree } from 'mc-gatherer/api/Tree'
+import { acceptHMRUpdate, defineStore } from 'pinia'
 import { Item } from '~/assets/items/Item'
 import { pickItems } from '~/assets/items/Linker'
 import { Recipe } from '~/assets/items/Recipe'
 import type { IngredientStack } from '~/assets/items/Stack'
+import { options } from './options'
 
 // const sleep = (ms?: number) => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -29,7 +31,11 @@ const usePileStore = defineStore('pile', () => {
 
   let initInProgress = 0
   let currentModpack = ''
-  watch(options.app, (v) => { initModpack(v.modpack) })
+
+  watch(options.app, (v) => {
+    initModpack(v.modpack)
+  })
+
   function initModpack(modpack: string) {
     if (!modpack || modpack === 'null')
       modpack = 'e2ee'
@@ -79,7 +85,7 @@ const usePileStore = defineStore('pile', () => {
 
     ingredientStore = new IngredientStore(tree.getById)
     Promise.all(baseItems.map(
-      async (b) => {
+      async (b: BaseItem) => {
         // await sleep()
         return tree
           .getBased(b.source, b.entry, b.meta, b.sNbt)
@@ -129,7 +135,7 @@ const usePileStore = defineStore('pile', () => {
     pileTo('storagedrawers:upgrade_creative:1')
   }
 
-  function pileToFrom(item: string | Item, isTo: boolean) {
+  function pileToFrom(item: string | Item | undefined, isTo: boolean) {
     if (typeof item === 'string') {
       const found = allItems?.find(it => it.id === item && it.purity > 0) ?? _.maxBy(allItems, it => it.steps)
       if (!found)
@@ -141,8 +147,13 @@ const usePileStore = defineStore('pile', () => {
     }
   }
 
-  function pileTo(item: string | Item) { pileToFrom(item, true) }
-  function pileFrom(item: string | Item) { pileToFrom(item, false) }
+  function pileTo(item: string | Item | undefined) {
+    pileToFrom(item, true)
+  }
+
+  function pileFrom(item: string | Item) {
+    pileToFrom(item, false)
+  }
 
   watchAll($$([target, allItems, allRecipes]), () => {
     pickedItems = pickItems(target as any, allItems, allRecipes)

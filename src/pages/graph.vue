@@ -1,13 +1,13 @@
 <script setup lang="ts">
+import type { Ref } from 'vue'
 import * as d3 from 'd3'
 import { storeToRefs } from 'pinia'
-import type { Ref } from '@vue/reactivity'
 import { makeGraphTree } from '~/assets/graph/simulation'
 import type { Item } from '~/assets/items/Item'
 import usePileStore from '~/stores/pile'
 
 const pile = usePileStore()
-const pickedItems = storeToRefs(pile).pickedItems as Ref<Item[]>
+const pickedItems = storeToRefs(pile).pickedItems as unknown as Ref<Item[]>
 
 let hoveredItem = $shallowRef<Item>()
 
@@ -23,7 +23,7 @@ function updateGraph() {
     pickedItems.value,
     {
       mouseover: d => hoveredItem = d,
-      click    : (d, isRight) => isRight ? pile.pileFrom(d) : pile.pileTo(d),
+      click: (d, isRight) => isRight ? pile.pileFrom(d) : pile.pileTo(d),
     },
   )
 }
@@ -35,7 +35,7 @@ function updateGraph() {
   >
     <div v-if="hoveredItem" class="fixed">
       <ItemDetailed :item="hoveredItem" />
-      <Recipes v-if="hoveredItem?.mainRecipe" :recipes="[hoveredItem?.mainRecipe]" />
+      <Recipes v-if="hoveredItem?.bestRecipe()?.[0]" :recipes="[hoveredItem!.bestRecipe()![0]]" />
     </div>
     <svg id="viz" class="w-full h-full" />
   </div>

@@ -1,17 +1,18 @@
 <script setup lang="ts">
+import type { Identified } from 'mc-gatherer/api'
+import type { Stack } from 'mc-gatherer/api/Stack'
 import _ from 'lodash'
-import type { Stack } from '~/assets/items/Stack'
 
-const props = defineProps<{ stacks: Stack[] }>()
+const props = defineProps<{ stacks: Stack<Identified>[] }>()
 const { ceil, sqrt } = Math
 
-const spliceInputs = () => {
+function spliceInputs() {
   if (!props.stacks)
     return []
 
   const sliced = props.stacks
     .slice(0, 81)
-    .sort((a, b) => a.ingredient.id.localeCompare(b.ingredient.id))
+    .sort((a, b) => a.it.id.localeCompare(b.it.id))
   if (sliced.length < props.stacks.length)
     sliced.push({ over: true })
 

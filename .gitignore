@@ -9,4 +9,3 @@ node_modules
 *.log
 .vscode
 .git*
-mc-craft-tree.code-workspace

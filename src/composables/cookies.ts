@@ -1,5 +1,5 @@
-import { useCookies } from 'vue3-cookies'
 import type { Ref } from '@vue/reactivity'
+import { useCookies } from 'vue3-cookies'
 
 const { cookies } = useCookies()
 

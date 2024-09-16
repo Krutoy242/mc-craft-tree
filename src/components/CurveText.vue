@@ -1,12 +1,12 @@
 <script setup lang="ts">
 const props = defineProps({
-  width : { default: 200 },
+  width: { default: 200 },
   height: { default: 50 },
-  r     : { default: 25 },
+  r: { default: 25 },
   offset: { default: '50%' },
   textid: { default: '' },
-  color : { default: 'currentColor' },
-  debug : { default: false },
+  color: { default: 'currentColor' },
+  debug: { default: false },
 })
 
 const stroke = computed(() => props.debug ? 'gray' : 'none')

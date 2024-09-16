@@ -1,18 +1,18 @@
 <!-- eslint-disable vue/singleline-html-element-content-newline -->
 
 <script setup lang="ts">
-import { FilterMatchMode, FilterOperator } from 'primevue/api'
+import type { Ref } from 'vue'
 import { copy } from 'copy-anything'
 import { storeToRefs } from 'pinia'
-import type { Ref } from 'vue'
-import usePileStore from '~/stores/pile'
+import { FilterMatchMode, FilterOperator } from 'primevue/api'
 import type { Item } from '~/assets/items/Item'
 import type { Recipe } from '~/assets/items/Recipe'
+import usePileStore from '~/stores/pile'
 
 const pile = usePileStore()
 const { selectRecipes } = pile
-const pickedItems = storeToRefs(pile).pickedItems as Ref<Item[]>
-const allRecipes = storeToRefs(pile).allRecipes as Ref<Recipe[]>
+const pickedItems = storeToRefs(pile).pickedItems as unknown as Ref<Item[]>
+const allRecipes = storeToRefs(pile).allRecipes as unknown as Ref<Recipe[]>
 const target = storeToRefs(pile).target as Ref<{ item?: Item, isTo?: boolean } | undefined>
 
 const filtersOpts = {
@@ -82,7 +82,7 @@ const menuModel = ref([
   <div>
     <DataTable
       v-model:filters="filters1"
-      v-model:contextMenuSelection="selectedRow"
+      v-model:context-menu-selection="selectedRow"
       class="p-datatable-sm"
       filter-display="menu"
       :global-filter-fields="['display']"
@@ -280,7 +280,7 @@ const menuModel = ref([
             <Button
               v-if="data.inputsAmount"
               class="p-button-raised p-button-text p-button-success px-4 py-2 m-0"
-              @click="() => selectRecipes(data.recipes.map(([r]) => r), data.mainRecipe)"
+              @click="() => selectRecipes(data.recipes.map(([r]) => r), data.bestRecipe()?.[0])"
             >
               <Hedgehog :value="data.inputsAmount" />
             </Button>
@@ -339,7 +339,14 @@ const menuModel = ref([
       </Column>
     </DataTable>
 
-    <ContextMenu ref="cm" :model="menuModel" />
+    <ContextMenu
+      ref="cm" :model="menuModel" :pt="{
+        // fixes https://github.com/primefaces/primevue/issues/6141
+        action: {
+          ariaHidden: false,
+        },
+      }"
+    />
   </div>
 </template>
 

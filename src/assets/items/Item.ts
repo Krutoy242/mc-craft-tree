@@ -1,11 +1,13 @@
-/* eslint-disable ts/no-unsafe-declaration-merging */
-import { getVolume } from 'mc-gatherer/api'
-import type { BaseItem, IngrAmount, Solvable } from 'mc-gatherer/api'
+import type { BaseItem } from 'mc-gatherer/api'
 import type { Link } from './Link'
 import type { Recipe } from './Recipe'
+import Solvable from 'mc-gatherer/api/Solvable'
+import { getVolume } from 'mc-gatherer/api/volume'
 
-export interface Item extends Omit<BaseItem, keyof Solvable<any>>, Solvable<Item> {}
-export class Item {
+/* eslint-disable ts/no-unsafe-declaration-merging */
+// @ts-expect-error Object.assign(this, base)
+export interface Item extends BaseItem, Solvable<Item> {}
+export class Item extends Solvable<Recipe> {
   /** How many items you need to craft */
   private _usability = 0
   usability_s = '0?'
@@ -34,32 +36,17 @@ export class Item {
   outputsAmount = 0
 
   usedInRecipes = new Set<Recipe>()
-
-  recipes: [Recipe, IngrAmount][] | undefined
-
-  private _mainRecipe: Recipe | undefined
-  public get mainRecipe(): Recipe | undefined {
-    return this._mainRecipe
-  }
-
-  private _mainRecipeAmount: IngrAmount
-  public get mainRecipeAmount(): IngrAmount {
-    return this._mainRecipeAmount
-  }
-
-  setMainRecipe(recipe: Recipe, amount?: number) {
-    this._mainRecipe = recipe
-    this._mainRecipeAmount = amount
-  }
-
   mainInputs = new Set<Link<Item>>()
   mainOutputs = new Set<Link<Item>>()
 
   href!: string
 
   init(base: BaseItem) {
-    Object.assign(this, base)
+    const { purity, cost, processing, complexity, ...restBase } = base
+    Object.assign(this, restBase)
     this.href = getImagePath(this)
+    if (cost && !base.recipeIndexes.length)
+      this.naturalCost = cost
     return this
   }
 
@@ -72,7 +59,6 @@ export class Item {
     this.popList.clear()
     this.usedInRecipes.clear()
     this.recipes = undefined
-    this._mainRecipeAmount = undefined
     this.mainInputs.clear()
     this.mainOutputs.clear()
   }

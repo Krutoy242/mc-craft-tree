@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import _ from 'lodash'
 import { scaleLog } from 'd3'
+import _ from 'lodash'
 import type { Item } from '~/assets/items/Item'
+import type { Recipe } from '~/assets/items/Recipe'
 import { getHue } from '~/assets/lib/hue'
 import usePileStore from '~/stores/pile'
-import type { Recipe } from '~/assets/items/Recipe'
 
 const props = defineProps<{
   name: string
@@ -50,14 +50,14 @@ function getBar(items: Item[]): ModBar {
   const width = log_1(Math.max(...complList)) - from
 
   const barItems: BarItem[] = items.map(it => ({
-    item : it,
-    pos  : log_1(it.complexity) - from,
+    item: it,
+    pos: log_1(it.complexity) - from,
     width: Math.max(3, log_1(it.usability) / 50),
-    hue  : 1 / (1 + Math.log(it.popularity + 1)),
+    hue: 1 / (1 + Math.log(it.popularity + 1)),
   }))
 
   const result = {
-    from : from - log_1(props.offset),
+    from: from - log_1(props.offset),
     width: Math.max(100, width),
     items: barItems,
   }
@@ -126,7 +126,8 @@ function genGradient(grd: CanvasGradient, bi: BarItem) {
 }
 
 function getItemsAround(x: number): Item[] {
-  if (!bar.value) return []
+  if (!bar.value)
+    return []
 
   return _(bar.value.items)
     .map(item => [Math.abs(x - item.pos), item] as const)
@@ -141,12 +142,13 @@ watch($$(itemsAround), () => emit('showitems', itemsAround))
 function mousemove(e: MouseEvent) {
   itemsAround = getItemsAround(e.offsetX)
   itemsRecipes = itemsAround
-    .map(i => i.mainRecipe)
+    .map(i => i.bestRecipe()?.[0])
     .filter((r): r is Recipe => Boolean(r))
 }
 
 function click(e: MouseEvent) {
-  if (itemsRecipes.length) selectRecipes(itemsRecipes)
+  if (itemsRecipes.length)
+    selectRecipes(itemsRecipes)
 }
 </script>
 

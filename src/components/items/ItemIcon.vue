@@ -26,7 +26,7 @@ const numFormat = format('.2~s')
       'height': `${height ?? 32 + 2}px`,
       'cursor': `${item?.recipes?.length ? 'pointer' : 'default'}`,
     }"
-    @click="item?.recipes ? pile.selectRecipes(item?.recipes.map(([r]) => r), item?.mainRecipe) : undefined"
+    @click="item?.recipes ? pile.selectRecipes(item?.recipes.map(([r]) => r), item?.bestRecipe()?.[0]) : undefined"
   >
     <div
       v-if="amount && amount !== 1"

@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import type { Ref } from '@vue/reactivity'
+import type { Ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import { options } from './stores/options'
-import type { Recipe } from '~/assets/items/Recipe'
 import type { Item } from '~/assets/items/Item'
+import type { Recipe } from '~/assets/items/Recipe'
 import usePileStore from '~/stores/pile'
+import { options } from './stores/options'
 
 const pile = usePileStore()
-const selectedRecipes = storeToRefs(pile).selectedRecipes as Ref<Recipe[]>
-const selectedRecipe = storeToRefs(pile).selectedRecipe as Ref<Recipe>
-const target = storeToRefs(pile).target as unknown as Ref<{ item?: Item; isTo?: boolean } | undefined>
+const selectedRecipes = storeToRefs(pile).selectedRecipes as unknown as Ref<Recipe[]>
+const selectedRecipe = storeToRefs(pile).selectedRecipe as unknown as Ref<Recipe>
+const target = storeToRefs(pile).target as unknown as Ref<{ item?: Item, isTo?: boolean } | undefined>
 
 const tabs = ref([
   {
     label: 'Graph',
-    icon : 'pi pi-fw pi-home',
-    to   : '/graph',
+    icon: 'pi pi-fw pi-home',
+    to: '/graph',
   },
   {
     label: 'Table',
-    icon : 'pi pi-fw pi-table',
-    to   : '/table',
+    icon: 'pi pi-fw pi-table',
+    to: '/table',
   },
   {
     label: 'History',
-    icon : 'pi pi-fw pi-list',
-    to   : '/history',
+    icon: 'pi pi-fw pi-list',
+    to: '/history',
   },
 ])
 

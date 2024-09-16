@@ -1,6 +1,6 @@
-import { solve, toDefStacks } from 'mc-gatherer/api'
 import type { Item } from './Item'
 import type { Recipe } from './Recipe'
+import { solve, toDefStacks } from 'mc-gatherer/api/Solver'
 
 function indexesToSet<T>(indexes: number[], map: T[]): Set<T> {
   return new Set(
@@ -26,11 +26,6 @@ export function pickItems(target: { item?: Item, isTo?: boolean }, items: Item[]
       const stack = r.outputs.find(s => (s.it.matchedBy() as Item[]).includes(item))
       return [r, stack?.amount]
     })
-
-    if (!item.recipes.length)
-      return
-
-    item.setMainRecipe(item.recipes[0]![0], item.recipes[0]![1])
   })
 
   const solvedArray = target.item
@@ -40,10 +35,10 @@ export function pickItems(target: { item?: Item, isTo?: boolean }, items: Item[]
   const pickedPile = solvedArray
     .map(([item, amount]) => {
       item.usability = amount
-      item.inputsAmount = item.mainRecipe?.inputs?.length ?? 0
+      item.inputsAmount = item.bestRecipe()?.[0]?.inputs?.length ?? 0
 
       // Add links
-      const list = toDefStacks(1, item.mainRecipe?.inputs)
+      const list = toDefStacks(1, item.bestRecipe()?.[0]?.inputs)
       list?.forEach((stack) => {
         const link = {
           weight: stack.amount ?? 1,
@@ -59,7 +54,7 @@ export function pickItems(target: { item?: Item, isTo?: boolean }, items: Item[]
 
   // Find all main recipes
   const pickedRecipes = new Set<Recipe>(
-    pickedPile.map(i => i.mainRecipe)
+    pickedPile.map(i => i.bestRecipe()?.[0])
       .filter((i): i is Recipe => !!i),
   )
 

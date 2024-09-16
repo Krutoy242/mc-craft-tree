@@ -1,12 +1,12 @@
+import { createPinia } from 'pinia'
+import BadgeDirective from 'primevue/badgedirective'
+import PrimeVue from 'primevue/config'
+import Tooltip from 'primevue/tooltip'
+
+import routes from 'virtual:generated-pages'
+
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
-import routes from 'virtual:generated-pages'
-import { createPinia } from 'pinia'
-
-import PrimeVue from 'primevue/config'
-
-import Tooltip from 'primevue/tooltip'
-import BadgeDirective from 'primevue/badgedirective'
 
 import App from './App.vue'
 

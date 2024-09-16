@@ -1,7 +1,7 @@
-import * as d3 from 'd3'
+import type { NodeDatum, SVGSelection } from '.'
 
 import type { Item } from '../items/Item'
-import type { NodeDatum, SVGSelection } from '.'
+import * as d3 from 'd3'
 import { makeGraph } from '.'
 
 export function makeScatter(svg: SVGSelection, items: Item[]) {
