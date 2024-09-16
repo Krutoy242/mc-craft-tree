@@ -32,7 +32,7 @@
     "environmentaltech:aethium_tiles:0",
     "environmentaltech:aethium:0"
   ],
-  "blockAluminum": [
+  "blockAluminium": [
     "thermalfoundation:storage:4",
     "immersiveengineering:storage:1",
     "chisel:blockaluminum:0",
@@ -1315,8 +1315,7 @@
   ],
   "concrete": [
     "immersiveengineering:stone_decoration:5",
-    "immersiveengineering:stone_decoration:6",
-    "advancedrocketry:concrete:0"
+    "immersiveengineering:stone_decoration:6"
   ],
   "craftingPiston": [
     "minecraft:piston:0",
@@ -1571,7 +1570,7 @@
     "gendustry:honey_drop:*",
     "harvestcraft:honeyitem:0"
   ],
-  "dustAluminium": [
+  "dustAluminum": [
     "thermalfoundation:material:68",
     "immersiveengineering:metal:10",
     "nuclearcraft:dust:12"
@@ -1835,24 +1834,6 @@
     "betteranimalsplus:pheasant_egg:0",
     "betteranimalsplus:turkey_egg:0",
     "harvestcraft:rawtofeegitem:0"
-  ],
-  "emcraftingAlabasterNormal": [
-    "environmentalmaterials:alabaster:0",
-    "environmentalmaterials:alabaster:1",
-    "environmentalmaterials:alabaster:2",
-    "environmentalmaterials:alabaster:3",
-    "environmentalmaterials:alabaster:4",
-    "environmentalmaterials:alabaster:5",
-    "environmentalmaterials:alabaster:6",
-    "environmentalmaterials:alabaster:7",
-    "environmentalmaterials:alabaster:8",
-    "environmentalmaterials:alabaster:9",
-    "environmentalmaterials:alabaster:10",
-    "environmentalmaterials:alabaster:11",
-    "environmentalmaterials:alabaster:12",
-    "environmentalmaterials:alabaster:13",
-    "environmentalmaterials:alabaster:14",
-    "environmentalmaterials:alabaster:15"
   ],
   "endstone": [
     "minecraft:end_stone:0",
@@ -2423,7 +2404,7 @@
     "mysticalagriculture:infusion_crystal:0",
     "mysticalagriculture:master_infusion_crystal:0"
   ],
-  "ingotAluminum": [
+  "ingotAluminium": [
     "thermalfoundation:material:132",
     "immersiveengineering:metal:1",
     "nuclearcraft:ingot:12",
@@ -3408,10 +3389,6 @@
   "oreArdite": [
     "tconstruct:ore:1",
     "netherendingores:ore_other_1:2"
-  ],
-  "oreCertusQuartz": [
-    "appliedenergistics2:charged_quartz_ore:0",
-    "appliedenergistics2:quartz_ore:0"
   ],
   "oreClathrateOilSand": [
     "thermalfoundation:ore_fluid:0",
@@ -4422,10 +4399,13 @@
     "minecraft:yellow_shulker_box:0"
   ],
   "slabBasalt": [
-    "environmentalmaterials:basalt_brick_slab:0",
-    "environmentalmaterials:basalt_paver_slab:0",
-    "environmentalmaterials:basalt_slab:0",
-    "environmentalmaterials:basalt_tile_slab:0",
+    "cathedral:basalt_slab_carved:0",
+    "cathedral:basalt_slab_carved:1",
+    "cathedral:basalt_slab_carved:2",
+    "cathedral:basalt_slab_carved:3",
+    "cathedral:basalt_slab_carved:4",
+    "cathedral:basalt_slab_carved:5",
+    "cathedral:basalt_slab_carved:6",
     "quark:stone_basalt_slab:0"
   ],
   "slabWood": [
@@ -4620,102 +4600,6 @@
     "chisel:stonebrick2:8",
     "chisel:stonebrick2:9"
   ],
-  "stoneAlabasterBlack": [
-    "environmentalmaterials:alabaster_bricks:15",
-    "environmentalmaterials:alabaster_paver:15",
-    "environmentalmaterials:alabaster_tiles:15",
-    "environmentalmaterials:alabaster:15"
-  ],
-  "stoneAlabasterBlue": [
-    "environmentalmaterials:alabaster_bricks:11",
-    "environmentalmaterials:alabaster_paver:11",
-    "environmentalmaterials:alabaster_tiles:11",
-    "environmentalmaterials:alabaster:11"
-  ],
-  "stoneAlabasterBrown": [
-    "environmentalmaterials:alabaster_bricks:12",
-    "environmentalmaterials:alabaster_paver:12",
-    "environmentalmaterials:alabaster_tiles:12",
-    "environmentalmaterials:alabaster:12"
-  ],
-  "stoneAlabasterCyan": [
-    "environmentalmaterials:alabaster_bricks:9",
-    "environmentalmaterials:alabaster_paver:9",
-    "environmentalmaterials:alabaster_tiles:9",
-    "environmentalmaterials:alabaster:9"
-  ],
-  "stoneAlabasterGray": [
-    "environmentalmaterials:alabaster_bricks:7",
-    "environmentalmaterials:alabaster_paver:7",
-    "environmentalmaterials:alabaster_tiles:7",
-    "environmentalmaterials:alabaster:7"
-  ],
-  "stoneAlabasterGreen": [
-    "environmentalmaterials:alabaster_bricks:13",
-    "environmentalmaterials:alabaster_paver:13",
-    "environmentalmaterials:alabaster_tiles:13",
-    "environmentalmaterials:alabaster:13"
-  ],
-  "stoneAlabasterLightBlue": [
-    "environmentalmaterials:alabaster_bricks:3",
-    "environmentalmaterials:alabaster_paver:3",
-    "environmentalmaterials:alabaster_tiles:3",
-    "environmentalmaterials:alabaster:3"
-  ],
-  "stoneAlabasterLime": [
-    "environmentalmaterials:alabaster_bricks:5",
-    "environmentalmaterials:alabaster_paver:5",
-    "environmentalmaterials:alabaster_tiles:5",
-    "environmentalmaterials:alabaster:5"
-  ],
-  "stoneAlabasterMagenta": [
-    "environmentalmaterials:alabaster_bricks:2",
-    "environmentalmaterials:alabaster_paver:2",
-    "environmentalmaterials:alabaster_tiles:2",
-    "environmentalmaterials:alabaster:2"
-  ],
-  "stoneAlabasterOrange": [
-    "environmentalmaterials:alabaster_bricks:1",
-    "environmentalmaterials:alabaster_paver:1",
-    "environmentalmaterials:alabaster_tiles:1",
-    "environmentalmaterials:alabaster:1"
-  ],
-  "stoneAlabasterPink": [
-    "environmentalmaterials:alabaster_bricks:6",
-    "environmentalmaterials:alabaster_paver:6",
-    "environmentalmaterials:alabaster_tiles:6",
-    "environmentalmaterials:alabaster:6"
-  ],
-  "stoneAlabasterPurple": [
-    "environmentalmaterials:alabaster_bricks:10",
-    "environmentalmaterials:alabaster_paver:10",
-    "environmentalmaterials:alabaster_tiles:10",
-    "environmentalmaterials:alabaster:10"
-  ],
-  "stoneAlabasterRed": [
-    "environmentalmaterials:alabaster_bricks:14",
-    "environmentalmaterials:alabaster_paver:14",
-    "environmentalmaterials:alabaster_tiles:14",
-    "environmentalmaterials:alabaster:14"
-  ],
-  "stoneAlabasterSilver": [
-    "environmentalmaterials:alabaster_bricks:8",
-    "environmentalmaterials:alabaster_paver:8",
-    "environmentalmaterials:alabaster_tiles:8",
-    "environmentalmaterials:alabaster:8"
-  ],
-  "stoneAlabasterWhite": [
-    "environmentalmaterials:alabaster_bricks:0",
-    "environmentalmaterials:alabaster_paver:0",
-    "environmentalmaterials:alabaster_tiles:0",
-    "environmentalmaterials:alabaster:0"
-  ],
-  "stoneAlabasterYellow": [
-    "environmentalmaterials:alabaster_bricks:4",
-    "environmentalmaterials:alabaster_paver:4",
-    "environmentalmaterials:alabaster_tiles:4",
-    "environmentalmaterials:alabaster:4"
-  ],
   "stoneAndesite": [
     "minecraft:stone:5",
     "chisel:andesite:0",
@@ -4788,6 +4672,12 @@
     "chisel:basalt2:5",
     "chisel:basalt2:6",
     "chisel:basalt2:7",
+    "cathedral:basalt_block_carved:0",
+    "cathedral:basalt_block_carved:1",
+    "cathedral:basalt_block_carved:2",
+    "cathedral:basalt_block_carved:3",
+    "cathedral:basalt_block_carved:4",
+    "cathedral:basalt_block_carved:5",
     "environmentalmaterials:basalt_bricks:0",
     "environmentalmaterials:basalt_paver:0",
     "environmentalmaterials:basalt_tiles:0",
@@ -4868,12 +4758,6 @@
     "chisel:granite1:15",
     "chisel:granite2:0",
     "quark:world_stone_bricks:0"
-  ],
-  "stoneHardened": [
-    "environmentalmaterials:hardened_stone_bricks:0",
-    "environmentalmaterials:hardened_stone_paver:0",
-    "environmentalmaterials:hardened_stone_tiles:0",
-    "environmentalmaterials:hardened_stone:0"
   ],
   "stoneLimestone": [
     "chisel:limestone:0",
