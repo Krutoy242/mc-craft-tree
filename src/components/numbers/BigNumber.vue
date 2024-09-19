@@ -2,10 +2,10 @@
 import numeral from 'numeral'
 
 const props = defineProps({
-  number   : { type: Number, required: true },
-  bordered : { type: Boolean, default: false },
+  number: { type: Number },
+  bordered: { type: Boolean, default: false },
   highlited: { type: Boolean, default: false },
-  short    : { type: Boolean, default: false },
+  short: { type: Boolean, default: false },
 })
 
 const SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E']
@@ -13,13 +13,15 @@ const SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E']
 function abbreviateNumber(num: number) {
   num = Math.round(num * 1000) / 1000.0
 
-  if (num <= 1) return num
+  if (num <= 1)
+    return num
 
   // what tier? (determines SI symbol)
   const tier = (Math.log10(num) / 3) | 0
 
   // if zero, we don't need a suffix
-  if (tier === 0) return num
+  if (tier === 0)
+    return num
 
   // get suffix and determine scale
   const suffix = SI_SYMBOL[tier]
@@ -43,7 +45,7 @@ const tierClasses = [
 ]
 
 const compNumber = computed(() => {
-  let num = props.number
+  let num = props.number ?? 0
 
   if (!props.short) {
     if (num >= 1000)
@@ -57,22 +59,22 @@ const compNumber = computed(() => {
 })
 
 const compClass = computed(() => {
-  const tier = (Math.log10(props.number + 1) / 3) | 0
+  const tier = (Math.log10((props.number ?? 0) + 1) / 3) | 0
   return tierClasses[Math.min(tier, tierClasses.length - 1)]
 })
 
 const whole = computed(() => {
-  const num = Math.floor(props.number)
+  const num = Math.floor((props.number ?? 0))
   const output = numeral(num).format('0,0')
   return output === 'NaN' ? num : output
 })
 
 const residueIsZero = computed(() => {
-  return props.number - Math.floor(props.number) === 0
+  return (props.number ?? 0) - Math.floor((props.number ?? 0)) === 0
 })
 
 const residue = computed(() => {
-  const num = props.number - Math.floor(props.number)
+  const num = (props.number ?? 0) - Math.floor((props.number ?? 0))
   return numeral(num).format('.000')
 })
 
@@ -82,7 +84,7 @@ const main = computed(() => String(props.short ? compNumber.value : whole.value)
 <template>
   <div>
     <div
-      v-if="number > 0"
+      v-if="number && number > 0"
       class="monospace relative"
       :class="{ bordered }"
     >
@@ -112,20 +114,23 @@ const main = computed(() => String(props.short ? compNumber.value : whole.value)
         </div>
         <div
           v-if="!short"
-          class="browntext"
-          :class="residueIsZero ? 'text--darken-3' : ''"
+          :class="residueIsZero ? 'brownzeroes' : 'browntext'"
         >
           {{ residue }}
         </div>
       </div>
     </div>
-    <span v-else>-</span>
+    <a v-else>-</a>
   </div>
 </template>
 
 <style scoped>
 .browntext {
-  color: rgb(104, 53, 20);
+  color: rgb(100, 64, 42);
+}
+
+.brownzeroes {
+  color: rgba(100, 64, 42, 0);
 }
 
 .grey-1 {
