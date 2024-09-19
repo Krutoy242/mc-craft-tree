@@ -65,5 +65,6 @@ export class Item extends Solvable<Recipe> {
 }
 
 function getImagePath(item: Item) {
-  return `https://github.com/Krutoy242/mc-icons/raw/master/i/${item.imgsrc || 'placeholder/null'}.png`
+  // return `https://github.com/Krutoy242/mc-icons/raw/master/i/${item.imgsrc || 'placeholder/null'}.png`
+  return item.imgsrc
 }
