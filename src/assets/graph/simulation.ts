@@ -1,7 +1,7 @@
-import * as d3 from 'd3'
-import { CurvedLinks, Links, SingleLinks } from './Links'
 import type { GraphCallbacks, LinkDatum, NodeDatum, SVGSelection } from '.'
+import * as d3 from 'd3'
 import { makeGraph } from '.'
+import { CurvedLinks, Links, SingleLinks } from './Links'
 
 let simulation: d3.Simulation<NodeDatum, LinkDatum> | undefined
 
