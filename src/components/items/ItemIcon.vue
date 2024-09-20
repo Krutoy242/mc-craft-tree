@@ -35,8 +35,6 @@ function getPosition(href: string) {
       'cursor': `${item?.recipes?.length ? 'pointer' : 'default'}`,
       'width': `${width ?? 32 + 2}px`,
       'height': `${height ?? 32 + 2}px`,
-      // 'background-image': `url(${item.href})`,
-      'background-image': `url(https://github.com/Krutoy242/mc-icons/raw/9460084e09870dfd3316c6168ac8eadce293815f/i/sprite.png)`,
       'background-position': getPosition(item.href),
       'background-size': `${4096 * scale}px ${4096 * scale}px`,
     }"
@@ -53,9 +51,8 @@ function getPosition(href: string) {
 
 <style scoped>
 .ico {
+  background-image: url(https://github.com/Krutoy242/mc-icons/raw/9460084e09870dfd3316c6168ac8eadce293815f/i/sprite.png);
   background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
   image-rendering: pixelated;
   box-sizing: border-box;
 }
