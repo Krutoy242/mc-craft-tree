@@ -1,7 +1,7 @@
-import * as d3 from 'd3'
 import type { D3ZoomEvent } from 'd3'
-import type { Link } from '../items/Link'
 import type { Item } from '../items/Item'
+import type { Link } from '../items/Link'
+import * as d3 from 'd3'
 
 export interface NodeDatum extends d3.SimulationNodeDatum, Item {
 
@@ -37,7 +37,28 @@ export function makeGraph(
 ) {
   svg.selectAll('*').remove()
   const container = svg.append('g')
-  const graphNodes = items.filter(i => i.source !== 'placeholder')
+
+  // Filter items we dont want to show on graph
+  const graphNodes = items.filter((d, i) => i === 0 || d.dependencies?.size)
+
+  // let spliced = 0
+  // for (let i = graphNodes.length - 1; i >= 0; i--) {
+  //   let skip = false
+  //   const d = graphNodes[i]
+  //   if (!d || !d.dependencies)
+  //     continue
+  //   for (const r of d.dependencies) {
+  //     if (r.requirments.every(stack => !stack.it.items.some(it => graphNodes.includes(it)))) {
+  //       skip = true
+  //       break
+  //     }
+  //   }
+  //   if (skip) {
+  //     graphNodes.splice(i, 1)
+  //     spliced++
+  //   }
+  // }
+  // console.log('Remove items without full recipes:', spliced)
 
   // ====================================================
   // Math functions
@@ -85,7 +106,7 @@ export function makeGraph(
         .style('cursor', d => (d.isGhost ? null : 'pointer'))
         .attr('opacity', d => (d.isGhost ? 0.1 : null))
         .call(s => s.append('circle'))
-        .call(s => s/* .append('svg') */.append('image')),
+        .call(s => s.append('svg').append('image')),
     )
   }
 
@@ -103,14 +124,14 @@ export function makeGraph(
             : '#111')
 
     d3Selection
-      // .select('svg')
-      .select('image')
+      .select('svg')
       .attr('x', d => -fSize(d) * 0.9)
       .attr('y', d => -fSize(d) * 0.9)
-      // .attr('viewBox', d => d.viewBox ?? null)
       .attr('height', d => fSize(d) * 2 * 0.9)
       .attr('width', d => fSize(d) * 2 * 0.9)
-      .attr('xlink:href', d => d.href)
+      .attr('viewBox', d => `${d.href || '0 0'} 16 16`)
+      .select('image')
+      .attr('xlink:href', 'https://github.com/Krutoy242/mc-icons/raw/137570d69b902eae7fdc898bc60c769045af6676/i/sprite.png')
       .attr('image-rendering', 'pixelated')
 
     return d3Selection
