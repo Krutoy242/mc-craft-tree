@@ -6,6 +6,7 @@ const props = defineProps({
   bordered: { type: Boolean, default: false },
   highlited: { type: Boolean, default: false },
   short: { type: Boolean, default: false },
+  volume: { type: String },
 })
 
 const SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E']
@@ -111,6 +112,9 @@ const main = computed(() => String(props.short ? compNumber.value : whole.value)
             </span>
           </div>
           <span v-else>{{ main }}</span>
+          <div v-if="volume" class="volume">
+            {{ volume }}
+          </div>
         </div>
         <div
           v-if="!short"
@@ -217,6 +221,13 @@ const main = computed(() => String(props.short ? compNumber.value : whole.value)
   text-shadow: 1px 1px 0 #000000;
   -webkit-animation: rainbowdropshadow .5s infinite;
   animation: rainbowdropshadow .5s infinite;
+}
+
+.volume {
+  font-size: 0.75em;
+  margin-top: -0.5em;
+  text-align: center;
+  display: block;
 }
 
 /*

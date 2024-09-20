@@ -3,6 +3,7 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import { copy } from 'copy-anything'
+import { getVolume } from 'mc-gatherer/api/volume'
 import { storeToRefs } from 'pinia'
 import { FilterMatchMode, FilterOperator } from 'primevue/api'
 import type { Item } from '~/assets/items/Item'
@@ -227,7 +228,7 @@ const menuModel = ref([
           </QuestionMark>
         </template>
         <template #body="{ data }">
-          <BigNumber :number="data.usability" />
+          <BigNumber :number="data.usability" :volume="getVolume(data)?.[1]" />
         </template>
       </Column>
 
@@ -280,7 +281,7 @@ const menuModel = ref([
             <Button
               v-if="data.inputsAmount"
               class="p-button-raised p-button-text p-button-success px-4 py-2 m-0"
-              @click="() => selectRecipes(data.recipes.map(([r]) => r), data.bestRecipe()?.[0])"
+              @click="() => selectRecipes((data.recipes as [Recipe][]).map(([r]) => r), data.bestRecipe()?.[0])"
             >
               <Hedgehog :value="data.inputsAmount" />
             </Button>
