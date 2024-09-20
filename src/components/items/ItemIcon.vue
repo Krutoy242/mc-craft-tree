@@ -51,7 +51,7 @@ function getPosition(href: string) {
 
 <style scoped>
 .ico {
-  background-image: url(https://github.com/Krutoy242/mc-icons/raw/9460084e09870dfd3316c6168ac8eadce293815f/i/sprite.png);
+  background-image: url(https://github.com/Krutoy242/mc-icons/raw/137570d69b902eae7fdc898bc60c769045af6676/i/sprite.png);
   background-repeat: no-repeat;
   image-rendering: pixelated;
   box-sizing: border-box;
