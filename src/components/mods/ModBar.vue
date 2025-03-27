@@ -154,9 +154,14 @@ function click(e: MouseEvent) {
 
 <template>
   <div
-    :style="{ 'margin-left': `${bar.from}px`, 'width': `${bar.width}px`, 'cursor': `${itemsRecipes?.length ? 'pointer' : 'default'}` }"
+    :style="{
+      'margin-left': `${bar.from}px`,
+      'width': `${bar.width}px`,
+      'cursor': `${itemsRecipes?.length ? 'pointer' : 'default'}`,
+      'border-color': '#332800',
+    }"
     :color="`hsla(${hue}, 60%, 40%, 0.1)`"
-    class="bar border-1 border-round-sm border-primary-900"
+    class="bar border-1 border-round-sm"
     @mousemove="mousemove"
     @click="click"
   >
