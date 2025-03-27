@@ -98,7 +98,7 @@ const usePileStore = defineStore('pile', () => {
   })
 
   watchAll([$$(allItems), $$(baseRecipes)], () => {
-    Promise.all(baseRecipes.map(processRecipe))
+    Promise.all(baseRecipes!.map(processRecipe))
       .catch((err) => { throw err })
       .then((recipes: Recipe[]) => {
         for (const ingr of ingredientStore) {
