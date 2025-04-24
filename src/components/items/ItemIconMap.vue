@@ -15,8 +15,8 @@ const height = $computed(() => ((props.stacks.length / 5 + 1) | 0) * 42)
 const nonlinearFn = (n: number) => n ** 0.5 * 10
 const stackValue = $computed(() => (stack: Stack) => nonlinearFn(
   options.recipe.considerAmount
-    ? stack.item.processing + stack.item.cost * (stack.amount ?? 1)
-    : stack.item.complexity,
+    ? stack.item.cost * (stack.amount ?? 1)
+    : stack.item.cost,
 ))
 const minSize = $computed(() => Math.max(...props.stacks.map(stackValue)))
 
