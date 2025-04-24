@@ -10,11 +10,11 @@ const props = defineProps({
 })
 
 const faces = [
-  ...'🌍🙂😃😄😁😀😉😏😊😙😗😶😐😑🤨😒😬😤😮😯😕🙁😟🤒🤕😓😥😢😰😭🤧😵😣😖😠🤮😱🥵😡🤬💀',
+  ...'🌍🙂😃😄😁😀😉😏😊😙😗😶😐😑🤨😒😬😤😮😯😕🙁😟🤒🤕😓😥😢😰😭🤧😵😣😖😠🤮😱🥵😡🤬💀☠️👹👿🔥💥⚡💣',
 ]
 
 /* Unused smiles:
-🥴😆😅🤣😂🙃😇😚😋🤐🙄🤥😷🤢🥶🤯😲😳🥺😦😧😨😞😩😫😈👿
+🥴😆😅🤣😂🙃😇😚😋🤐🙄🤥😷🤢🥶🤯😲😳🥺😦😧😨😞😩😫😈
 */
 
 // Approximate value evaluated from solving atan(600/x)*x = faces.length - 2
