@@ -18,8 +18,8 @@ const faces = [
 */
 
 // Approximate value evaluated from solving atan(600/x)*x = faces.length - 2
-const x = 25.5187041348092
 function fnc(n: number) {
+  const x = faces.length * 0.617
   return Math.ceil(Math.atan(n / x) * x)
 }
 
