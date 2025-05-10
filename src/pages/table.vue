@@ -1,5 +1,3 @@
-<!-- eslint-disable vue/singleline-html-element-content-newline -->
-
 <script setup lang="ts">
 import type { Ref } from 'vue'
 import { copy } from 'copy-anything'
@@ -19,13 +17,7 @@ const target = storeToRefs(pile).target as Ref<{ item?: Item, isTo?: boolean } |
 const filtersOpts = {
   global: { value: undefined, matchMode: FilterMatchMode.CONTAINS },
   display: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-  // 'country.name'  : { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-  // 'representative': { value: null, matchMode: FilterMatchMode.IN },
-  // 'date'          : { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.DATE_IS }] },
-  // 'balance'       : { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-  // 'status'        : { operator: FilterOperator.OR, constraints: [{ value: null, matchMode: FilterMatchMode.EQUALS }] },
-  // 'activity'      : { value: null, matchMode: FilterMatchMode.BETWEEN },
-  // 'verified'      : { value: null, matchMode: FilterMatchMode.EQUALS },
+  id:      { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }] },
 }
 
 const filters1 = ref(copy(filtersOpts))
@@ -86,7 +78,7 @@ const menuModel = ref([
       v-model:context-menu-selection="selectedRow"
       class="p-datatable-sm"
       filter-display="menu"
-      :global-filter-fields="['display']"
+      :global-filter-fields="['display', 'id']"
       removable-sort
       :loading="!pickedItems?.length"
 
