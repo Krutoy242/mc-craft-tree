@@ -39,7 +39,24 @@ export function makeGraph(
   const container = svg.append('g')
 
   // Filter items we dont want to show on graph
-  const graphNodes = items.filter((d, i) => i === 0 || d.dependencies?.size)
+  let graphNodes = items.filter((d, i) =>
+    i === 0 // Always keep top item of the tree
+    || d.dependencies?.size, // Only keep items that used somewhere
+  )
+
+  // Filter "Tails" until no tails left
+  let filteredAmount = 0
+  do {
+    filteredAmount = 0
+    graphNodes = graphNodes.filter((topItem, i) => {
+      if (i === 0)
+        return true
+      if (topItem.mainOutputs.values().some(out => out.target !== topItem && graphNodes.includes(out.target)))
+        return true
+      filteredAmount++
+      return false
+    })
+  } while (filteredAmount)
 
   // let spliced = 0
   // for (let i = graphNodes.length - 1; i >= 0; i--) {
