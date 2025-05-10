@@ -5,7 +5,7 @@ import * as d3 from 'd3'
 import type { Item } from '~/assets/items/Item'
 import { options } from '~/stores/options'
 
-interface Stack { amount?: number; item: Item }
+interface Stack { amount?: number, item: Item }
 
 const props = defineProps<{ stacks: Stack[] }>()
 
@@ -22,7 +22,7 @@ const minSize = $computed(() => Math.max(...props.stacks.map(stackValue)))
 
 const rootNode = $computed(() => {
   const cuentsAsTreeMap = {
-    value   : 0,
+    value: 0,
     children: props.stacks.map(
       stack => ({ stack, value: stackValue(stack) + minSize / 5 }),
     ),
@@ -37,7 +37,7 @@ const rootNode = $computed(() => {
       .padding(2)(
         d3
           .hierarchy(cuentsAsTreeMap)
-          .sum(d => d.value)
+          .sum(d => Number.isFinite(d.value) ? d.value : Number.MAX_SAFE_INTEGER)
           .sort((a, b) => (b.value ?? 0) - (a.value ?? 0)),
       )
   )
