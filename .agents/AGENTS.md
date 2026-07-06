@@ -11,6 +11,15 @@ Vue 3 SPA (Vite + UnoCSS + Pinia + vue-router + d3).
 
 Build via Vite (`pnpm build` / `pnpm dev`).
 
+### Debugging in a browser (for agents)
+
+The `dev` script runs Vite with `--open` on a fixed port (currently **3333**): it opens a browser and stays in the foreground. Therefore:
+
+- A dev server may already be serving at `http://localhost:3333` — **reuse it**, don't start a second one.
+- If you must start one yourself, run it **detached / backgrounded** and never block on it (a foreground `pnpm dev` will hang you). **Do not kill servers you didn't start.**
+- Inspect via the Playwright MCP: `browser_navigate` to the URL, then `browser_console_messages` / `browser_take_screenshot`.
+- The **Graph** tab can take ~a minute to render — wait before capturing.
+
 ## mc-gatherer/ — CLI data collector (git submodule)
 
 TypeScript CLI (tsx) scraping a modpack install and exporting structured data.

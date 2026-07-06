@@ -9,3 +9,6 @@ node_modules
 *.log
 .vscode
 .git*
+
+# Playwright MCP debug screenshots (agent browser inspection)
+.playwright-mcp/
