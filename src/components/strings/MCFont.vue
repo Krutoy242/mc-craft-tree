@@ -7,8 +7,13 @@ defineProps<{ value: string }>()
 </template>
 
 <style scoped>
+@font-face {
+  font-family: "Minecraft";
+  src: url("../../assets/fonts/Monocraft.ttf") format("truetype");
+}
+
 .mcfont {
-  font-family: Consolas, Monaco, Lucida Console, Liberation Mono,
+  font-family: Minecraft, Consolas, Monaco, Lucida Console, Liberation Mono,
     DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
 }
 </style>

@@ -29,6 +29,6 @@ app.directive('badge', BadgeDirective)
 
 app.use(router)
 app.use(createPinia())
-app.use(PrimeVue, { ripple: true, theme: { preset: Aura } })
+app.use(PrimeVue, { ripple: true, theme: { preset: Aura, options: { darkModeSelector: '.dark' } } })
 
 app.mount('#app')
