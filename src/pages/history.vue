@@ -1,12 +1,14 @@
 <script setup lang="ts">
+import type { Ref } from 'vue'
 import type { Item } from '~/assets/items/Item'
+import { storeToRefs } from 'pinia'
 import usePileStore from '~/stores/pile'
 
 type ModBarTyple = [modName: string, items: Item[]]
 
-// const modsList = shallowRef<ModBarTyple[]>()
-const pickedItems = usePileStore().pickedItems as unknown as Item[]
-const modsList = computed(() => pickedItems ? getModBars(pickedItems) : undefined)
+const pile = usePileStore()
+const pickedItems = storeToRefs(pile).pickedItems as unknown as Ref<Item[]>
+const modsList = computed(() => pickedItems.value ? getModBars(pickedItems.value) : undefined)
 const offset = ref<number>(0)
 const shownItems = shallowRef<Item[]>()
 
