@@ -9,7 +9,7 @@ import usePileStore from '~/stores/pile'
 const pile = usePileStore()
 const pickedItems = storeToRefs(pile).pickedItems as unknown as Ref<Item[]>
 
-let hoveredItem = $shallowRef<Item>()
+const hoveredItem = shallowRef<Item>()
 
 onMounted(updateGraph)
 watch(pickedItems, updateGraph)
@@ -22,7 +22,7 @@ function updateGraph() {
     d3.select('#viz') as any,
     pickedItems.value,
     {
-      mouseover: d => hoveredItem = d,
+      mouseover: d => hoveredItem.value = d,
       click: (d, isRight) => isRight ? pile.pileFrom(d) : pile.pileTo(d),
     },
   )

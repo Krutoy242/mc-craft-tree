@@ -23,8 +23,8 @@ const hue = computed(() => getHue(props.name))
 
 const ctx = shallowRef<CanvasRenderingContext2D>()
 const canvas = shallowRef<HTMLCanvasElement>()
-let itemsAround = $shallowRef<Item[]>()
-let itemsRecipes = $shallowRef<Recipe[]>()
+const itemsAround = shallowRef<Item[]>()
+const itemsRecipes = shallowRef<Recipe[]>()
 
 interface BarItem {
   item: Item
@@ -136,17 +136,17 @@ function getItemsAround(x: number): Item[] {
     .slice(0, 10)
 }
 
-watch($$(itemsAround), () => emit('showitems', itemsAround))
+watch(itemsAround, () => emit('showitems', itemsAround.value))
 function mousemove(e: MouseEvent) {
-  itemsAround = getItemsAround(e.offsetX)
-  itemsRecipes = itemsAround
+  itemsAround.value = getItemsAround(e.offsetX)
+  itemsRecipes.value = itemsAround.value
     .map(i => i.bestRecipe()?.[0])
     .filter((r): r is Recipe => Boolean(r))
 }
 
 function click(e: MouseEvent) {
-  if (itemsRecipes.length)
-    selectRecipes(itemsRecipes)
+  if (itemsRecipes.value.length)
+    selectRecipes(itemsRecipes.value)
 }
 </script>
 

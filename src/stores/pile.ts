@@ -17,16 +17,16 @@ const usePileStore = defineStore('pile', () => {
   // 𝑳𝒐𝒄𝒂𝒍𝒔
   let tree: Tree<Item>
   let ingredientStore: IngredientStore<Item>
-  let baseRecipes = $shallowRef<CsvRecipe[]>()
-  let baseItems = $shallowRef<BaseItem[]>()
-  let allItems = $shallowRef<Item[]>()
-  let oreDict = $shallowRef<Record<string, string[]>>()
-  let pickedItems = $shallowRef<Item[]>()
-  let selectedRecipes = $shallowRef<Recipe[]>([])
-  let selectedRecipe = $shallowRef<Recipe | undefined>()
-  const selectedRecipeHistory = $shallowRef<[Recipe[], Recipe | undefined][]>([])
-  let allRecipes = $shallowRef<Recipe[]>()
-  let target = $shallowRef<{ item?: Item, isTo?: boolean } | undefined>()
+  const baseRecipes = shallowRef<CsvRecipe[]>()
+  const baseItems = shallowRef<BaseItem[]>()
+  const allItems = shallowRef<Item[]>()
+  const oreDict = shallowRef<Record<string, string[]>>()
+  const pickedItems = shallowRef<Item[]>()
+  const selectedRecipes = shallowRef<Recipe[]>([])
+  const selectedRecipe = shallowRef<Recipe | undefined>()
+  const selectedRecipeHistory = shallowRef<[Recipe[], Recipe | undefined][]>([])
+  const allRecipes = shallowRef<Recipe[]>()
+  const target = shallowRef<{ item?: Item, isTo?: boolean } | undefined>()
 
   let initInProgress = 0
   let currentModpack = ''
@@ -45,28 +45,28 @@ const usePileStore = defineStore('pile', () => {
     initInProgress = 3
     currentModpack = modpack
 
-    oreDict = undefined as any
-    baseRecipes = undefined as any
-    baseItems = undefined as any
-    allItems = undefined as any
-    target = undefined as any
-    allRecipes = undefined as any
+    oreDict.value = undefined as any
+    baseRecipes.value = undefined as any
+    baseItems.value = undefined as any
+    allItems.value = undefined as any
+    target.value = undefined as any
+    allRecipes.value = undefined as any
 
     import(`~/assets/data/${modpack}/oredict.json`).then(({ default: data }) => {
       initInProgress--
-      oreDict = data
+      oreDict.value = data
     })
 
     import(`~/assets/data/${modpack}/recipes.json`).then(({ default: data }) => {
       initInProgress--
-      baseRecipes = data as CsvRecipe[]
+      baseRecipes.value = data as CsvRecipe[]
     })
 
     import(`~/assets/data/${modpack}/items.csv?raw`)
       .then(module => loadDataCSV(module.default))
       .then((data) => {
         initInProgress--
-        baseItems = data
+        baseItems.value = data
       })
   }
 
@@ -78,12 +78,12 @@ const usePileStore = defineStore('pile', () => {
     })
   }
 
-  watchAll([$$(oreDict), $$(baseItems)], () => {
+  watchAll([oreDict, baseItems], () => {
     tree = new Tree(() => new Item())
-    tree.addOreDict(oreDict)
+    tree.addOreDict(oreDict.value)
 
     ingredientStore = new IngredientStore(tree.getById)
-    Promise.all(baseItems.map(
+    Promise.all(baseItems.value.map(
       async (b: BaseItem) => {
         // await sleep()
         return tree
@@ -92,19 +92,19 @@ const usePileStore = defineStore('pile', () => {
       },
     )).then((items) => {
       tree.locked = true
-      allItems = items
+      allItems.value = items
     })
   })
 
-  watchAll([$$(allItems), $$(baseRecipes)], () => {
-    Promise.all(baseRecipes!.map(processRecipe))
+  watchAll([allItems, baseRecipes], () => {
+    Promise.all(baseRecipes.value!.map(processRecipe))
       .catch((err) => { throw err })
       .then((recipes: Recipe[]) => {
         for (const ingr of ingredientStore) {
           const p = tree.matchedBy(ingr)
           while (!p.next().done) {}// eslint-disable-line no-empty
         }
-        allRecipes = recipes
+        allRecipes.value = recipes
       })
   })
 
@@ -117,16 +117,16 @@ const usePileStore = defineStore('pile', () => {
   }
 
   function selectRecipes(recipes: Recipe[], select?: Recipe, ignoreHistory?: boolean) {
-    if (!ignoreHistory && selectedRecipes?.length)
-      selectedRecipeHistory.push([selectedRecipes, selectedRecipe])
-    selectedRecipes = recipes
-    selectedRecipe = select
+    if (!ignoreHistory && selectedRecipes.value?.length)
+      selectedRecipeHistory.value.push([selectedRecipes.value, selectedRecipe.value])
+    selectedRecipes.value = recipes
+    selectedRecipe.value = select
   }
 
   function selectPreviousRecipes() {
     if (!selectedRecipeHistory.length)
       return
-    const [recipes, select] = selectedRecipeHistory.pop() as any
+    const [recipes, select] = selectedRecipeHistory.value.pop() as any
     selectRecipes(recipes, select, true)
   }
 
@@ -136,13 +136,13 @@ const usePileStore = defineStore('pile', () => {
 
   function pileToFrom(item: string | Item | undefined, isTo: boolean) {
     if (typeof item === 'string') {
-      const found = allItems?.find(it => it.id === item && it.purity > 0) ?? (allItems?.length ? allItems.reduce((best, it) => it.steps > best.steps ? it : best) : undefined)
+      const found = allItems.value?.find(it => it.id === item && it.purity > 0) ?? (allItems.value?.length ? allItems.value.reduce((best, it) => it.steps > best.steps ? it : best) : undefined)
       if (!found)
         return
-      target = { item: found, isTo }
+      target.value = { item: found, isTo }
     }
     else {
-      target = { item, isTo }
+      target.value = { item, isTo }
     }
   }
 
@@ -154,11 +154,11 @@ const usePileStore = defineStore('pile', () => {
     pileToFrom(item, false)
   }
 
-  watchAll($$([target, allItems, allRecipes]), () => {
-    pickedItems = pickItems(target as any, allItems, allRecipes)
+  watchAll([target, allItems, allRecipes], () => {
+    pickedItems.value = pickItems(target.value as any, allItems.value, allRecipes.value)
   })
 
-  watch($$(allItems), resetTopItem)
+  watch(allItems, resetTopItem)
 
   return {
     initModpack,
@@ -167,15 +167,13 @@ const usePileStore = defineStore('pile', () => {
     resetTopItem,
     pileTo,
     pileFrom,
-    ...$$({
-      pickedItems,
-      selectedRecipes,
-      selectedRecipe,
-      target,
-      allItems,
-      allRecipes,
-      selectedRecipeHistory,
-    }),
+    pickedItems,
+    selectedRecipes,
+    selectedRecipe,
+    target,
+    allItems,
+    allRecipes,
+    selectedRecipeHistory,
   }
 })
 export default usePileStore
