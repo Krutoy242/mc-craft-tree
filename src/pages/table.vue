@@ -3,7 +3,7 @@ import type { Ref } from 'vue'
 import { copy } from 'copy-anything'
 import { getVolume } from 'mc-gatherer/api/volume'
 import { storeToRefs } from 'pinia'
-import { FilterMatchMode, FilterOperator } from 'primevue/api'
+
 import type { Item } from '~/assets/items/Item'
 import type { Recipe } from '~/assets/items/Recipe'
 import usePileStore from '~/stores/pile'
@@ -15,9 +15,9 @@ const allRecipes = storeToRefs(pile).allRecipes as unknown as Ref<Recipe[]>
 const target = storeToRefs(pile).target as Ref<{ item?: Item, isTo?: boolean } | undefined>
 
 const filtersOpts = {
-  global: { value: undefined, matchMode: FilterMatchMode.CONTAINS },
-  display: { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.STARTS_WITH }] },
-  id:      { operator: FilterOperator.AND, constraints: [{ value: null, matchMode: FilterMatchMode.CONTAINS }] },
+  global: { value: undefined, matchMode: 'contains' },
+  display: { operator: 'and', constraints: [{ value: null, matchMode: 'startsWith' }] },
+  id:      { operator: 'and', constraints: [{ value: null, matchMode: 'contains' }] },
 }
 
 const filters1 = ref(copy(filtersOpts))
@@ -26,7 +26,7 @@ function clearFilter1() {
   filters1.value = copy(filtersOpts)
 }
 
-const columns = $ref([
+const columns = ref([
 // { header: 'Name' },
   { header: 'Complexity' },
   { header: 'Cost' },
@@ -37,10 +37,10 @@ const columns = $ref([
   { header: 'Outputs' },
   { header: 'Steps' },
 ])
-let selectedColumns = $ref(columns)
+const selectedColumns = ref(columns.value)
 
 function onToggle(val: typeof columns) {
-  selectedColumns = columns.filter(col => val.includes(col))
+  selectedColumns.value = columns.value.filter(col => val.includes(col))
 }
 
 const exampleItems = computed(() => [
@@ -63,10 +63,10 @@ const exampleRecipe = computed(() => allRecipes.value?.find(r =>
 */
 
 const cm = ref()
-const selectedRow = $shallowRef<Item>()
+const selectedRow = shallowRef<Item>()
 const onRowContextMenu = (event: any) => cm.value.show(event.originalEvent)
 const menuModel = ref([
-  { label: 'Build tree to', icon: 'pi pi-sort-amount-up-alt', command: () => pile.pileTo(selectedRow) },
+  { label: 'Build tree to', icon: 'pi pi-sort-amount-up-alt', command: () => pile.pileTo(selectedRow.value) },
 ])
 </script>
 

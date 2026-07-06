@@ -33,12 +33,12 @@ const init = () => pile.initModpack(options.app.modpack)
 onMounted(init)
 onUpdated(init)
 
-let isSelectedRecipes = $ref(false)
+const isSelectedRecipes = ref(false)
 watch(selectedRecipes, () => {
-  isSelectedRecipes = !!selectedRecipes.value.length
+  isSelectedRecipes.value = !!selectedRecipes.value.length
 })
 
-const showRecipeOptions = $ref(false)
+const showRecipeOptions = ref(false)
 </script>
 
 <template>

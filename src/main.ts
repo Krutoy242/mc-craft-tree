@@ -1,6 +1,7 @@
 import { createPinia } from 'pinia'
 import BadgeDirective from 'primevue/badgedirective'
 import PrimeVue from 'primevue/config'
+import Aura from '@primeuix/themes/aura'
 import Tooltip from 'primevue/tooltip'
 
 import routes from 'virtual:generated-pages'
@@ -14,8 +15,6 @@ import '@unocss/reset/tailwind.css'
 import './styles/main.css'
 import 'uno.css'
 
-import 'primevue/resources/themes/arya-blue/theme.css'
-import 'primevue/resources/primevue.min.css'
 import 'primeicons/primeicons.css'
 import 'primeflex/primeflex.css'
 
@@ -30,6 +29,6 @@ app.directive('badge', BadgeDirective)
 
 app.use(router)
 app.use(createPinia())
-app.use(PrimeVue, { ripple: true })
+app.use(PrimeVue, { ripple: true, theme: { preset: Aura } })
 
 app.mount('#app')

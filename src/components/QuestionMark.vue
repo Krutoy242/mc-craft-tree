@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import OverlayPanel from 'primevue/overlaypanel'
 
-const op = $ref<OverlayPanel>()
+const op = ref<OverlayPanel>()
 </script>
 
 <template>
