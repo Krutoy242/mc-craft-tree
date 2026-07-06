@@ -5,6 +5,7 @@ import type { Item } from '~/assets/items/Item'
 import type { Recipe } from '~/assets/items/Recipe'
 import usePileStore from '~/stores/pile'
 import { options } from './stores/options'
+import Select from 'primevue/select'
 
 const pile = usePileStore()
 const selectedRecipes = storeToRefs(pile).selectedRecipes as unknown as Ref<Recipe[]>
@@ -70,7 +71,7 @@ const showRecipeOptions = ref(false)
 
     <router-view class="h-full" />
     <div class="fixed bottom-0 right-0 border-round bg-gray-900">
-      <Dropdown
+      <Select
         v-model="options.app.modpack"
         :options="['e2ee', 'herodotus']"
         @change="() => init()"

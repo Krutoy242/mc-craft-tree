@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import OverlayPanel from 'primevue/overlaypanel'
+import Popover from 'primevue/popover'
 
-const op = ref<OverlayPanel>()
+const op = ref<Popover>()
 </script>
 
 <template>
   <div>
-    <OverlayPanel ref="op">
+    <Popover ref="op">
       <slot name="help" />
-    </OverlayPanel>
+    </Popover>
     <slot name="body" />
     <sup>
       <i
         class="pi pi-question-circle text-100 hover:text-cyan-500"
-        @mouseenter="(e) => op.show(e)"
+        @mouseenter="(e) => op.toggle(e)"
         @mouseleave="() => op.hide()"
       />
     </sup>

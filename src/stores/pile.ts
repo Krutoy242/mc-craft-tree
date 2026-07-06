@@ -1,5 +1,5 @@
 import type { BaseItem, CsvRecipe } from 'mc-gatherer/api'
-import type { Ref } from 'vue'
+import { markRaw, shallowRef, watch, type Ref } from 'vue'
 import loadDataCSV from 'mc-gatherer/api/csv-browser'
 import { IngredientStore } from 'mc-gatherer/api/IngredientStore'
 import { Stack } from 'mc-gatherer/api/Stack'
@@ -155,7 +155,7 @@ const usePileStore = defineStore('pile', () => {
   }
 
   watchAll([target, allItems, allRecipes], () => {
-    pickedItems.value = pickItems(target.value as any, allItems.value, allRecipes.value)
+    pickedItems.value = markRaw(pickItems(target.value as any, allItems.value, allRecipes.value))
   })
 
   watch(allItems, resetTopItem)
