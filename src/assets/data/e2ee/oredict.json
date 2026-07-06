@@ -45,10 +45,6 @@
     "nuclearcraft:ingot_block:12",
     "libvulpes:metal0:9"
   ],
-  "blockAlumite": [
-    "tconstruct:metal:7",
-    "plustic:alumiteblock:0"
-  ],
   "blockAmber": [
     "thaumadditions:chiseled_amber_block:0",
     "thaumcraft:amber_block:0",
@@ -161,44 +157,6 @@
     "chisel:block_coal2:0",
     "chisel:block_coal2:1"
   ],
-  "blockCoalCoke": [
-    "thermalfoundation:storage_resource:1",
-    "immersiveengineering:stone_decoration:3",
-    "chisel:block_coal_coke:0",
-    "chisel:block_coal_coke:1",
-    "chisel:block_coal_coke:2",
-    "chisel:block_coal_coke:3",
-    "chisel:block_coal_coke:4",
-    "chisel:block_coal_coke:5",
-    "chisel:block_coal_coke:6",
-    "chisel:block_coal_coke:7",
-    "chisel:block_coal_coke:8",
-    "chisel:block_coal_coke:9",
-    "chisel:block_coal_coke:10",
-    "chisel:block_coal_coke:11",
-    "chisel:block_coal_coke:12",
-    "chisel:block_coal_coke:13",
-    "chisel:block_coal_coke:14",
-    "chisel:block_coal_coke:15",
-    "chisel:block_coal_coke1:0",
-    "chisel:block_coal_coke1:1",
-    "chisel:block_coal_coke1:2",
-    "chisel:block_coal_coke1:3",
-    "chisel:block_coal_coke1:4",
-    "chisel:block_coal_coke1:5",
-    "chisel:block_coal_coke1:6",
-    "chisel:block_coal_coke1:7",
-    "chisel:block_coal_coke1:8",
-    "chisel:block_coal_coke1:9",
-    "chisel:block_coal_coke1:10",
-    "chisel:block_coal_coke1:11",
-    "chisel:block_coal_coke1:12",
-    "chisel:block_coal_coke1:13",
-    "chisel:block_coal_coke1:14",
-    "chisel:block_coal_coke1:15",
-    "chisel:block_coal_coke2:0",
-    "chisel:block_coal_coke2:1"
-  ],
   "blockCobalt": [
     "tconstruct:metal:0",
     "chisel:blockcobalt:0",
@@ -294,6 +252,44 @@
   "blockFakeIron": [
     "minecraft:iron_block:0",
     "enderio:block_alloy:9"
+  ],
+  "blockFuelCoke": [
+    "thermalfoundation:storage_resource:1",
+    "immersiveengineering:stone_decoration:3",
+    "chisel:block_coal_coke:0",
+    "chisel:block_coal_coke:1",
+    "chisel:block_coal_coke:2",
+    "chisel:block_coal_coke:3",
+    "chisel:block_coal_coke:4",
+    "chisel:block_coal_coke:5",
+    "chisel:block_coal_coke:6",
+    "chisel:block_coal_coke:7",
+    "chisel:block_coal_coke:8",
+    "chisel:block_coal_coke:9",
+    "chisel:block_coal_coke:10",
+    "chisel:block_coal_coke:11",
+    "chisel:block_coal_coke:12",
+    "chisel:block_coal_coke:13",
+    "chisel:block_coal_coke:14",
+    "chisel:block_coal_coke:15",
+    "chisel:block_coal_coke1:0",
+    "chisel:block_coal_coke1:1",
+    "chisel:block_coal_coke1:2",
+    "chisel:block_coal_coke1:3",
+    "chisel:block_coal_coke1:4",
+    "chisel:block_coal_coke1:5",
+    "chisel:block_coal_coke1:6",
+    "chisel:block_coal_coke1:7",
+    "chisel:block_coal_coke1:8",
+    "chisel:block_coal_coke1:9",
+    "chisel:block_coal_coke1:10",
+    "chisel:block_coal_coke1:11",
+    "chisel:block_coal_coke1:12",
+    "chisel:block_coal_coke1:13",
+    "chisel:block_coal_coke1:14",
+    "chisel:block_coal_coke1:15",
+    "chisel:block_coal_coke2:0",
+    "chisel:block_coal_coke2:1"
   ],
   "blockGlass": [
     "minecraft:glass:0",
@@ -414,10 +410,6 @@
     "chisel:glassdyedyellow:3",
     "chisel:glassdyedyellow:4",
     "chisel:glassdyedyellow:5",
-    "extrautils2:decorativeglass:1",
-    "extrautils2:decorativeglass:2",
-    "extrautils2:decorativeglass:4",
-    "extrautils2:decorativeglass:5",
     "enderio:block_fused_glass:*"
   ],
   "blockGlassBlack": [
@@ -429,7 +421,6 @@
     "chisel:glassdyedblack:3",
     "chisel:glassdyedblack:4",
     "chisel:glassdyedblack:5",
-    "extrautils2:decorativeglass:3",
     "enderio:block_fused_glass:15"
   ],
   "blockGlassBlue": [
@@ -474,9 +465,6 @@
     "chisel:glass:15",
     "chisel:glass1:0",
     "chisel:glass1:1",
-    "extrautils2:decorativeglass:0",
-    "extrautils2:decorativeglass:1",
-    "extrautils2:decorativeglass:2",
     "enderio:block_fused_glass:0"
   ],
   "blockGlassCyan": [
@@ -603,7 +591,6 @@
     "chisel:glassdyedred:3",
     "chisel:glassdyedred:4",
     "chisel:glassdyedred:5",
-    "extrautils2:decorativeglass:5",
     "enderio:block_fused_glass:14"
   ],
   "blockGlassWhite": [
@@ -625,7 +612,6 @@
     "chisel:glassdyedyellow:3",
     "chisel:glassdyedyellow:4",
     "chisel:glassdyedyellow:5",
-    "extrautils2:decorativeglass:4",
     "enderio:block_fused_glass:4"
   ],
   "blockGold": [
@@ -1348,10 +1334,6 @@
     "forestry:fruits:5",
     "harvestcraft:dateitem:0"
   ],
-  "cropGrape": [
-    "harvestcraft:greengrapeitem:0",
-    "rustic:grapes:0"
-  ],
   "cropLemon": [
     "forestry:fruits:3",
     "harvestcraft:lemonitem:0"
@@ -1423,7 +1405,8 @@
     "biomesoplenty:dirt:2",
     "biomesoplenty:dirt:8",
     "biomesoplenty:dirt:9",
-    "biomesoplenty:dirt:10"
+    "biomesoplenty:dirt:10",
+    "randomthings:fertilizeddirt:0"
   ],
   "dirtCoarse": [
     "minecraft:dirt:1",
@@ -1546,23 +1529,6 @@
     "iceandfire:dragonscale_silver:0",
     "iceandfire:dragonscale_white:0"
   ],
-  "dragonscales": [
-    "iceandfire:dragonscales_blue:0",
-    "iceandfire:dragonscales_bronze:0",
-    "iceandfire:dragonscales_gray:0",
-    "iceandfire:dragonscales_green:0",
-    "iceandfire:dragonscales_red:0",
-    "iceandfire:dragonscales_sapphire:0",
-    "iceandfire:dragonscales_silver:0",
-    "iceandfire:dragonscales_white:0",
-    "iceandfire:sea_serpent_scales_blue:0",
-    "iceandfire:sea_serpent_scales_bronze:0",
-    "iceandfire:sea_serpent_scales_deepblue:0",
-    "iceandfire:sea_serpent_scales_green:0",
-    "iceandfire:sea_serpent_scales_purple:0",
-    "iceandfire:sea_serpent_scales_red:0",
-    "iceandfire:sea_serpent_scales_teal:0"
-  ],
   "dragonsteelIngot": [
     "iceandfire:dragonsteel_fire_ingot:0",
     "iceandfire:dragonsteel_ice_ingot:0"
@@ -1581,6 +1547,10 @@
   "dustArdite": [
     "enderio:item_material:30",
     "exnihilocreatio:item_ore_ardite:2"
+  ],
+  "dustBarium": [
+    "qmd:dust:15",
+    "trinity:barium:0"
   ],
   "dustBronze": [
     "thermalfoundation:material:99",
@@ -1621,7 +1591,8 @@
     "mekanism:dust:1",
     "appliedenergistics2:material:51",
     "enderio:item_material:25",
-    "bloodmagic:component:20"
+    "bloodmagic:component:20",
+    "rustic:dust_gold:0"
   ],
   "dustIridium": [
     "thermalfoundation:material:71",
@@ -1717,7 +1688,8 @@
     "botania:dye:15",
     "industrialforegoing:artificial_dye:15",
     "mia:flower_dead:0",
-    "quark:root_dye:1"
+    "quark:root_dye:1",
+    "rustic:vanta_lily:0"
   ],
   "dyeBlue": [
     "minecraft:dye:4",
@@ -1866,6 +1838,7 @@
     "chisel:endstone2:6"
   ],
   "essenceTier1": [
+    "mysticalagriculture:basalt_essence:0",
     "mysticalagriculture:dirt_essence:0",
     "mysticalagriculture:ice_essence:0",
     "mysticalagriculture:nature_essence:0",
@@ -1878,7 +1851,6 @@
   "essenceTier2": [
     "mysticalagriculture:aluminum_essence:0",
     "mysticalagriculture:apatite_essence:0",
-    "mysticalagriculture:basalt_essence:0",
     "mysticalagriculture:certus_quartz_essence:0",
     "mysticalagriculture:chicken_essence:0",
     "mysticalagriculture:coal_essence:0",
@@ -2092,6 +2064,43 @@
     "twilightforest:trans_gate:0",
     "twilightforest:twilight_oak_gate:0"
   ],
+  "fenceWood": [
+    "minecraft:acacia_fence:0",
+    "minecraft:birch_fence:0",
+    "minecraft:dark_oak_fence:0",
+    "minecraft:fence:0",
+    "minecraft:jungle_fence:0",
+    "minecraft:spruce_fence:0",
+    "biomesoplenty:cherry_fence:0",
+    "biomesoplenty:ebony_fence:0",
+    "biomesoplenty:ethereal_fence:0",
+    "biomesoplenty:eucalyptus_fence:0",
+    "biomesoplenty:fir_fence:0",
+    "biomesoplenty:hellbark_fence:0",
+    "biomesoplenty:jacaranda_fence:0",
+    "biomesoplenty:magic_fence:0",
+    "biomesoplenty:mahogany_fence:0",
+    "biomesoplenty:mangrove_fence:0",
+    "biomesoplenty:palm_fence:0",
+    "biomesoplenty:pine_fence:0",
+    "biomesoplenty:redwood_fence:0",
+    "biomesoplenty:sacred_oak_fence:0",
+    "biomesoplenty:umbran_fence:0",
+    "biomesoplenty:willow_fence:0",
+    "forestry:fences.0:*",
+    "forestry:fences.1:*",
+    "forestry:fences.fireproof.0:*",
+    "forestry:fences.fireproof.1:*",
+    "forestry:fences.vanilla.fireproof.0:*",
+    "twilightforest:canopy_fence:0",
+    "twilightforest:dark_fence:0",
+    "twilightforest:mangrove_fence:0",
+    "twilightforest:mine_fence:0",
+    "twilightforest:sort_fence:0",
+    "twilightforest:time_fence:0",
+    "twilightforest:trans_fence:0",
+    "twilightforest:twilight_oak_fence:0"
+  ],
   "fertilizer": [
     "minecraft:dye:15",
     "thermalfoundation:fertilizer:0",
@@ -2285,6 +2294,23 @@
     "biomesoplenty:willow_vine:0",
     "twilightforest:twilight_plant:5"
   ],
+  "handFramed": [
+    "contenttweaker:hand_framing_tool:0",
+    "fluiddrawers:tank_custom:0",
+    "framedcompactdrawers:framed_compact_drawer:0",
+    "framedcompactdrawers:framed_drawer_controller:0",
+    "framedcompactdrawers:framed_slave:0",
+    "storagedrawers:customdrawers:*",
+    "storagedrawers:customtrim:0"
+  ],
+  "handFramedThree": [
+    "contenttweaker:hand_framing_tool:0",
+    "fluiddrawers:tank_custom:0",
+    "framedcompactdrawers:framed_compact_drawer:0",
+    "framedcompactdrawers:framed_drawer_controller:0",
+    "framedcompactdrawers:framed_slave:0",
+    "storagedrawers:customdrawers:*"
+  ],
   "hardenedClay": [
     "minecraft:hardened_clay:*",
     "chisel:hardenedclay:0",
@@ -2400,15 +2426,17 @@
     "nuclearcraft:ingot:12",
     "exnihilocreatio:item_ore_aluminium:3"
   ],
-  "ingotAlumite": [
-    "tconstruct:ingots:6",
-    "plustic:alumiteingot:0"
-  ],
   "ingotAmericium241All": [
     "nuclearcraft:americium:0",
     "nuclearcraft:americium:2",
     "nuclearcraft:americium:3",
     "nuclearcraft:americium:4"
+  ],
+  "ingotAmericium242All": [
+    "nuclearcraft:americium:5",
+    "nuclearcraft:americium:7",
+    "nuclearcraft:americium:8",
+    "nuclearcraft:americium:9"
   ],
   "ingotAmericium243All": [
     "nuclearcraft:americium:10",
@@ -2422,16 +2450,34 @@
     "nuclearcraft:berkelium:3",
     "nuclearcraft:berkelium:4"
   ],
+  "ingotBerkelium248All": [
+    "nuclearcraft:berkelium:5",
+    "nuclearcraft:berkelium:7",
+    "nuclearcraft:berkelium:8",
+    "nuclearcraft:berkelium:9"
+  ],
   "ingotBronze": [
     "thermalfoundation:material:163",
     "mekanism:ingot:2",
     "forestry:ingot_bronze:0"
+  ],
+  "ingotCalifornium249All": [
+    "nuclearcraft:californium:0",
+    "nuclearcraft:californium:2",
+    "nuclearcraft:californium:3",
+    "nuclearcraft:californium:4"
   ],
   "ingotCalifornium250All": [
     "nuclearcraft:californium:5",
     "nuclearcraft:californium:7",
     "nuclearcraft:californium:8",
     "nuclearcraft:californium:9"
+  ],
+  "ingotCalifornium251All": [
+    "nuclearcraft:californium:10",
+    "nuclearcraft:californium:12",
+    "nuclearcraft:californium:13",
+    "nuclearcraft:californium:14"
   ],
   "ingotCalifornium252All": [
     "nuclearcraft:californium:15",
@@ -2456,11 +2502,29 @@
     "forestry:ingot_copper:0",
     "exnihilocreatio:item_ore_copper:3"
   ],
+  "ingotCurium243All": [
+    "nuclearcraft:curium:0",
+    "nuclearcraft:curium:2",
+    "nuclearcraft:curium:3",
+    "nuclearcraft:curium:4"
+  ],
+  "ingotCurium245All": [
+    "nuclearcraft:curium:5",
+    "nuclearcraft:curium:7",
+    "nuclearcraft:curium:8",
+    "nuclearcraft:curium:9"
+  ],
   "ingotCurium246All": [
     "nuclearcraft:curium:10",
     "nuclearcraft:curium:12",
     "nuclearcraft:curium:13",
     "nuclearcraft:curium:14"
+  ],
+  "ingotCurium247All": [
+    "nuclearcraft:curium:15",
+    "nuclearcraft:curium:17",
+    "nuclearcraft:curium:18",
+    "nuclearcraft:curium:19"
   ],
   "ingotElectrum": [
     "thermalfoundation:material:161",
@@ -2482,6 +2546,12 @@
   "ingotMercury": [
     "qmd:ingot2:2",
     "thaumcraft:quicksilver:0"
+  ],
+  "ingotNeptunium236All": [
+    "nuclearcraft:neptunium:0",
+    "nuclearcraft:neptunium:2",
+    "nuclearcraft:neptunium:3",
+    "nuclearcraft:neptunium:4"
   ],
   "ingotNeptunium237All": [
     "nuclearcraft:neptunium:5",
@@ -2508,6 +2578,19 @@
   "ingotPlutonium239": [
     "ic2:nuclear:3",
     "nuclearcraft:plutonium:5"
+  ],
+  "ingotPlutonium239All": [
+    "ic2:nuclear:3",
+    "nuclearcraft:plutonium:5",
+    "nuclearcraft:plutonium:7",
+    "nuclearcraft:plutonium:8",
+    "nuclearcraft:plutonium:9"
+  ],
+  "ingotPlutonium241All": [
+    "nuclearcraft:plutonium:10",
+    "nuclearcraft:plutonium:12",
+    "nuclearcraft:plutonium:13",
+    "nuclearcraft:plutonium:14"
   ],
   "ingotPlutonium242All": [
     "nuclearcraft:plutonium:15",
@@ -2542,6 +2625,24 @@
   "ingotUnstable": [
     "extrautils2:unstableingots:0",
     "extrautils2:unstableingots:2"
+  ],
+  "ingotUranium233All": [
+    "nuclearcraft:uranium:0",
+    "nuclearcraft:uranium:2",
+    "nuclearcraft:uranium:3",
+    "nuclearcraft:uranium:4"
+  ],
+  "ingotUranium235All": [
+    "nuclearcraft:uranium:5",
+    "nuclearcraft:uranium:7",
+    "nuclearcraft:uranium:8",
+    "nuclearcraft:uranium:9"
+  ],
+  "ingotUranium238All": [
+    "nuclearcraft:uranium:10",
+    "nuclearcraft:uranium:12",
+    "nuclearcraft:uranium:13",
+    "nuclearcraft:uranium:14"
   ],
   "itemBall": [
     "minecraft:clay_ball:0",
@@ -2613,9 +2714,9 @@
     "harvestcraft:sesameballitem:0",
     "iceandfire:cockatrice_eye:0",
     "industrialforegoing:mob_imprisonment_tool:0",
-    "mctsmelteryio:iceball:0",
     "randomthings:stableenderpearl:0",
     "rats:cheese_cannonball:0",
+    "smelteryio:iceball:0",
     "thaumcraft:focus_1:0",
     "thaumcraft:focus_2:0",
     "thaumcraft:focus_3:0",
@@ -2635,6 +2736,10 @@
     "trinity:pu239_pit:0",
     "trinity:u233_pit:0",
     "trinity:u235_pit:0"
+  ],
+  "itemCookedFish": [
+    "minecraft:cooked_fish:0",
+    "minecraft:cooked_fish:1"
   ],
   "itemFiery": [
     "twilightforest:fiery_blood:0",
@@ -2766,6 +2871,7 @@
     "harvestcraft:carprawitem:0",
     "harvestcraft:catfishrawitem:0",
     "harvestcraft:charrrawitem:0",
+    "harvestcraft:eelrawitem:0",
     "harvestcraft:greenheartfishitem:0",
     "harvestcraft:grouperrawitem:0",
     "harvestcraft:herringrawitem:0",
@@ -2787,6 +2893,7 @@
     "harvestcraft:carprawitem:0",
     "harvestcraft:catfishrawitem:0",
     "harvestcraft:charrrawitem:0",
+    "harvestcraft:eelrawitem:0",
     "harvestcraft:greenheartfishitem:0",
     "harvestcraft:groundfishitem:0",
     "harvestcraft:grouperrawitem:0",
@@ -2823,7 +2930,6 @@
     "harvestcraft:figitem:0",
     "harvestcraft:gooseberryitem:0",
     "harvestcraft:grapefruititem:0",
-    "harvestcraft:greengrapeitem:0",
     "harvestcraft:guavaitem:0",
     "harvestcraft:huckleberryitem:0",
     "harvestcraft:juniperberryitem:0",
@@ -3105,7 +3211,6 @@
     "harvestcraft:garlicseeditem:0",
     "harvestcraft:gigapickleseeditem:0",
     "harvestcraft:gingerseeditem:0",
-    "harvestcraft:greengrapeseeditem:0",
     "harvestcraft:huckleberryseeditem:0",
     "harvestcraft:jicamaseeditem:0",
     "harvestcraft:juniperberryseeditem:0",
@@ -3461,7 +3566,8 @@
     "thermalexpansion:frame:132",
     "thermalexpansion:frame:146",
     "thermalexpansion:frame:147",
-    "thermalexpansion:frame:148"
+    "thermalexpansion:frame:148",
+    "threng:big_assembler:0"
   ],
   "mushroomAny": [
     "minecraft:brown_mushroom:0",
@@ -3521,10 +3627,6 @@
     "thaumcraft:nitor_silver:0",
     "thaumcraft:nitor_white:0",
     "thaumcraft:nitor_yellow:0"
-  ],
-  "nuggetAlumite": [
-    "tconstruct:nuggets:6",
-    "plustic:alumitenugget:0"
   ],
   "nuggetBronze": [
     "thermalfoundation:material:227",
@@ -3895,6 +3997,11 @@
     "betteranimalsplus:wolf_pelt_red:0",
     "betteranimalsplus:wolf_pelt_snowy:0",
     "betteranimalsplus:wolf_pelt_timber:0"
+  ],
+  "peltBear": [
+    "betteranimalsplus:bear_skin_black:0",
+    "betteranimalsplus:bear_skin_brown:0",
+    "betteranimalsplus:bear_skin_kermode:0"
   ],
   "pestleAndMortar": [
     "botania:pestleandmortar:0",
@@ -4337,33 +4444,35 @@
     "rats:rat_nugget_ore:45:{IngotItem:{id:\"immersiveengineering:ore\",Damage:5s,Count:2},OreItem:{id:\"netherendingores:ore_end_modded_1\",Damage:12s,Count:1}}",
     "rats:rat_nugget_ore:46:{IngotItem:{id:\"netherendingores:ore_other_1\",Damage:8s,Count:2},OreItem:{id:\"netherendingores:ore_end_modded_2\",Damage:7s,Count:1}}",
     "rats:rat_nugget_ore:47:{IngotItem:{id:\"biomesoplenty:gem\",Damage:0s,Count:1},OreItem:{id:\"biomesoplenty:gem_ore\",Damage:0s,Count:1}}",
-    "rats:rat_nugget_ore:48:{IngotItem:{id:\"minecraft:gold_ingot\",Damage:0s,Count:1},OreItem:{id:\"minecraft:gold_ore\",Damage:0s,Count:1}}",
-    "rats:rat_nugget_ore:49:{IngotItem:{id:\"thermalfoundation:material\",Damage:135s,Count:1},OreItem:{id:\"thermalfoundation:ore\",Damage:7s,Count:1}}",
-    "rats:rat_nugget_ore:50:{IngotItem:{id:\"minecraft:iron_ingot\",Damage:0s,Count:1},OreItem:{id:\"minecraft:iron_ore\",Damage:0s,Count:1}}",
-    "rats:rat_nugget_ore:51:{IngotItem:{id:\"minecraft:dye\",Damage:4s,Count:1},OreItem:{id:\"minecraft:lapis_ore\",Damage:0s,Count:1}}",
-    "rats:rat_nugget_ore:52:{IngotItem:{id:\"thermalfoundation:material\",Damage:131s,Count:1},OreItem:{id:\"thermalfoundation:ore\",Damage:3s,Count:1}}",
-    "rats:rat_nugget_ore:53:{IngotItem:{id:\"nuclearcraft:ingot\",Damage:6s,Count:1},OreItem:{id:\"nuclearcraft:ore\",Damage:6s,Count:1}}",
-    "rats:rat_nugget_ore:54:{IngotItem:{id:\"nuclearcraft:ingot\",Damage:7s,Count:1},OreItem:{id:\"nuclearcraft:ore\",Damage:7s,Count:1}}",
-    "rats:rat_nugget_ore:55:{IngotItem:{id:\"biomesoplenty:gem\",Damage:5s,Count:1},OreItem:{id:\"biomesoplenty:gem_ore\",Damage:5s,Count:1}}",
-    "rats:rat_nugget_ore:56:{IngotItem:{id:\"thermalfoundation:material\",Damage:136s,Count:1},OreItem:{id:\"thermalfoundation:ore\",Damage:8s,Count:1}}",
-    "rats:rat_nugget_ore:79:{IngotItem:{id:\"minecraft:quartz\",Damage:0s,Count:1},OreItem:{id:\"minecraft:quartz_ore\",Damage:0s,Count:1}}",
-    "rats:rat_nugget_ore:87:{IngotItem:{id:\"thermalfoundation:material\",Damage:133s,Count:1},OreItem:{id:\"thermalfoundation:ore\",Damage:5s,Count:1}}",
-    "rats:rat_nugget_ore:88:{IngotItem:{id:\"mekanism:ingot\",Damage:1s,Count:1},OreItem:{id:\"mekanism:oreblock\",Damage:0s,Count:1}}",
-    "rats:rat_nugget_ore:89:{IngotItem:{id:\"biomesoplenty:gem\",Damage:2s,Count:1},OreItem:{id:\"biomesoplenty:gem_ore\",Damage:2s,Count:1}}",
-    "rats:rat_nugget_ore:90:{IngotItem:{id:\"contenttweaker:nugget_phosphor\",Damage:0s,Count:1},OreItem:{id:\"contenttweaker:ore_phosphor\",Damage:0s,Count:1}}",
-    "rats:rat_nugget_ore:91:{IngotItem:{id:\"thermalfoundation:material\",Damage:134s,Count:1},OreItem:{id:\"thermalfoundation:ore\",Damage:6s,Count:1}}",
-    "rats:rat_nugget_ore:92:{IngotItem:{id:\"twilightforest:ironwood_ingot\",Damage:0s,Count:2},OreItem:{id:\"twilightforest:ironwood_raw\",Damage:0s,Count:1}}",
-    "rats:rat_nugget_ore:93:{IngotItem:{id:\"minecraft:redstone\",Damage:0s,Count:1},OreItem:{id:\"minecraft:redstone_ore\",Damage:0s,Count:1}}",
-    "rats:rat_nugget_ore:94:{IngotItem:{id:\"biomesoplenty:gem\",Damage:1s,Count:1},OreItem:{id:\"biomesoplenty:gem_ore\",Damage:1s,Count:1}}",
-    "rats:rat_nugget_ore:95:{IngotItem:{id:\"biomesoplenty:gem\",Damage:6s,Count:1},OreItem:{id:\"biomesoplenty:gem_ore\",Damage:6s,Count:1}}",
-    "rats:rat_nugget_ore:96:{IngotItem:{id:\"thermalfoundation:material\",Damage:130s,Count:1},OreItem:{id:\"thermalfoundation:ore\",Damage:2s,Count:1}}",
-    "rats:rat_nugget_ore:97:{IngotItem:{id:\"astralsorcery:itemcraftingcomponent\",Damage:1s,Count:1},OreItem:{id:\"astralsorcery:blockcustomore\",Damage:1s,Count:1}}",
-    "rats:rat_nugget_ore:98:{IngotItem:{id:\"biomesoplenty:gem\",Damage:4s,Count:1},OreItem:{id:\"biomesoplenty:gem_ore\",Damage:4s,Count:1}}",
-    "rats:rat_nugget_ore:99:{IngotItem:{id:\"nuclearcraft:ingot\",Damage:3s,Count:1},OreItem:{id:\"nuclearcraft:ore\",Damage:3s,Count:1}}",
-    "rats:rat_nugget_ore:100:{IngotItem:{id:\"thermalfoundation:material\",Damage:129s,Count:1},OreItem:{id:\"thermalfoundation:ore\",Damage:1s,Count:1}}",
-    "rats:rat_nugget_ore:101:{IngotItem:{id:\"biomesoplenty:gem\",Damage:3s,Count:1},OreItem:{id:\"biomesoplenty:gem_ore\",Damage:3s,Count:1}}",
-    "rats:rat_nugget_ore:102:{IngotItem:{id:\"endreborn:item_ingot_wolframium\",Damage:0s,Count:1},OreItem:{id:\"endreborn:block_wolframium_ore\",Damage:0s,Count:1}}",
-    "rats:rat_nugget_ore:103:{IngotItem:{id:\"immersiveengineering:metal\",Damage:5s,Count:1},OreItem:{id:\"immersiveengineering:ore\",Damage:5s,Count:1}}",
+    "rats:rat_nugget_ore:48:{IngotItem:{id:\"draconicevolution:draconium_ore\",Damage:0s,Count:2},OreItem:{id:\"draconicevolution:draconium_ore\",Damage:2s,Count:1}}",
+    "rats:rat_nugget_ore:49:{IngotItem:{id:\"minecraft:gold_ingot\",Damage:0s,Count:1},OreItem:{id:\"minecraft:gold_ore\",Damage:0s,Count:1}}",
+    "rats:rat_nugget_ore:50:{IngotItem:{id:\"thermalfoundation:material\",Damage:135s,Count:1},OreItem:{id:\"thermalfoundation:ore\",Damage:7s,Count:1}}",
+    "rats:rat_nugget_ore:51:{IngotItem:{id:\"minecraft:iron_ingot\",Damage:0s,Count:1},OreItem:{id:\"minecraft:iron_ore\",Damage:0s,Count:1}}",
+    "rats:rat_nugget_ore:52:{IngotItem:{id:\"minecraft:dye\",Damage:4s,Count:1},OreItem:{id:\"minecraft:lapis_ore\",Damage:0s,Count:1}}",
+    "rats:rat_nugget_ore:53:{IngotItem:{id:\"thermalfoundation:material\",Damage:131s,Count:1},OreItem:{id:\"thermalfoundation:ore\",Damage:3s,Count:1}}",
+    "rats:rat_nugget_ore:54:{IngotItem:{id:\"nuclearcraft:ingot\",Damage:6s,Count:1},OreItem:{id:\"nuclearcraft:ore\",Damage:6s,Count:1}}",
+    "rats:rat_nugget_ore:55:{IngotItem:{id:\"nuclearcraft:ingot\",Damage:7s,Count:1},OreItem:{id:\"nuclearcraft:ore\",Damage:7s,Count:1}}",
+    "rats:rat_nugget_ore:56:{IngotItem:{id:\"biomesoplenty:gem\",Damage:5s,Count:1},OreItem:{id:\"biomesoplenty:gem_ore\",Damage:5s,Count:1}}",
+    "rats:rat_nugget_ore:57:{IngotItem:{id:\"thermalfoundation:material\",Damage:136s,Count:1},OreItem:{id:\"thermalfoundation:ore\",Damage:8s,Count:1}}",
+    "rats:rat_nugget_ore:81:{IngotItem:{id:\"minecraft:quartz\",Damage:0s,Count:1},OreItem:{id:\"minecraft:quartz_ore\",Damage:0s,Count:1}}",
+    "rats:rat_nugget_ore:89:{IngotItem:{id:\"thermalfoundation:material\",Damage:133s,Count:1},OreItem:{id:\"thermalfoundation:ore\",Damage:5s,Count:1}}",
+    "rats:rat_nugget_ore:90:{IngotItem:{id:\"mekanism:ingot\",Damage:1s,Count:1},OreItem:{id:\"mekanism:oreblock\",Damage:0s,Count:1}}",
+    "rats:rat_nugget_ore:91:{IngotItem:{id:\"biomesoplenty:gem\",Damage:2s,Count:1},OreItem:{id:\"biomesoplenty:gem_ore\",Damage:2s,Count:1}}",
+    "rats:rat_nugget_ore:92:{IngotItem:{id:\"contenttweaker:nugget_phosphor\",Damage:0s,Count:1},OreItem:{id:\"contenttweaker:ore_phosphor\",Damage:0s,Count:1}}",
+    "rats:rat_nugget_ore:93:{IngotItem:{id:\"thermalfoundation:material\",Damage:134s,Count:1},OreItem:{id:\"thermalfoundation:ore\",Damage:6s,Count:1}}",
+    "rats:rat_nugget_ore:94:{IngotItem:{id:\"twilightforest:ironwood_ingot\",Damage:0s,Count:2},OreItem:{id:\"twilightforest:ironwood_raw\",Damage:0s,Count:1}}",
+    "rats:rat_nugget_ore:95:{IngotItem:{id:\"minecraft:redstone\",Damage:0s,Count:1},OreItem:{id:\"minecraft:redstone_ore\",Damage:0s,Count:1}}",
+    "rats:rat_nugget_ore:96:{IngotItem:{id:\"mysticalagriculture:prosperity_ore\",Damage:0s,Count:1},OreItem:{id:\"astralsorcery:blockcustomore\",Damage:0s,Count:1}}",
+    "rats:rat_nugget_ore:97:{IngotItem:{id:\"biomesoplenty:gem\",Damage:1s,Count:1},OreItem:{id:\"biomesoplenty:gem_ore\",Damage:1s,Count:1}}",
+    "rats:rat_nugget_ore:98:{IngotItem:{id:\"biomesoplenty:gem\",Damage:6s,Count:1},OreItem:{id:\"biomesoplenty:gem_ore\",Damage:6s,Count:1}}",
+    "rats:rat_nugget_ore:99:{IngotItem:{id:\"thermalfoundation:material\",Damage:130s,Count:1},OreItem:{id:\"thermalfoundation:ore\",Damage:2s,Count:1}}",
+    "rats:rat_nugget_ore:100:{IngotItem:{id:\"astralsorcery:itemcraftingcomponent\",Damage:1s,Count:1},OreItem:{id:\"astralsorcery:blockcustomore\",Damage:1s,Count:1}}",
+    "rats:rat_nugget_ore:101:{IngotItem:{id:\"biomesoplenty:gem\",Damage:4s,Count:1},OreItem:{id:\"biomesoplenty:gem_ore\",Damage:4s,Count:1}}",
+    "rats:rat_nugget_ore:102:{IngotItem:{id:\"nuclearcraft:ingot\",Damage:3s,Count:1},OreItem:{id:\"nuclearcraft:ore\",Damage:3s,Count:1}}",
+    "rats:rat_nugget_ore:103:{IngotItem:{id:\"thermalfoundation:material\",Damage:129s,Count:1},OreItem:{id:\"thermalfoundation:ore\",Damage:1s,Count:1}}",
+    "rats:rat_nugget_ore:104:{IngotItem:{id:\"biomesoplenty:gem\",Damage:3s,Count:1},OreItem:{id:\"biomesoplenty:gem_ore\",Damage:3s,Count:1}}",
+    "rats:rat_nugget_ore:105:{IngotItem:{id:\"endreborn:item_ingot_wolframium\",Damage:0s,Count:1},OreItem:{id:\"endreborn:block_wolframium_ore\",Damage:0s,Count:1}}",
+    "rats:rat_nugget_ore:106:{IngotItem:{id:\"immersiveengineering:metal\",Damage:5s,Count:1},OreItem:{id:\"immersiveengineering:ore\",Damage:5s,Count:1}}",
     "rats:rat_nugget:0"
   ],
   "ratTube": [
@@ -4627,11 +4736,6 @@
     "extendedcrafting:singularity:65",
     "extendedcrafting:singularity:66"
   ],
-  "skinBear": [
-    "betteranimalsplus:bear_skin_black:0",
-    "betteranimalsplus:bear_skin_brown:0",
-    "betteranimalsplus:bear_skin_kermode:0"
-  ],
   "slabBasalt": [
     "cathedral:basalt_slab_carved:0",
     "cathedral:basalt_slab_carved:1",
@@ -4795,6 +4899,10 @@
     "twilightforest:trans_stairs:0",
     "twilightforest:twilight_oak_stairs:0"
   ],
+  "stickCopper": [
+    "libvulpes:productrod:4",
+    "immersiveposts:metal_rods:1"
+  ],
   "stone": [
     "minecraft:stone:0",
     "chisel:stonebrick:0",
@@ -4912,10 +5020,6 @@
     "cathedral:basalt_block_carved:3",
     "cathedral:basalt_block_carved:4",
     "cathedral:basalt_block_carved:5",
-    "environmentalmaterials:basalt_bricks:0",
-    "environmentalmaterials:basalt_paver:0",
-    "environmentalmaterials:basalt_tiles:0",
-    "environmentalmaterials:basalt:0",
     "quark:basalt:0",
     "quark:world_stone_bricks:3"
   ],
@@ -5131,10 +5235,6 @@
     "minecraft:white_glazed_terracotta:0",
     "minecraft:yellow_glazed_terracotta:0"
   ],
-  "toolShears": [
-    "minecraft:shears:*",
-    "enderio:item_dark_steel_shears:*"
-  ],
   "torch": [
     "minecraft:torch:0",
     "tconstruct:stone_torch:*",
@@ -5319,7 +5419,10 @@
     "minecraft:crafting_table:0",
     "minecraft:crafting_table:*",
     "tconstruct:tooltables:0",
-    "cyclicmagic:block_workbench:0",
     "randomthings:customworkbench:0"
+  ],
+  "xuUpgradeSpeedEnchanted": [
+    "extrautils2:ingredients:15",
+    "extrautils2:ingredients:16"
   ]
 }
