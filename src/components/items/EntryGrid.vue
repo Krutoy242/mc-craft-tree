@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { Identified } from 'mc-gatherer/api'
 import type { Stack } from 'mc-gatherer/api/Stack'
-import _ from 'lodash'
-
 const props = defineProps<{ stacks: Stack<Identified>[] }>()
 const { ceil, sqrt } = Math
 
@@ -18,7 +16,7 @@ function spliceInputs() {
 
   const totalItems = sliced.length
   const itemsInRow = ceil(totalItems / ceil(sqrt(totalItems / 2 + 1) - 1))
-  return _.chunk(sliced, itemsInRow)
+  return Array.from({ length: Math.ceil(sliced.length / itemsInRow) }, (_, i) => sliced.slice(i * itemsInRow, (i + 1) * itemsInRow))
 }
 </script>
 

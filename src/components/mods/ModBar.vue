@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { scaleLog } from 'd3'
-import _ from 'lodash'
 import type { Item } from '~/assets/items/Item'
 import type { Recipe } from '~/assets/items/Recipe'
 import { getHue } from '~/assets/lib/hue'
@@ -129,13 +128,12 @@ function getItemsAround(x: number): Item[] {
   if (!bar.value)
     return []
 
-  return _(bar.value.items)
+  return bar.value.items
     .map(item => [Math.abs(x - item.pos), item] as const)
-    .sortBy(0)
+    .sort(([a], [b]) => a - b)
     .filter(([dist, i]) => dist < i.width)
-    .map(([,i]) => i.item)
+    .map(([, i]) => i.item)
     .slice(0, 10)
-    .value()
 }
 
 watch($$(itemsAround), () => emit('showitems', itemsAround))

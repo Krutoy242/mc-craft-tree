@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import _ from 'lodash'
 import type { Item } from '~/assets/items/Item'
 import usePileStore from '~/stores/pile'
 
@@ -17,16 +16,19 @@ const sourceBlacklist = [
 
 function getModBars(items: Item[]): ModBarTyple[] {
   let minimum = Number.MAX_SAFE_INTEGER
-  const result = _(items)
-    .groupBy('source')
-    .entries()
+  const grouped: Record<string, Item[]> = {}
+  for (const item of items) {
+    const key = item.source
+    ;(grouped[key] ??= []).push(item)
+  }
+  const result = Object.entries(grouped)
     .filter(([source]) => !sourceBlacklist.includes(source))
-    .sortBy(([,list]) => {
-      const min = Math.min(...list.map(o => o.complexity))
-      minimum = Math.min(minimum, min)
-      return min
+    .sort(([, listA], [, listB]) => {
+      const minA = Math.min(...listA.map(o => o.complexity))
+      const minB = Math.min(...listB.map(o => o.complexity))
+      minimum = Math.min(minimum, minA)
+      return minA - minB
     })
-    .value()
 
   offset.value = minimum
   return result

@@ -1,6 +1,5 @@
 import type { BaseItem, CsvRecipe } from 'mc-gatherer/api'
 import type { Ref } from 'vue'
-import _ from 'lodash'
 import loadDataCSV from 'mc-gatherer/api/csv-browser'
 import { IngredientStore } from 'mc-gatherer/api/IngredientStore'
 import { Stack } from 'mc-gatherer/api/Stack'
@@ -137,7 +136,7 @@ const usePileStore = defineStore('pile', () => {
 
   function pileToFrom(item: string | Item | undefined, isTo: boolean) {
     if (typeof item === 'string') {
-      const found = allItems?.find(it => it.id === item && it.purity > 0) ?? _.maxBy(allItems, it => it.steps)
+      const found = allItems?.find(it => it.id === item && it.purity > 0) ?? (allItems?.length ? allItems.reduce((best, it) => it.steps > best.steps ? it : best) : undefined)
       if (!found)
         return
       target = { item: found, isTo }
