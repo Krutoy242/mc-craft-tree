@@ -12,3 +12,17 @@ node_modules
 
 # Playwright MCP debug screenshots (agent browser inspection)
 .playwright-mcp/
+
+# Uncompressed msgpack build intermediates (browser uses .brc instead)
+*.msgpack
+
+!.gitattributes
+
+# agent working docs & scratch
+/ai/
+/tmp/
+
+# big text datasets are debug-only (--csv flag); web loads .brc
+src/assets/data/*/items.csv
+src/assets/data/*/recipes.json
+src/assets/data/*/oredict.json
