@@ -12,6 +12,9 @@ import Pages from 'vite-plugin-pages'
 export default defineConfig({
   // base   : '/tree/',
   assetsInclude: ['**/*.brc'],
+  define: {
+    'process.env.PERF_BUCKETS': '"0"',
+  },
   resolve: {
     alias: {
       '~/': `${path.resolve(__dirname, 'src')}/`,
