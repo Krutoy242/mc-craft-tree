@@ -1,14 +1,15 @@
 import type { BaseItem, CsvRecipe } from 'mc-gatherer/api'
-import { markRaw, shallowRef, watch, type Ref } from 'vue'
-import loadDataCSV from 'mc-gatherer/api/csv-browser'
+import type { Ref } from 'vue'
+import type { IngredientStack } from '~/assets/items/Stack'
 import { IngredientStore } from 'mc-gatherer/api/IngredientStore'
 import { Stack } from 'mc-gatherer/api/Stack'
 import { Tree } from 'mc-gatherer/api/Tree'
 import { acceptHMRUpdate, defineStore } from 'pinia'
+import { markRaw, shallowRef, watch } from 'vue'
 import { Item } from '~/assets/items/Item'
 import { pickItems } from '~/assets/items/Linker'
 import { Recipe } from '~/assets/items/Recipe'
-import type { IngredientStack } from '~/assets/items/Stack'
+import { decodeItems, decodeRecipes, decompressBrotli, fetchDecode } from '~/lib/unpack'
 import { options } from './options'
 
 // const sleep = (ms?: number) => new Promise(resolve => setTimeout(resolve, ms))
@@ -52,22 +53,26 @@ const usePileStore = defineStore('pile', () => {
     target.value = undefined as any
     allRecipes.value = undefined as any
 
-    import(`~/assets/data/${modpack}/oredict.json`).then(({ default: data }) => {
+    import(`~/assets/data/${modpack}/oredict.json.brc?url`).then(async ({ default: url }) => {
+      const res = await fetch(url)
+      const buf = await res.arrayBuffer()
+      const raw = await decompressBrotli(buf)
+      const data = JSON.parse(new TextDecoder().decode(raw))
       initInProgress--
       oreDict.value = data
     })
 
-    import(`~/assets/data/${modpack}/recipes.json`).then(({ default: data }) => {
+    import(`~/assets/data/${modpack}/recipes.msgpack.brc?url`).then(async ({ default: url }) => {
+      const data = await fetchDecode(url, decodeRecipes)
       initInProgress--
       baseRecipes.value = data as CsvRecipe[]
     })
 
-    import(`~/assets/data/${modpack}/items.csv?raw`)
-      .then(module => loadDataCSV(module.default))
-      .then((data) => {
-        initInProgress--
-        baseItems.value = data
-      })
+    import(`~/assets/data/${modpack}/items.msgpack.brc?url`).then(async ({ default: url }) => {
+      const data = await fetchDecode(url, decodeItems)
+      initInProgress--
+      baseItems.value = data
+    })
   }
 
   function watchAll(array: Ref<any>[], cb: () => void) {

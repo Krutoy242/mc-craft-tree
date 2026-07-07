@@ -11,6 +11,7 @@ import Pages from 'vite-plugin-pages'
 
 export default defineConfig({
   // base   : '/tree/',
+  assetsInclude: ['**/*.brc'],
   resolve: {
     alias: {
       '~/': `${path.resolve(__dirname, 'src')}/`,
